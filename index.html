@@ -93,7 +93,7 @@
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Idea Title</label>
-                    <input type="text" id="pubTitle" placeholder="Supply Zone Sweep & Rejection | 1:1.15 R:R ICT Setup" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500">
+                    <input type="text" id="pubTitle" placeholder="Supply Zone Sweep & Rejection | 1:15 R:R ICT Setup" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Market Structure & Thesis Note</label>
@@ -183,7 +183,7 @@
     <div class="bg-green-600/10 border-b border-green-600/20 px-6 py-2 overflow-hidden whitespace-nowrap text-xs text-green-400 flex items-center">
         <span class="font-bold uppercase tracking-wider mr-4 bg-gradient-to-r from-red-600 to-green-600 text-white px-2 py-0.5 rounded text-[10px]">Live ICT Model</span>
         <div class="inline-block text-gray-300">
-            🔥 <span class="text-green-400 font-bold">ICT Trade Plan Loaded:</span> Strict 1.15 Risk-to-Reward Ratio configured across all supported pairs!
+            🔥 <span class="text-green-400 font-bold">ICT Trade Plan Loaded:</span> Strict 1:15 Risk-to-Reward Ratio configured across all supported pairs!
         </div>
     </div>
 
@@ -218,11 +218,11 @@
 
             <!-- Right Column: Dynamic ICT Signals & Risk Calculator -->
             <div class="flex flex-col gap-6">
-                <!-- Dynamic ICT Signal Box with 1:1.15 RR -->
+                <!-- Dynamic ICT Signal Box with 1:15 RR -->
                 <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg flex flex-col">
                     <div class="flex justify-between items-center mb-3">
                         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">ICT Institutional Setup</h3>
-                        <span id="signalRRBadge" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-extrabold px-2 py-0.5 rounded">RR 1:1.15</span>
+                        <span id="signalRRBadge" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-extrabold px-2 py-0.5 rounded">RR 1:15</span>
                     </div>
                     <div class="bg-gray-900/80 border border-gray-800 rounded-lg p-3.5 space-y-2.5">
                         <div class="flex justify-between items-center">
@@ -233,7 +233,7 @@
                             <p><strong>ICT Model:</strong> <span id="signalModel" class="text-blue-400 font-medium">FVG + Mitigation Block</span></p>
                             <p><strong>Entry Zone:</strong> <span id="signalMitigation" class="text-green-400 font-mono">1.08500</span></p>
                             <p><strong>Stop Loss (SL):</strong> <span id="signalSL" class="text-[#ff1744] font-mono">1.08200</span></p>
-                            <p><strong>Take Profit (TP):</strong> <span id="signalTP" class="text-[#00c853] font-mono">1.08845</span></p>
+                            <p><strong>Take Profit (TP):</strong> <span id="signalTP" class="text-[#00c853] font-mono">1.13000</span></p>
                         </div>
                     </div>
                 </div>
@@ -261,12 +261,12 @@
                                 <span id="calcRiskAmount" class="text-[#ff1744] font-bold font-mono">$20.00</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-gray-400">Target Return (1.15 RR):</span>
-                                <span id="calcTargetProfit" class="text-[#00c853] font-bold font-mono">$23.00</span>
+                                <span class="text-gray-400">Target Return (1:15 RR):</span>
+                                <span id="calcTargetProfit" class="text-[#00c853] font-bold font-mono">$300.00</span>
                             </div>
                             <div class="flex justify-between pt-1 border-t border-gray-800">
                                 <span class="text-gray-400">Rec. Lot Size:</span>
-                                <span id="calcLotSize" class="text-green-400 font-bold font-mono">0.15 Lot</span>
+                                <span id="calcLotSize" class="text-green-400 font-bold font-mono">0.20 Lot</span>
                             </div>
                         </div>
                     </div>
@@ -287,7 +287,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Module 1 to 5 (Keeping it compact for readability, all functional) -->
+                <!-- Module 1 -->
                 <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                     <div>
                         <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/20 uppercase">Module 01</span>
@@ -337,14 +337,14 @@
                     <button onclick="openLessonDetail('Module 5: Killzones & Timing', 'Institutional volume is concentrated at specific opening windows. London Open (07:00 - 10:00 UTC) and New York Open (12:00 - 15:00 UTC) offer the best expansion setups.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
                 </div>
 
-                <!-- Module 6 Updated with 1.15 RR -->
+                <!-- Module 6 -->
                 <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                     <div>
                         <span class="text-[10px] font-extrabold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/20 uppercase">Module 06</span>
                         <h3 class="text-lg font-bold text-white mt-3 mb-2">Risk Management & Psychology</h3>
-                        <p class="text-xs text-gray-400 mb-4 leading-relaxed">Master position sizing, risk-to-reward ratios of 1.15 or higher, and eliminate emotional trading.</p>
+                        <p class="text-xs text-gray-400 mb-4 leading-relaxed">Master position sizing, risk-to-reward ratios up to 1:15, and eliminate emotional trading.</p>
                     </div>
-                    <button onclick="openLessonDetail('Module 6: Risk Management', 'Consistently risking 1-2% per trade with a 1.15 reward ratio ensures steady account growth. Discipline and execution are your ultimate edge.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
+                    <button onclick="openLessonDetail('Module 6: Risk Management', 'Consistently risking 1-2% per trade with a massive 1:15 reward ratio ensures extraordinary account growth. Discipline and execution are your ultimate edge.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
                 </div>
             </div>
         </div>
@@ -418,8 +418,8 @@
                 name: "nikhilbansal",
                 date: "Sep 20",
                 asset: "BTCUSD",
-                title: "BTCUSD: Supply Zone Sweep & Rejection | 1.15 RR ICT Setup",
-                desc: "Market Structure & Thesis: Bitcoin staged a strong impulsive run out of the consolidation base, touching a major overhead liquidity pool with a strict 1.15 risk-to-reward plan.",
+                title: "BTCUSD: Supply Zone Sweep & Rejection | 1:15 R:R ICT Setup",
+                desc: "Market Structure & Thesis: Bitcoin staged a strong impulsive run out of the consolidation base, touching a major overhead liquidity pool with a strict 1:15 risk-to-reward plan.",
                 image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=60"
             },
             {
@@ -428,20 +428,19 @@
                 date: "Sep 21",
                 asset: "XAUUSD",
                 title: "Gold Turtle Soup Liquidity Sweep on H4",
-                desc: "Gold has successfully grabbed buy-stop liquidity above the previous session high, targeting 1.15 RR mitigation zone.",
+                desc: "Gold has successfully grabbed buy-stop liquidity above the previous session high, targeting 1:15 RR mitigation zone.",
                 image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60"
             }
         ];
 
-        // Update predefined pair TP values manually for approx 1.15 distance
         const pairSignals = {
-            "FX:EURUSD": { name: "EUR/USD", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "FVG Mitigation", mit: "1.08500", sl: "1.08200", tp: "1.08845" },
-            "FX:GBPUSD": { name: "GBP/USD", type: "SELL SETUP", badgeClass: "bg-[#ff1744] text-white", model: "Order Block Rejection", mit: "1.27400", sl: "1.27800", tp: "1.26940" },
-            "FX:USDJPY": { name: "USD/JPY", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Liquidity Sweep", mit: "155.200", sl: "154.600", tp: "155.890" },
-            "OANDA:XAUUSD": { name: "XAUUSD (Gold)", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Discount FVG Reentry", mit: "2320.50", sl: "2314.00", tp: "2327.97" },
-            "OANDA:XAGUSD": { name: "Silver (XAGUSD)", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Breaker Block Retest", mit: "28.50", sl: "28.10", tp: "28.96" },
-            "BINANCE:BTCUSDT": { name: "BTC/USD", type: "SELL SETUP", badgeClass: "bg-[#ff1744] text-white", model: "Premium Array Rejection", mit: "64,500", sl: "65,800", tp: "63,005" },
-            "CAPITALCOM:US100": { name: "NAS100 Index", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Killzone Expansion", mit: "19,850", sl: "19,720", tp: "19,999" }
+            "FX:EURUSD": { name: "EUR/USD", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "FVG Mitigation", mit: "1.08500", sl: "1.08200", tp: "1.13000" },
+            "FX:GBPUSD": { name: "GBP/USD", type: "SELL SETUP", badgeClass: "bg-[#ff1744] text-white", model: "Order Block Rejection", mit: "1.27400", sl: "1.27800", tp: "1.21400" },
+            "FX:USDJPY": { name: "USD/JPY", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Liquidity Sweep", mit: "155.200", sl: "154.600", tp: "164.200" },
+            "OANDA:XAUUSD": { name: "XAUUSD (Gold)", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Discount FVG Reentry", mit: "2320.50", sl: "2314.00", tp: "2455.50" },
+            "OANDA:XAGUSD": { name: "Silver (XAGUSD)", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Breaker Block Retest", mit: "28.50", sl: "28.10", tp: "34.50" },
+            "BINANCE:BTCUSDT": { name: "BTC/USD", type: "SELL SETUP", badgeClass: "bg-[#ff1744] text-white", model: "Premium Array Rejection", mit: "64,500", sl: "65,800", tp: "45,000" },
+            "CAPITALCOM:US100": { name: "NAS100 Index", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Killzone Expansion", mit: "19,850", sl: "19,720", tp: "21,800" }
         };
 
         function switchAuthTab(mode) {
@@ -672,7 +671,6 @@
             "container_id": "tradingview_widget"
         });
 
-        // Function to change chart AND dynamically update signal box with 1.15 RR ICT Model
         function changeChartSymbol() {
             const symbol = document.getElementById('symbolSelect').value;
             
@@ -708,17 +706,18 @@
             calculateRisk();
         }
 
+        // CORRECTED 1:15 RISK-TO-REWARD CALCULATION
         function calculateRisk() {
             const balance = parseFloat(document.getElementById('calcBalance').value) || 0;
             const riskPct = parseFloat(document.getElementById('calcRiskPct').value) || 0;
             const riskAmount = (balance * riskPct) / 100;
             
-            // EXACT 1.15 Risk-to-Reward Calculation
-            const targetProfit = riskAmount * 1.15;
+            // Multiplier set to 15 for 1:15 RR
+            const targetProfit = riskAmount * 15;
 
             document.getElementById('calcRiskAmount').innerText = "$" + riskAmount.toFixed(2);
             document.getElementById('calcTargetProfit').innerText = "$" + targetProfit.toFixed(2);
-            document.getElementById('calcLotSize').innerText = (riskAmount / 100).toFixed(2) + " Lot";
+            document.getElementById('calcLotSize').innerText = (riskAmount / 50).toFixed(2) + " Lot";
         }
 
         function openLessonDetail(title, body) {
