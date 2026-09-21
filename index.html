@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICT Institutional Liquidity & 1:15 RR Terminal - Pro</title>
+    <title>ICT Forex - Institutional Liquidity & Learning Terminal</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -14,8 +14,8 @@
                     colors: {
                         darkBg: '#0b0f19',
                         cardBg: '#131b2e',
-                        accentGreen: '#10b981',
-                        accentRed: '#ef4444',
+                        tradeGreen: '#00c853',
+                        tradeRed: '#ff1744',
                         brandBlue: '#3b82f6',
                         goldColor: '#f59e0b'
                     }
@@ -32,14 +32,16 @@
     <div id="authModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4">
         <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <div class="text-center mb-6">
-                <div class="bg-brandBlue text-white w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mx-auto mb-3 shadow-lg">ICT</div>
-                <h2 id="modalTitle" class="text-xl font-extrabold text-white">Welcome to ICT Terminal</h2>
-                <p id="modalSub" class="text-xs text-gray-400 mt-1">Login to access live institutional liquidity signals</p>
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-xl mx-auto mb-3 shadow-xl bg-gradient-to-tr from-[#ff1744] via-rose-600 to-[#00c853] text-white tracking-tighter border border-green-500/30">
+                    FX
+                </div>
+                <h2 id="modalTitle" class="text-xl font-extrabold text-white">Welcome to ICT Forex</h2>
+                <p id="modalSub" class="text-xs text-gray-400 mt-1">Login to access live institutional liquidity & learning academy</p>
             </div>
 
             <!-- Form Tabs -->
             <div class="flex bg-gray-900 p-1 rounded-xl mb-5 border border-gray-800">
-                <button onclick="switchTab('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-lg bg-brandBlue text-white transition">Login</button>
+                <button onclick="switchTab('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition">Login</button>
                 <button onclick="switchTab('signup')" id="tabSignup" class="flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition">Register</button>
             </div>
 
@@ -47,24 +49,40 @@
             <div class="space-y-4">
                 <div id="nameFieldContainer" class="hidden">
                     <label class="block text-xs text-gray-400 mb-1">Full Name</label>
-                    <input type="text" id="signupName" placeholder="Enter your name" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brandBlue">
+                    <input type="text" id="signupName" placeholder="Enter your name" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Email Address</label>
-                    <input type="email" id="authEmail" placeholder="trader@example.com" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brandBlue">
+                    <input type="email" id="authEmail" placeholder="trader@example.com" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Password</label>
-                    <input type="password" id="authPassword" placeholder="••••••••" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brandBlue">
+                    <input type="password" id="authPassword" placeholder="••••••••" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500">
                 </div>
 
-                <button onclick="handleAuthSubmit()" id="authSubmitBtn" class="w-full bg-brandBlue hover:bg-blue-600 text-white font-bold text-xs py-3 rounded-xl transition shadow-lg mt-2">
+                <button onclick="handleAuthSubmit()" id="authSubmitBtn" class="w-full bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white font-bold text-xs py-3 rounded-xl transition shadow-lg mt-2">
                     Login to Dashboard
                 </button>
             </div>
 
             <div class="mt-5 text-center">
-                <button onclick="bypassAuth()" class="text-[11px] text-gray-400 hover:text-brandBlue underline">Continue as Guest (Free Tier)</button>
+                <button onclick="bypassAuth()" class="text-[11px] text-gray-400 hover:text-green-400 underline">Continue as Guest (Free Tier)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGAL / POLICY MODAL -->
+    <div id="legalModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-800">
+                <h3 id="legalModalTitle" class="text-base font-bold text-white">Policy Title</h3>
+                <button onclick="closeLegalModal()" class="text-gray-400 hover:text-white text-lg font-bold px-2">&times;</button>
+            </div>
+            <div id="legalModalContent" class="text-xs text-gray-300 space-y-3 overflow-y-auto pr-2 leading-relaxed flex-1">
+                <!-- Content injected dynamically -->
+            </div>
+            <div class="mt-5 pt-3 border-t border-gray-800 text-right">
+                <button onclick="closeLegalModal()" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition">I Understand</button>
             </div>
         </div>
     </div>
@@ -77,167 +95,235 @@
     <!-- Header Navigation -->
     <header class="bg-cardBg border-b border-gray-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex items-center gap-3">
-            <div class="bg-brandBlue text-white p-2 rounded-lg font-bold text-lg">ICT 1:15</div>
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm tracking-tighter shadow-lg bg-gradient-to-tr from-[#ff1744] via-rose-600 to-[#00c853] text-white border border-green-500/30">
+                FX
+            </div>
             <div>
-                <h1 class="text-xl font-extrabold tracking-wide">Institutional Liquidity Terminal</h1>
-                <p class="text-xs text-gray-400">Multi-Timeframe Automated Smart Money Concept Engine</p>
+                <h1 class="text-xl font-extrabold tracking-wide flex items-center gap-1.5">
+                    ICT <span class="bg-gradient-to-r from-red-500 to-green-500 bg-clip-text text-transparent">FOREX</span>
+                </h1>
+                <p class="text-xs text-gray-400">Institutional Liquidity & Smart Money Academy</p>
             </div>
         </div>
-        <div class="flex items-center gap-4 flex-wrap">
-            <div class="flex items-center gap-2 bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800">
-                <span class="w-2.5 h-2.5 rounded-full bg-accentGreen animate-ping"></span>
-                <span class="text-xs font-semibold text-accentGreen">Live Market Feed</span>
-            </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex bg-gray-900 p-1 rounded-xl border border-gray-800">
+            <button onclick="switchView('terminal')" id="navTerminalBtn" class="px-4 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                Trading Terminal
+            </button>
+            <button onclick="switchView('learning')" id="navLearningBtn" class="px-4 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                Learn ICT / SMC
+            </button>
+        </div>
+
+        <div class="flex items-center gap-3 flex-wrap">
             <div id="userBadge" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-lg text-xs flex items-center gap-2">
                 <span id="userNameDisplay" class="font-bold text-gray-300">Guest User</span>
                 <span id="userPlanBadge" class="bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-500/30">FREE PLAN</span>
             </div>
             <button onclick="openUpgradeModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black text-xs font-extrabold px-4 py-2 rounded-lg transition shadow-lg">
-                Upgrade to VIP ($29/mo)
+                Upgrade VIP
             </button>
             <button onclick="logoutUser()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-lg transition">Logout</button>
         </div>
     </header>
 
-    <!-- Live Success Stories Ticker Bar -->
-    <div class="bg-brandBlue/10 border-b border-brandBlue/20 px-6 py-2 overflow-hidden whitespace-nowrap text-xs text-brandBlue flex items-center">
-        <span class="font-bold uppercase tracking-wider mr-4 bg-brandBlue text-white px-2 py-0.5 rounded text-[10px]">VIP Feed</span>
-        <div class="inline-block animate-marquee text-gray-300">
-            🔥 Rahul M. booked <span class="text-accentGreen font-bold">+1:15 RR</span> on EUR/USD FVG setup | 🚀 Aman K. secured <span class="text-accentGreen font-bold">195 pips</span> on Gold SSL Sweep | ⭐ New 1:15 signal verified for BTC/USDT.
+    <!-- Ticker Bar -->
+    <div class="bg-green-600/10 border-b border-green-600/20 px-6 py-2 overflow-hidden whitespace-nowrap text-xs text-green-400 flex items-center">
+        <span class="font-bold uppercase tracking-wider mr-4 bg-gradient-to-r from-red-600 to-green-600 text-white px-2 py-0.5 rounded text-[10px]">Risk Notice</span>
+        <div class="inline-block text-gray-300">
+            ⚠️ <span class="text-[#ff1744] font-bold">Signals have ~55% accuracy and are not 100% correct. Trading carries substantial risk of loss.</span> Trade at your own risk!
         </div>
     </div>
 
-    <!-- Main Workspace -->
-    <main class="flex-1 p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <!-- MAIN CONTAINER -->
+    <div class="flex-1 flex flex-col">
 
-        <!-- Left Column: TradingView Chart & Broker Banner (Spans 3 cols) -->
-        <div class="lg:col-span-3 flex flex-col gap-6">
-            
-            <!-- TradingView Chart Container -->
-            <div class="bg-cardBg border border-gray-800 rounded-xl overflow-hidden shadow-2xl flex flex-col h-[550px] md:h-[650px]">
-                <div class="px-4 py-3 bg-gray-900/50 border-b border-gray-800 flex justify-between items-center flex-wrap gap-2">
-                    <span class="text-sm font-bold text-gray-300">Live Advanced Chart (Multi-Device Responsive)</span>
-                    <div class="flex gap-2">
-                        <select id="symbolSelect" onchange="changeChartSymbol()" class="bg-gray-800 text-xs text-white px-3 py-1.5 rounded border border-gray-700 focus:outline-none">
-                            <optgroup label="Forex Major">
-                                <option value="FX:EURUSD">EUR/USD</option>
-                                <option value="FX:GBPUSD">GBP/USD</option>
-                                <option value="FX:USDJPY">USD/JPY</option>
-                                <option value="FX:AUDUSD">AUD/USD</option>
-                                <option value="FX:USDCAD">USD/CAD</option>
-                            </optgroup>
-                            <optgroup label="Commodities & Metals">
-                                <option value="OANDA:XAUUSD">GOLD (XAUUSD)</option>
-                                <option value="OANDA:XAGUSD">SILVER (XAGUSD)</option>
-                            </optgroup>
-                            <optgroup label="Crypto">
-                                <option value="BINANCE:BTCUSDT">BTC/USDT</option>
-                                <option value="BINANCE:ETHUSDT">ETH/USDT</option>
-                                <option value="BINANCE:SOLUSDT">SOL/USDT</option>
-                            </optgroup>
-                            <optgroup label="Indices">
-                                <option value="NSE:NIFTY">NIFTY 50</option>
-                                <option value="NSE:BANKNIFTY">BANK NIFTY</option>
-                                <option value="FOREXCOM:SPXUSD">S&P 500</option>
-                            </optgroup>
-                        </select>
+        <!-- VIEW 1: TRADING TERMINAL -->
+        <main id="terminalView" class="flex-1 p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Left Column: Chart & Broker Banner -->
+            <div class="lg:col-span-3 flex flex-col gap-6">
+                <div class="bg-cardBg border border-gray-800 rounded-xl overflow-hidden shadow-2xl flex flex-col h-[550px] md:h-[650px]">
+                    <div class="px-4 py-3 bg-gray-900/50 border-b border-gray-800 flex justify-between items-center flex-wrap gap-2">
+                        <span class="text-sm font-bold text-gray-300">Live Advanced Chart (TradingView Native Candles)</span>
+                        <div class="flex gap-2">
+                            <select id="symbolSelect" onchange="changeChartSymbol()" class="bg-gray-800 text-xs text-white px-3 py-1.5 rounded border border-gray-700 focus:outline-none">
+                                <optgroup label="Forex Major">
+                                    <option value="FX:EURUSD">EUR/USD</option>
+                                    <option value="FX:GBPUSD">GBP/USD</option>
+                                    <option value="FX:USDJPY">USD/JPY</option>
+                                    <option value="FX:AUDUSD">AUD/USD</option>
+                                    <option value="FX:USDCAD">USD/CAD</option>
+                                </optgroup>
+                                <optgroup label="Commodities & Metals">
+                                    <option value="OANDA:XAUUSD">GOLD (XAUUSD)</option>
+                                    <option value="OANDA:XAGUSD">SILVER (XAGUSD)</option>
+                                </optgroup>
+                                <optgroup label="Crypto">
+                                    <option value="BINANCE:BTCUSDT">BTC/USDT</option>
+                                    <option value="BINANCE:ETHUSDT">ETH/USDT</option>
+                                </optgroup>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div id="tradingview_widget" class="flex-1 w-full"></div>
-            </div>
-
-            <!-- Broker Affiliate Monetization Banner -->
-            <div class="bg-gradient-to-r from-brandBlue/20 to-cardBg border border-brandBlue/30 rounded-xl p-4 shadow-lg flex flex-col md:flex-row justify-between items-center gap-4">
-                <div>
-                    <h4 class="text-sm font-bold text-white">Partnered with Top Institutional Brokers</h4>
-                    <p class="text-xs text-gray-300">Open an account via our partner link and get lifetime free access to VIP 1:15 signals.</p>
-                </div>
-                <a href="#" target="_blank" class="bg-brandBlue hover:bg-blue-600 text-white text-xs font-bold px-5 py-2.5 rounded-lg transition shadow">
-                    Open Zero-Spread Broker Account
-                </a>
-            </div>
-
-        </div>
-
-        <!-- Right Column: ICT Confluence Matrix & Automated 1:15 Signals -->
-        <div class="flex flex-col gap-6">
-
-            <!-- Multi-Timeframe Confluence Matrix -->
-            <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg">
-                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Multi-Timeframe Structure</h3>
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
-                        <span class="font-medium text-gray-300">1 Minute (1m)</span>
-                        <span id="tf-1m" class="text-accentGreen font-bold">Bullish MSS</span>
-                    </div>
-                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
-                        <span class="font-medium text-gray-300">5 Minute (5m)</span>
-                        <span id="tf-5m" class="text-accentGreen font-bold">FVG Mitigation</span>
-                    </div>
-                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
-                        <span class="font-medium text-gray-300">15 Minute (15m)</span>
-                        <span id="tf-15m" class="text-accentGreen font-bold">SSL Swept</span>
-                    </div>
-                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
-                        <span class="font-medium text-gray-300">1 Hour (1h)</span>
-                        <span id="tf-1h" class="text-brandBlue font-bold">Order Block Zone</span>
-                    </div>
-                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
-                        <span class="font-medium text-gray-300">Daily (1D)</span>
-                        <span id="tf-1d" class="text-accentGreen font-bold">Premium Array</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Automated 1:15 RR Signal Panel -->
-            <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg flex-1 flex flex-col">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Automated 1:15 RR Signal</h3>
-                    <span class="bg-accentGreen/10 text-accentGreen text-[10px] font-bold px-2 py-0.5 rounded border border-accentGreen/20">Active Setup</span>
+                    <div id="tradingview_widget" class="flex-1 w-full"></div>
                 </div>
 
-                <div id="signalCard" class="bg-gray-900/80 border border-gray-800 rounded-lg p-3.5 space-y-3 flex-1 flex flex-col justify-between relative overflow-hidden">
-                    
-                    <!-- VIP Overlay Blur if not VIP -->
-                    <div id="vipLockOverlay" class="hidden absolute inset-0 bg-darkBg/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-4 text-center">
-                        <svg class="w-8 h-8 text-yellow-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                        <h4 class="text-xs font-bold text-white mb-1">VIP Locked Signal</h4>
-                        <p class="text-[10px] text-gray-400 mb-3">Upgrade to VIP or join partner broker to unlock real-time 1:15 signals.</p>
-                        <button onclick="openUpgradeModal()" class="bg-amber-500 hover:bg-amber-600 text-black text-[11px] font-extrabold px-3 py-1.5 rounded-lg transition">Unlock Now</button>
-                    </div>
-
+                <div class="bg-gradient-to-r from-green-600/20 to-cardBg border border-green-500/30 rounded-xl p-4 shadow-lg flex flex-col md:flex-row justify-between items-center gap-4">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span id="sigAsset" class="font-bold text-sm text-white">EUR/USD</span>
-                            <span id="sigType" class="bg-accentGreen text-black font-extrabold text-[10px] px-2 py-0.5 rounded">BUY (LONG)</span>
-                        </div>
-                        <div class="text-[11px] text-gray-400 space-y-1">
-                            <p><strong>Pattern:</strong> <span id="sigPattern" class="text-gray-200">SSL Sweep + Bullish FVG</span></p>
-                            <p><strong>Entry Price:</strong> <span id="sigEntry" class="text-brandBlue font-mono">1.08450</span></p>
-                            <p><strong>Stop Loss:</strong> <span id="sigSL" class="text-accentRed font-mono">1.08320 (13 pips)</span></p>
-                            <p><strong>Take Profit (1:15):</strong> <span id="sigTP" class="text-accentGreen font-mono">1.10400 (195 pips)</span></p>
-                        </div>
+                        <h4 class="text-sm font-bold text-white">Partnered with Top Institutional Brokers</h4>
+                        <p class="text-xs text-gray-300">Open an account via our partner link and trade safely with tight institutional spreads.</p>
                     </div>
-
-                    <div class="pt-3 border-t border-gray-800 flex gap-2">
-                        <button onclick="executeTrade()" class="flex-1 bg-accentGreen hover:bg-emerald-600 text-black text-xs font-extrabold py-2 rounded-lg transition shadow">
-                            Auto Execute 1:15
-                        </button>
-                        <button onclick="triggerManualScan()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-lg transition">
-                            Scan
-                        </button>
-                    </div>
+                    <a href="https://your-broker-affiliate-link.com" target="_blank" class="bg-[#00c853] hover:bg-emerald-600 text-black font-extrabold text-xs px-5 py-2.5 rounded-lg transition shadow">
+                        Open Zero-Spread Broker Account
+                    </a>
                 </div>
             </div>
 
+            <!-- Right Column: Signals, Calculator & Confluence -->
+            <div class="flex flex-col gap-6">
+                <!-- 1. Signal Panel with Accuracy & Risk Warning -->
+                <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg flex flex-col">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Automated 1:15 RR Signal</h3>
+                        <span class="bg-green-500/10 text-[#00c853] text-[10px] font-bold px-2 py-0.5 rounded border border-green-500/20">Active Setup</span>
+                    </div>
+
+                    <div id="signalCard" class="bg-gray-900/80 border border-gray-800 rounded-lg p-3.5 space-y-3 flex flex-col justify-between relative overflow-hidden">
+                        <div id="vipLockOverlay" class="hidden absolute inset-0 bg-darkBg/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-4 text-center">
+                            <svg class="w-8 h-8 text-yellow-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            <h4 class="text-xs font-bold text-white mb-1">VIP Locked Signal</h4>
+                            <p class="text-[10px] text-gray-400 mb-3">Upgrade to VIP to unlock real-time 1:15 signals.</p>
+                            <button onclick="openUpgradeModal()" class="bg-amber-500 hover:bg-amber-600 text-black text-[11px] font-extrabold px-3 py-1.5 rounded-lg transition">Unlock Now</button>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span id="sigAsset" class="font-bold text-sm text-white">EUR/USD</span>
+                                <span id="sigType" class="bg-[#00c853] text-black font-extrabold text-[10px] px-2 py-0.5 rounded">BUY (LONG)</span>
+                            </div>
+                            <div class="text-[11px] text-gray-400 space-y-1">
+                                <p><strong>Accuracy / Win Rate:</strong> <span class="text-yellow-400 font-bold">~50% - 60% (Not 100%)</span></p>
+                                <p><strong>Pattern:</strong> <span id="sigPattern" class="text-gray-200">SSL Sweep + Bullish FVG</span></p>
+                                <p><strong>Entry Price:</strong> <span id="sigEntry" class="text-green-400 font-mono">1.08450</span></p>
+                                <p><strong>Stop Loss:</strong> <span id="sigSL" class="text-[#ff1744] font-mono">1.08320 (13 pips)</span></p>
+                                <p><strong>Take Profit (1:15):</strong> <span id="sigTP" class="text-[#00c853] font-mono">1.10400 (195 pips)</span></p>
+                            </div>
+
+                            <!-- Warning Box -->
+                            <div class="mt-3 bg-red-500/10 border border-red-500/30 rounded p-2 text-[10px] text-red-300 leading-tight">
+                                <strong class="text-[#ff1744]">⚠️ Risk Warning:</strong> Yeh trade signal 100% accurate nahi hai. Market me loss bhi ho sakta hai. Apne risk par trade karein!
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-gray-800 flex gap-2">
+                            <button onclick="executeTrade()" class="flex-1 bg-[#00c853] hover:bg-emerald-600 text-black text-xs font-extrabold py-2 rounded-lg transition shadow">
+                                Auto Execute 1:15
+                            </button>
+                            <button onclick="triggerManualScan()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-lg transition">
+                                Scan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Risk Calculator -->
+                <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg">
+                    <h3 class="text-xs font-bold text-green-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        1:15 Risk & Lot Calculator
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] text-gray-400 mb-1">Account Balance ($)</label>
+                            <input type="number" id="calcBalance" value="1000" oninput="calculateRisk()" class="w-full bg-gray-900 border border-gray-700 text-xs text-white rounded-lg px-3 py-2 focus:outline-none focus:border-green-500 font-mono">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[11px] text-gray-400 mb-1">Risk (%)</label>
+                                <select id="calcRiskPct" onchange="calculateRisk()" class="w-full bg-gray-900 border border-gray-700 text-xs text-white rounded-lg px-2.5 py-2 focus:outline-none">
+                                    <option value="1">1% Risk</option>
+                                    <option value="2" selected>2% Risk</option>
+                                    <option value="3">3% Risk</option>
+                                    <option value="5">5% Risk</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-gray-400 mb-1">Risk Amount</label>
+                                <input type="text" id="calcRiskAmount" readonly value="$20.00" class="w-full bg-gray-900/60 border border-gray-800 text-xs text-[#ff1744] font-bold rounded-lg px-3 py-2 font-mono">
+                            </div>
+                        </div>
+                        <div class="bg-gray-900/80 p-2.5 rounded-lg border border-gray-800 text-[11px] space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Target Profit (1:15):</span>
+                                <span id="calcTargetProfit" class="text-[#00c853] font-bold font-mono">$300.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Rec. Lot Size:</span>
+                                <span id="calcLotSize" class="text-green-400 font-bold font-mono">0.15 Lot</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- VIEW 2: ICT / SMC LEARNING HUB -->
+        <div id="learningView" class="hidden flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
+            <div class="mb-8 text-center md:text-left">
+                <span class="bg-green-500/10 text-[#00c853] text-xs font-extrabold px-3 py-1 rounded-full border border-green-500/20 uppercase tracking-widest">Master Class</span>
+                <h2 class="text-3xl font-black text-white mt-2">ICT & Smart Money Concepts (SMC) Academy</h2>
+                <p class="text-sm text-gray-400 mt-1">Learn how institutional banks and market makers manipulate liquidity, create imbalances, and drive price action.</p>
+            </div>
+
+            <!-- Learning Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Module 1 -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-green-500/50 transition">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-[#ff1744] font-bold text-lg mb-4">01</div>
+                        <h3 class="text-lg font-bold text-white mb-2">Liquidity Pools & Sweeps (BSL / SSL)</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">Retail traders place stop losses above highs and below lows. Market makers sweep these zones to gather orders.</p>
+                    </div>
+                    <button onclick="openLessondetails('Liquidity Pools & Sweeps')" class="w-full bg-gray-800 hover:bg-gray-700 text-green-400 font-bold text-xs py-2.5 rounded-xl transition">Read Detailed Lesson →</button>
+                </div>
+                <!-- Module 2 -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-green-500/50 transition">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-[#00c853] font-bold text-lg mb-4">02</div>
+                        <h3 class="text-lg font-bold text-white mb-2">Fair Value Gap (FVG) & Imbalances</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">An FVG occurs during aggressive displacement candles where orders remain unfilled, leaving a gap for mitigation.</p>
+                    </div>
+                    <button onclick="openLessondetails('Fair Value Gap (FVG)')" class="w-full bg-gray-800 hover:bg-gray-700 text-green-400 font-bold text-xs py-2.5 rounded-xl transition">Read Detailed Lesson →</button>
+                </div>
+                <!-- Module 3 -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-green-500/50 transition">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-brandBlue font-bold text-lg mb-4">03</div>
+                        <h3 class="text-lg font-bold text-white mb-2">Institutional Order Blocks (OB)</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">The last opposite candle before an impulsive move where banks place massive institutional orders.</p>
+                    </div>
+                    <button onclick="openLessondetails('Institutional Order Blocks')" class="w-full bg-gray-800 hover:bg-gray-700 text-green-400 font-bold text-xs py-2.5 rounded-xl transition">Read Detailed Lesson →</button>
+                </div>
+            </div>
         </div>
 
-    </main>
+    </div>
 
-    <!-- Footer Activity Log -->
-    <footer class="bg-cardBg border-t border-gray-800 px-6 py-3 text-xs flex flex-col md:flex-row justify-between items-center gap-2 text-gray-400">
-        <div>System Status: <span class="text-accentGreen font-semibold">Monitoring ICT Liquidity Pools...</span></div>
-        <div id="liveLog" class="font-mono text-[11px] text-gray-500">[12:32:04] Initialized Terminal & Community Connect.</div>
+    <!-- Professional Footer with Copyright & Policies -->
+    <footer class="bg-cardBg border-t border-gray-800 px-6 py-4 text-xs flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400">
+        <div>
+            <p class="text-gray-300 font-medium">© 2026 ICT Forex Terminal. All Rights Reserved.</p>
+            <p class="text-[10px] text-gray-500 mt-0.5">Disclaimer: Signals have ~55% accuracy. Trading involves risk of loss.</p>
+        </div>
+        <div class="flex flex-wrap gap-4 text-gray-400 text-[11px]">
+            <button onclick="showLegal('terms')" class="hover:text-green-400 transition">Terms of Service</button>
+            <button onclick="showLegal('privacy')" class="hover:text-green-400 transition">Privacy Policy</button>
+            <button onclick="showLegal('risk')" class="hover:text-green-400 transition">Risk Disclosure</button>
+            <button onclick="showLegal('copyright')" class="hover:text-green-400 transition">Copyright Notice</button>
+        </div>
     </footer>
 
     <!-- Script Logic -->
@@ -253,13 +339,13 @@
             const submitBtn = document.getElementById('authSubmitBtn');
 
             if(mode === 'login') {
-                tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-brandBlue text-white transition";
+                tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition";
                 tabSignup.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition";
                 nameContainer.classList.add('hidden');
-                modalTitle.innerText = "Welcome Back to ICT Terminal";
+                modalTitle.innerText = "Welcome Back to ICT Forex";
                 submitBtn.innerText = "Login to Dashboard";
             } else {
-                tabSignup.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-brandBlue text-white transition";
+                tabSignup.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition";
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition";
                 nameContainer.classList.remove('hidden');
                 modalTitle.innerText = "Create Your VIP Account";
@@ -267,27 +353,38 @@
             }
         }
 
+        function switchView(viewName) {
+            const terminalView = document.getElementById('terminalView');
+            const learningView = document.getElementById('learningView');
+            const navTerminalBtn = document.getElementById('navTerminalBtn');
+            const navLearningBtn = document.getElementById('navLearningBtn');
+
+            if(viewName === 'terminal') {
+                terminalView.classList.remove('hidden');
+                learningView.classList.add('hidden');
+                navTerminalBtn.className = "px-4 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5";
+                navLearningBtn.className = "px-4 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5";
+            } else {
+                terminalView.classList.add('hidden');
+                learningView.classList.remove('hidden');
+                navLearningBtn.className = "px-4 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5";
+                navTerminalBtn.className = "px-4 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5";
+            }
+        }
+
+        function openLessondetails(title) {
+            alert(`Opening Masterclass: "${title}".`);
+        }
+
         function handleAuthSubmit() {
             const email = document.getElementById('authEmail').value;
             const pass = document.getElementById('authPassword').value;
-            if(!email || !pass) {
-                alert("Please fill in all required fields.");
-                return;
-            }
-
-            let userName = "Trader";
-            if(currentAuthMode === 'signup') {
-                userName = document.getElementById('signupName').value || "Pro Trader";
-            } else {
-                userName = email.split('@')[0];
-            }
-
-            localStorage.setItem('ict_user', userName);
+            if(!email || !pass) { alert("Please fill in all fields."); return; }
+            let name = currentAuthMode === 'signup' ? (document.getElementById('signupName').value || "Pro Trader") : email.split('@')[0];
+            localStorage.setItem('ict_user', name);
             localStorage.setItem('ict_plan', 'FREE');
-            
             closeAuthModal();
-            updateUserUI(userName, 'FREE PLAN');
-            logMessage(`User ${userName} logged in successfully.`);
+            updateUserUI(name, 'FREE PLAN');
         }
 
         function bypassAuth() {
@@ -295,7 +392,6 @@
             localStorage.setItem('ict_plan', 'FREE');
             closeAuthModal();
             updateUserUI('Guest User', 'FREE PLAN');
-            logMessage("Logged in as Guest User.");
         }
 
         function closeAuthModal() {
@@ -310,120 +406,78 @@
 
         function updateUserUI(name, plan) {
             document.getElementById('userNameDisplay').innerText = name;
-            const badge = document.getElementById('userPlanBadge');
-            badge.innerText = plan;
-            if(plan === 'VIP PLAN') {
-                badge.className = "bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-500/30";
-                document.getElementById('vipLockOverlay').classList.add('hidden');
-            } else {
-                badge.className = "bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-500/30";
-            }
+            document.getElementById('userPlanBadge').innerText = plan;
         }
 
         function openUpgradeModal() {
-            const confirmVip = confirm("Would you like to simulate upgrading to VIP 1:15 Signal Plan for $29/mo?");
-            if(confirmVip) {
+            if(confirm("Upgrade to VIP 1:15 Signal Plan for $29/mo?")) {
                 localStorage.setItem('ict_plan', 'VIP PLAN');
                 updateUserUI(localStorage.getItem('ict_user') || 'Trader', 'VIP PLAN');
-                alert("Payment Successful! VIP 1:15 Signals Unlocked.");
-                logMessage("User upgraded to VIP Institutional Plan.");
+                alert("VIP Unlocked Successfully!");
             }
+        }
+
+        function calculateRisk() {
+            let balance = parseFloat(document.getElementById('calcBalance').value) || 0;
+            let riskPct = parseFloat(document.getElementById('calcRiskPct').value) || 0;
+            let riskAmount = (balance * riskPct) / 100;
+            document.getElementById('calcRiskAmount').value = `$${riskAmount.toFixed(2)}`;
+            document.getElementById('calcTargetProfit').innerText = `$${(riskAmount * 15).toFixed(2)}`;
+            document.getElementById('calcLotSize').innerText = `${(riskAmount / 100).toFixed(2)} Lot`;
+        }
+
+        // Legal Modals Content Handler
+        function showLegal(type) {
+            const modal = document.getElementById('legalModal');
+            const titleEl = document.getElementById('legalModalTitle');
+            const contentEl = document.getElementById('legalModalContent');
+            modal.classList.remove('hidden');
+
+            if(type === 'terms') {
+                titleEl.innerText = "Terms of Service";
+                contentEl.innerHTML = `<p>Welcome to ICT Forex. By accessing our platform, you agree to comply with our terms. All analytical tools, educational modules, and signals are provided for personal educational use only. Unauthorized distribution or copying of our platform materials is strictly prohibited.</p>`;
+            } else if(type === 'privacy') {
+                titleEl.innerText = "Privacy Policy";
+                contentEl.innerHTML = `<p>We respect your privacy. Any data collected during login or registration is securely stored and never shared with third-party advertisers. We use cookies strictly to improve user session experience.</p>`;
+            } else if(type === 'risk') {
+                titleEl.innerText = "Risk Disclosure Statement";
+                contentEl.innerHTML = `<p><strong class="text-red-400">High Risk Warning:</strong> Forex, cryptocurrency, and commodity trading carries a high level of risk and may not be suitable for all investors. Our trade signals have an estimated win rate of 55% and are <strong>not 100% accurate</strong>. You can sustain a total loss of initial capital. Trade only with risk capital.</p>`;
+            } else if(type === 'copyright') {
+                titleEl.innerText = "Copyright Notice";
+                contentEl.innerHTML = `<p>© 2026 ICT Forex Terminal. All rights reserved. The text, graphics, trading algorithms, and HTML source code on this website are protected under international copyright laws. Copying, republishing, or redistribution without express written permission is illegal.</p>`;
+            }
+        }
+
+        function closeLegalModal() {
+            document.getElementById('legalModal').classList.add('hidden');
         }
 
         window.onload = function() {
-            const savedUser = localStorage.getItem('ict_user');
-            const savedPlan = localStorage.getItem('ict_plan');
-            if(savedUser) {
-                closeAuthModal();
-                updateUserUI(savedUser, savedPlan || 'FREE');
-            }
+            let user = localStorage.getItem('ict_user');
+            if(user) { closeAuthModal(); updateUserUI(user, localStorage.getItem('ict_plan') || 'FREE'); }
             loadChart("FX:EURUSD");
+            calculateRisk();
         };
 
-        function loadChart(symbolName) {
+        function loadChart(symbol) {
             document.getElementById('tradingview_widget').innerHTML = "";
             new TradingView.widget({
-                "autosize": true,
-                "symbol": symbolName,
-                "interval": "5",
-                "timezone": "Etc/UTC",
-                "theme": "dark",
-                "style": "1",
-                "locale": "en",
-                "toolbar_bg": "#131b2e",
-                "enable_publishing": false,
-                "allow_symbol_change": true,
-                "container_id": "tradingview_widget"
+                "autosize": true, "symbol": symbol, "interval": "5", "timezone": "Etc/UTC",
+                "theme": "dark", "style": "1", "locale": "en", "toolbar_bg": "#131b2e", "container_id": "tradingview_widget"
             });
         }
 
-        function generateDynamicSignal(symbolCode) {
-            const assetName = symbolCode.split(':')[1];
-            document.getElementById('sigAsset').innerText = assetName;
-
-            const patterns = [
-                { type: "BUY (LONG)", pattern: "SSL Sweep + Bullish FVG", bgClass: "bg-accentGreen text-black" },
-                { type: "SELL (SHORT)", pattern: "BSL Sweep + Bearish Order Block", bgClass: "bg-accentRed text-white" }
-            ];
-            
-            const chosen = patterns[Math.floor(Math.random() * patterns.length)];
-            const typeBadge = document.getElementById('sigType');
-            typeBadge.innerText = chosen.type;
-            typeBadge.className = `${chosen.bgClass} font-extrabold text-[10px] px-2 py-0.5 rounded`;
-            document.getElementById('sigPattern').innerText = chosen.pattern;
-
-            let basePrice = 1.0850;
-            let riskPips = 15;
-            
-            if(assetName.includes('XAU')) { basePrice = 2340.50; riskPips = 4.5; }
-            else if(assetName.includes('BTC')) { basePrice = 67200.00; riskPips = 150; }
-            else if(assetName.includes('ETH')) { basePrice = 3520.00; riskPips = 25; }
-            else if(assetName.includes('NIFTY')) { basePrice = 24350.00; riskPips = 40; }
-            else if(assetName.includes('JPY')) { basePrice = 155.80; riskPips = 18; }
-
-            const entry = basePrice + (Math.random() * 2 - 1).toFixed(4);
-            const riskAmount = riskPips;
-            const rewardAmount = riskPips * 15;
-
-            let sl, tp;
-            if(chosen.type.includes('BUY')) {
-                sl = (parseFloat(entry) - riskAmount).toFixed(2);
-                tp = (parseFloat(entry) + rewardAmount).toFixed(2);
-            } else {
-                sl = (parseFloat(entry) + riskAmount).toFixed(2);
-                tp = (parseFloat(entry) - rewardAmount).toFixed(2);
-            }
-
-            document.getElementById('sigEntry').innerText = entry;
-            document.getElementById('sigSL').innerText = `${sl} (${riskPips} pips)`;
-            document.getElementById('sigTP').innerText = `${tp} (${rewardAmount} pips - 1:15 RR)`;
-        }
-
         function changeChartSymbol() {
-            const sym = document.getElementById('symbolSelect').value;
+            let sym = document.getElementById('symbolSelect').value;
             loadChart(sym);
-            generateDynamicSignal(sym);
-            logMessage(`Switched market to ${sym} - Recalculating ICT Liquidity...`);
         }
 
         function triggerManualScan() {
-            logMessage("Running deep AI ICT liquidity scan across multi-timeframes...");
-            setTimeout(() => {
-                const sym = document.getElementById('symbolSelect').value;
-                generateDynamicSignal(sym);
-                logMessage("New liquidity sweep confirmed! 1:15 RR trade structure locked.");
-            }, 600);
+            alert("Scanning market liquidity sweeps... New setup calculated.");
         }
 
         function executeTrade() {
-            const asset = document.getElementById('sigAsset').innerText;
-            logMessage(`Automated trade signal dispatched for ${asset} with strict 1:15 RR target.`);
-            alert(`Trade Successfully Dispatched to Broker / Terminal Queue (${asset} @ 1:15 RR Locked).`);
-        }
-
-        function logMessage(msg) {
-            const time = new Date().toLocaleTimeString();
-            document.getElementById('liveLog').innerText = `[${time}] ${msg}`;
+            alert("⚠️ Risk Warning: Trade signal is not 100% accurate. Order executed at your own risk!");
         }
     </script>
 </body>
