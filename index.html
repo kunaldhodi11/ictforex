@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICT Forex - Institutional Liquidity & Learning Terminal</title>
+    <title>ICT Forex Terminal & SMC Academy</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -28,28 +28,28 @@
 </head>
 <body class="bg-darkBg text-gray-100 font-sans min-h-screen flex flex-col relative">
 
-    <!-- AUTH MODAL (Login / Signup) -->
+    <!-- AUTH MODAL -->
     <div id="authModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4">
         <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <div class="text-center mb-6">
                 <div class="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-xl mx-auto mb-3 shadow-xl bg-gradient-to-tr from-[#ff1744] via-rose-600 to-[#00c853] text-white tracking-tighter border border-green-500/30">
                     FX
                 </div>
-                <h2 id="modalTitle" class="text-xl font-extrabold text-white">Welcome to ICT Forex</h2>
-                <p id="modalSub" class="text-xs text-gray-400 mt-1">Login to access live institutional liquidity & learning academy</p>
+                <h2 id="modalTitle" class="text-xl font-extrabold text-white">Welcome to ICT Forex & Academy</h2>
+                <p id="modalSub" class="text-xs text-gray-400 mt-1">Login to access live institutional charts, full ICT course & community</p>
             </div>
 
             <!-- Form Tabs -->
             <div class="flex bg-gray-900 p-1 rounded-xl mb-5 border border-gray-800">
-                <button onclick="switchTab('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition">Login</button>
-                <button onclick="switchTab('signup')" id="tabSignup" class="flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition">Register</button>
+                <button onclick="switchAuthTab('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition">Login</button>
+                <button onclick="switchAuthTab('signup')" id="tabSignup" class="flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition">Register</button>
             </div>
 
             <!-- Input Fields -->
             <div class="space-y-4">
                 <div id="nameFieldContainer" class="hidden">
-                    <label class="block text-xs text-gray-400 mb-1">Full Name</label>
-                    <input type="text" id="signupName" placeholder="Enter your name" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500">
+                    <label class="block text-xs text-gray-400 mb-1">Username / Profile Name</label>
+                    <input type="text" id="signupName" placeholder="e.g. nikhilbansal" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-green-500">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">Email Address</label>
@@ -66,35 +66,85 @@
             </div>
 
             <div class="mt-5 text-center">
-                <button onclick="bypassAuth()" class="text-[11px] text-gray-400 hover:text-green-400 underline">Continue as Guest (Free Tier)</button>
+                <button onclick="bypassAuth()" class="text-[11px] text-gray-400 hover:text-green-400 underline">Continue as Guest</button>
             </div>
         </div>
     </div>
 
-    <!-- LEGAL / POLICY MODAL -->
+    <!-- PUBLISH IDEA MODAL -->
+    <div id="publishModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-800">
+                <h3 class="text-base font-bold text-white">Publish Chart Analysis Idea</h3>
+                <button onclick="closePublishModal()" class="text-gray-400 hover:text-white text-lg font-bold">&times;</button>
+            </div>
+            <div class="space-y-4 overflow-y-auto pr-1 flex-1">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Select Asset / Pair</label>
+                    <select id="pubAsset" class="w-full bg-gray-900 border border-gray-700 text-xs text-white rounded-xl px-3 py-2.5 focus:outline-none focus:border-green-500">
+                        <option value="EUR/USD">EUR/USD</option>
+                        <option value="GBP/USD">GBP/USD</option>
+                        <option value="JPY/USD">JPY/USD</option>
+                        <option value="XAUUSD">GOLD (XAUUSD)</option>
+                        <option value="SILVER">SILVER (XAGUSD)</option>
+                        <option value="BTCUSD">BTC/USD</option>
+                        <option value="NAS100">NAS100 Cash CFD</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Idea Title</label>
+                    <input type="text" id="pubTitle" placeholder="Supply Zone Sweep & Rejection | 1:1.15 R:R ICT Setup" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Market Structure & Thesis Note</label>
+                    <textarea id="pubDesc" rows="4" placeholder="Explain your entry, FVG, order block, or ICT model..." class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl p-3 focus:outline-none focus:border-green-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Chart Screenshot Image URL (Optional)</label>
+                    <input type="text" id="pubImage" placeholder="https://images.unsplash.com/... or leave blank" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-green-500">
+                </div>
+                <button onclick="submitChartIdea()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs py-3 rounded-xl transition shadow">
+                    Publish to Community Feed & Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COURSE LESSON MODAL -->
+    <div id="lessonModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex justify-center items-center p-4">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-800">
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase bg-green-500/20 text-green-400 px-2.5 py-1 rounded border border-green-500/30">ICT Masterclass Academy</span>
+                    <h3 id="lessonModalTitle" class="text-lg font-black text-white mt-1">Lesson Title</h3>
+                </div>
+                <button onclick="closeLessonModal()" class="text-gray-400 hover:text-white text-xl font-bold px-2">&times;</button>
+            </div>
+            <div id="lessonModalBody" class="text-xs text-gray-300 space-y-4 overflow-y-auto pr-3 leading-relaxed flex-1"></div>
+            <div class="mt-5 pt-3 border-t border-gray-800 flex justify-between items-center">
+                <span class="text-[11px] text-green-400 font-semibold">✓ Mark as Completed & Progress Tracked</span>
+                <button onclick="closeLessonModal()" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-5 py-2 rounded-lg transition">Close Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGAL MODAL -->
     <div id="legalModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4">
         <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-800">
-                <h3 id="legalModalTitle" class="text-base font-bold text-white">Policy Title</h3>
+                <h3 id="legalModalTitle" class="text-base font-bold text-white uppercase">Policy Title</h3>
                 <button onclick="closeLegalModal()" class="text-gray-400 hover:text-white text-lg font-bold px-2">&times;</button>
             </div>
-            <div id="legalModalContent" class="text-xs text-gray-300 space-y-3 overflow-y-auto pr-2 leading-relaxed flex-1">
-                <!-- Content injected dynamically -->
-            </div>
+            <div id="legalModalContent" class="text-xs text-gray-300 space-y-3 overflow-y-auto pr-2 leading-relaxed flex-1"></div>
             <div class="mt-5 pt-3 border-t border-gray-800 text-right">
                 <button onclick="closeLegalModal()" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition">I Understand</button>
             </div>
         </div>
     </div>
 
-    <!-- Floating Telegram Community Button -->
-    <a href="https://t.me/your_telegram_channel" target="_blank" class="fixed bottom-6 right-6 z-40 bg-[#229ED9] hover:bg-[#1e88be] text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110">
-        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-2.01 1.28-5.68 3.77-.54.37-1.03.55-1.47.54-.48-.01-1.4-.27-2.08-.49-.84-.27-1.51-.42-1.45-.89.03-.25.38-.51 1.07-.78 4.19-1.82 6.99-3.02 8.41-3.61 4-.67 4.83-.79 5.37-.78.12 0 .39.03.56.17.14.12.18.28.2.45-.02.07-.02.13-.04.2z"/></svg>
-    </a>
-
     <!-- Header Navigation -->
     <header class="bg-cardBg border-b border-gray-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition" onclick="switchView('terminal')">
             <div class="w-11 h-11 rounded-xl flex items-center justify-center font-black text-sm tracking-tighter shadow-lg bg-gradient-to-tr from-[#ff1744] via-rose-600 to-[#00c853] text-white border border-green-500/30">
                 FX
             </div>
@@ -102,39 +152,38 @@
                 <h1 class="text-xl font-extrabold tracking-wide flex items-center gap-1.5">
                     ICT <span class="bg-gradient-to-r from-red-500 to-green-500 bg-clip-text text-transparent">FOREX</span>
                 </h1>
-                <p class="text-xs text-gray-400">Institutional Liquidity & Smart Money Academy</p>
+                <p class="text-xs text-gray-400">Institutional Liquidity Terminal & Full Academy</p>
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
-        <div class="flex bg-gray-900 p-1 rounded-xl border border-gray-800">
-            <button onclick="switchView('terminal')" id="navTerminalBtn" class="px-4 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <div class="flex bg-gray-900 p-1 rounded-xl border border-gray-800 flex-wrap justify-center gap-1">
+            <button onclick="switchView('terminal')" id="navTerminalBtn" class="px-3 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5">
                 Trading Terminal
             </button>
-            <button onclick="switchView('learning')" id="navLearningBtn" class="px-4 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                Learn ICT / SMC
+            <button onclick="switchView('learning')" id="navLearningBtn" class="px-3 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                ICT Course Academy
+            </button>
+            <button onclick="switchView('community')" id="navCommunityBtn" class="px-3 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                Community Ideas
+            </button>
+            <button onclick="switchView('profile')" id="navProfileBtn" class="px-3 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                My Profile
             </button>
         </div>
 
-        <div class="flex items-center gap-3 flex-wrap">
-            <div id="userBadge" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-lg text-xs flex items-center gap-2">
-                <span id="userNameDisplay" class="font-bold text-gray-300">Guest User</span>
-                <span id="userPlanBadge" class="bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-500/30">FREE PLAN</span>
+        <div class="flex items-center gap-3">
+            <div id="userBadge" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-lg text-xs flex items-center gap-2 cursor-pointer" onclick="switchView('profile')">
+                <span id="userNameDisplay" class="font-bold text-gray-300">nikhilbansal</span>
             </div>
-            <button onclick="openUpgradeModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black text-xs font-extrabold px-4 py-2 rounded-lg transition shadow-lg">
-                Upgrade VIP
-            </button>
             <button onclick="logoutUser()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-lg transition">Logout</button>
         </div>
     </header>
 
-    <!-- Ticker Bar -->
+    <!-- Ticker Notice Bar -->
     <div class="bg-green-600/10 border-b border-green-600/20 px-6 py-2 overflow-hidden whitespace-nowrap text-xs text-green-400 flex items-center">
-        <span class="font-bold uppercase tracking-wider mr-4 bg-gradient-to-r from-red-600 to-green-600 text-white px-2 py-0.5 rounded text-[10px]">Risk Notice</span>
+        <span class="font-bold uppercase tracking-wider mr-4 bg-gradient-to-r from-red-600 to-green-600 text-white px-2 py-0.5 rounded text-[10px]">Live ICT Model</span>
         <div class="inline-block text-gray-300">
-            ⚠️ <span class="text-[#ff1744] font-bold">Signals have ~55% accuracy and are not 100% correct. Trading carries substantial risk of loss.</span> Trade at your own risk!
+            🔥 <span class="text-green-400 font-bold">ICT Trade Plan Loaded:</span> Strict 1.15 Risk-to-Reward Ratio configured across all supported pairs!
         </div>
     </div>
 
@@ -143,124 +192,79 @@
 
         <!-- VIEW 1: TRADING TERMINAL -->
         <main id="terminalView" class="flex-1 p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- Left Column: Chart & Broker Banner -->
+            <!-- Left Column: Chart -->
             <div class="lg:col-span-3 flex flex-col gap-6">
                 <div class="bg-cardBg border border-gray-800 rounded-xl overflow-hidden shadow-2xl flex flex-col h-[550px] md:h-[650px]">
                     <div class="px-4 py-3 bg-gray-900/50 border-b border-gray-800 flex justify-between items-center flex-wrap gap-2">
-                        <span class="text-sm font-bold text-gray-300">Live Advanced Chart (TradingView Native Candles)</span>
-                        <div class="flex gap-2">
-                            <select id="symbolSelect" onchange="changeChartSymbol()" class="bg-gray-800 text-xs text-white px-3 py-1.5 rounded border border-gray-700 focus:outline-none">
-                                <optgroup label="Forex Major">
-                                    <option value="FX:EURUSD">EUR/USD</option>
-                                    <option value="FX:GBPUSD">GBP/USD</option>
-                                    <option value="FX:USDJPY">USD/JPY</option>
-                                    <option value="FX:AUDUSD">AUD/USD</option>
-                                    <option value="FX:USDCAD">USD/CAD</option>
-                                </optgroup>
-                                <optgroup label="Commodities & Metals">
-                                    <option value="OANDA:XAUUSD">GOLD (XAUUSD)</option>
-                                    <option value="OANDA:XAGUSD">SILVER (XAGUSD)</option>
-                                </optgroup>
-                                <optgroup label="Crypto">
-                                    <option value="BINANCE:BTCUSDT">BTC/USDT</option>
-                                    <option value="BINANCE:ETHUSDT">ETH/USDT</option>
-                                </optgroup>
+                        <span class="text-sm font-bold text-gray-300">Advanced Chart Selector</span>
+                        <div class="flex gap-2 items-center">
+                            <button onclick="openPublishModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-1.5 rounded transition flex items-center gap-1">
+                                💡 Publish Analysis
+                            </button>
+                            <select id="symbolSelect" onchange="changeChartSymbol()" class="bg-gray-800 text-xs text-white px-3 py-1.5 rounded border border-gray-700 focus:outline-none font-bold">
+                                <option value="FX:EURUSD">EUR/USD (Forex)</option>
+                                <option value="FX:GBPUSD">GBP/USD (Forex)</option>
+                                <option value="FX:USDJPY">JPY/USD - USD/JPY</option>
+                                <option value="OANDA:XAUUSD">XAUUSD - Gold</option>
+                                <option value="OANDA:XAGUSD">SILVER - XAGUSD</option>
+                                <option value="BINANCE:BTCUSDT">BTCUSD - Bitcoin</option>
+                                <option value="CAPITALCOM:US100">NAS100 Index</option>
                             </select>
                         </div>
                     </div>
                     <div id="tradingview_widget" class="flex-1 w-full"></div>
                 </div>
-
-                <div class="bg-gradient-to-r from-green-600/20 to-cardBg border border-green-500/30 rounded-xl p-4 shadow-lg flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div>
-                        <h4 class="text-sm font-bold text-white">Partnered with Top Institutional Brokers</h4>
-                        <p class="text-xs text-gray-300">Open an account via our partner link and trade safely with tight institutional spreads.</p>
-                    </div>
-                    <a href="https://your-broker-affiliate-link.com" target="_blank" class="bg-[#00c853] hover:bg-emerald-600 text-black font-extrabold text-xs px-5 py-2.5 rounded-lg transition shadow">
-                        Open Zero-Spread Broker Account
-                    </a>
-                </div>
             </div>
 
-            <!-- Right Column: Signals, Calculator & Confluence -->
+            <!-- Right Column: Dynamic ICT Signals & Risk Calculator -->
             <div class="flex flex-col gap-6">
-                <!-- 1. Signal Panel with Accuracy & Risk Warning -->
+                <!-- Dynamic ICT Signal Box with 1:1.15 RR -->
                 <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg flex flex-col">
                     <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Automated 1:15 RR Signal</h3>
-                        <span class="bg-green-500/10 text-[#00c853] text-[10px] font-bold px-2 py-0.5 rounded border border-green-500/20">Active Setup</span>
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">ICT Institutional Setup</h3>
+                        <span id="signalRRBadge" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-extrabold px-2 py-0.5 rounded">RR 1:1.15</span>
                     </div>
-
-                    <div id="signalCard" class="bg-gray-900/80 border border-gray-800 rounded-lg p-3.5 space-y-3 flex flex-col justify-between relative overflow-hidden">
-                        <div id="vipLockOverlay" class="hidden absolute inset-0 bg-darkBg/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-4 text-center">
-                            <svg class="w-8 h-8 text-yellow-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                            <h4 class="text-xs font-bold text-white mb-1">VIP Locked Signal</h4>
-                            <p class="text-[10px] text-gray-400 mb-3">Upgrade to VIP to unlock real-time 1:15 signals.</p>
-                            <button onclick="openUpgradeModal()" class="bg-amber-500 hover:bg-amber-600 text-black text-[11px] font-extrabold px-3 py-1.5 rounded-lg transition">Unlock Now</button>
+                    <div class="bg-gray-900/80 border border-gray-800 rounded-lg p-3.5 space-y-2.5">
+                        <div class="flex justify-between items-center">
+                            <span id="signalPairName" class="font-bold text-sm text-white">EUR/USD</span>
+                            <span id="signalBadge" class="bg-[#00c853] text-black font-extrabold text-[10px] px-2 py-0.5 rounded">BUY SETUP</span>
                         </div>
-
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span id="sigAsset" class="font-bold text-sm text-white">EUR/USD</span>
-                                <span id="sigType" class="bg-[#00c853] text-black font-extrabold text-[10px] px-2 py-0.5 rounded">BUY (LONG)</span>
-                            </div>
-                            <div class="text-[11px] text-gray-400 space-y-1">
-                                <p><strong>Accuracy / Win Rate:</strong> <span class="text-yellow-400 font-bold">~50% - 60% (Not 100%)</span></p>
-                                <p><strong>Pattern:</strong> <span id="sigPattern" class="text-gray-200">SSL Sweep + Bullish FVG</span></p>
-                                <p><strong>Entry Price:</strong> <span id="sigEntry" class="text-green-400 font-mono">1.08450</span></p>
-                                <p><strong>Stop Loss:</strong> <span id="sigSL" class="text-[#ff1744] font-mono">1.08320 (13 pips)</span></p>
-                                <p><strong>Take Profit (1:15):</strong> <span id="sigTP" class="text-[#00c853] font-mono">1.10400 (195 pips)</span></p>
-                            </div>
-
-                            <!-- Warning Box -->
-                            <div class="mt-3 bg-red-500/10 border border-red-500/30 rounded p-2 text-[10px] text-red-300 leading-tight">
-                                <strong class="text-[#ff1744]">⚠️ Risk Warning:</strong> Yeh trade signal 100% accurate nahi hai. Market me loss bhi ho sakta hai. Apne risk par trade karein!
-                            </div>
-                        </div>
-
-                        <div class="pt-3 border-t border-gray-800 flex gap-2">
-                            <button onclick="executeTrade()" class="flex-1 bg-[#00c853] hover:bg-emerald-600 text-black text-xs font-extrabold py-2 rounded-lg transition shadow">
-                                Auto Execute 1:15
-                            </button>
-                            <button onclick="triggerManualScan()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-lg transition">
-                                Scan
-                            </button>
+                        <div class="text-[11px] text-gray-400 space-y-1 pt-1 border-t border-gray-800">
+                            <p><strong>ICT Model:</strong> <span id="signalModel" class="text-blue-400 font-medium">FVG + Mitigation Block</span></p>
+                            <p><strong>Entry Zone:</strong> <span id="signalMitigation" class="text-green-400 font-mono">1.08500</span></p>
+                            <p><strong>Stop Loss (SL):</strong> <span id="signalSL" class="text-[#ff1744] font-mono">1.08200</span></p>
+                            <p><strong>Take Profit (TP):</strong> <span id="signalTP" class="text-[#00c853] font-mono">1.08845</span></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. Risk Calculator -->
+                <!-- Risk & Lot Calculator -->
                 <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg">
-                    <h3 class="text-xs font-bold text-green-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                        1:15 Risk & Lot Calculator
-                    </h3>
+                    <h3 class="text-xs font-bold text-green-400 uppercase tracking-wider mb-3">Lot & Risk Calculator</h3>
                     <div class="space-y-3">
                         <div>
                             <label class="block text-[11px] text-gray-400 mb-1">Account Balance ($)</label>
                             <input type="number" id="calcBalance" value="1000" oninput="calculateRisk()" class="w-full bg-gray-900 border border-gray-700 text-xs text-white rounded-lg px-3 py-2 focus:outline-none focus:border-green-500 font-mono">
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-[11px] text-gray-400 mb-1">Risk (%)</label>
-                                <select id="calcRiskPct" onchange="calculateRisk()" class="w-full bg-gray-900 border border-gray-700 text-xs text-white rounded-lg px-2.5 py-2 focus:outline-none">
-                                    <option value="1">1% Risk</option>
-                                    <option value="2" selected>2% Risk</option>
-                                    <option value="3">3% Risk</option>
-                                    <option value="5">5% Risk</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[11px] text-gray-400 mb-1">Risk Amount</label>
-                                <input type="text" id="calcRiskAmount" readonly value="$20.00" class="w-full bg-gray-900/60 border border-gray-800 text-xs text-[#ff1744] font-bold rounded-lg px-3 py-2 font-mono">
-                            </div>
+                        <div>
+                            <label class="block text-[11px] text-gray-400 mb-1">Risk Percentage (%)</label>
+                            <select id="calcRiskPct" onchange="calculateRisk()" class="w-full bg-gray-900 border border-gray-700 text-xs text-white rounded-lg px-2.5 py-2 focus:outline-none">
+                                <option value="1">1% Risk</option>
+                                <option value="2" selected>2% Risk</option>
+                                <option value="3">3% Risk</option>
+                                <option value="5">5% Risk</option>
+                            </select>
                         </div>
                         <div class="bg-gray-900/80 p-2.5 rounded-lg border border-gray-800 text-[11px] space-y-1">
                             <div class="flex justify-between">
-                                <span class="text-gray-400">Target Profit (1:15):</span>
-                                <span id="calcTargetProfit" class="text-[#00c853] font-bold font-mono">$300.00</span>
+                                <span class="text-gray-400">Risk Amount:</span>
+                                <span id="calcRiskAmount" class="text-[#ff1744] font-bold font-mono">$20.00</span>
                             </div>
                             <div class="flex justify-between">
+                                <span class="text-gray-400">Target Return (1.15 RR):</span>
+                                <span id="calcTargetProfit" class="text-[#00c853] font-bold font-mono">$23.00</span>
+                            </div>
+                            <div class="flex justify-between pt-1 border-t border-gray-800">
                                 <span class="text-gray-400">Rec. Lot Size:</span>
                                 <span id="calcLotSize" class="text-green-400 font-bold font-mono">0.15 Lot</span>
                             </div>
@@ -270,53 +274,130 @@
             </div>
         </main>
 
-        <!-- VIEW 2: ICT / SMC LEARNING HUB -->
+        <!-- VIEW 2: FULL ICT ACADEMY COURSE -->
         <div id="learningView" class="hidden flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
-            <div class="mb-8 text-center md:text-left">
-                <span class="bg-green-500/10 text-[#00c853] text-xs font-extrabold px-3 py-1 rounded-full border border-green-500/20 uppercase tracking-widest">Master Class</span>
-                <h2 class="text-3xl font-black text-white mt-2">ICT & Smart Money Concepts (SMC) Academy</h2>
-                <p class="text-sm text-gray-400 mt-1">Learn how institutional banks and market makers manipulate liquidity, create imbalances, and drive price action.</p>
+            <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                <div>
+                    <h2 class="text-3xl font-black text-white">ICT & Smart Money Concepts Masterclass</h2>
+                    <p class="text-sm text-gray-400 mt-1">Complete institutional curriculum to master price action and market manipulation models.</p>
+                </div>
+                <div class="bg-cardBg border border-gray-800 px-4 py-2 rounded-xl text-xs font-bold text-gray-300">
+                    Academy Progress: <span class="text-green-400">3 of 6 Modules Completed</span>
+                </div>
             </div>
 
-            <!-- Learning Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Module 1 -->
-                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-green-500/50 transition">
+                <!-- Module 1 to 5 (Keeping it compact for readability, all functional) -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-[#ff1744] font-bold text-lg mb-4">01</div>
-                        <h3 class="text-lg font-bold text-white mb-2">Liquidity Pools & Sweeps (BSL / SSL)</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed mb-4">Retail traders place stop losses above highs and below lows. Market makers sweep these zones to gather orders.</p>
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/20 uppercase">Module 01</span>
+                        <h3 class="text-lg font-bold text-white mt-3 mb-2">Liquidity Pools (BSL & SSL)</h3>
+                        <p class="text-xs text-gray-400 mb-4 leading-relaxed">Understand how market makers hunt retail stop losses sitting above major equal highs and below major equal lows.</p>
                     </div>
-                    <button onclick="openLessondetails('Liquidity Pools & Sweeps')" class="w-full bg-gray-800 hover:bg-gray-700 text-green-400 font-bold text-xs py-2.5 rounded-xl transition">Read Detailed Lesson →</button>
+                    <button onclick="openLessonDetail('Module 1: Liquidity Pools & Stop Hunts', 'Retail traders place stop losses above major swing highs and below swing lows. Institutional algorithms intentionally drive price into these zones to generate massive liquidity counterparty orders before reversing market direction.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
                 </div>
-                <!-- Module 2 -->
-                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-green-500/50 transition">
+
+                <!-- Mod 2 -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-[#00c853] font-bold text-lg mb-4">02</div>
-                        <h3 class="text-lg font-bold text-white mb-2">Fair Value Gap (FVG) & Imbalances</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed mb-4">An FVG occurs during aggressive displacement candles where orders remain unfilled, leaving a gap for mitigation.</p>
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/20 uppercase">Module 02</span>
+                        <h3 class="text-lg font-bold text-white mt-3 mb-2">Fair Value Gaps (FVG)</h3>
+                        <p class="text-xs text-gray-400 mb-4 leading-relaxed">Identify aggressive institutional displacement imbalances where unfilled orders remain on the ledger.</p>
                     </div>
-                    <button onclick="openLessondetails('Fair Value Gap (FVG)')" class="w-full bg-gray-800 hover:bg-gray-700 text-green-400 font-bold text-xs py-2.5 rounded-xl transition">Read Detailed Lesson →</button>
+                    <button onclick="openLessonDetail('Module 2: Fair Value Gaps (FVG)', 'An FVG occurs when a strong expansion candle leaves a gap between the high of candle 1 and low of candle 3. Price frequently retraces back to balance this efficiency pocket.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
                 </div>
-                <!-- Module 3 -->
-                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between hover:border-green-500/50 transition">
+
+                <!-- Mod 3 -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-brandBlue font-bold text-lg mb-4">03</div>
-                        <h3 class="text-lg font-bold text-white mb-2">Institutional Order Blocks (OB)</h3>
-                        <p class="text-xs text-gray-400 leading-relaxed mb-4">The last opposite candle before an impulsive move where banks place massive institutional orders.</p>
+                        <span class="text-[10px] font-extrabold text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/20 uppercase">Module 03</span>
+                        <h3 class="text-lg font-bold text-white mt-3 mb-2">Institutional Order Blocks</h3>
+                        <p class="text-xs text-gray-400 mb-4 leading-relaxed">Find bank accumulation and mitigation zones that yield high-probability sniper entries.</p>
                     </div>
-                    <button onclick="openLessondetails('Institutional Order Blocks')" class="w-full bg-gray-800 hover:bg-gray-700 text-green-400 font-bold text-xs py-2.5 rounded-xl transition">Read Detailed Lesson →</button>
+                    <button onclick="openLessonDetail('Module 3: Order Blocks (OB)', 'The last opposite colored candle before an impulsive expansion move represents institutional bank orders. When price returns, it acts as a strong support or resistance level.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
+                </div>
+
+                <!-- Mod 4 -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/20 uppercase">Module 04</span>
+                        <h3 class="text-lg font-bold text-white mt-3 mb-2">Market Maker Power of 3 (AMD)</h3>
+                        <p class="text-xs text-gray-400 mb-4 leading-relaxed">Accumulation, Manipulation (Judas Swing), and Distribution across daily sessions.</p>
+                    </div>
+                    <button onclick="openLessonDetail('Module 4: Market Maker Accumulation, Manipulation, Distribution (AMD)', 'Every institutional dealing cycle starts with Accumulation during Asian session, followed by a false breakout Manipulation phase during London open, and finally the true trend Distribution in New York.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
+                </div>
+
+                <!-- Mod 5 -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/20 uppercase">Module 05</span>
+                        <h3 class="text-lg font-bold text-white mt-3 mb-2">Killzones & Session Timing</h3>
+                        <p class="text-xs text-gray-400 mb-4 leading-relaxed">Trade only during high-volatility institutional windows: London Open and New York Session.</p>
+                    </div>
+                    <button onclick="openLessonDetail('Module 5: Killzones & Timing', 'Institutional volume is concentrated at specific opening windows. London Open (07:00 - 10:00 UTC) and New York Open (12:00 - 15:00 UTC) offer the best expansion setups.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
+                </div>
+
+                <!-- Module 6 Updated with 1.15 RR -->
+                <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/20 uppercase">Module 06</span>
+                        <h3 class="text-lg font-bold text-white mt-3 mb-2">Risk Management & Psychology</h3>
+                        <p class="text-xs text-gray-400 mb-4 leading-relaxed">Master position sizing, risk-to-reward ratios of 1.15 or higher, and eliminate emotional trading.</p>
+                    </div>
+                    <button onclick="openLessonDetail('Module 6: Risk Management', 'Consistently risking 1-2% per trade with a 1.15 reward ratio ensures steady account growth. Discipline and execution are your ultimate edge.')" class="bg-gray-800 hover:bg-gray-700 text-green-400 text-xs font-bold py-2.5 rounded-xl transition">Start Lesson ➔</button>
                 </div>
             </div>
         </div>
 
+        <!-- VIEW 3: COMMUNITY FEED -->
+        <div id="communityView" class="hidden flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full">
+            <div class="mb-8 flex justify-between items-center flex-wrap gap-4">
+                <div>
+                    <h2 class="text-3xl font-black text-white flex items-center gap-2">🌐 Community Stream</h2>
+                    <p class="text-sm text-gray-400 mt-1">Explore live public analysis published by traders worldwide across all pairs.</p>
+                </div>
+                <button onclick="openPublishModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow">
+                    + Publish Setup
+                </button>
+            </div>
+            <div id="communityFeedContainer" class="space-y-6"></div>
+        </div>
+
+        <!-- VIEW 4: USER PROFILE -->
+        <div id="profileView" class="hidden flex-1 p-4 md:p-8 max-w-5xl mx-auto w-full">
+            <div class="bg-cardBg border border-gray-800 rounded-2xl p-6 md:p-8 shadow-xl mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <div id="profileAvatar" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-green-500 to-emerald-700 text-white font-black text-2xl flex items-center justify-center shadow-lg">
+                        N
+                    </div>
+                    <div>
+                        <h2 id="profileUsernameDisplay" class="text-2xl font-black text-white">nikhilbansal</h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Professional Price Action & Institutional Liquidity Trader</p>
+                        <div class="flex gap-4 mt-3 text-xs">
+                            <span class="text-gray-300"><strong id="profileFollowersCount" class="text-white">142</strong> Followers</span>
+                            <span class="text-gray-300"><strong id="profileFollowingCount" class="text-white">28</strong> Following</span>
+                            <span class="text-gray-300"><strong id="profileIdeasCount" class="text-white">5</strong> Published Ideas</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="profileActionBtnContainer">
+                    <button id="followUnfollowBtn" onclick="toggleFollowUser()" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-6 py-2.5 rounded-xl transition shadow">
+                        + Follow Trader
+                    </button>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-bold text-white mb-4">Published Chart Analyses by this User</h3>
+            <div id="userProfileIdeasContainer" class="space-y-6"></div>
+        </div>
+
     </div>
 
-    <!-- Professional Footer with Copyright & Policies -->
+    <!-- Professional Footer -->
     <footer class="bg-cardBg border-t border-gray-800 px-6 py-4 text-xs flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400">
         <div>
-            <p class="text-gray-300 font-medium">© 2026 ICT Forex Terminal. All Rights Reserved.</p>
-            <p class="text-[10px] text-gray-500 mt-0.5">Disclaimer: Signals have ~55% accuracy. Trading involves risk of loss.</p>
+            <p class="text-gray-300 font-medium">© 2026 ICT Forex Terminal & Academy. All Rights Reserved.</p>
+            <p class="text-[10px] text-gray-500 mt-0.5">Disclaimer: Trading involves substantial risk of loss.</p>
         </div>
         <div class="flex flex-wrap gap-4 text-gray-400 text-[11px]">
             <button onclick="showLegal('terms')" class="hover:text-green-400 transition">Terms of Service</button>
@@ -329,8 +410,41 @@
     <!-- Script Logic -->
     <script>
         let currentAuthMode = 'login';
+        let currentUser = { name: "nikhilbansal", isFollowing: false };
 
-        function switchTab(mode) {
+        let communityIdeas = JSON.parse(localStorage.getItem('ict_community_ideas')) || [
+            {
+                id: 1,
+                name: "nikhilbansal",
+                date: "Sep 20",
+                asset: "BTCUSD",
+                title: "BTCUSD: Supply Zone Sweep & Rejection | 1.15 RR ICT Setup",
+                desc: "Market Structure & Thesis: Bitcoin staged a strong impulsive run out of the consolidation base, touching a major overhead liquidity pool with a strict 1.15 risk-to-reward plan.",
+                image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=60"
+            },
+            {
+                id: 2,
+                name: "SmartMoneyPro",
+                date: "Sep 21",
+                asset: "XAUUSD",
+                title: "Gold Turtle Soup Liquidity Sweep on H4",
+                desc: "Gold has successfully grabbed buy-stop liquidity above the previous session high, targeting 1.15 RR mitigation zone.",
+                image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60"
+            }
+        ];
+
+        // Update predefined pair TP values manually for approx 1.15 distance
+        const pairSignals = {
+            "FX:EURUSD": { name: "EUR/USD", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "FVG Mitigation", mit: "1.08500", sl: "1.08200", tp: "1.08845" },
+            "FX:GBPUSD": { name: "GBP/USD", type: "SELL SETUP", badgeClass: "bg-[#ff1744] text-white", model: "Order Block Rejection", mit: "1.27400", sl: "1.27800", tp: "1.26940" },
+            "FX:USDJPY": { name: "USD/JPY", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Liquidity Sweep", mit: "155.200", sl: "154.600", tp: "155.890" },
+            "OANDA:XAUUSD": { name: "XAUUSD (Gold)", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Discount FVG Reentry", mit: "2320.50", sl: "2314.00", tp: "2327.97" },
+            "OANDA:XAGUSD": { name: "Silver (XAGUSD)", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Breaker Block Retest", mit: "28.50", sl: "28.10", tp: "28.96" },
+            "BINANCE:BTCUSDT": { name: "BTC/USD", type: "SELL SETUP", badgeClass: "bg-[#ff1744] text-white", model: "Premium Array Rejection", mit: "64,500", sl: "65,800", tp: "63,005" },
+            "CAPITALCOM:US100": { name: "NAS100 Index", type: "BUY SETUP", badgeClass: "bg-[#00c853] text-black", model: "Killzone Expansion", mit: "19,850", sl: "19,720", tp: "19,999" }
+        };
+
+        function switchAuthTab(mode) {
             currentAuthMode = mode;
             const tabLogin = document.getElementById('tabLogin');
             const tabSignup = document.getElementById('tabSignup');
@@ -348,137 +462,290 @@
                 tabSignup.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition";
                 tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition";
                 nameContainer.classList.remove('hidden');
-                modalTitle.innerText = "Create Your VIP Account";
+                modalTitle.innerText = "Create Your Profile & Community Account";
                 submitBtn.innerText = "Register Account";
             }
+        }
+
+        function handleAuthSubmit() {
+            const email = document.getElementById('authEmail').value;
+            const nameInput = document.getElementById('signupName').value;
+            if(!email) {
+                alert("Please enter email address!");
+                return;
+            }
+            if(currentAuthMode === 'signup' && nameInput) {
+                currentUser.name = nameInput.trim().toLowerCase();
+            } else {
+                currentUser.name = email.split('@')[0];
+            }
+            document.getElementById('userNameDisplay').innerText = currentUser.name;
+            document.getElementById('authModal').classList.add('hidden');
+            updateProfileViewData(currentUser.name);
+        }
+
+        function bypassAuth() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function logoutUser() {
+            document.getElementById('authModal').classList.remove('hidden');
         }
 
         function switchView(viewName) {
             const terminalView = document.getElementById('terminalView');
             const learningView = document.getElementById('learningView');
-            const navTerminalBtn = document.getElementById('navTerminalBtn');
-            const navLearningBtn = document.getElementById('navLearningBtn');
+            const communityView = document.getElementById('communityView');
+            const profileView = document.getElementById('profileView');
+            
+            terminalView.classList.add('hidden');
+            learningView.classList.add('hidden');
+            communityView.classList.add('hidden');
+            profileView.classList.add('hidden');
+
+            document.getElementById('navTerminalBtn').className = "px-3 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5";
+            document.getElementById('navLearningBtn').className = "px-3 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5";
+            document.getElementById('navCommunityBtn').className = "px-3 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5";
+            document.getElementById('navProfileBtn').className = "px-3 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5";
 
             if(viewName === 'terminal') {
                 terminalView.classList.remove('hidden');
-                learningView.classList.add('hidden');
-                navTerminalBtn.className = "px-4 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5";
-                navLearningBtn.className = "px-4 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5";
-            } else {
-                terminalView.classList.add('hidden');
+                document.getElementById('navTerminalBtn').className = "px-3 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5";
+            } else if(viewName === 'learning') {
                 learningView.classList.remove('hidden');
-                navLearningBtn.className = "px-4 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5";
-                navTerminalBtn.className = "px-4 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition flex items-center gap-1.5";
+                document.getElementById('navLearningBtn').className = "px-3 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5";
+            } else if(viewName === 'community') {
+                communityView.classList.remove('hidden');
+                document.getElementById('navCommunityBtn').className = "px-3 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5";
+                renderCommunityFeed();
+            } else if(viewName === 'profile') {
+                profileView.classList.remove('hidden');
+                document.getElementById('navProfileBtn').className = "px-3 py-2 text-xs font-bold rounded-lg bg-green-600 text-white transition flex items-center gap-1.5";
+                updateProfileViewData(currentUser.name);
             }
         }
 
-        function openLessondetails(title) {
-            alert(`Opening Masterclass: "${title}".`);
-        }
+        function openPublishModal() { document.getElementById('publishModal').classList.remove('hidden'); }
+        function closePublishModal() { document.getElementById('publishModal').classList.add('hidden'); }
 
-        function handleAuthSubmit() {
-            const email = document.getElementById('authEmail').value;
-            const pass = document.getElementById('authPassword').value;
-            if(!email || !pass) { alert("Please fill in all fields."); return; }
-            let name = currentAuthMode === 'signup' ? (document.getElementById('signupName').value || "Pro Trader") : email.split('@')[0];
-            localStorage.setItem('ict_user', name);
-            localStorage.setItem('ict_plan', 'FREE');
-            closeAuthModal();
-            updateUserUI(name, 'FREE PLAN');
-        }
+        function submitChartIdea() {
+            const asset = document.getElementById('pubAsset').value;
+            const title = document.getElementById('pubTitle').value;
+            const desc = document.getElementById('pubDesc').value;
+            let img = document.getElementById('pubImage').value;
 
-        function bypassAuth() {
-            localStorage.setItem('ict_user', 'Guest User');
-            localStorage.setItem('ict_plan', 'FREE');
-            closeAuthModal();
-            updateUserUI('Guest User', 'FREE PLAN');
-        }
-
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.add('hidden');
-        }
-
-        function logoutUser() {
-            localStorage.removeItem('ict_user');
-            localStorage.removeItem('ict_plan');
-            document.getElementById('authModal').classList.remove('hidden');
-        }
-
-        function updateUserUI(name, plan) {
-            document.getElementById('userNameDisplay').innerText = name;
-            document.getElementById('userPlanBadge').innerText = plan;
-        }
-
-        function openUpgradeModal() {
-            if(confirm("Upgrade to VIP 1:15 Signal Plan for $29/mo?")) {
-                localStorage.setItem('ict_plan', 'VIP PLAN');
-                updateUserUI(localStorage.getItem('ict_user') || 'Trader', 'VIP PLAN');
-                alert("VIP Unlocked Successfully!");
+            if(!title || !desc) {
+                alert("Please fill in the title and description!");
+                return;
             }
-        }
 
-        function calculateRisk() {
-            let balance = parseFloat(document.getElementById('calcBalance').value) || 0;
-            let riskPct = parseFloat(document.getElementById('calcRiskPct').value) || 0;
-            let riskAmount = (balance * riskPct) / 100;
-            document.getElementById('calcRiskAmount').value = `$${riskAmount.toFixed(2)}`;
-            document.getElementById('calcTargetProfit').innerText = `$${(riskAmount * 15).toFixed(2)}`;
-            document.getElementById('calcLotSize').innerText = `${(riskAmount / 100).toFixed(2)} Lot`;
-        }
-
-        // Legal Modals Content Handler
-        function showLegal(type) {
-            const modal = document.getElementById('legalModal');
-            const titleEl = document.getElementById('legalModalTitle');
-            const contentEl = document.getElementById('legalModalContent');
-            modal.classList.remove('hidden');
-
-            if(type === 'terms') {
-                titleEl.innerText = "Terms of Service";
-                contentEl.innerHTML = `<p>Welcome to ICT Forex. By accessing our platform, you agree to comply with our terms. All analytical tools, educational modules, and signals are provided for personal educational use only. Unauthorized distribution or copying of our platform materials is strictly prohibited.</p>`;
-            } else if(type === 'privacy') {
-                titleEl.innerText = "Privacy Policy";
-                contentEl.innerHTML = `<p>We respect your privacy. Any data collected during login or registration is securely stored and never shared with third-party advertisers. We use cookies strictly to improve user session experience.</p>`;
-            } else if(type === 'risk') {
-                titleEl.innerText = "Risk Disclosure Statement";
-                contentEl.innerHTML = `<p><strong class="text-red-400">High Risk Warning:</strong> Forex, cryptocurrency, and commodity trading carries a high level of risk and may not be suitable for all investors. Our trade signals have an estimated win rate of 55% and are <strong>not 100% accurate</strong>. You can sustain a total loss of initial capital. Trade only with risk capital.</p>`;
-            } else if(type === 'copyright') {
-                titleEl.innerText = "Copyright Notice";
-                contentEl.innerHTML = `<p>© 2026 ICT Forex Terminal. All rights reserved. The text, graphics, trading algorithms, and HTML source code on this website are protected under international copyright laws. Copying, republishing, or redistribution without express written permission is illegal.</p>`;
+            if(!img) {
+                img = "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&auto=format&fit=crop&q=60";
             }
+
+            const newIdea = {
+                id: Date.now(),
+                name: currentUser.name,
+                date: "Today",
+                asset: asset,
+                title: title,
+                desc: desc,
+                image: img
+            };
+
+            communityIdeas.unshift(newIdea);
+            localStorage.setItem('ict_community_ideas', JSON.stringify(communityIdeas));
+            closePublishModal();
+
+            document.getElementById('pubTitle').value = "";
+            document.getElementById('pubDesc').value = "";
+            document.getElementById('pubImage').value = "";
+
+            alert("Your analysis idea has been published successfully!");
+            switchView('community');
         }
 
-        function closeLegalModal() {
-            document.getElementById('legalModal').classList.add('hidden');
-        }
+        function renderCommunityFeed() {
+            const container = document.getElementById('communityFeedContainer');
+            container.innerHTML = "";
 
-        window.onload = function() {
-            let user = localStorage.getItem('ict_user');
-            if(user) { closeAuthModal(); updateUserUI(user, localStorage.getItem('ict_plan') || 'FREE'); }
-            loadChart("FX:EURUSD");
-            calculateRisk();
-        };
-
-        function loadChart(symbol) {
-            document.getElementById('tradingview_widget').innerHTML = "";
-            new TradingView.widget({
-                "autosize": true, "symbol": symbol, "interval": "5", "timezone": "Etc/UTC",
-                "theme": "dark", "style": "1", "locale": "en", "toolbar_bg": "#131b2e", "container_id": "tradingview_widget"
+            communityIdeas.forEach(idea => {
+                const card = document.createElement('div');
+                card.className = "bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col gap-4";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3 cursor-pointer" onclick="viewUserProfile('${idea.name}')">
+                            <div class="w-10 h-10 rounded-full bg-blue-600/20 text-blue-400 font-bold flex items-center justify-center border border-blue-500/30">
+                                ${idea.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white hover:text-green-400 transition">${idea.name}</h4>
+                                <span class="text-[10px] text-gray-500">${idea.date}</span>
+                            </div>
+                        </div>
+                        <span class="bg-blue-500/10 text-blue-400 font-bold text-[10px] px-2.5 py-1 rounded border border-blue-500/20">${idea.asset}</span>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-2">${idea.title}</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">${idea.desc}</p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden border border-gray-800 bg-gray-900">
+                        <img src="${idea.image}" alt="Chart Setup" class="w-full h-72 object-cover">
+                    </div>
+                    <div class="pt-2 border-t border-gray-800 flex justify-between items-center text-xs text-gray-400">
+                        <button class="hover:text-green-400 transition flex items-center gap-1">❤️ Like Setup</button>
+                        <button onclick="viewUserProfile('${idea.name}')" class="text-blue-400 hover:underline">View Trader Profile</button>
+                    </div>
+                `;
+                container.appendChild(card);
             });
         }
 
+        function viewUserProfile(username) {
+            currentUser.name = username;
+            switchView('profile');
+        }
+
+        function updateProfileViewData(username) {
+            document.getElementById('profileUsernameDisplay').innerText = username;
+            document.getElementById('profileAvatar').innerText = username.charAt(0).toUpperCase();
+
+            const userPosts = communityIdeas.filter(i => i.name.toLowerCase() === username.toLowerCase());
+            document.getElementById('profileIdeasCount').innerText = userPosts.length;
+            document.getElementById('profileFollowersCount').innerText = currentUser.isFollowing ? "143" : "142";
+
+            const btn = document.getElementById('followUnfollowBtn');
+            if(currentUser.isFollowing) {
+                btn.innerText = "Following ✓";
+                btn.className = "bg-gray-800 border border-gray-700 text-gray-300 text-xs font-bold px-6 py-2.5 rounded-xl transition shadow";
+            } else {
+                btn.innerText = "+ Follow Trader";
+                btn.className = "bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-6 py-2.5 rounded-xl transition shadow";
+            }
+
+            const container = document.getElementById('userProfileIdeasContainer');
+            container.innerHTML = "";
+
+            if(userPosts.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 italic">No public analysis ideas published by this trader yet.</p>`;
+                return;
+            }
+
+            userPosts.forEach(idea => {
+                const card = document.createElement('div');
+                card.className = "bg-cardBg border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col gap-4";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="bg-blue-500/10 text-blue-400 font-bold text-[10px] px-2.5 py-1 rounded border border-blue-500/20">${idea.asset}</span>
+                        <span class="text-[11px] text-gray-500">${idea.date}</span>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white mb-2">${idea.title}</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">${idea.desc}</p>
+                    </div>
+                    <div class="rounded-xl overflow-hidden border border-gray-800 bg-gray-900">
+                        <img src="${idea.image}" alt="Chart Setup" class="w-full h-72 object-cover">
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleFollowUser() {
+            currentUser.isFollowing = !currentUser.isFollowing;
+            updateProfileViewData(currentUser.name);
+        }
+
+        // TradingView Widget Init
+        new TradingView.widget({
+            "autosize": true,
+            "symbol": "FX:EURUSD",
+            "interval": "5",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "en",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "hide_side_toolbar": false,
+            "allow_symbol_change": true,
+            "container_id": "tradingview_widget"
+        });
+
+        // Function to change chart AND dynamically update signal box with 1.15 RR ICT Model
         function changeChartSymbol() {
-            let sym = document.getElementById('symbolSelect').value;
-            loadChart(sym);
+            const symbol = document.getElementById('symbolSelect').value;
+            
+            document.getElementById('tradingview_widget').innerHTML = "";
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": symbol,
+                "interval": "5",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#f1f3f6",
+                "enable_publishing": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": true,
+                "container_id": "tradingview_widget"
+            });
+
+            const sig = pairSignals[symbol];
+            if(sig) {
+                document.getElementById('signalPairName').innerText = sig.name;
+                const badge = document.getElementById('signalBadge');
+                badge.innerText = sig.type;
+                badge.className = `font-extrabold text-[10px] px-2 py-0.5 rounded ${sig.badgeClass}`;
+                
+                document.getElementById('signalModel').innerText = sig.model;
+                document.getElementById('signalMitigation').innerText = sig.mit;
+                document.getElementById('signalSL').innerText = sig.sl;
+                document.getElementById('signalTP').innerText = sig.tp;
+            }
+
+            calculateRisk();
         }
 
-        function triggerManualScan() {
-            alert("Scanning market liquidity sweeps... New setup calculated.");
+        function calculateRisk() {
+            const balance = parseFloat(document.getElementById('calcBalance').value) || 0;
+            const riskPct = parseFloat(document.getElementById('calcRiskPct').value) || 0;
+            const riskAmount = (balance * riskPct) / 100;
+            
+            // EXACT 1.15 Risk-to-Reward Calculation
+            const targetProfit = riskAmount * 1.15;
+
+            document.getElementById('calcRiskAmount').innerText = "$" + riskAmount.toFixed(2);
+            document.getElementById('calcTargetProfit').innerText = "$" + targetProfit.toFixed(2);
+            document.getElementById('calcLotSize').innerText = (riskAmount / 100).toFixed(2) + " Lot";
         }
 
-        function executeTrade() {
-            alert("⚠️ Risk Warning: Trade signal is not 100% accurate. Order executed at your own risk!");
+        function openLessonDetail(title, body) {
+            document.getElementById('lessonModalTitle').innerText = title;
+            document.getElementById('lessonModalBody').innerHTML = `<p>${body}</p><p class="mt-2 text-green-400 font-semibold">Mastering institutional market mechanics requires consistent backtesting and patience.</p>`;
+            document.getElementById('lessonModal').classList.remove('hidden');
         }
+        function closeLessonModal() { document.getElementById('lessonModal').classList.add('hidden'); }
+
+        function showLegal(type) {
+            const modal = document.getElementById('legalModal');
+            const title = document.getElementById('legalModalTitle');
+            const content = document.getElementById('legalModalContent');
+            modal.classList.remove('hidden');
+            title.innerText = type.toUpperCase() + " POLICY";
+
+            if(type === 'risk') {
+                content.innerHTML = `<p><strong>High Risk Warning:</strong> Forex, Crypto, and CFD trading involve substantial risk of loss and are not suitable for every investor.</p>`;
+            } else if(type === 'terms') {
+                content.innerHTML = `<p>By accessing ICT Forex Terminal, you agree to use our educational community features responsibly.</p>`;
+            } else if(type === 'privacy') {
+                content.innerHTML = `<p>We protect user privacy and secure published community profiles safely.</p>`;
+            } else {
+                content.innerHTML = `<p>© 2026 ICT Forex Terminal & Academy. All Rights Reserved.</p>`;
+            }
+        }
+        function closeLegalModal() { document.getElementById('legalModal').classList.add('hidden'); }
     </script>
 </body>
 </html>
