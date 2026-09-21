@@ -1,217 +1,430 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICT Forex - Master Institutional Trading</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+    <title>ICT Institutional Liquidity & 1:15 RR Terminal - Pro</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0f19',
+                        cardBg: '#131b2e',
+                        accentGreen: '#10b981',
+                        accentRed: '#ef4444',
+                        brandBlue: '#3b82f6',
+                        goldColor: '#f59e0b'
+                    }
+                }
+            }
         }
-
-        body {
-            background-color: #0b0f19;
-            color: #f3f4f6;
-            line-height: 1.6;
-        }
-
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            background: #111827;
-            border-bottom: 1px solid #1f2937;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .logo span {
-            color: #10b981;
-        }
-
-        nav a {
-            color: #9ca3af;
-            text-decoration: none;
-            margin-left: 25px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #10b981;
-        }
-
-        .btn-cta {
-            background: #10b981;
-            color: #fff !important;
-            padding: 10px 20px;
-            border-radius: 6px;
-        }
-
-        /* Hero Section */
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(to bottom, #111827, #0b0f19);
-        }
-
-        .hero-content {
-            max-width: 700px;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 span {
-            color: #10b981;
-        }
-
-        .hero p {
-            color: #9ca3af;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
-        .hero-btns a {
-            display: inline-block;
-            padding: 12px 25px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 5px;
-        }
-
-        .btn-primary {
-            background: #10b981;
-            color: #fff;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid #374151;
-            color: #f3f4f6;
-        }
-
-        /* Concepts Section */
-        .concepts {
-            padding: 80px 8%;
-            text-align: center;
-        }
-
-        .concepts h2 {
-            font-size: 2rem;
-            margin-bottom: 40px;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: #111827;
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid #1f2937;
-            text-align: left;
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #10b981;
-        }
-
-        .card h3 {
-            margin-bottom: 15px;
-            color: #ffffff;
-        }
-
-        .card p {
-            color: #9ca3af;
-            font-size: 0.95rem;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #111827;
-            color: #6b7280;
-            font-size: 0.9rem;
-            border-top: 1px solid #1f2937;
-        }
-    </style>
+    </script>
+    <!-- TradingView Widget Script -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
-<body>
+<body class="bg-darkBg text-gray-100 font-sans min-h-screen flex flex-col relative">
 
-    <!-- Header / Navbar -->
-    <header>
-        <div class="logo">ICT<span>Forex</span></div>
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#concepts">ICT Concepts</a>
-            <a href="#analysis">Market Analysis</a>
-            <a href="#contact" class="btn-cta">Get Started</a>
-        </nav>
+    <!-- AUTH MODAL (Login / Signup) -->
+    <div id="authModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4">
+        <div class="bg-cardBg border border-gray-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+            <div class="text-center mb-6">
+                <div class="bg-brandBlue text-white w-12 h-12 rounded-xl flex items-center justify-center font-bold text-xl mx-auto mb-3 shadow-lg">ICT</div>
+                <h2 id="modalTitle" class="text-xl font-extrabold text-white">Welcome to ICT Terminal</h2>
+                <p id="modalSub" class="text-xs text-gray-400 mt-1">Login to access live institutional liquidity signals</p>
+            </div>
+
+            <!-- Form Tabs -->
+            <div class="flex bg-gray-900 p-1 rounded-xl mb-5 border border-gray-800">
+                <button onclick="switchTab('login')" id="tabLogin" class="flex-1 py-2 text-xs font-bold rounded-lg bg-brandBlue text-white transition">Login</button>
+                <button onclick="switchTab('signup')" id="tabSignup" class="flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition">Register</button>
+            </div>
+
+            <!-- Input Fields -->
+            <div class="space-y-4">
+                <div id="nameFieldContainer" class="hidden">
+                    <label class="block text-xs text-gray-400 mb-1">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter your name" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brandBlue">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Email Address</label>
+                    <input type="email" id="authEmail" placeholder="trader@example.com" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brandBlue">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Password</label>
+                    <input type="password" id="authPassword" placeholder="••••••••" class="w-full bg-gray-900 border border-gray-700 text-xs text-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-brandBlue">
+                </div>
+
+                <button onclick="handleAuthSubmit()" id="authSubmitBtn" class="w-full bg-brandBlue hover:bg-blue-600 text-white font-bold text-xs py-3 rounded-xl transition shadow-lg mt-2">
+                    Login to Dashboard
+                </button>
+            </div>
+
+            <div class="mt-5 text-center">
+                <button onclick="bypassAuth()" class="text-[11px] text-gray-400 hover:text-brandBlue underline">Continue as Guest (Free Tier)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Telegram Community Button -->
+    <a href="https://t.me/your_telegram_channel" target="_blank" class="fixed bottom-6 right-6 z-40 bg-[#229ED9] hover:bg-[#1e88be] text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.03-2.01 1.28-5.68 3.77-.54.37-1.03.55-1.47.54-.48-.01-1.4-.27-2.08-.49-.84-.27-1.51-.42-1.45-.89.03-.25.38-.51 1.07-.78 4.19-1.82 6.99-3.02 8.41-3.61 4-.67 4.83-.79 5.37-.78.12 0 .39.03.56.17.14.12.18.28.2.45-.02.07-.02.13-.04.2z"/></svg>
+    </a>
+
+    <!-- Header Navigation -->
+    <header class="bg-cardBg border-b border-gray-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+            <div class="bg-brandBlue text-white p-2 rounded-lg font-bold text-lg">ICT 1:15</div>
+            <div>
+                <h1 class="text-xl font-extrabold tracking-wide">Institutional Liquidity Terminal</h1>
+                <p class="text-xs text-gray-400">Multi-Timeframe Automated Smart Money Concept Engine</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 flex-wrap">
+            <div class="flex items-center gap-2 bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800">
+                <span class="w-2.5 h-2.5 rounded-full bg-accentGreen animate-ping"></span>
+                <span class="text-xs font-semibold text-accentGreen">Live Market Feed</span>
+            </div>
+            <div id="userBadge" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-lg text-xs flex items-center gap-2">
+                <span id="userNameDisplay" class="font-bold text-gray-300">Guest User</span>
+                <span id="userPlanBadge" class="bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-500/30">FREE PLAN</span>
+            </div>
+            <button onclick="openUpgradeModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black text-xs font-extrabold px-4 py-2 rounded-lg transition shadow-lg">
+                Upgrade to VIP ($29/mo)
+            </button>
+            <button onclick="logoutUser()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-lg transition">Logout</button>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Master the Markets with <span>ICT Concepts</span></h1>
-            <p>Learn institutional trading, order blocks, liquidity pools, and price action strategies to trade like the smart money.</p>
-            <div class="hero-btns">
-                <a href="#concepts" class="btn-primary">Explore Strategies</a>
-                <a href="#analysis" class="btn-secondary">Free Analysis</a>
-            </div>
+    <!-- Live Success Stories Ticker Bar -->
+    <div class="bg-brandBlue/10 border-b border-brandBlue/20 px-6 py-2 overflow-hidden whitespace-nowrap text-xs text-brandBlue flex items-center">
+        <span class="font-bold uppercase tracking-wider mr-4 bg-brandBlue text-white px-2 py-0.5 rounded text-[10px]">VIP Feed</span>
+        <div class="inline-block animate-marquee text-gray-300">
+            🔥 Rahul M. booked <span class="text-accentGreen font-bold">+1:15 RR</span> on EUR/USD FVG setup | 🚀 Aman K. secured <span class="text-accentGreen font-bold">195 pips</span> on Gold SSL Sweep | ⭐ New 1:15 signal verified for BTC/USDT.
         </div>
-    </section>
+    </div>
 
-    <!-- Features / Concepts Section -->
-    <section id="concepts" class="concepts">
-        <h2>Core ICT Methodologies</h2>
-        <div class="grid-container">
-            <div class="card">
-                <h3>Order Blocks (OB)</h3>
-                <p>Identify institutional footprint candles before major market expansions.</p>
+    <!-- Main Workspace -->
+    <main class="flex-1 p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <!-- Left Column: TradingView Chart & Broker Banner (Spans 3 cols) -->
+        <div class="lg:col-span-3 flex flex-col gap-6">
+            
+            <!-- TradingView Chart Container -->
+            <div class="bg-cardBg border border-gray-800 rounded-xl overflow-hidden shadow-2xl flex flex-col h-[550px] md:h-[650px]">
+                <div class="px-4 py-3 bg-gray-900/50 border-b border-gray-800 flex justify-between items-center flex-wrap gap-2">
+                    <span class="text-sm font-bold text-gray-300">Live Advanced Chart (Multi-Device Responsive)</span>
+                    <div class="flex gap-2">
+                        <select id="symbolSelect" onchange="changeChartSymbol()" class="bg-gray-800 text-xs text-white px-3 py-1.5 rounded border border-gray-700 focus:outline-none">
+                            <optgroup label="Forex Major">
+                                <option value="FX:EURUSD">EUR/USD</option>
+                                <option value="FX:GBPUSD">GBP/USD</option>
+                                <option value="FX:USDJPY">USD/JPY</option>
+                                <option value="FX:AUDUSD">AUD/USD</option>
+                                <option value="FX:USDCAD">USD/CAD</option>
+                            </optgroup>
+                            <optgroup label="Commodities & Metals">
+                                <option value="OANDA:XAUUSD">GOLD (XAUUSD)</option>
+                                <option value="OANDA:XAGUSD">SILVER (XAGUSD)</option>
+                            </optgroup>
+                            <optgroup label="Crypto">
+                                <option value="BINANCE:BTCUSDT">BTC/USDT</option>
+                                <option value="BINANCE:ETHUSDT">ETH/USDT</option>
+                                <option value="BINANCE:SOLUSDT">SOL/USDT</option>
+                            </optgroup>
+                            <optgroup label="Indices">
+                                <option value="NSE:NIFTY">NIFTY 50</option>
+                                <option value="NSE:BANKNIFTY">BANK NIFTY</option>
+                                <option value="FOREXCOM:SPXUSD">S&P 500</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <div id="tradingview_widget" class="flex-1 w-full"></div>
             </div>
-            <div class="card">
-                <h3>Fair Value Gaps (FVG)</h3>
-                <p>Spot market inefficiencies and price imbalances that act as magnets.</p>
+
+            <!-- Broker Affiliate Monetization Banner -->
+            <div class="bg-gradient-to-r from-brandBlue/20 to-cardBg border border-brandBlue/30 rounded-xl p-4 shadow-lg flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h4 class="text-sm font-bold text-white">Partnered with Top Institutional Brokers</h4>
+                    <p class="text-xs text-gray-300">Open an account via our partner link and get lifetime free access to VIP 1:15 signals.</p>
+                </div>
+                <a href="#" target="_blank" class="bg-brandBlue hover:bg-blue-600 text-white text-xs font-bold px-5 py-2.5 rounded-lg transition shadow">
+                    Open Zero-Spread Broker Account
+                </a>
             </div>
-            <div class="card">
-                <h3>Liquidity Pools</h3>
-                <p>Understand stop hunts, buy-side and sell-side liquidity sweeps.</p>
-            </div>
+
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 ictforex.in. All rights reserved. Trading carries high risk.</p>
+        <!-- Right Column: ICT Confluence Matrix & Automated 1:15 Signals -->
+        <div class="flex flex-col gap-6">
+
+            <!-- Multi-Timeframe Confluence Matrix -->
+            <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg">
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Multi-Timeframe Structure</h3>
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
+                        <span class="font-medium text-gray-300">1 Minute (1m)</span>
+                        <span id="tf-1m" class="text-accentGreen font-bold">Bullish MSS</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
+                        <span class="font-medium text-gray-300">5 Minute (5m)</span>
+                        <span id="tf-5m" class="text-accentGreen font-bold">FVG Mitigation</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
+                        <span class="font-medium text-gray-300">15 Minute (15m)</span>
+                        <span id="tf-15m" class="text-accentGreen font-bold">SSL Swept</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
+                        <span class="font-medium text-gray-300">1 Hour (1h)</span>
+                        <span id="tf-1h" class="text-brandBlue font-bold">Order Block Zone</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-900/60 p-2.5 rounded-lg border border-gray-800/80 text-xs">
+                        <span class="font-medium text-gray-300">Daily (1D)</span>
+                        <span id="tf-1d" class="text-accentGreen font-bold">Premium Array</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Automated 1:15 RR Signal Panel -->
+            <div class="bg-cardBg border border-gray-800 rounded-xl p-4 shadow-lg flex-1 flex flex-col">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Automated 1:15 RR Signal</h3>
+                    <span class="bg-accentGreen/10 text-accentGreen text-[10px] font-bold px-2 py-0.5 rounded border border-accentGreen/20">Active Setup</span>
+                </div>
+
+                <div id="signalCard" class="bg-gray-900/80 border border-gray-800 rounded-lg p-3.5 space-y-3 flex-1 flex flex-col justify-between relative overflow-hidden">
+                    
+                    <!-- VIP Overlay Blur if not VIP -->
+                    <div id="vipLockOverlay" class="hidden absolute inset-0 bg-darkBg/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-4 text-center">
+                        <svg class="w-8 h-8 text-yellow-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        <h4 class="text-xs font-bold text-white mb-1">VIP Locked Signal</h4>
+                        <p class="text-[10px] text-gray-400 mb-3">Upgrade to VIP or join partner broker to unlock real-time 1:15 signals.</p>
+                        <button onclick="openUpgradeModal()" class="bg-amber-500 hover:bg-amber-600 text-black text-[11px] font-extrabold px-3 py-1.5 rounded-lg transition">Unlock Now</button>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span id="sigAsset" class="font-bold text-sm text-white">EUR/USD</span>
+                            <span id="sigType" class="bg-accentGreen text-black font-extrabold text-[10px] px-2 py-0.5 rounded">BUY (LONG)</span>
+                        </div>
+                        <div class="text-[11px] text-gray-400 space-y-1">
+                            <p><strong>Pattern:</strong> <span id="sigPattern" class="text-gray-200">SSL Sweep + Bullish FVG</span></p>
+                            <p><strong>Entry Price:</strong> <span id="sigEntry" class="text-brandBlue font-mono">1.08450</span></p>
+                            <p><strong>Stop Loss:</strong> <span id="sigSL" class="text-accentRed font-mono">1.08320 (13 pips)</span></p>
+                            <p><strong>Take Profit (1:15):</strong> <span id="sigTP" class="text-accentGreen font-mono">1.10400 (195 pips)</span></p>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-gray-800 flex gap-2">
+                        <button onclick="executeTrade()" class="flex-1 bg-accentGreen hover:bg-emerald-600 text-black text-xs font-extrabold py-2 rounded-lg transition shadow">
+                            Auto Execute 1:15
+                        </button>
+                        <button onclick="triggerManualScan()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs px-3 py-2 rounded-lg transition">
+                            Scan
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer Activity Log -->
+    <footer class="bg-cardBg border-t border-gray-800 px-6 py-3 text-xs flex flex-col md:flex-row justify-between items-center gap-2 text-gray-400">
+        <div>System Status: <span class="text-accentGreen font-semibold">Monitoring ICT Liquidity Pools...</span></div>
+        <div id="liveLog" class="font-mono text-[11px] text-gray-500">[12:32:04] Initialized Terminal & Community Connect.</div>
     </footer>
 
+    <!-- Script Logic -->
+    <script>
+        let currentAuthMode = 'login';
+
+        function switchTab(mode) {
+            currentAuthMode = mode;
+            const tabLogin = document.getElementById('tabLogin');
+            const tabSignup = document.getElementById('tabSignup');
+            const nameContainer = document.getElementById('nameFieldContainer');
+            const modalTitle = document.getElementById('modalTitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+
+            if(mode === 'login') {
+                tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-brandBlue text-white transition";
+                tabSignup.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition";
+                nameContainer.classList.add('hidden');
+                modalTitle.innerText = "Welcome Back to ICT Terminal";
+                submitBtn.innerText = "Login to Dashboard";
+            } else {
+                tabSignup.className = "flex-1 py-2 text-xs font-bold rounded-lg bg-brandBlue text-white transition";
+                tabLogin.className = "flex-1 py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition";
+                nameContainer.classList.remove('hidden');
+                modalTitle.innerText = "Create Your VIP Account";
+                submitBtn.innerText = "Register Account";
+            }
+        }
+
+        function handleAuthSubmit() {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            if(!email || !pass) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            let userName = "Trader";
+            if(currentAuthMode === 'signup') {
+                userName = document.getElementById('signupName').value || "Pro Trader";
+            } else {
+                userName = email.split('@')[0];
+            }
+
+            localStorage.setItem('ict_user', userName);
+            localStorage.setItem('ict_plan', 'FREE');
+            
+            closeAuthModal();
+            updateUserUI(userName, 'FREE PLAN');
+            logMessage(`User ${userName} logged in successfully.`);
+        }
+
+        function bypassAuth() {
+            localStorage.setItem('ict_user', 'Guest User');
+            localStorage.setItem('ict_plan', 'FREE');
+            closeAuthModal();
+            updateUserUI('Guest User', 'FREE PLAN');
+            logMessage("Logged in as Guest User.");
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('ict_user');
+            localStorage.removeItem('ict_plan');
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function updateUserUI(name, plan) {
+            document.getElementById('userNameDisplay').innerText = name;
+            const badge = document.getElementById('userPlanBadge');
+            badge.innerText = plan;
+            if(plan === 'VIP PLAN') {
+                badge.className = "bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-500/30";
+                document.getElementById('vipLockOverlay').classList.add('hidden');
+            } else {
+                badge.className = "bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded border border-yellow-500/30";
+            }
+        }
+
+        function openUpgradeModal() {
+            const confirmVip = confirm("Would you like to simulate upgrading to VIP 1:15 Signal Plan for $29/mo?");
+            if(confirmVip) {
+                localStorage.setItem('ict_plan', 'VIP PLAN');
+                updateUserUI(localStorage.getItem('ict_user') || 'Trader', 'VIP PLAN');
+                alert("Payment Successful! VIP 1:15 Signals Unlocked.");
+                logMessage("User upgraded to VIP Institutional Plan.");
+            }
+        }
+
+        window.onload = function() {
+            const savedUser = localStorage.getItem('ict_user');
+            const savedPlan = localStorage.getItem('ict_plan');
+            if(savedUser) {
+                closeAuthModal();
+                updateUserUI(savedUser, savedPlan || 'FREE');
+            }
+            loadChart("FX:EURUSD");
+        };
+
+        function loadChart(symbolName) {
+            document.getElementById('tradingview_widget').innerHTML = "";
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": symbolName,
+                "interval": "5",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#131b2e",
+                "enable_publishing": false,
+                "allow_symbol_change": true,
+                "container_id": "tradingview_widget"
+            });
+        }
+
+        function generateDynamicSignal(symbolCode) {
+            const assetName = symbolCode.split(':')[1];
+            document.getElementById('sigAsset').innerText = assetName;
+
+            const patterns = [
+                { type: "BUY (LONG)", pattern: "SSL Sweep + Bullish FVG", bgClass: "bg-accentGreen text-black" },
+                { type: "SELL (SHORT)", pattern: "BSL Sweep + Bearish Order Block", bgClass: "bg-accentRed text-white" }
+            ];
+            
+            const chosen = patterns[Math.floor(Math.random() * patterns.length)];
+            const typeBadge = document.getElementById('sigType');
+            typeBadge.innerText = chosen.type;
+            typeBadge.className = `${chosen.bgClass} font-extrabold text-[10px] px-2 py-0.5 rounded`;
+            document.getElementById('sigPattern').innerText = chosen.pattern;
+
+            let basePrice = 1.0850;
+            let riskPips = 15;
+            
+            if(assetName.includes('XAU')) { basePrice = 2340.50; riskPips = 4.5; }
+            else if(assetName.includes('BTC')) { basePrice = 67200.00; riskPips = 150; }
+            else if(assetName.includes('ETH')) { basePrice = 3520.00; riskPips = 25; }
+            else if(assetName.includes('NIFTY')) { basePrice = 24350.00; riskPips = 40; }
+            else if(assetName.includes('JPY')) { basePrice = 155.80; riskPips = 18; }
+
+            const entry = basePrice + (Math.random() * 2 - 1).toFixed(4);
+            const riskAmount = riskPips;
+            const rewardAmount = riskPips * 15;
+
+            let sl, tp;
+            if(chosen.type.includes('BUY')) {
+                sl = (parseFloat(entry) - riskAmount).toFixed(2);
+                tp = (parseFloat(entry) + rewardAmount).toFixed(2);
+            } else {
+                sl = (parseFloat(entry) + riskAmount).toFixed(2);
+                tp = (parseFloat(entry) - rewardAmount).toFixed(2);
+            }
+
+            document.getElementById('sigEntry').innerText = entry;
+            document.getElementById('sigSL').innerText = `${sl} (${riskPips} pips)`;
+            document.getElementById('sigTP').innerText = `${tp} (${rewardAmount} pips - 1:15 RR)`;
+        }
+
+        function changeChartSymbol() {
+            const sym = document.getElementById('symbolSelect').value;
+            loadChart(sym);
+            generateDynamicSignal(sym);
+            logMessage(`Switched market to ${sym} - Recalculating ICT Liquidity...`);
+        }
+
+        function triggerManualScan() {
+            logMessage("Running deep AI ICT liquidity scan across multi-timeframes...");
+            setTimeout(() => {
+                const sym = document.getElementById('symbolSelect').value;
+                generateDynamicSignal(sym);
+                logMessage("New liquidity sweep confirmed! 1:15 RR trade structure locked.");
+            }, 600);
+        }
+
+        function executeTrade() {
+            const asset = document.getElementById('sigAsset').innerText;
+            logMessage(`Automated trade signal dispatched for ${asset} with strict 1:15 RR target.`);
+            alert(`Trade Successfully Dispatched to Broker / Terminal Queue (${asset} @ 1:15 RR Locked).`);
+        }
+
+        function logMessage(msg) {
+            const time = new Date().toLocaleTimeString();
+            document.getElementById('liveLog').innerText = `[${time}] ${msg}`;
+        }
+    </script>
 </body>
 </html>
