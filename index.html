@@ -3,12 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICT Forex | Institutional Liquidity Terminal & Academy</title>
-    <meta name="description" content="Advanced ICT trading terminal, Smart Money Concepts guides, and manual market analysis for forex traders.">
+    <title>ICT Forex | Institutional Liquidity Terminal & Full Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Lightweight Charts for Advanced Technical Analysis -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
-<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col">
-    <!-- HEADER -->
+<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col selection:bg-green-500 selection:text-gray-950">
+
+    <!-- LOGIN OVERLAY MODAL -->
+    <div id="authModal" class="fixed inset-0 z-50 bg-gray-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#131b2e] border border-gray-800 rounded-3xl max-w-md w-full p-8 shadow-2xl relative">
+            <div class="text-center mb-8">
+                <div class="inline-block bg-gradient-to-tr from-red-600 to-green-500 p-3 rounded-2xl shadow-lg mb-3">
+                    <span class="text-white font-black text-xl">FX</span>
+                </div>
+                <h2 class="text-2xl font-black text-white tracking-tight">Welcome to ICT Forex & Academy</h2>
+                <p class="text-xs text-gray-400 mt-1">Login to access live institutional charts, full ICT course & community</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex bg-gray-900 border border-gray-800 rounded-xl p-1 mb-6 text-xs font-bold">
+                <button onclick="switchTab('login')" id="loginTabBtn" class="flex-1 py-2.5 rounded-lg bg-green-600 text-white transition shadow">Login</button>
+                <button onclick="switchTab('register')" id="registerTabBtn" class="flex-1 py-2.5 rounded-lg text-gray-400 hover:text-white transition">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleAuth(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Email Address</label>
+                    <input type="email" required value="trader@example.com" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-500 transition">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Password</label>
+                    <input type="password" required value="password" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-500 transition">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-emerald-500 text-gray-950 font-black py-3.5 rounded-xl shadow-lg hover:opacity-95 transition tracking-wide text-sm mt-2">
+                    Login to Dashboard
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <button onclick="closeAuthModal()" class="text-xs font-bold text-green-400 hover:underline">Continue as Guest</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP HEADER -->
     <header class="bg-[#131b2e] border-b border-gray-800 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
         <div class="flex items-center gap-3">
             <span class="bg-red-600 text-white font-black px-2.5 py-1 rounded-lg text-xs shadow">FX</span>
@@ -26,8 +67,8 @@
         </nav>
 
         <div class="flex items-center gap-3">
-            <span class="text-xs text-gray-300 bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700">nikhilbansal</span>
-            <button onclick="alert('Logged out successfully!')" class="text-xs bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 px-3 py-1.5 rounded-lg font-semibold transition">Logout</button>
+            <span id="navUsername" class="text-xs text-gray-300 bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700">nikhilbansal</span>
+            <button onclick="openAuthModal()" class="text-xs bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 px-3 py-1.5 rounded-lg font-semibold transition">Logout</button>
         </div>
     </header>
 
@@ -44,14 +85,45 @@
         <!-- Chart Area -->
         <div class="lg:col-span-3 bg-[#131b2e] border border-gray-800 rounded-2xl p-4 flex flex-col shadow-xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Advanced Chart Selector</h2>
+                <div class="flex items-center gap-3">
+                    <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Advanced Chart Selector</h2>
+                    <select id="pairSelector" onchange="changePair(this.value)" class="bg-gray-900 border border-gray-700 text-white text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none focus:border-green-500">
+                        <option value="EURUSD">EUR/USD (Forex)</option>
+                        <option value="GBPUSD">GBP/USD (Forex)</option>
+                        <option value="XAUUSD">XAU/USD (Gold)</option>
+                    </select>
+                </div>
                 <a href="analysis.html" class="bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
                     💡 Publish Analysis
                 </a>
             </div>
-            <div class="flex-1 bg-gray-950 border border-gray-800 rounded-xl min-h-[450px] flex items-center justify-center text-gray-500 text-xs">
-                <p>📊 Live TradingView / Institutional Chart View Loaded for ICT Forex</p>
+            <!-- TradingView Widget BEGIN -->
+            <div class="flex-1 bg-gray-950 border border-gray-800 rounded-xl min-h-[450px] overflow-hidden relative" id="tradingview_container">
+                <div class="tradingview-widget-container" style="height:100%;width:100%">
+                    <div id="tradingview_widget" style="height:100%;width:100%"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                    <script type="text/javascript">
+                    new TradingView.widget(
+                    {
+                    "width": "100%",
+                    "height": "100%",
+                    "symbol": "FX:EURUSD",
+                    "interval": "5",
+                    "timezone": "Etc/UTC",
+                    "theme": "dark",
+                    "style": "1",
+                    "locale": "en",
+                    "toolbar_bg": "#f1f3f6",
+                    "enable_publishing": false,
+                    "hide_side_toolbar": false,
+                    "allow_symbol_change": true,
+                    "container_id": "tradingview_widget"
+                    }
+                    );
+                    </script>
+                </div>
             </div>
+            <!-- TradingView Widget END -->
         </div>
 
         <!-- Sidebar Setup Info -->
@@ -62,7 +134,7 @@
                     <span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-bold px-2 py-0.5 rounded">RR 1:15</span>
                 </div>
                 <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 mb-4">
-                    <h4 class="text-sm font-black text-white mb-1">EUR/USD</h4>
+                    <h4 id="setupPairTitle" class="text-sm font-black text-white mb-1">EUR/USD</h4>
                     <span class="inline-block bg-green-500 text-gray-950 text-[10px] font-extrabold px-2 py-0.5 rounded mb-3">BUY SETUP</span>
                     <p class="text-xs text-gray-300 leading-relaxed">ICT Model: <strong class="text-white">FVG + Mitigation Block</strong></p>
                     <p class="text-xs text-gray-300 mt-1">Entry Zone: <strong class="text-green-400">1.08500</strong></p>
@@ -73,5 +145,33 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+        function switchTab(tab) {
+            const loginBtn = document.getElementById('loginTabBtn');
+            const regBtn = document.getElementById('registerTabBtn');
+            if(tab === 'login') {
+                loginBtn.className = "flex-1 py-2.5 rounded-lg bg-green-600 text-white transition shadow";
+                regBtn.className = "flex-1 py-2.5 rounded-lg text-gray-400 hover:text-white transition";
+            } else {
+                regBtn.className = "flex-1 py-2.5 rounded-lg bg-green-600 text-white transition shadow";
+                loginBtn.className = "flex-1 py-2.5 rounded-lg text-gray-400 hover:text-white transition";
+            }
+        }
+        function handleAuth(e) {
+            e.preventDefault();
+            closeAuthModal();
+        }
+        function changePair(symbol) {
+            document.getElementById('setupPairTitleinnerText').innerText = symbol.replace('USD', '/USD');
+            // Re-render chart logic can be hooked here if needed
+        }
+    </script>
 </body>
 </html>
