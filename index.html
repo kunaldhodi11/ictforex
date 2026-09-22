@@ -3,103 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICT Forex | Institutional Liquidity Terminal</title>
+    
+    <!-- SEO OPTIMIZED META TAGS FOR TRADING RANKING -->
+    <title>ICT Forex Academy | Free Trading Course, SMC & Price Action Masterclass</title>
+    <meta name="description" content="Master professional trading with our free trading course, candlestick patterns, price action, ICT Smart Money Concepts, liquidity mapping, and advanced risk management.">
+    <meta name="keywords" content="trading course, free trading education, ICT trading, SMC trading, price action strategy, forex market rules, risk management, liquidity concepts">
+    <meta name="author" content="ICT Forex Academy">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="ICT Forex Academy | Institutional Trading & MSC Liquidity">
+    <meta property="og:description" content="Learn free trading basics & advanced ICT institutional concepts. Rank your trading skills today.">
+    <meta property="og:type" content="website">
+
+    <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 500: '#22c55e', 600: '#16a34a' },
+                        secondary: { 500: '#a855f7', 600: '#9333ea' },
+                        accent: { 500: '#eab308' }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col">
+<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between">
 
-    <!-- HEADER / NAVIGATION -->
-    <header class="bg-[#131b2e] border-b border-gray-800 px-6 py-4 flex justify-between items-center sticky top-0 z-40">
-        <div class="flex items-center gap-3">
-            <span class="bg-red-600 text-white font-black px-2.5 py-1 rounded-lg text-xs">FX</span>
-            <div>
-                <h1 class="text-sm font-black tracking-wider text-white">ICT <span class="text-green-500">FOREX</span></h1>
-                <p class="text-[10px] text-gray-400">Institutional Liquidity Terminal</p>
+    <!-- TOP ANNOUNCEMENT BAR (For Affiliate / Broker Promotion / Offers) -->
+    <div class="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 text-gray-950 text-[11px] font-black py-2 px-4 text-center tracking-wide shadow">
+        🔥 Trusted Broker Partner: Get Zero Spread Accounts & Instant Execution. <a href="affiliate-broker.html" class="underline hover:text-white ml-1">Open Trading Account Now &rarr;</a>
+    </div>
+
+    <!-- HEADER -->
+    <header class="bg-[#131b2e] border-b border-gray-800 px-6 py-4 flex justify-between items-center sticky top-10 z-40 shadow-xl">
+        
+        <!-- Logo & Brand Name -->
+        <a href="index.html" class="flex items-center gap-3 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] group-hover:shadow-[0_0_28px_rgba(239,68,68,0.7)] transition flex items-center justify-center">
+                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
+                    <span class="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
+                </div>
             </div>
-        </div>
+            <div>
+                <h1 class="text-sm md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 group-hover:opacity-90 transition drop-shadow">
+                    ICT FOREX ACADEMY
+                </h1>
+                <p class="text-[10px] text-gray-400 font-medium tracking-wide">Institutional Smart Money Concepts</p>
+            </div>
+        </a>
 
-        <nav class="hidden md:flex items-center gap-6 text-xs font-semibold text-gray-300">
-            <a href="index.html" class="text-white transition">Trading Terminal</a>
-            <a href="fvg-guide.html" class="hover:text-white transition">FVG Guide</a>
-            <a href="order-block-guide.html" class="hover:text-white transition">Order Blocks</a>
-            <a href="analysis.html" class="text-green-400 font-bold transition">My Analysis</a>
+        <!-- Navigation Menu -->
+        <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-gray-300">
+            <a href="index.html" class="text-green-400 border-b-2 border-green-500 pb-1 transition">Home</a>
+            <a href="free-learning.html" class="hover:text-green-400 transition">Free Trading Course</a>
+            <a href="vip-course.html" class="hover:text-yellow-400 transition flex items-center gap-1"><i class="fa-solid fa-crown text-[10px]"></i> VIP Academy</a>
+            <a href="analysis.html" class="hover:text-green-400 transition">Market Analysis</a>
         </nav>
 
+        <!-- Right Corner Actions -->
         <div class="flex items-center gap-3">
-            <span class="text-xs text-gray-300 bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700">nikhilbansal</span>
+            <a href="https://t.me/yourtelegram" target="_blank" class="hidden sm:flex bg-[#0088cc] hover:bg-[#0077b5] text-white text-xs font-bold px-3 py-2 rounded-xl transition items-center gap-1.5 shadow">
+                <i class="fa-brands fa-telegram"></i> Telegram VIP
+            </a>
+            <a href="login.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+                <i class="fa-solid fa-user"></i> Login
+            </a>
         </div>
     </header>
 
-    <!-- MAIN TERMINAL SECTION -->
-    <main class="flex-1 p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <!-- Chart Area -->
-        <div class="lg:col-span-3 bg-[#131b2e] border border-gray-800 rounded-2xl p-4 flex flex-col shadow-xl">
-            <div class="flex justify-between items-center mb-4">
-                <div class="flex items-center gap-3">
-                    <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Advanced Chart Selector</h2>
-                    <select id="pairSelector" onchange="loadChart(this.value)" class="bg-gray-900 border border-gray-700 text-white text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none focus:border-green-500">
-                        <option value="FX:EURUSD">EUR/USD (Forex)</option>
-                        <option value="FX:GBPUSD">GBP/USD (Forex)</option>
-                        <option value="OANDA:XAUUSD">XAU/USD (Gold)</option>
-                    </select>
-                </div>
-                <a href="analysis.html" class="bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
-                    💡 Publish Analysis
+    <!-- HOMEPAGE CONTENT -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-10 space-y-12">
+        
+        <!-- Hero Section optimized for Trading Keywords -->
+        <div class="bg-gradient-to-r from-green-800 via-emerald-900 to-teal-950 border border-green-500/30 rounded-3xl p-8 md:p-12 shadow-2xl text-center relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white font-black pointer-events-none">TRADING</div>
+            <span class="bg-yellow-500 text-gray-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow">
+                #1 Institutional Trading Academy
+            </span>
+            <h2 class="text-2xl md:text-5xl font-black text-white mt-4 mb-4 leading-tight">
+                Master Professional Trading, Price Action & <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">ICT Liquidity Concepts</span>
+            </h2>
+            <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto mb-8 leading-relaxed">
+                Unlock high-accuracy trading strategies. Learn candlestick patterns and trading basics completely for free, or upgrade to our VIP Masterclass covering Smart Money Concepts, market rules, risk management, and money management.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="free-learning.html" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-6 py-3.5 rounded-xl transition shadow-lg flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Start Free Trading Course
+                </a>
+                <a href="vip-course.html" class="bg-gradient-to-r from-yellow-500 to-amber-600 hover:opacity-90 text-gray-950 font-black text-xs px-6 py-3.5 rounded-xl transition shadow-lg flex items-center gap-2">
+                    <i class="fa-solid fa-crown"></i> Join VIP Mentorship
                 </a>
             </div>
-            
-            <!-- TradingView Widget Box -->
-            <div class="flex-1 bg-gray-950 border border-gray-800 rounded-xl min-h-[480px] overflow-hidden relative">
-                <div id="tradingview_widget" style="height:100%;width:100%;min-height:480px;"></div>
-            </div>
         </div>
 
-        <!-- Sidebar Setup Info -->
-        <div class="bg-[#131b2e] border border-gray-800 rounded-2xl p-5 flex flex-col justify-between shadow-xl">
-            <div>
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-wider">ICT INSTITUTIONAL SETUP</h3>
-                    <span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-bold px-2 py-0.5 rounded">RR 1:15</span>
-                </div>
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 mb-4">
-                    <h4 class="text-sm font-black text-white mb-1">ICT Model</h4>
-                    <span class="inline-block bg-green-500 text-gray-950 text-[10px] font-extrabold px-2 py-0.5 rounded mb-3">ACTIVE SETUP</span>
-                    <p class="text-xs text-gray-300 leading-relaxed">Model: <strong class="text-white">FVG + Liquidity Sweep</strong></p>
-                    <p class="text-xs text-gray-300 mt-1">Status: <strong class="text-green-400">Monitoring Price Action</strong></p>
-                </div>
-            </div>
-            <div class="text-center text-[10px] text-gray-500">
-                <p>ICT Forex Portal © 2026</p>
-            </div>
+        <!-- AD / BANNER SLOT (For Google Adsense or Banner Advertising) -->
+        <div class="bg-[#131b2e] border border-gray-800 rounded-2xl p-4 text-center text-xs text-gray-500 dashed border-gray-700">
+            <span>[ Advertisement / Top Broker Banner Space ]</span>
         </div>
+
+        <!-- Features Grid -->
+        <div class="grid md:grid-cols-2 gap-6">
+            
+            <!-- Free Course Card -->
+            <div class="bg-[#131b2e] border border-gray-800 rounded-3xl p-6 md:p-8 flex flex-col justify-between shadow-xl">
+                <div>
+                    <div class="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400 font-bold mb-4">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-green-400 uppercase tracking-widest bg-green-500/10 px-2.5 py-1 rounded-full">Free Education</span>
+                    <h3 class="text-xl font-black text-white mt-3 mb-2">Trading Basics & Price Action</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed mb-6">
+                        Learn foundational trading mechanics. Master candlestick psychology, support & resistance zones, trend analysis, and execution strategies with image examples.
+                    </p>
+                </div>
+                <a href="free-learning.html" class="text-green-400 hover:text-green-300 text-xs font-bold flex items-center gap-2">
+                    Access Free Lessons <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- VIP Mentorship Card -->
+            <div class="bg-[#131b2e] border border-yellow-500/30 rounded-3xl p-6 md:p-8 flex flex-col justify-between shadow-xl relative">
+                <div>
+                    <div class="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 font-bold mb-4">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-yellow-400 uppercase tracking-widest bg-yellow-500/10 px-2.5 py-1 rounded-full">Advanced VIP Program</span>
+                    <h3 class="text-xl font-black text-white mt-3 mb-2">ICT, SMC, Liquidity & Risk Management</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed mb-6">
+                        Master institutional market models. Learn ICT concepts, liquidity pools, order blocks, stringent market rules, and professional risk & money management frameworks.
+                    </p>
+                </div>
+                <a href="vip-course.html" class="text-yellow-400 hover:text-yellow-300 text-xs font-bold flex items-center gap-2">
+                    Unlock VIP Masterclass <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+        </div>
+
     </main>
 
-    <!-- TradingView Loader Script -->
-    <script type="text/javascript">
-        function loadChart(symbol) {
-            document.getElementById('tradingview_widget').innerHTML = "";
-            new TradingView.widget({
-                "width": "100%",
-                "height": "100%",
-                "symbol": symbol,
-                "interval": "15",
-                "timezone": "Etc/UTC",
-                "theme": "dark",
-                "style": "1",
-                "locale": "en",
-                "toolbar_bg": "#f1f3f6",
-                "enable_publishing": false,
-                "hide_side_toolbar": false,
-                "allow_symbol_change": true,
-                "container_id": "tradingview_widget"
-            });
-        }
+    <!-- PROFESSIONAL FOOTER (With Policies & Affiliate Disclaimers required for Google Ranking & AdSense) -->
+    <footer class="bg-[#131b2e] border-t border-gray-800 mt-16 pt-10 pb-6 text-xs text-gray-400">
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+                <h4 class="text-white font-black mb-3 text-sm">ICT FOREX ACADEMY</h4>
+                <p class="text-[11px] text-gray-400 leading-relaxed">
+                    Dedicated to providing high-quality institutional trading education, price action strategies, and advanced risk management frameworks for global traders.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-black mb-3 text-sm">Quick Links</h4>
+                <ul class="space-y-2 text-[11px]">
+                    <li><a href="free-learning.html" class="hover:text-green-400 transition">Free Trading Course</a></li>
+                    <li><a href="vip-course.html" class="hover:text-green-400 transition">VIP Masterclass</a></li>
+                    <li><a href="analysis.html" class="hover:text-green-400 transition">Market Analysis</a></li>
+                    <li><a href="login.html" class="hover:text-green-400 transition">Student Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-black mb-3 text-sm">Legal & Policies</h4>
+                <ul class="space-y-2 text-[11px]">
+                    <li><a href="privacy-policy.html" class="hover:text-green-400 transition">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-green-400 transition">Terms & Conditions</a></li>
+                    <li><a href="disclaimer.html" class="hover:text-green-400 transition">Risk Disclosure / Disclaimer</a></li>
+                    <li><a href="affiliate-disclosure.html" class="hover:text-green-400 transition">Affiliate Disclosure</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-black mb-3 text-sm">Affiliate & Broker Partner</h4>
+                <p class="text-[11px] text-gray-400 mb-3">
+                    We partner with top regulated brokers to provide optimal trading conditions. Trading involves risk.
+                </p>
+                <a href="affiliate-broker.html" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black px-3 py-2 rounded-lg transition inline-block text-[11px]">
+                    Partner Broker Login
+                </a>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800/80 pt-6 text-center text-[10px] text-gray-500 max-w-6xl mx-auto px-6">
+            <p class="mb-2"><strong>Disclaimer:</strong> Trading Forex, Cryptos, and CFDs carries a high level of risk and may not be suitable for all investors. Ensure you fully understand the risks involved before trading.</p>
+            <p>ICT Forex Academy © 2026. All rights reserved. Built for professional traders.</p>
+        </div>
+    </footer>
 
-        // Load default chart on startup
-        window.onload = function() {
-            loadChart("FX:EURUSD");
-        };
-    </script>
 </body>
 </html>

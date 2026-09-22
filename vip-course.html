@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Mentorship & ICT Masterclass | ICT Forex Academy</title>
+    <meta name="description" content="Join our VIP Trading Masterclass. Master ICT Smart Money Concepts, Liquidity Pools, Market Rules, Risk Management, and Money Management.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 500: '#22c55e', 600: '#16a34a' },
+                        secondary: { 500: '#a855f7', 600: '#9333ea' },
+                        accent: { 500: '#eab308' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER -->
+    <header class="bg-[#131b2e] border-b border-gray-800 px-6 py-4 flex justify-between items-center sticky top-0 z-40 shadow-xl">
+        
+        <!-- Logo (Clickable to Home) -->
+        <a href="index.html" class="flex items-center gap-3 group cursor-pointer">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] group-hover:shadow-[0_0_28px_rgba(239,68,68,0.7)] transition flex items-center justify-center">
+                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
+                    <span class="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-sm md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 group-hover:opacity-90 transition drop-shadow">
+                    ICT FOREX ACADEMY
+                </h1>
+                <p class="text-[10px] text-gray-400 font-medium tracking-wide">VIP Mentorship Center</p>
+            </div>
+        </a>
+
+        <!-- Navigation Menu -->
+        <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-gray-300">
+            <a href="index.html" class="hover:text-green-400 transition flex items-center gap-1.5"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="free-learning.html" class="hover:text-green-400 transition">Free Course</a>
+            <a href="vip-course.html" class="text-yellow-400 border-b-2 border-yellow-500 pb-1 transition flex items-center gap-1"><i class="fa-solid fa-crown text-[10px]"></i> VIP Academy</a>
+            <a href="analysis.html" class="hover:text-green-400 transition">Analysis</a>
+        </nav>
+
+        <!-- Right Action -->
+        <div class="flex items-center gap-3">
+            <a href="login.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+                <i class="fa-solid fa-user"></i> Login
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-6 md:p-10 space-y-10">
+        
+        <!-- VIP Hero Banner -->
+        <div class="bg-gradient-to-r from-yellow-900 via-amber-950 to-stone-900 border-2 border-yellow-500/40 rounded-3xl p-8 md:p-12 shadow-2xl text-center relative overflow-hidden">
+            <span class="bg-yellow-500 text-gray-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow">
+                👑 Exclusive VIP Masterclass
+            </span>
+            <h2 class="text-2xl md:text-5xl font-black text-white mt-4 mb-4 leading-tight">
+                ICT Smart Money Concepts, Liquidity & <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Risk Management</span>
+            </h2>
+            <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto mb-8 leading-relaxed">
+                Unlock professional institutional methodologies. Master order blocks, market maker models, strict market rules, and professional risk & money management frameworks.
+            </p>
+            
+            <!-- Price Box -->
+            <div class="inline-flex items-center gap-4 bg-gray-950/80 border border-yellow-500/50 px-6 py-3 rounded-2xl shadow-xl">
+                <div class="text-left">
+                    <span class="text-[10px] text-gray-400 block uppercase tracking-wider">Lifetime VIP Access</span>
+                    <span class="text-2xl font-black text-yellow-400">₹99 <span class="text-xs text-gray-500 line-through font-normal">₹1,999</span></span>
+                </div>
+                <a href="#payment-box" class="bg-gradient-to-r from-yellow-500 to-amber-600 hover:opacity-95 text-gray-950 font-black text-xs px-6 py-3 rounded-xl shadow transition">
+                    Enroll Now (₹99)
+                </a>
+            </div>
+        </div>
+
+        <!-- VIP MODULES GRID -->
+        <div class="space-y-6">
+            <h3 class="text-lg font-black text-white border-l-4 border-yellow-500 pl-3">VIP Course Curriculum & Modules</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Module 1 -->
+                <div class="bg-[#131b2e] border border-yellow-500/30 rounded-3xl p-6 shadow-xl relative">
+                    <span class="bg-yellow-500/10 text-yellow-400 text-[10px] font-bold px-3 py-1 rounded-full">Module 01</span>
+                    <h4 class="text-base font-bold text-white mt-3 mb-2">ICT & Smart Money Concepts (SMC)</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Deep dive into institutional order flow, premium vs discount arrays, and identifying valid institutional order blocks.
+                    </p>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="bg-[#131b2e] border border-yellow-500/30 rounded-3xl p-6 shadow-xl relative">
+                    <span class="bg-yellow-500/10 text-yellow-400 text-[10px] font-bold px-3 py-1 rounded-full">Module 02</span>
+                    <h4 class="text-base font-bold text-white mt-3 mb-2">Liquidity Mapping & Sweeps</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Learn how retail liquidity is hunted, buy-side/sell-side liquidity pools, and trading during London & New York killzones.
+                    </p>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="bg-[#131b2e] border border-yellow-500/30 rounded-3xl p-6 shadow-xl relative">
+                    <span class="bg-yellow-500/10 text-yellow-400 text-[10px] font-bold px-3 py-1 rounded-full">Module 03</span>
+                    <h4 class="text-base font-bold text-white mt-3 mb-2">Strict Market Rules & Execution</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Define your trading edge with uncompromised market rules, entry triggers, and handling consecutive loss streaks.
+                    </p>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="bg-[#131b2e] border border-yellow-500/30 rounded-3xl p-6 shadow-xl relative">
+                    <span class="bg-yellow-500/10 text-yellow-400 text-[10px] font-bold px-3 py-1 rounded-full">Module 04</span>
+                    <h4 class="text-base font-bold text-white mt-3 mb-2">Risk Management & Money Management</h4>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Master position sizing, 1% risk rule, compound growth, and psychological discipline to protect trading capital.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- EDITABLE CONTENT / LESSON SECTION (Where you can write and add charts) -->
+        <article class="bg-[#131b2e] border border-gray-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-xl">
+            <div class="border-b border-gray-800 pb-4">
+                <span class="text-yellow-400 text-xs font-bold uppercase tracking-wider">VIP Masterclass Note</span>
+                <h3 class="text-xl font-black text-white mt-1">Advanced Institutional Setup Guide</h3>
+            </div>
+            <div class="text-gray-300 text-xs md:text-sm space-y-4 leading-relaxed">
+                <p>
+                    Institutional traders do not trade retail support and resistance lines. They focus entirely on liquidity imbalances and market maker buy/sell models.
+                </p>
+                
+                <!-- Image Example Slot -->
+                <div class="my-6 text-center">
+                    <img src="images/vip-liquidity-chart.png" alt="ICT Liquidity Chart Example" class="rounded-2xl border border-gray-800 shadow-2xl mx-auto w-full max-w-2xl bg-gray-950 p-2">
+                    <span class="text-[10px] text-gray-500 mt-2 block">Figure 2.1: Institutional Liquidity Sweep & Fair Value Gap Model</span>
+                </div>
+
+                <p>
+                    You can add your custom notes, rules, and images here directly through GitHub editing anytime!
+                </p>
+            </div>
+        </article>
+
+        <!-- PAYMENT BOX -->
+        <div id="payment-box" class="bg-[#131b2e] border-2 border-yellow-500 rounded-3xl p-8 text-center shadow-2xl">
+            <h3 class="text-xl font-black text-white mb-2">Unlock Complete VIP Access Now</h3>
+            <p class="text-xs text-gray-300 mb-6 max-w-md mx-auto">One-time payment of ₹99 gives you lifetime access to all advanced modules, cheat sheets, and private updates.</p>
+            <a href="https://your-payment-gateway-link.com" class="block max-w-md mx-auto bg-gradient-to-r from-green-500 to-emerald-600 text-gray-950 font-black text-sm py-4 rounded-2xl shadow-xl hover:opacity-95 transition">
+                Pay ₹99 & Join VIP Area
+            </a>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#131b2e] border-t border-gray-800 py-6 text-center text-xs text-gray-400 mt-12">
+        <p>ICT Forex Academy © 2026. All rights reserved. VIP Institutional Mentorship.</p>
+    </footer>
+
+</body>
+</html>
