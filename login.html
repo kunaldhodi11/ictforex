@@ -59,9 +59,9 @@
 
             <!-- Toggle between Sign In and Sign Up -->
             <div class="text-center mt-6">
-                <p id="toggle-text" class="text-sm text-gray-400">
-                    Don't have an account? 
-                    <button id="toggle-btn" type="button" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign Up</button>
+                <p class="text-sm text-gray-400">
+                    <span id="toggle-label">Don't have an account?</span> 
+                    <a href="javascript:void(0);" id="toggle-link" class="text-amber-500 font-medium hover:underline ml-1">Sign Up</a>
                 </p>
             </div>
 
@@ -115,7 +115,8 @@
         const authForm = document.getElementById('auth-form');
         const formTitle = document.getElementById('form-title');
         const submitBtn = document.getElementById('submit-btn');
-        const toggleText = document.getElementById('toggle-text');
+        const toggleLabel = document.getElementById('toggle-label');
+        const toggleLink = document.getElementById('toggle-link');
         const messageBox = document.getElementById('message-box');
         const userDashboard = document.getElementById('user-dashboard');
         const userEmailDisplay = document.getElementById('user-email-display');
@@ -123,20 +124,22 @@
 
         let isSignUp = false;
 
-        // Smooth and robust Toggle using Event Delegation
-        toggleText.addEventListener('click', (e) => {
-            if (e.target && e.target.id === 'toggle-btn') {
-                isSignUp = !isSignUp;
-                if (isSignUp) {
-                    formTitle.textContent = "Create Account";
-                    submitBtn.textContent = "Sign Up";
-                    toggleText.innerHTML = `Already have an account? <button id="toggle-btn" type="button" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign In</button>`;
-                } else {
-                    formTitle.textContent = "Student Sign In";
-                    submitBtn.textContent = "Sign In";
-                    toggleText.innerHTML = `Don't have an account? <button id="toggle-btn" type="button" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign Up</button>`;
-                }
+        // Direct Toggle Link Click Handler
+        toggleLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            isSignUp = !isSignUp;
+            if (isSignUp) {
+                formTitle.textContent = "Create Account";
+                submitBtn.textContent = "Sign Up";
+                toggleLabel.textContent = "Already have an account?";
+                toggleLink.textContent = "Sign In";
+            } else {
+                formTitle.textContent = "Student Sign In";
+                submitBtn.textContent = "Sign In";
+                toggleLabel.textContent = "Don't have an account?";
+                toggleLink.textContent = "Sign Up";
             }
+            messageBox.classList.add('hidden');
         });
 
         // Form Submit Handler
@@ -172,13 +175,13 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 authForm.classList.add('hidden');
-                toggleText.classList.add('hidden');
+                document.querySelector('.text-center.mt-6').classList.add('hidden');
                 formTitle.classList.add('hidden');
                 userDashboard.classList.remove('hidden');
                 userEmailDisplay.textContent = `Logged in as: ${user.email}`;
             } else {
                 authForm.classList.remove('hidden');
-                toggleText.classList.remove('hidden');
+                document.querySelector('.text-center.mt-6').classList.remove('hidden');
                 formTitle.classList.remove('hidden');
                 userDashboard.classList.add('hidden');
                 document.getElementById('email').value = '';
