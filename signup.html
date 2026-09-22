@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Sign In - ICT Forex Academy</title>
+    <title>Create Account - ICT Forex Academy</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -26,48 +27,49 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+    <!-- Main Content / Sign Up Section -->
     <main class="flex-grow flex items-center justify-center px-4 py-12">
         <div class="max-w-md w-full bg-gray-900 border border-gray-800 rounded-xl p-8 shadow-2xl">
+            
+            <!-- Header Title -->
             <div class="text-center mb-8">
-                <h1 class="text-2xl font-bold text-white">Student Sign In</h1>
-                <p class="text-sm text-gray-400 mt-2">Access your ICT Forex Academy account</p>
+                <h1 class="text-2xl font-bold text-white">Create Account</h1>
+                <p class="text-sm text-gray-400 mt-2">Join ICT Forex Academy today</p>
             </div>
 
+            <!-- Error/Success Message Box -->
             <div id="message-box" class="hidden mb-4 p-3 rounded text-sm text-center"></div>
 
-            <form id="login-form" class="space-y-6">
+            <!-- Sign Up Form -->
+            <form id="signup-form" class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                    <input type="email" id="login-email" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="you@example.com">
+                    <input type="email" id="signup-email" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="you@example.com">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                    <input type="password" id="login-password" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="••••••••">
+                    <input type="password" id="signup-password" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="••••••••">
                 </div>
 
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold py-3 rounded-lg transition shadow-lg">
-                    Sign In
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold py-3 rounded-lg transition shadow-lg mt-2">
+                    Sign Up
                 </button>
             </form>
 
+            <!-- Link back to Sign In -->
             <div class="text-center mt-6">
                 <p class="text-sm text-gray-400">
-                    Don't have an account? 
-                    <a href="signup.html" class="text-amber-500 font-medium hover:underline ml-1">Sign Up</a>
+                    Already have an account? 
+                    <a href="login.html" class="text-amber-500 font-medium hover:underline ml-1">Sign In</a>
                 </p>
             </div>
 
-            <!-- Dashboard View after login -->
-            <div id="user-dashboard" class="hidden text-center space-y-4">
-                <div class="text-amber-500 text-5xl mb-2"><i class="fa-solid fa-user-check"></i></div>
-                <h2 class="text-xl font-semibold text-white">Welcome Back!</h2>
-                <p id="user-email-display" class="text-sm text-gray-400"></p>
-                <button id="logout-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition">
-                    Sign Out
-                </button>
-            </div>
         </div>
     </main>
 
@@ -75,13 +77,16 @@
     <footer class="bg-gray-900 border-t border-gray-800 py-6 mt-auto">
         <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-400">
             <p>&copy; 2026 ICT Forex Academy. All rights reserved.</p>
+            <div class="mt-2 space-x-4">
+                <a href="privacy-policy.html" class="hover:text-amber-400 transition">Privacy Policy & Terms</a>
+            </div>
         </div>
     </footer>
 
-    <!-- Firebase Logic -->
+    <!-- Firebase SDK & Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.auth.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
@@ -96,47 +101,31 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
         const messageBox = document.getElementById('message-box');
-        const userDashboard = document.getElementById('user-dashboard');
-        const userEmailDisplay = document.getElementById('user-email-display');
-        const logoutBtn = document.getElementById('logout-btn');
 
-        loginForm.addEventListener('submit', async (e) => {
+        signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+
             messageBox.classList.add('hidden');
 
+            // Password matching validation
+            if (password !== confirmPassword) {
+                showMessage("Passwords do not match! Please check.", "error");
+                return;
+            }
+
             try {
-                await signInWithEmailAndPassword(auth, email, password);
-                showMessage("Signed in successfully!", "success");
+                await createUserWithEmailAndPassword(auth, email, password);
+                showMessage("Account created successfully! Redirecting to login...", "success");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2000);
             } catch (error) {
                 showMessage(error.message, "error");
-            }
-        });
-
-        logoutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                showMessage("Signed out successfully.", "success");
-            } catch (error) {
-                showMessage(error.message, "error");
-            }
-        });
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                loginForm.classList.add('hidden');
-                document.querySelector('.text-center.mt-6').classList.add('hidden');
-                document.querySelector('.text-center.mb-8').classList.add('hidden');
-                userDashboard.classList.remove('hidden');
-                userEmailDisplay.textContent = `Logged in as: ${user.email}`;
-            } else {
-                loginForm.classList.remove('hidden');
-                document.querySelector('.text-center.mt-6').classList.remove('hidden');
-                document.querySelector('.text-center.mb-8').classList.remove('hidden');
-                userDashboard.classList.add('hidden');
             }
         });
 
