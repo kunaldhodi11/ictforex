@@ -61,7 +61,7 @@
             <div class="text-center mt-6">
                 <p id="toggle-text" class="text-sm text-gray-400">
                     Don't have an account? 
-                    <button id="toggle-btn" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign Up</button>
+                    <button id="toggle-btn" type="button" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign Up</button>
                 </p>
             </div>
 
@@ -99,7 +99,6 @@
             signOut 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.auth.js";
 
-        // Your Firebase Configuration (Updated with latest code)
         const firebaseConfig = {
             apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
             authDomain: "ict-forex.firebaseapp.com",
@@ -110,16 +109,13 @@
             measurementId: "G-32WBMZK9DW"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // UI Elements
         const authForm = document.getElementById('auth-form');
         const formTitle = document.getElementById('form-title');
         const submitBtn = document.getElementById('submit-btn');
         const toggleText = document.getElementById('toggle-text');
-        const toggleBtn = document.getElementById('toggle-btn');
         const messageBox = document.getElementById('message-box');
         const userDashboard = document.getElementById('user-dashboard');
         const userEmailDisplay = document.getElementById('user-email-display');
@@ -127,22 +123,23 @@
 
         let isSignUp = false;
 
-        // Toggle Form Mode (Sign In <-> Sign Up)
-        toggleBtn.addEventListener('click', () => {
-            isSignUp = !isSignUp;
-            if (isSignUp) {
-                formTitle.textContent = "Create Account";
-                submitBtn.textContent = "Sign Up";
-                toggleText.innerHTML = `Already have an account? <button id="toggle-btn" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign In</button>`;
-            } else {
-                formTitle.textContent = "Student Sign In";
-                submitBtn.textContent = "Sign In";
-                toggleText.innerHTML = `Don't have an account? <button id="toggle-btn" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign Up</button>`;
+        // Smooth and robust Toggle using Event Delegation
+        toggleText.addEventListener('click', (e) => {
+            if (e.target && e.target.id === 'toggle-btn') {
+                isSignUp = !isSignUp;
+                if (isSignUp) {
+                    formTitle.textContent = "Create Account";
+                    submitBtn.textContent = "Sign Up";
+                    toggleText.innerHTML = `Already have an account? <button id="toggle-btn" type="button" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign In</button>`;
+                } else {
+                    formTitle.textContent = "Student Sign In";
+                    submitBtn.textContent = "Sign In";
+                    toggleText.innerHTML = `Don't have an account? <button id="toggle-btn" type="button" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign Up</button>`;
+                }
             }
-            document.getElementById('toggle-btn').addEventListener('click', arguments.callee);
         });
 
-        // Form Submit Handler (Authentication)
+        // Form Submit Handler
         authForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
@@ -163,7 +160,6 @@
             }
         });
 
-        // Logout Handler
         logoutBtn.addEventListener('click', async () => {
             try {
                 await signOut(auth);
@@ -173,7 +169,6 @@
             }
         });
 
-        // Auth State Observer
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 authForm.classList.add('hidden');
@@ -191,7 +186,6 @@
             }
         });
 
-        // Helper Function to Show Messages
         function showMessage(text, type) {
             messageBox.textContent = text;
             messageBox.classList.remove('hidden');
