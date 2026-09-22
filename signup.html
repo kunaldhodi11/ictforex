@@ -29,7 +29,6 @@
         .footer-text a { color: #f59e0b; text-decoration: none; font-weight: 500; }
         .footer-text a:hover { text-decoration: underline; }
         
-        /* Message Box styling ko aur prominent banaya gaya hai */
         #message-box { 
             padding: 12px; 
             border-radius: 8px; 
@@ -128,12 +127,10 @@
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm-password').value;
 
-            // Purane messages clear karein
             messageBox.className = "";
             messageBox.textContent = "";
             messageBox.style.display = "none";
 
-            // Password matching check
             if (password !== confirmPassword) {
                 showMsg("Passwords match nahi ho rahe hain!", "error");
                 return;
@@ -145,12 +142,13 @@
             }
 
             try {
+                showMsg("Account ban raha hai...", "success");
                 await createUserWithEmailAndPassword(auth, email, password);
                 showMsg("Account successfully ban gaya hai! Login page par bhej rahe hain...", "success");
                 
                 setTimeout(() => {
                     window.location.href = "login.html";
-                }, 3000);
+                }, 2500);
 
             } catch (error) {
                 let errorMsg = "Kuch galat ho gaya hai.";
@@ -159,10 +157,8 @@
                     errorMsg = "Yeh email pehle se registered hai! Kripya Sign In karein.";
                 } else if (error.code === 'auth/invalid-email') {
                     errorMsg = "Email address galat hai.";
-                } else if (error.code === 'auth/weak-password') {
-                    errorMsg = "Password bahut kamzor hai.";
                 } else {
-                    errorMsg = error.message; // Agar koi aur Firebase error ho toh direct dikhaye
+                    errorMsg = error.message;
                 }
                 
                 showMsg(errorMsg, "error");
