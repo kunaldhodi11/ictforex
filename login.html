@@ -99,15 +99,15 @@
             signOut 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.auth.js";
 
-        // Your Firebase Configuration (Updated with your keys)
+        // Your Firebase Configuration (Updated with your new keys)
         const firebaseConfig = {
             apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
             authDomain: "ict-forex.firebaseapp.com",
             projectId: "ict-forex",
             storageBucket: "ict-forex.firebasestorage.app",
             messagingSenderId: "10739160076",
-            appId: "1:10739160076:web:b3fdf7194278684a54ca29",
-            measurementId: "G-72HJVY16DG"
+            appId: "1:10739160076:web:482b09403d04796954ca29",
+            measurementId: "G-RXYK305GQV"
         };
 
         // Initialize Firebase
@@ -139,7 +139,6 @@
                 submitBtn.textContent = "Sign In";
                 toggleText.innerHTML = `Don't have an account? <button id="toggle-btn" class="text-amber-500 font-medium hover:underline focus:outline-none">Sign Up</button>`;
             }
-            // Re-attach event listener to the newly rendered toggle button
             document.getElementById('toggle-btn').addEventListener('click', arguments.callee);
         });
 
