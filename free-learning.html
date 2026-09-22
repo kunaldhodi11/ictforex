@@ -24,7 +24,7 @@
 <body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between">
 
     <!-- HEADER -->
-    <header class="bg-[#131b2e] border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-40 shadow-xl">
+    <header class="bg-[#131b2e] border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-xl">
         <a href="index.html" class="flex items-center gap-2.5 group cursor-pointer">
             <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] flex items-center justify-center flex-shrink-0">
                 <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
@@ -39,25 +39,26 @@
             </div>
         </a>
 
-        <nav class="flex items-center gap-3 md:gap-6 text-[11px] md:text-xs font-bold text-gray-300">
-            <a href="index.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-house"></i> Home</a>
-            <a href="free-learning.html" class="text-green-400 hover:text-green-300 transition">Free Course</a>
-            <a href="vip-course.html" class="hover:text-yellow-400 transition flex items-center gap-1"><i class="fa-solid fa-crown text-[10px]"></i> VIP</a>
-        </nav>
-
-        <div class="flex items-center gap-2">
-            <a href="login.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-[11px] md:text-xs font-black px-3 py-1.5 md:px-4 md:py-2 rounded-xl transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-user"></i> Login
+        <!-- Only Home Button in Header -->
+        <nav class="flex items-center gap-3 text-xs font-bold text-gray-300">
+            <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
+                <i class="fa-solid fa-house"></i> Home
             </a>
-        </div>
+        </nav>
     </header>
 
-    <main class="flex-1 max-w-4xl w-full mx-auto p-6 md:p-10 space-y-8">
-        <div class="bg-gradient-to-r from-green-800 via-emerald-900 to-teal-950 border border-green-500/30 rounded-3xl p-8 shadow-2xl">
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-10 space-y-8">
+        
+        <!-- GOOGLE AD SLOT -->
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-center text-xs text-gray-500">
+            [ Google AdSense Top Ad Space ]
+        </div>
+
+        <div class="bg-gradient-to-r from-green-800 via-emerald-900 to-teal-950 border border-green-500/30 rounded-3xl p-6 md:p-8 shadow-2xl">
             <span class="bg-green-500/20 text-green-400 border border-green-500/30 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
                 100% Free Education
             </span>
-            <h2 class="text-2xl md:text-4xl font-black text-white mt-4 mb-3">
+            <h2 class="text-xl md:text-4xl font-black text-white mt-4 mb-3">
                 Trading Basics, Candlestick Patterns & Price Action
             </h2>
             <p class="text-gray-300 text-xs md:text-sm leading-relaxed">
@@ -65,19 +66,10 @@
             </p>
         </div>
 
-        <article class="bg-[#131b2e] border border-gray-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-xl">
-            <div class="border-b border-gray-800 pb-4">
-                <span class="text-green-400 text-xs font-bold uppercase tracking-wider">Lesson 01</span>
-                <h3 class="text-xl md:text-2xl font-black text-white mt-1">Introduction to Candlestick Psychology</h3>
-            </div>
-            <div class="text-gray-300 text-xs md:text-sm space-y-4 leading-relaxed">
-                <p>Candlesticks represent buyer and seller interactions in the market over specific timeframes.</p>
-                <div class="my-6 text-center">
-                    <img src="images/candlestick-example.png" alt="Candlestick Pattern" class="rounded-2xl border border-gray-800 shadow-2xl mx-auto w-full max-w-2xl bg-gray-950 p-2">
-                    <span class="text-[10px] text-gray-500 mt-2 block">Figure 1.1: Standard Bullish and Bearish Candlestick Anatomy</span>
-                </div>
-            </div>
-        </article>
+        <!-- GOOGLE AD SLOT 2 -->
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-center text-xs text-gray-500">
+            [ Google AdSense In-Article Ad Slot ]
+        </div>
     </main>
 
     <footer class="bg-[#131b2e] border-t border-gray-800 py-6 text-center text-xs text-gray-400 mt-12">
