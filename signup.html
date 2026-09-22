@@ -1,4 +1,83 @@
-<!-- Firebase Logic -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - ICT Forex Academy</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-xl font-bold tracking-wider text-amber-500">ICT FOREX</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="hover:text-amber-400 transition">Home</a>
+                    <a href="free-learning.html" class="hover:text-amber-400 transition">Free Learning</a>
+                    <a href="vip-course.html" class="hover:text-amber-400 transition">VIP Course</a>
+                    <a href="login.html" class="text-amber-500 font-medium">Portal Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="max-w-md w-full bg-gray-900 border border-gray-800 rounded-xl p-8 shadow-2xl">
+            
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold text-white">Create Account</h1>
+                <p class="text-sm text-gray-400 mt-2">Join ICT Forex Academy today</p>
+            </div>
+
+            <!-- Message Box -->
+            <div id="message-box" class="hidden mb-4 p-3 rounded text-sm text-center"></div>
+
+            <form id="signup-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                    <input type="email" id="signup-email" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="you@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <input type="password" id="signup-password" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="••••••••">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" required class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold py-3 rounded-lg transition shadow-lg mt-2">
+                    Sign Up
+                </button>
+            </form>
+
+            <div class="text-center mt-6">
+                <p class="text-sm text-gray-400">
+                    Already have an account? 
+                    <a href="login.html" class="text-amber-500 font-medium hover:underline ml-1">Sign In</a>
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-400">
+            <p>&copy; 2026 ICT Forex Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.app.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.auth.js";
@@ -27,9 +106,8 @@
 
             messageBox.classList.add('hidden');
 
-            // Password matching check
             if (password !== confirmPassword) {
-                showMessage("Passwords match nahi ho rahe hain! Kripya check karein.", "error");
+                showMessage("Passwords match nahi ho rahe hain!", "error");
                 return;
             }
 
@@ -41,22 +119,16 @@
             try {
                 await createUserWithEmailAndPassword(auth, email, password);
                 showMessage("Account successfully ban gaya hai! Login page par bhej rahe hain...", "success");
-                
-                // Thoda time dekar redirect karein taaki message saaf dikhe
                 setTimeout(() => {
                     window.location.href = "login.html";
-                }, 3000);
-
+                }, 2500);
             } catch (error) {
-                let errorMsg = "Kuch galat ho gaya hai. Dobara koshish karein.";
-                
-                // Professional error handling for Firebase
+                let errorMsg = "Kuch galat ho gaya hai.";
                 if (error.code === 'auth/email-already-in-use') {
                     errorMsg = "Yeh email pehle se registered hai! Kripya Sign In karein.";
                 } else if (error.code === 'auth/invalid-email') {
-                    errorMsg = "Email address Sahi nahi hai.";
+                    errorMsg = "Email address galat hai.";
                 }
-                
                 showMessage(errorMsg, "error");
             }
         });
@@ -71,3 +143,5 @@
             }
         }
     </script>
+</body>
+</html>
