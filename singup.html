@@ -70,7 +70,8 @@
             <!-- Message Box -->
             <div id="message-box"></div>
 
-            <form id="signup-form" onsubmit="event.preventDefault();">
+            <!-- Yahan form ki jagah simple div aur type="button" kar diya hai -->
+            <div id="signup-form">
                 <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" id="signup-email" required class="form-control" placeholder="you@example.com">
@@ -86,8 +87,8 @@
                     <input type="password" id="signup-confirm-password" required class="form-control" placeholder="••••••••">
                 </div>
 
-                <button type="submit" class="btn">Sign Up</button>
-            </form>
+                <button type="button" id="signup-btn" class="btn">Sign Up</button>
+            </div>
 
             <div class="footer-text">
                 Already have an account? <a href="login.html">Sign In</a>
@@ -118,12 +119,11 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        const signupForm = document.getElementById('signup-form');
+        const signupBtn = document.getElementById('signup-btn');
         const messageBox = document.getElementById('message-box');
 
-        signupForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            console.log("Button click ho gaya hai!"); // Yeh check karne ke liye ki click trigger ho raha hai
+        signupBtn.addEventListener('click', async () => {
+            console.log("Direct button click ho gaya!");
 
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
@@ -132,6 +132,11 @@
             messageBox.className = "";
             messageBox.textContent = "";
             messageBox.style.display = "none";
+
+            if (!email || !password || !confirmPassword) {
+                showMsg("Kripya sabhi fields bharein!", "error");
+                return;
+            }
 
             if (password !== confirmPassword) {
                 showMsg("Passwords match nahi ho rahe hain!", "error");
