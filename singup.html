@@ -123,6 +123,8 @@
 
         signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            console.log("Button click ho gaya hai!"); // Yeh check karne ke liye ki click trigger ho raha hai
+
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm-password').value;
@@ -154,7 +156,7 @@
                 let errorMsg = "Kuch galat ho gaya hai.";
                 
                 if (error.code === 'auth/email-already-in-use') {
-                    errorMsg = "Yeh email pehle से registered hai! Kripya Sign In karein.";
+                    errorMsg = "Yeh email pehle se registered hai! Kripya Sign In karein.";
                 } else if (error.code === 'auth/invalid-email') {
                     errorMsg = "Email address galat hai.";
                 } else {
@@ -167,7 +169,6 @@
 
         function showMsg(text, type) {
             messageBox.textContent = text;
-            messageBox.style.display = "1";
             messageBox.style.display = "block";
             if (type === 'error') {
                 messageBox.className = "error-msg";
