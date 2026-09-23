@@ -86,7 +86,6 @@
                     <input type="password" id="signup-confirm-password" required class="form-control" placeholder="••••••••">
                 </div>
 
-                <!-- Seedha onclick function laga diya hai -->
                 <button type="button" onclick="handleSignup()" class="btn">Sign Up</button>
             </div>
 
@@ -101,10 +100,10 @@
         <p>&copy; 2026 ICT Forex Academy. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase Logic -->
+    <!-- Firebase Logic with fixed URLs -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase.auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
@@ -119,7 +118,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Global function taaki button seedha isko call kar sake
         window.handleSignup = async function() {
             console.log("Button click ho gaya!");
 
