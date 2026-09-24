@@ -11,7 +11,7 @@
         nav { background-color: #111827; border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 50; }
         .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; display: flex; justify-content: space-between; height: 64px; align-items: center; }
         .logo { font-size: 20px; font-weight: bold; color: #f59e0b; text-decoration: none; letter-spacing: 1px; }
-        .nav-links { display: flex; gap: 24px; }
+        .nav-links { display: flex; gap: 24px; align-items: center; }
         .nav-links a { color: #d1d5db; text-decoration: none; font-size: 14px; transition: color 0.2s; }
         .nav-links a:hover, .nav-links a.active { color: #f59e0b; }
         main { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }
@@ -54,7 +54,7 @@
                 <a href="index.html">Home</a>
                 <a href="free-learning.html">Free Learning</a>
                 <a href="vip-course.html">VIP Course</a>
-                <a href="login.html" class="active">Portal Login</a>
+                <a href="login.html" id="auth-nav-link" class="active">Portal Login</a>
             </div>
         </div>
     </nav>
@@ -100,10 +100,10 @@
         <p>&copy; 2026 ICT Forex Academy. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase Logic with correct hyphenated CDN URLs -->
+    <!-- Firebase Signup Logic & Auth State Change -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
@@ -118,9 +118,26 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        window.handleSignup = async function() {
-            console.log("Button click ho gaya!");
+        onAuthStateChanged(auth, (user) => {
+            const authLink = document.getElementById('auth-nav-link');
+            if (!authLink) return;
 
+            if (user) {
+                authLink.textContent = "Logout";
+                authLink.href = "#";
+                authLink.onclick = async (e) => {
+                    e.preventDefault();
+                    await signOut(auth);
+                    window.location.reload();
+                };
+            } else {
+                authLink.textContent = "Portal Login";
+                authLink.href = "login.html";
+                authLink.onclick = null;
+            }
+        });
+
+        window.handleSignup = async function() {
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm-password').value;
@@ -152,7 +169,7 @@
                 
                 setTimeout(() => {
                     window.location.href = "login.html";
-                }, 2500);
+                }, 2000);
 
             } catch (error) {
                 let errorMsg = "Kuch galat ho gaya hai.";
