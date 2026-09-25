@@ -72,6 +72,11 @@
 
             <div id="signup-form">
                 <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signup-name" required class="form-control" placeholder="John Doe">
+                </div>
+
+                <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" id="signup-email" required class="form-control" placeholder="you@example.com">
                 </div>
@@ -100,10 +105,11 @@
         <p>&copy; 2026 ICT Forex Academy. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase Signup Logic & Auth State Change -->
+    <!-- Firebase Signup & Firestore Integration Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
@@ -117,6 +123,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
         onAuthStateChanged(auth, (user) => {
             const authLink = document.getElementById('auth-nav-link');
@@ -138,6 +145,7 @@
         });
 
         window.handleSignup = async function() {
+            const name = document.getElementById('signup-name').value;
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm-password').value;
@@ -147,7 +155,7 @@
             messageBox.textContent = "";
             messageBox.style.display = "none";
 
-            if (!email || !password || !confirmPassword) {
+            if (!name || !email || !password || !confirmPassword) {
                 showMsg("Kripya sabhi fields bharein!", "error");
                 return;
             }
@@ -163,8 +171,21 @@
             }
 
             try {
-                showMsg("Account ban raha hai...", "success");
-                await createUserWithEmailAndPassword(auth, email, password);
+                showMsg("Account aur Database profile ban rahi hai...", "success");
+                
+                // 1. Create Authentication User
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. Save User Data into Firestore Database ('users' collection)
+                await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid,
+                    fullName: name,
+                    email: email,
+                    courseAccess: "free", // Default course access level
+                    createdAt: new Date().toISOString()
+                });
+
                 showMsg("Account successfully ban gaya hai! Login page par bhej rahe hain...", "success");
                 
                 setTimeout(() => {
