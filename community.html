@@ -44,7 +44,6 @@
                 <i class="fa-solid fa-house"></i> Home
             </a>
             <a href="free-learning.html" class="hover:text-green-400 transition hidden sm:inline">Free Course</a>
-            <!-- Auth / Profile Link -->
             <a href="login.html" id="auth-nav-link" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
                 <i class="fa-solid fa-user"></i> Login
             </a>
@@ -54,7 +53,7 @@
     <!-- MAIN CONTENT CONTAINER -->
     <main class="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 space-y-6">
 
-        <!-- PROFILE HEADER CARD (Instagram Style with Bio & IG) -->
+        <!-- PROFILE HEADER CARD -->
         <div id="profile-card" class="bg-gray-900 border border-gray-800 rounded-3xl p-6 shadow-xl hidden space-y-4">
             <div class="flex items-start justify-between">
                 <div class="flex items-center gap-4">
@@ -65,7 +64,6 @@
                     </div>
                     <div>
                         <h2 id="profile-username" class="text-lg md:text-xl font-black text-white">Trader Name</h2>
-                        <!-- Instagram Handle Display -->
                         <a href="#" id="profile-ig-link" target="_blank" class="text-xs text-pink-400 hover:underline flex items-center gap-1 mt-0.5 hidden">
                             <i class="fa-brands fa-instagram"></i> <span id="profile-ig-text">@username</span>
                         </a>
@@ -76,23 +74,20 @@
                 </button>
             </div>
 
-            <!-- User Bio -->
             <p id="profile-bio-text" class="text-xs md:text-sm text-gray-300 italic">
                 "Smart Money Trader | Passionate about ICT concepts & Market Structure."
             </p>
 
-            <!-- Stats Grid -->
             <div class="flex gap-6 pt-2 border-t border-gray-800 text-xs">
                 <div><span class="font-black text-white text-sm">0</span> <span class="text-gray-400">Posts</span></div>
                 <div><span class="font-black text-white text-sm">142</span> <span class="text-gray-400">Followers</span></div>
                 <div><span class="font-black text-white text-sm">85</span> <span class="text-gray-400">Following</span></div>
             </div>
 
-            <!-- Edit Profile Form (Hidden by default) -->
             <div id="edit-profile-box" class="bg-[#0b0f19] border border-gray-800 p-4 rounded-2xl space-y-3 hidden">
                 <h4 class="text-xs font-bold text-green-400 uppercase">Update Your Profile</h4>
-                <input type="text" id="input-bio" placeholder="Write your bio (e.g., Forex Trader & Mentorship Student)" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-green-500">
-                <input type="text" id="input-ig" placeholder="Instagram Profile Link or Handle (e.g., instagram.com/yourusername)" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-green-500">
+                <input type="text" id="input-bio" placeholder="Write your bio..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-green-500">
+                <input type="text" id="input-ig" placeholder="Instagram Profile Link or Handle..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-green-500">
                 <button onclick="saveProfileDetails()" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-4 py-2 rounded-xl transition">
                     Save Changes
                 </button>
@@ -128,7 +123,7 @@
             <!-- FEED CONTAINER -->
             <div id="feed-container" class="space-y-4">
                 
-                <!-- Sample Post 1 -->
+                <!-- Sample Post 1 (Clickable User Name -> Opens profile.html) -->
                 <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-3">
@@ -136,10 +131,10 @@
                                 AK
                             </div>
                             <div>
-                                <h4 class="text-xs md:text-sm font-black text-white flex items-center gap-1.5">
-                                    Aakash Kumar 
-                                    <a href="#" target="_blank" class="text-pink-400 text-[10px]"><i class="fa-brands fa-instagram"></i></a>
-                                </h4>
+                                <!-- Clickable Name Linking to Profile -->
+                                <a href="profile.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition flex items-center gap-1.5">
+                                    Aakash Kumar
+                                </a>
                                 <span class="text-[10px] text-gray-400">2 hours ago</span>
                             </div>
                         </div>
@@ -169,7 +164,7 @@
         <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
     </footer>
 
-    <!-- JavaScript for Profile Editing & Firebase -->
+    <!-- JavaScript for Profile Editing -->
     <script>
         function toggleEditProfile() {
             const box = document.getElementById('edit-profile-box');
@@ -196,7 +191,6 @@
             alert('Profile updated successfully!');
         }
 
-        // Load saved profile data on page load
         window.addEventListener('DOMContentLoaded', () => {
             const savedBio = localStorage.getItem('userBio');
             const savedIg = localStorage.getItem('userIg');
