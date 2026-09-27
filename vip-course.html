@@ -43,6 +43,10 @@
             <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
                 <i class="fa-solid fa-house"></i> Home
             </a>
+            <!-- Auth Link for User Name & Logout -->
+            <a href="login.html" id="auth-nav-link" class="hidden sm:flex bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow items-center gap-1.5">
+                <i class="fa-solid fa-user"></i> Login
+            </a>
         </nav>
     </header>
 
@@ -87,5 +91,46 @@
             <a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a>
         </p>
     </footer>
+
+    <!-- Firebase Auth Protection Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
+            authDomain: "ict-forex.firebaseapp.com",
+            projectId: "ict-forex",
+            storageBucket: "ict-forex.firebasestorage.app",
+            messagingSenderId: "10739160076",
+            appId: "1:10739160076:web:0560474e8cf4a43254ca29",
+            measurementId: "G-32WBMZK9DW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            const authLink = document.getElementById('auth-nav-link');
+            if (!user) {
+                // Agar user login nahi hai toh login page par bhej dein
+                window.location.href = "login.html";
+            } else {
+                // Agar logged-in hai toh naam aur logout dikhayein
+                const userName = localStorage.getItem('userName') || "User";
+                if (authLink) {
+                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
+                    authLink.href = "#";
+                    authLink.onclick = async (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('userName');
+                        localStorage.removeItem('userAccess');
+                        await signOut(auth);
+                        window.location.href = "login.html";
+                    };
+                }
+            }
+        });
+    </script>
 </body>
 </html>
