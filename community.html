@@ -131,7 +131,6 @@
                                 AK
                             </div>
                             <div>
-                                <!-- Clickable Name Linking to Profile with proper pointer and relative z-index -->
                                 <a href="profile.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
                                     Aakash Kumar
                                 </a>
@@ -164,7 +163,7 @@
         <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
     </footer>
 
-    <!-- JavaScript for Profile Editing and Dynamic Posting -->
+    <!-- JavaScript for Profile Editing, Posting and Force Navigation -->
     <script>
         function toggleEditProfile() {
             const box = document.getElementById('edit-profile-box');
@@ -242,6 +241,16 @@
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)
             );
         }
+
+        // FORCE CLICK REDIRECT HANDLER
+        document.addEventListener('click', function(event) {
+            const userLink = event.target.closest('a[href*="profile.html"]');
+            if (userLink) {
+                event.preventDefault();
+                const targetUrl = userLink.getAttribute('href');
+                window.location.href = targetUrl;
+            }
+        });
 
         window.addEventListener('DOMContentLoaded', () => {
             const savedBio = localStorage.getItem('userBio');
