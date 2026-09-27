@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Feed & Profiles | ICT Forex Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 500: '#22c55e', 600: '#16a34a' },
+                        secondary: { 500: '#a855f7', 600: '#9333ea' },
+                        accent: { 500: '#eab308' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER -->
+    <header class="bg-[#131b2e] border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-xl">
+        <a href="index.html" class="flex items-center gap-2.5 group cursor-pointer">
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] flex items-center justify-center flex-shrink-0">
+                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
+                    <span class="text-xs md:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-xs md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 drop-shadow">
+                    ICT FOREX ACADEMY
+                </h1>
+                <p class="text-[9px] md:text-[10px] text-gray-400 font-medium tracking-wide">Trader Community</p>
+            </div>
+        </a>
+
+        <nav class="flex items-center gap-3 text-xs font-bold text-gray-300">
+            <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+            <a href="free-learning.html" class="hover:text-green-400 transition hidden sm:inline">Free Course</a>
+            <!-- Auth / Profile Link -->
+            <a href="login.html" id="auth-nav-link" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+                <i class="fa-solid fa-user"></i> Login
+            </a>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+        <!-- PROFILE HEADER CARD (Instagram Style with Bio & IG) -->
+        <div id="profile-card" class="bg-gray-900 border border-gray-800 rounded-3xl p-6 shadow-xl hidden space-y-4">
+            <div class="flex items-start justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 p-1 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-user text-2xl text-green-400"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 id="profile-username" class="text-lg md:text-xl font-black text-white">Trader Name</h2>
+                        <!-- Instagram Handle Display -->
+                        <a href="#" id="profile-ig-link" target="_blank" class="text-xs text-pink-400 hover:underline flex items-center gap-1 mt-0.5 hidden">
+                            <i class="fa-brands fa-instagram"></i> <span id="profile-ig-text">@username</span>
+                        </a>
+                    </div>
+                </div>
+                <button onclick="toggleEditProfile()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-3 py-1.5 rounded-xl transition border border-gray-700">
+                    <i class="fa-solid fa-pen"></i> Edit Profile
+                </button>
+            </div>
+
+            <!-- User Bio -->
+            <p id="profile-bio-text" class="text-xs md:text-sm text-gray-300 italic">
+                "Smart Money Trader | Passionate about ICT concepts & Market Structure."
+            </p>
+
+            <!-- Stats Grid -->
+            <div class="flex gap-6 pt-2 border-t border-gray-800 text-xs">
+                <div><span class="font-black text-white text-sm">0</span> <span class="text-gray-400">Posts</span></div>
+                <div><span class="font-black text-white text-sm">142</span> <span class="text-gray-400">Followers</span></div>
+                <div><span class="font-black text-white text-sm">85</span> <span class="text-gray-400">Following</span></div>
+            </div>
+
+            <!-- Edit Profile Form (Hidden by default) -->
+            <div id="edit-profile-box" class="bg-[#0b0f19] border border-gray-800 p-4 rounded-2xl space-y-3 hidden">
+                <h4 class="text-xs font-bold text-green-400 uppercase">Update Your Profile</h4>
+                <input type="text" id="input-bio" placeholder="Write your bio (e.g., Forex Trader & Mentorship Student)" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-green-500">
+                <input type="text" id="input-ig" placeholder="Instagram Profile Link or Handle (e.g., instagram.com/yourusername)" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-green-500">
+                <button onclick="saveProfileDetails()" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-4 py-2 rounded-xl transition">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+
+        <!-- CREATE POST BOX -->
+        <div id="create-post-container" class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3 hidden">
+            <h3 class="text-xs font-black uppercase tracking-wider text-green-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-pen-nib"></i> Share Your Market Analysis
+            </h3>
+            <textarea id="post-text-input" rows="3" placeholder="What is your analysis on EURUSD or GBPUSD today?..." class="w-full bg-[#0b0f19] border border-gray-800 rounded-2xl p-3 text-xs md:text-sm text-gray-200 focus:outline-none focus:border-green-500 transition resize-none"></textarea>
+            
+            <div class="flex justify-between items-center pt-1">
+                <div class="flex items-center gap-2 text-gray-400 text-xs cursor-pointer hover:text-green-400 transition">
+                    <i class="fa-regular fa-image text-base"></i> <span class="hidden sm:inline">Add Chart Link</span>
+                </div>
+                <button id="publish-post-btn" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-6 py-2.5 rounded-xl transition shadow">
+                    Publish Analysis
+                </button>
+            </div>
+        </div>
+
+        <!-- COMMUNITY FEED SECTION -->
+        <div class="space-y-4">
+            <div class="flex justify-between items-center px-1">
+                <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-globe text-green-400"></i> Global Trader Feeds
+                </h3>
+                <span class="text-[10px] text-gray-400 bg-gray-900 px-3 py-1 rounded-full border border-gray-800">Live Community</span>
+            </div>
+
+            <!-- FEED CONTAINER -->
+            <div id="feed-container" class="space-y-4">
+                
+                <!-- Sample Post 1 -->
+                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white text-xs">
+                                AK
+                            </div>
+                            <div>
+                                <h4 class="text-xs md:text-sm font-black text-white flex items-center gap-1.5">
+                                    Aakash Kumar 
+                                    <a href="#" target="_blank" class="text-pink-400 text-[10px]"><i class="fa-brands fa-instagram"></i></a>
+                                </h4>
+                                <span class="text-[10px] text-gray-400">2 hours ago</span>
+                            </div>
+                        </div>
+                        <button class="bg-gray-800 hover:bg-green-500 hover:text-gray-950 text-green-400 border border-green-500/30 text-[10px] font-bold px-3 py-1 rounded-lg transition">
+                            Follow +
+                        </button>
+                    </div>
+
+                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                        EURUSD is showing a clean market structure shift on the 15M timeframe. Expecting a retest of the 4H order block before continuation. What are your thoughts? 📊🔥
+                    </p>
+
+                    <div class="flex items-center gap-6 pt-2 border-t border-gray-800/80 text-gray-400 text-xs">
+                        <button class="flex items-center gap-1.5 hover:text-red-500 transition"><i class="fa-regular fa-heart"></i> 24</button>
+                        <button class="flex items-center gap-1.5 hover:text-green-400 transition"><i class="fa-regular fa-comment"></i> Comments</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#131b2e] border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2">
+        <p>ICT Forex Academy © 2026. All rights reserved. Community Feed.</p>
+        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
+    </footer>
+
+    <!-- JavaScript for Profile Editing & Firebase -->
+    <script>
+        function toggleEditProfile() {
+            const box = document.getElementById('edit-profile-box');
+            box.classList.toggle('hidden');
+        }
+
+        function saveProfileDetails() {
+            const bioInput = document.getElementById('input-bio').value;
+            const igInput = document.getElementById('input-ig').value;
+
+            if(bioInput) {
+                localStorage.setItem('userBio', bioInput);
+                document.getElementById('profile-bio-text').innerText = bioInput;
+            }
+            if(igInput) {
+                localStorage.setItem('userIg', igInput);
+                const igLink = document.getElementById('profile-ig-link');
+                const igText = document.getElementById('profile-ig-text');
+                igText.innerText = igInput;
+                igLink.href = igInput.startsWith('http') ? igInput : `https://${igInput}`;
+                igLink.classList.remove('hidden');
+            }
+            toggleEditProfile();
+            alert('Profile updated successfully!');
+        }
+
+        // Load saved profile data on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedBio = localStorage.getItem('userBio');
+            const savedIg = localStorage.getItem('userIg');
+            if(savedBio) {
+                document.getElementById('profile-bio-text').innerText = savedBio;
+            }
+            if(savedIg) {
+                const igLink = document.getElementById('profile-ig-link');
+                const igText = document.getElementById('profile-ig-text');
+                igText.innerText = savedIg;
+                igLink.href = savedIg.startsWith('http') ? savedIg : `https://${savedIg}`;
+                igLink.classList.remove('hidden');
+            }
+        });
+    </script>
+
+    <!-- Firebase Auth Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
+            authDomain: "ict-forex.firebaseapp.com",
+            projectId: "ict-forex",
+            storageBucket: "ict-forex.firebasestorage.app",
+            messagingSenderId: "10739160076",
+            appId: "1:10739160076:web:0560474e8cf4a43254ca29",
+            measurementId: "G-32WBMZK9DW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            const authLink = document.getElementById('auth-nav-link');
+            const profileCard = document.getElementById('profile-card');
+            const createPostContainer = document.getElementById('create-post-container');
+            
+            if (user) {
+                const userName = localStorage.getItem('userName') || "Trader";
+                if (profileCard) profileCard.classList.remove('hidden');
+                if (createPostContainer) createPostContainer.classList.remove('hidden');
+                
+                const profileUsername = document.getElementById('profile-username');
+                if (profileUsername) profileUsername.innerText = userName;
+
+                if (authLink) {
+                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i>`;
+                    authLink.title = "Logout";
+                    authLink.href = "#";
+                    authLink.onclick = async (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('userName');
+                        localStorage.removeItem('userAccess');
+                        localStorage.removeItem('userBio');
+                        localStorage.removeItem('userIg');
+                        await signOut(auth);
+                        window.location.href = "login.html";
+                    };
+                }
+            } else {
+                if (authLink) {
+                    authLink.innerHTML = `<i class="fa-solid fa-user"></i> Login`;
+                    authLink.href = "login.html";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
