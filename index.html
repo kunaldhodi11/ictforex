@@ -58,7 +58,7 @@
 
         <!-- Right Side Actions & Mobile Menu Button -->
         <div class="flex items-center gap-2">
-            <!-- Auth Link with ID for Dynamic Login/Logout -->
+            <!-- Auth Link with ID for Dynamic Login/Logout & User Name Display -->
             <a href="login.html" id="auth-nav-link" class="hidden sm:flex bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow items-center gap-1.5">
                 <i class="fa-solid fa-user"></i> Login
             </a>
@@ -128,7 +128,7 @@
         </p>
     </footer>
 
-    <!-- Firebase Auth State Script -->
+    <!-- Firebase Auth State & User Name Display Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -151,22 +151,29 @@
             const mobileAuthLink = document.getElementById('mobile-auth-link');
 
             if (user) {
-                // Desktop Link Update
+                // Get user name saved in localStorage during login
+                const userName = localStorage.getItem('userName') || "User";
+
+                // Desktop Link Update (Shows User Name + Logout Button)
                 if (authLink) {
-                    authLink.innerHTML = `<i class="fa-solid fa-right-from-bracket"></i> Logout`;
+                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
                     authLink.href = "#";
                     authLink.onclick = async (e) => {
                         e.preventDefault();
+                        localStorage.removeItem('userName');
+                        localStorage.removeItem('userAccess');
                         await signOut(auth);
                         window.location.reload();
                     };
                 }
                 // Mobile Link Update
                 if (mobileAuthLink) {
-                    mobileAuthLink.innerHTML = `<i class="fa-solid fa-right-from-bracket mr-1"></i> Logout`;
+                    mobileAuthLink.innerHTML = `<i class="fa-solid fa-user-check mr-1"></i> ${userName} (Logout)`;
                     mobileAuthLink.href = "#";
                     mobileAuthLink.onclick = async (e) => {
                         e.preventDefault();
+                        localStorage.removeItem('userName');
+                        localStorage.removeItem('userAccess');
                         await signOut(auth);
                         window.location.reload();
                     };
