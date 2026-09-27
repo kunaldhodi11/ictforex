@@ -105,7 +105,7 @@
                 <div class="flex items-center gap-2 text-gray-400 text-xs cursor-pointer hover:text-green-400 transition">
                     <i class="fa-regular fa-image text-base"></i> <span class="hidden sm:inline">Add Chart Link</span>
                 </div>
-                <button id="publish-post-btn" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-6 py-2.5 rounded-xl transition shadow">
+                <button id="publish-post-btn" onclick="publishPost()" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-6 py-2.5 rounded-xl transition shadow cursor-pointer">
                     Publish Analysis
                 </button>
             </div>
@@ -131,11 +131,11 @@
                                 AK
                             </div>
                             <div>
-                                <!-- Clickable Name Linking to Profile -->
-                                <a href="profile.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition flex items-center gap-1.5">
+                                <!-- Clickable Name Linking to Profile with proper pointer and relative z-index -->
+                                <a href="profile.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
                                     Aakash Kumar
                                 </a>
-                                <span class="text-[10px] text-gray-400">2 hours ago</span>
+                                <span class="text-[10px] text-gray-400 block">2 hours ago</span>
                             </div>
                         </div>
                         <button class="bg-gray-800 hover:bg-green-500 hover:text-gray-950 text-green-400 border border-green-500/30 text-[10px] font-bold px-3 py-1 rounded-lg transition">
@@ -164,7 +164,7 @@
         <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
     </footer>
 
-    <!-- JavaScript for Profile Editing -->
+    <!-- JavaScript for Profile Editing and Dynamic Posting -->
     <script>
         function toggleEditProfile() {
             const box = document.getElementById('edit-profile-box');
@@ -189,6 +189,58 @@
             }
             toggleEditProfile();
             alert('Profile updated successfully!');
+        }
+
+        function publishPost() {
+            const textInput = document.getElementById('post-text-input');
+            const content = textInput.value.trim();
+            if(!content) {
+                alert('Please write something to publish!');
+                return;
+            }
+
+            const userName = localStorage.getItem('userName') || "Trader";
+            const initials = userName.substring(0, 2).toUpperCase();
+            const feedContainer = document.getElementById('feed-container');
+
+            const postHTML = `
+                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-green-500 to-emerald-500 flex items-center justify-center font-bold text-gray-950 text-xs">
+                                ${initials}
+                            </div>
+                            <div>
+                                <a href="profile.html?user=${encodeURIComponent(userName)}" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
+                                    ${userName}
+                                </a>
+                                <span class="text-[10px] text-gray-400 block">Just now</span>
+                            </div>
+                        </div>
+                        <button class="bg-gray-800 hover:bg-green-500 hover:text-gray-950 text-green-400 border border-green-500/30 text-[10px] font-bold px-3 py-1 rounded-lg transition">
+                            Follow +
+                        </button>
+                    </div>
+
+                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                        ${escapeHTML(content)}
+                    </p>
+
+                    <div class="flex items-center gap-6 pt-2 border-t border-gray-800/80 text-gray-400 text-xs">
+                        <button class="flex items-center gap-1.5 hover:text-red-500 transition"><i class="fa-regular fa-heart"></i> 0</button>
+                        <button class="flex items-center gap-1.5 hover:text-green-400 transition"><i class="fa-regular fa-comment"></i> Comments</button>
+                    </div>
+                </div>
+            `;
+
+            feedContainer.insertAdjacentHTML('afterbegin', postHTML);
+            textInput.value = '';
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)
+            );
         }
 
         window.addEventListener('DOMContentLoaded', () => {
