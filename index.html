@@ -53,6 +53,7 @@
         <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-gray-300">
             <a href="index.html" class="text-green-400 hover:text-green-300 transition flex items-center gap-1"><i class="fa-solid fa-house"></i> Home</a>
             <a href="free-learning.html" class="hover:text-green-400 transition">Free Course</a>
+            <a href="community.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-users text-[10px]"></i> Community</a>
             <a href="vip-course.html" class="hover:text-yellow-400 transition flex items-center gap-1"><i class="fa-solid fa-crown text-[10px]"></i> VIP Academy</a>
         </nav>
 
@@ -74,6 +75,7 @@
     <div id="mobile-popup-menu" class="hidden md:hidden absolute top-[105px] inset-x-0 bg-[#0f172a] border-b border-gray-800 p-5 space-y-4 shadow-2xl z-50">
         <a href="index.html" class="block text-sm font-bold text-green-400 py-2 border-b border-gray-800"><i class="fa-solid fa-house mr-2"></i> Home</a>
         <a href="free-learning.html" class="block text-sm font-bold text-gray-300 py-2 border-b border-gray-800"><i class="fa-solid fa-book-open mr-2"></i> Free Course</a>
+        <a href="community.html" class="block text-sm font-bold text-gray-300 py-2 border-b border-gray-800"><i class="fa-solid fa-users mr-2"></i> Community</a>
         <a href="vip-course.html" class="block text-sm font-bold text-yellow-400 py-2 border-b border-gray-800"><i class="fa-solid fa-crown mr-2"></i> VIP Academy</a>
         <a href="login.html" id="mobile-auth-link" class="block text-center bg-green-500 text-gray-950 font-black text-xs py-3 rounded-xl shadow"><i class="fa-solid fa-user mr-1"></i> Student Login</a>
     </div>
@@ -106,6 +108,9 @@
             <div class="flex flex-col sm:flex-row justify-center gap-3">
                 <a href="free-learning.html" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-6 py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
                     <i class="fa-solid fa-book-open"></i> Start Free Course
+                </a>
+                <a href="community.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 font-black text-xs px-6 py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-users"></i> Join Community
                 </a>
                 <a href="vip-course.html" class="bg-gradient-to-r from-yellow-500 to-amber-600 hover:opacity-90 text-gray-950 font-black text-xs px-6 py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
                     <i class="fa-solid fa-crown"></i> Join VIP Mentorship
@@ -151,10 +156,8 @@
             const mobileAuthLink = document.getElementById('mobile-auth-link');
 
             if (user) {
-                // Get user name saved in localStorage during login
                 const userName = localStorage.getItem('userName') || "User";
 
-                // Desktop Link Update (Shows User Name + Logout Button)
                 if (authLink) {
                     authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
                     authLink.href = "#";
@@ -162,11 +165,12 @@
                         e.preventDefault();
                         localStorage.removeItem('userName');
                         localStorage.removeItem('userAccess');
+                        localStorage.removeItem('userBio');
+                        localStorage.removeItem('userIg');
                         await signOut(auth);
                         window.location.reload();
                     };
                 }
-                // Mobile Link Update
                 if (mobileAuthLink) {
                     mobileAuthLink.innerHTML = `<i class="fa-solid fa-user-check mr-1"></i> ${userName} (Logout)`;
                     mobileAuthLink.href = "#";
@@ -174,6 +178,8 @@
                         e.preventDefault();
                         localStorage.removeItem('userName');
                         localStorage.removeItem('userAccess');
+                        localStorage.removeItem('userBio');
+                        localStorage.removeItem('userIg');
                         await signOut(auth);
                         window.location.reload();
                     };
