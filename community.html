@@ -63,7 +63,9 @@
                         </div>
                     </div>
                     <div>
-                        <h2 id="profile-username" class="text-lg md:text-xl font-black text-white">Trader Name</h2>
+                        <a href="#" id="profile-profile-link" class="text-lg md:text-xl font-black text-white hover:text-green-400 transition inline-block">
+                            <span id="profile-username">Trader Name</span>
+                        </a>
                         <a href="#" id="profile-ig-link" target="_blank" class="text-xs text-pink-400 hover:underline flex items-center gap-1 mt-0.5 hidden">
                             <i class="fa-brands fa-instagram"></i> <span id="profile-ig-text">@username</span>
                         </a>
@@ -358,10 +360,17 @@
             if (user) {
                 const userName = localStorage.getItem('userName') || "Trader";
                 if (profileCard) profileCard.classList.remove('hidden');
+                if (createPostContainer) createpostContainer = document.getElementById('create-post-container');
                 if (createPostContainer) createPostContainer.classList.remove('hidden');
                 
                 const profileUsername = document.getElementById('profile-username');
-                if (profileUsername) profileUsername.innerText = userName;
+                if (profileUsername) {
+                    profileUsername.innerText = userName;
+                    const profileProfileLink = document.getElementById('profile-profile-link');
+                    if (profileProfileLink) {
+                        profileProfileLink.href = `profile.html?user=${encodeURIComponent(userName)}`;
+                    }
+                }
 
                 if (authLink) {
                     authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i>`;
