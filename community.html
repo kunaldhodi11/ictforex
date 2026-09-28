@@ -133,7 +133,7 @@
                                 AK
                             </div>
                             <div>
-                                <a href="profile_3.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
+                                <a href="profile.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
                                     Aakash Kumar
                                 </a>
                                 <span class="text-[10px] text-gray-400 block">2 hours ago</span>
@@ -145,7 +145,7 @@
                     </div>
 
                     <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
-                        EURUSD is showing a clean market structure shift on the 15M timeframe. Expecting a retest of the 4H order block before continuation. What are your thoughts? 📊🔥[cite: 6]
+                        EURUSD is showing a clean market structure shift on the 15M timeframe. Expecting a retest of the 4H order block before continuation. What are your thoughts?[cite: 6]
                     </p>
 
                     <div class="flex items-center gap-6 pt-2 border-t border-gray-800/80 text-gray-400 text-xs">
@@ -225,7 +225,7 @@
                                 ${initials}
                             </div>
                             <div>
-                                <a href="profile_3.html?user=${encodeURIComponent(userName)}" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
+                                <a href="profile.html?user=${encodeURIComponent(userName)}" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
                                     ${userName}
                                 </a>
                                 <span class="text-[10px] text-gray-400 block">Just now</span>
@@ -308,7 +308,7 @@
         }
 
         document.addEventListener('click', function(event) {
-            const userLink = event.target.closest('a[href*="profile_3.html"]');
+            const userLink = event.target.closest('a[href*="profile.html"]');
             if (userLink) {
                 event.preventDefault();
                 const targetUrl = userLink.getAttribute('href');
@@ -326,7 +326,7 @@
                 const igLink = document.getElementById('profile-ig-link');
                 const igText = document.getElementById('profile-ig-text');
                 igText.innerText = savedIg;
-                igLink.href = savedIg.startsWith('http') ? savedIg : `https://${savedIg}`;
+                igLink.href = savedIg.startsWith('http') ? igIg : `https://${savedIg}`;
                 igLink.classList.remove('hidden');
             }
         });
@@ -365,7 +365,7 @@
                     profileUsername.innerText = userName;
                     const profileProfileLink = document.getElementById('profile-profile-link');
                     if (profileProfileLink) {
-                        profileProfileLink.href = `profile_3.html?user=${encodeURIComponent(userName)}`;
+                        profileProfileLink.href = `profile.html?user=${encodeURIComponent(userName)}`;
                     }
                 }
 

@@ -154,7 +154,17 @@
                     }
                 }
             } else {
-                document.getElementById('view-username').innerText = "Trader Profile";
+                // Agar URL mein user name nahi hai, toh logged-in user ka dikhayein
+                const loggedInUser = localStorage.getItem('userName');
+                if (loggedInUser) {
+                    document.getElementById('view-username').innerText = loggedInUser;
+                    const bio = localStorage.getItem('userBio');
+                    if (bio) document.getElementById('view-bio-text').innerText = bio;
+                    const followBtn = document.getElementById('follow-action-btn');
+                    if(followBtn) followBtn.style.display = 'none';
+                } else {
+                    document.getElementById('view-username').innerText = "Trader Profile";
+                }
             }
         });
 
