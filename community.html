@@ -133,7 +133,7 @@
                                 AK
                             </div>
                             <div>
-                                <a href="profile.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
+                                <a href="profile_3.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
                                     Aakash Kumar
                                 </a>
                                 <span class="text-[10px] text-gray-400 block">2 hours ago</span>
@@ -145,15 +145,15 @@
                     </div>
 
                     <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
-                        EURUSD is showing a clean market structure shift on the 15M timeframe. Expecting a retest of the 4H order block before continuation. What are your thoughts? 📊🔥
+                        EURUSD is showing a clean market structure shift on the 15M timeframe. Expecting a retest of the 4H order block before continuation. What are your thoughts? 📊🔥[cite: 6]
                     </p>
 
                     <div class="flex items-center gap-6 pt-2 border-t border-gray-800/80 text-gray-400 text-xs">
-                        <button onclick="toggleLike(this)" class="flex items-center gap-1.5 hover:text-red-500 transition cursor-pointer"><i class="fa-regular fa-heart"></i> <span class="like-count">24</span></button>
-                        <button onclick="toggleCommentsSection(this)" class="flex items-center gap-1.5 hover:text-green-400 transition cursor-pointer"><i class="fa-regular fa-comment"></i> Comments</button>
+                        <button onclick="toggleLike(this)" class="flex items-center gap-1.5 hover:text-red-500 transition cursor-pointer"><i class="fa-regular fa-heart"></i> <span class="like-count">24</span>[cite: 6]</button>
+                        <button onclick="toggleCommentsSection(this)" class="flex items-center gap-1.5 hover:text-green-400 transition cursor-pointer"><i class="fa-regular fa-comment"></i> Comments[cite: 6]</button>
                     </div>
 
-                    <!-- Comments Section (Hidden by default) -->
+                    <!-- Comments Section -->
                     <div class="comments-section hidden pt-3 border-t border-gray-800 space-y-3">
                         <div class="flex gap-2">
                             <input type="text" placeholder="Write a comment..." class="comment-input flex-1 bg-[#0b0f19] border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500">
@@ -161,7 +161,7 @@
                         </div>
                         <div class="comments-list space-y-2 pt-1">
                             <div class="bg-[#0b0f19] p-2.5 rounded-xl border border-gray-800/60 text-xs text-gray-300">
-                                <span class="font-bold text-green-400">Rohit Sharma:</span> Great analysis, completely agree with the 4H order block view!
+                                <span class="font-bold text-green-400">Rohit Sharma:</span> Great analysis, completely agree with the 4H order block view![cite: 6]
                             </div>
                         </div>
                     </div>
@@ -174,11 +174,11 @@
 
     <!-- FOOTER -->
     <footer class="bg-[#131b2e] border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2">
-        <p>ICT Forex Academy © 2026. All rights reserved. Community Feed.</p>
-        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
+        <p>ICT Forex Academy © 2026. All rights reserved. Community Feed.[cite: 6]</p>
+        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a>[cite: 6]</p>
     </footer>
 
-    <!-- JavaScript for Profiles, Posting, Likes and Comments -->
+    <!-- JavaScript -->
     <script>
         function toggleEditProfile() {
             const box = document.getElementById('edit-profile-box');
@@ -202,14 +202,14 @@
                 igLink.classList.remove('hidden');
             }
             toggleEditProfile();
-            alert('Profile updated successfully!');
+            alert('Profile updated successfully!');[cite: 6]
         }
 
         function publishPost() {
             const textInput = document.getElementById('post-text-input');
             const content = textInput.value.trim();
             if(!content) {
-                alert('Please write something to publish!');
+                alert('Please write something to publish!');[cite: 6]
                 return;
             }
 
@@ -225,7 +225,7 @@
                                 ${initials}
                             </div>
                             <div>
-                                <a href="profile.html?user=${encodeURIComponent(userName)}" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
+                                <a href="profile_3.html?user=${encodeURIComponent(userName)}" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
                                     ${userName}
                                 </a>
                                 <span class="text-[10px] text-gray-400 block">Just now</span>
@@ -245,7 +245,6 @@
                         <button onclick="toggleCommentsSection(this)" class="flex items-center gap-1.5 hover:text-green-400 transition cursor-pointer"><i class="fa-regular fa-comment"></i> Comments</button>
                     </div>
 
-                    <!-- Comments Section -->
                     <div class="comments-section hidden pt-3 border-t border-gray-800 space-y-3">
                         <div class="flex gap-2">
                             <input type="text" placeholder="Write a comment..." class="comment-input flex-1 bg-[#0b0f19] border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500">
@@ -308,9 +307,8 @@
             );
         }
 
-        // FORCE CLICK REDIRECT HANDLER FOR PROFILES
         document.addEventListener('click', function(event) {
-            const userLink = event.target.closest('a[href*="profile.html"]');
+            const userLink = event.target.closest('a[href*="profile_3.html"]');
             if (userLink) {
                 event.preventDefault();
                 const targetUrl = userLink.getAttribute('href');
@@ -360,7 +358,6 @@
             if (user) {
                 const userName = localStorage.getItem('userName') || "Trader";
                 if (profileCard) profileCard.classList.remove('hidden');
-                if (createPostContainer) createpostContainer = document.getElementById('create-post-container');
                 if (createPostContainer) createPostContainer.classList.remove('hidden');
                 
                 const profileUsername = document.getElementById('profile-username');
@@ -368,7 +365,7 @@
                     profileUsername.innerText = userName;
                     const profileProfileLink = document.getElementById('profile-profile-link');
                     if (profileProfileLink) {
-                        profileProfileLink.href = `profile.html?user=${encodeURIComponent(userName)}`;
+                        profileProfileLink.href = `profile_3.html?user=${encodeURIComponent(userName)}`;
                     }
                 }
 
@@ -378,10 +375,7 @@
                     authLink.href = "#";
                     authLink.onclick = async (e) => {
                         e.preventDefault();
-                        localStorage.removeItem('userName');
-                        localStorage.removeItem('userAccess');
-                        localStorage.removeItem('userBio');
-                        localStorage.removeItem('userIg');
+                        localStorage.clear();
                         await signOut(auth);
                         window.location.href = "login.html";
                     };
