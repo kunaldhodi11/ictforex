@@ -123,8 +123,8 @@
             <!-- FEED CONTAINER -->
             <div id="feed-container" class="space-y-4">
                 
-                <!-- Sample Post 1 (Clickable User Name -> Opens profile.html) -->
-                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3">
+                <!-- Sample Post 1 -->
+                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3 post-card">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white text-xs">
@@ -147,8 +147,21 @@
                     </p>
 
                     <div class="flex items-center gap-6 pt-2 border-t border-gray-800/80 text-gray-400 text-xs">
-                        <button class="flex items-center gap-1.5 hover:text-red-500 transition"><i class="fa-regular fa-heart"></i> 24</button>
-                        <button class="flex items-center gap-1.5 hover:text-green-400 transition"><i class="fa-regular fa-comment"></i> Comments</button>
+                        <button onclick="toggleLike(this)" class="flex items-center gap-1.5 hover:text-red-500 transition cursor-pointer"><i class="fa-regular fa-heart"></i> <span class="like-count">24</span></button>
+                        <button onclick="toggleCommentsSection(this)" class="flex items-center gap-1.5 hover:text-green-400 transition cursor-pointer"><i class="fa-regular fa-comment"></i> Comments</button>
+                    </div>
+
+                    <!-- Comments Section (Hidden by default) -->
+                    <div class="comments-section hidden pt-3 border-t border-gray-800 space-y-3">
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Write a comment..." class="comment-input flex-1 bg-[#0b0f19] border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500">
+                            <button onclick="addComment(this)" class="bg-green-500 hover:bg-green-600 text-gray-950 font-bold text-xs px-4 py-2 rounded-xl transition cursor-pointer">Post</button>
+                        </div>
+                        <div class="comments-list space-y-2 pt-1">
+                            <div class="bg-[#0b0f19] p-2.5 rounded-xl border border-gray-800/60 text-xs text-gray-300">
+                                <span class="font-bold text-green-400">Rohit Sharma:</span> Great analysis, completely agree with the 4H order block view!
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -163,7 +176,7 @@
         <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
     </footer>
 
-    <!-- JavaScript for Profile Editing, Posting and Force Navigation -->
+    <!-- JavaScript for Profiles, Posting, Likes and Comments -->
     <script>
         function toggleEditProfile() {
             const box = document.getElementById('edit-profile-box');
@@ -203,7 +216,7 @@
             const feedContainer = document.getElementById('feed-container');
 
             const postHTML = `
-                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3">
+                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3 post-card">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-green-500 to-emerald-500 flex items-center justify-center font-bold text-gray-950 text-xs">
@@ -226,8 +239,17 @@
                     </p>
 
                     <div class="flex items-center gap-6 pt-2 border-t border-gray-800/80 text-gray-400 text-xs">
-                        <button class="flex items-center gap-1.5 hover:text-red-500 transition"><i class="fa-regular fa-heart"></i> 0</button>
-                        <button class="flex items-center gap-1.5 hover:text-green-400 transition"><i class="fa-regular fa-comment"></i> Comments</button>
+                        <button onclick="toggleLike(this)" class="flex items-center gap-1.5 hover:text-red-500 transition cursor-pointer"><i class="fa-regular fa-heart"></i> <span class="like-count">0</span></button>
+                        <button onclick="toggleCommentsSection(this)" class="flex items-center gap-1.5 hover:text-green-400 transition cursor-pointer"><i class="fa-regular fa-comment"></i> Comments</button>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <div class="comments-section hidden pt-3 border-t border-gray-800 space-y-3">
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Write a comment..." class="comment-input flex-1 bg-[#0b0f19] border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500">
+                            <button onclick="addComment(this)" class="bg-green-500 hover:bg-green-600 text-gray-950 font-bold text-xs px-4 py-2 rounded-xl transition cursor-pointer">Post</button>
+                        </div>
+                        <div class="comments-list space-y-2 pt-1"></div>
                     </div>
                 </div>
             `;
@@ -236,13 +258,55 @@
             textInput.value = '';
         }
 
+        function toggleLike(btn) {
+            const icon = btn.querySelector('i');
+            const countSpan = btn.querySelector('.like-count');
+            let count = parseInt(countSpan.innerText);
+
+            if (icon.classList.contains('fa-regular')) {
+                icon.classList.replace('fa-regular', 'fa-solid');
+                icon.classList.add('text-red-500');
+                countSpan.innerText = count + 1;
+            } else {
+                icon.classList.replace('fa-solid', 'fa-regular');
+                icon.classList.remove('text-red-500');
+                countSpan.innerText = count - 1;
+            }
+        }
+
+        function toggleCommentsSection(btn) {
+            const postCard = btn.closest('.post-card');
+            const commentsSection = postCard.querySelector('.comments-section');
+            commentsSection.classList.toggle('hidden');
+        }
+
+        function addComment(btn) {
+            const postCard = btn.closest('.post-card');
+            const input = postCard.querySelector('.comment-input');
+            const commentText = input.value.trim();
+
+            if (!commentText) return;
+
+            const currentUserName = localStorage.getItem('userName') || "Trader";
+            const commentsList = postCard.querySelector('.comments-list');
+
+            const commentHTML = `
+                <div class="bg-[#0b0f19] p-2.5 rounded-xl border border-gray-800/60 text-xs text-gray-300">
+                    <span class="font-bold text-green-400">${escapeHTML(currentUserName)}:</span> ${escapeHTML(commentText)}
+                </div>
+            `;
+
+            commentsList.insertAdjacentHTML('beforeend', commentHTML);
+            input.value = '';
+        }
+
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)
             );
         }
 
-        // FORCE CLICK REDIRECT HANDLER
+        // FORCE CLICK REDIRECT HANDLER FOR PROFILES
         document.addEventListener('click', function(event) {
             const userLink = event.target.closest('a[href*="profile.html"]');
             if (userLink) {
@@ -262,7 +326,7 @@
                 const igLink = document.getElementById('profile-ig-link');
                 const igText = document.getElementById('profile-ig-text');
                 igText.innerText = savedIg;
-                igLink.href = savedIg.startsWith('http') ? savedIg : `https://${savedIg}`;
+                igLink.href = ig.startsWith('http') ? igInput : `https://${savedIg}`;
                 igLink.classList.remove('hidden');
             }
         });
