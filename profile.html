@@ -60,7 +60,7 @@
                 <div class="flex-1 space-y-2">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <h2 id="view-username" class="text-xl md:text-2xl font-black text-white">Loading...</h2>
-                        <button id="follow-action-btn" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-5 py-2 rounded-xl transition shadow">
+                        <button id="follow-action-btn" onclick="toggleFollow(this)" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-5 py-2 rounded-xl transition shadow cursor-pointer">
                             Follow +
                         </button>
                     </div>
@@ -82,8 +82,8 @@
 
             <!-- Stats -->
             <div class="flex justify-around sm:justify-start sm:gap-10 pt-2 text-xs border-t border-gray-800">
-                <div class="text-center sm:text-left"><span class="font-black text-white text-sm block">0</span> <span class="text-gray-400">Posts</span></div>
-                <div class="text-center sm:text-left"><span class="font-black text-white text-sm block">142</span> <span class="text-gray-400">Followers</span></div>
+                <div class="text-center sm:text-left"><span class="font-black text-white text-sm block">1</span> <span class="text-gray-400">Posts</span></div>
+                <div class="text-center sm:text-left"><span id="followers-count" class="font-black text-white text-sm block">142</span> <span class="text-gray-400">Followers</span></div>
                 <div class="text-center sm:text-left"><span class="font-black text-white text-sm block">85</span> <span class="text-gray-400">Following</span></div>
             </div>
         </div>
@@ -95,8 +95,9 @@
             </h3>
 
             <div id="user-posts-container" class="space-y-4">
-                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 text-center text-gray-400 text-xs">
-                    No analyses posted yet.
+                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 text-gray-300 text-xs space-y-2">
+                    <p id="user-sample-post" class="leading-relaxed">EURUSD is showing a clean market structure shift on the 15M timeframe. Expecting a retest of the 4H order block before continuation. What are your thoughts? 📊🔥</p>
+                    <span class="text-[10px] text-gray-500 block">Posted recently</span>
                 </div>
             </div>
         </div>
@@ -116,16 +117,21 @@
             const usernameParam = urlParams.get('user');
 
             if (usernameParam) {
-                document.getElementById('view-username').innerText = usernameParam;
+                const decodedUser = decodeURIComponent(usernameParam);
+                document.getElementById('view-username').innerText = decodedUser;
                 
-                // Agar yeh logged-in user ki apni profile hai, toh localStorage se data uthayein
                 const loggedInUser = localStorage.getItem('userName');
-                if (loggedInUser === usernameParam) {
+                
+                // Agar yeh logged-in user ki apni profile hai
+                if (loggedInUser === decodedUser) {
                     const bio = localStorage.getItem('userBio');
                     const ig = localStorage.getItem('userIg');
 
-                    if (bio) document.getElementById('view-bio-text').innerText = bio;
-                    else document.getElementById('view-bio-text').innerText = "Smart Money Trader | ICT Mentorship Student";
+                    if (bio) {
+                        document.getElementById('view-bio-text').innerText = bio;
+                    } else {
+                        document.getElementById('view-bio-text').innerText = "Smart Money Trader | ICT Mentorship Student";
+                    }
 
                     if (ig) {
                         const igLink = document.getElementById('view-ig-link');
@@ -135,16 +141,39 @@
                         igLink.classList.remove('hidden');
                     }
                     
-                    // Khud ki profile par Follow button hide kar sakte hain
-                    document.getElementById('follow-action-btn').classList.add('hidden');
+                    // Apni profile par follow button chupayein
+                    document.getElementById('follow-data-btn']?.classList?.add('hidden');
+                    const followBtn = document.getElementById('follow-action-btn');
+                    if(followBtn) followBtn.style.display = 'none';
+
                 } else {
-                    // Kisi doosre user ke liye dummy/default data
-                    document.getElementById('view-bio-text').innerText = "Passionate Forex Trader following Smart Money Concepts.";
+                    // Doosre user (jaise Aakash Kumar ya koi aur) ke liye data
+                    if (decodedUser === "Aakash Kumar") {
+                        document.getElementById('view-bio-text').innerText = "Smart Money Trader | Passionate about ICT concepts & Market Structure.";
+                    } else {
+                        document.getElementById('view-bio-text').innerText = "Passionate Forex Trader following ICT & Smart Money Concepts.";
+                    }
                 }
             } else {
                 document.getElementById('view-username').innerText = "Trader Profile";
             }
         });
+
+        function toggleFollow(btn) {
+            const followersElem = document.getElementById('followers-count');
+            let count = parseInt(followersElem.innerText);
+            if (btn.innerText.includes("Follow +")) {
+                btn.innerText = "Following ✓";
+                btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                btn.classList.add('bg-gray-800', 'text-green-400', 'border', 'border-green-500/30');
+                followersElem.innerText = count + 1;
+            } else {
+                btn.innerText = "Follow +";
+                btn.classList.remove('bg-gray-800', 'text-green-400', 'border', 'border-green-500/30');
+                btn.classList.add('bg-green-500', 'hover:bg-green-600');
+                followersElem.innerText = count - 1;
+            }
+        }
     </script>
 </body>
 </html>
