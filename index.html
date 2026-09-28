@@ -49,7 +49,7 @@
             </div>
         </a>
 
-        <!-- Desktop Navigation Menu (Corrected to Profile) -->
+        <!-- Desktop Navigation Menu -->
         <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-gray-300">
             <a href="index.html" class="text-green-400 hover:text-green-300 transition flex items-center gap-1"><i class="fa-solid fa-house"></i> Home</a>
             <a href="free-learning.html" class="hover:text-green-400 transition">Free Course</a>
@@ -60,9 +60,11 @@
 
         <!-- Right Side Actions & Mobile Menu Button -->
         <div class="flex items-center gap-2">
-            <a href="login.html" id="auth-nav-link" class="hidden sm:flex bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow items-center gap-1.5">
-                <i class="fa-solid fa-user"></i> Login
-            </a>
+            <div id="auth-nav-container">
+                <a href="login.html" id="auth-nav-link" class="hidden sm:flex bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow items-center gap-1.5">
+                    <i class="fa-solid fa-user"></i> Login
+                </a>
+            </div>
             <button onclick="toggleMobileMenu()" class="md:hidden bg-gray-800 text-green-400 border border-gray-700 p-2.5 rounded-xl text-base focus:outline-none">
                 <i id="menu-icon" class="fa-solid fa-bars"></i>
             </button>
@@ -145,10 +147,34 @@
 
             if (user) {
                 const userName = localStorage.getItem('userName') || "User";
+                
+                // Desktop Navbar: Name links to profile.html, Logout is a separate button
                 if (authLink) {
-                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
-                    authLink.href = "#";
-                    authLink.onclick = async (e) => {
+                    const container = authLink.parentElement;
+                    container.innerHTML = `
+                        <div class="hidden sm:flex items-center gap-2.5 bg-gray-800 border border-green-500/30 text-xs font-black px-3.5 py-2 rounded-xl transition shadow">
+                            <a href="profile.html" class="text-green-400 hover:text-green-300 flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-user-check"></i> ${userName}
+                            </a>
+                            <span class="text-gray-600">|</span>
+                            <button id="logout-btn" title="Logout" class="text-gray-400 hover:text-red-400 transition cursor-pointer">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    document.getElementById('logout-btn').onclick = async () => {
+                        localStorage.clear();
+                        await signOut(auth);
+                        window.location.reload();
+                    };
+                }
+
+                // Mobile Navbar
+                if (mobileAuthLink) {
+                    mobileAuthLink.innerHTML = `<i class="fa-solid fa-right-from-bracket mr-1 text-red-400"></i> Logout (${userName})`;
+                    mobileAuthLink.href = "#";
+                    mobileAuthLink.onclick = async (e) => {
                         e.preventDefault();
                         localStorage.clear();
                         await signOut(auth);
