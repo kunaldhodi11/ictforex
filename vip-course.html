@@ -67,14 +67,69 @@
             <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
                 Unlock professional institutional methodologies. Master order blocks, market maker models, strict market rules, and professional risk frameworks.
             </p>
-            <div class="inline-flex items-center gap-4 bg-gray-950/80 border border-yellow-500/50 px-5 py-2.5 rounded-2xl shadow-xl">
-                <div class="text-left">
-                    <span class="text-[10px] text-gray-400 block uppercase tracking-wider">Lifetime VIP Access</span>
-                    <span class="text-xl font-black text-yellow-400">₹99 <span class="text-xs text-gray-500 line-through font-normal">₹1,999</span></span>
+            
+            <div id="vip-status-banner" class="bg-gray-950/90 border border-yellow-500/50 p-6 rounded-2xl shadow-xl max-w-xl mx-auto space-y-4">
+                <div id="locked-view">
+                    <p class="text-xs text-yellow-400 font-bold mb-3">🔥 Get Lifetime VIP Access 100% FREE via our Partner Brokers!</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- Broker 1 -->
+                        <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl flex flex-col justify-between space-y-2">
+                            <span class="text-xs font-bold text-white">Broker 1 (Exness/XM)</span>
+                            <a href="https://your-affiliate-link-1.com" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-[10px] py-2 rounded-lg transition">Create Account</a>
+                        </div>
+                        <!-- Broker 2 -->
+                        <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl flex flex-col justify-between space-y-2">
+                            <span class="text-xs font-bold text-white">Broker 2 (FBS/Deriv)</span>
+                            <a href="https://your-affiliate-link-2.com" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-[10px] py-2 rounded-lg transition">Create Account</a>
+                        </div>
+                        <!-- Broker 3 -->
+                        <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl flex flex-col justify-between space-y-2">
+                            <span class="text-xs font-bold text-white">Broker 3 (Octa/IC)</span>
+                            <a href="https://your-affiliate-link-3.com" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-[10px] py-2 rounded-lg transition">Create Account</a>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-gray-800 space-y-2">
+                        <p class="text-[11px] text-gray-300 font-semibold">Account banane ke baad apni Trading ID yahan enter karein:</p>
+                        <div class="flex gap-2">
+                            <input type="text" id="trading-id-input" placeholder="Enter Trading Account ID..." class="flex-1 bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-yellow-500">
+                            <button onclick="submitAffiliateAccount()" class="bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black text-xs px-4 py-2 rounded-xl transition cursor-pointer">
+                                Unlock Free VIP
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <a href="#payment-box" class="bg-gradient-to-r from-yellow-500 to-amber-600 hover:opacity-95 text-gray-950 font-black text-xs px-5 py-2.5 rounded-xl shadow transition">
-                    Enroll (₹99)
-                </a>
+
+                <!-- Unlocked View (Hidden by default) -->
+                <div id="unlocked-view" class="hidden space-y-3">
+                    <div class="text-green-400 font-black text-sm flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-circle-check text-lg"></i> VIP Access Unlocked Successfully!
+                    </div>
+                    <p class="text-xs text-gray-300">Aapka VIP Mentorship course ab active hai. Niche diye gaye modules se padhna shuru karein.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIP LESSONS MODULES SECTION -->
+        <div id="vip-content-section" class="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 space-y-4 opacity-50 pointer-events-none transition-all">
+            <h3 class="text-sm font-black text-yellow-400 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap"></i> VIP Institutional Course Modules
+            </h3>
+            <div class="space-y-3 text-xs">
+                <div class="bg-[#0b0f19] border border-gray-800 p-4 rounded-2xl flex justify-between items-center">
+                    <div>
+                        <span class="text-white font-bold block">Module 1: Advanced Order Block & Liquidity Pools</span>
+                        <span class="text-gray-400 text-[10px]">Institutional entry models & mitigation blocks.</span>
+                    </div>
+                    <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 px-3 py-1 rounded-xl font-bold">Watch Video</span>
+                </div>
+                <div class="bg-[#0b0f19] border border-gray-800 p-4 rounded-2xl flex justify-between items-center">
+                    <div>
+                        <span class="text-white font-bold block">Module 2: Market Maker Buy Model (MMBM)</span>
+                        <span class="text-gray-400 text-[10px]">Accumulation, Manipulation & Distribution (AMD).</span>
+                    </div>
+                    <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 px-3 py-1 rounded-xl font-bold">Watch Video</span>
+                </div>
             </div>
         </div>
 
@@ -91,6 +146,34 @@
             <a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a>
         </p>
     </footer>
+
+    <!-- Script to handle unlock logic -->
+    <script>
+        function checkVipStatus() {
+            const isUnlocked = localStorage.getItem('vipUnlocked');
+            if (isUnlocked === 'true') {
+                document.getElementById('locked-view').classList.add('hidden');
+                document.getElementById('unlocked-view').classList.remove('hidden');
+                
+                const contentSec = document.getElementById('vip-content-section');
+                contentSec.classList.remove('opacity-50', 'pointer-events-none');
+            }
+        }
+
+        function submitAffiliateAccount() {
+            const tradingId = document.getElementById('trading-id-input').value.trim();
+            if (!tradingId) {
+                alert('Please enter your Trading Account ID!');
+                return;
+            }
+
+            localStorage.setItem('vipUnlocked', 'true');
+            alert('Account ID submitted successfully! VIP Access granted.');
+            checkVipStatus();
+        }
+
+        window.addEventListener('DOMContentLoaded', checkVipStatus);
+    </script>
 
     <!-- Firebase Auth Protection Script -->
     <script type="module">
@@ -113,10 +196,8 @@
         onAuthStateChanged(auth, (user) => {
             const authLink = document.getElementById('auth-nav-link');
             if (!user) {
-                // Agar user login nahi hai toh login page par bhej dein
                 window.location.href = "login.html";
             } else {
-                // Agar logged-in hai toh naam aur logout dikhayein
                 const userName = localStorage.getItem('userName') || "User";
                 if (authLink) {
                     authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
@@ -125,6 +206,7 @@
                         e.preventDefault();
                         localStorage.removeItem('userName');
                         localStorage.removeItem('userAccess');
+                        localStorage.removeItem('vipUnlocked');
                         await signOut(auth);
                         window.location.href = "login.html";
                     };
