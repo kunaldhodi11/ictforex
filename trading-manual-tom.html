@@ -12,8 +12,14 @@
         p { color: #555; }
         ul { background: #f9f9f9; padding: 15px 20px 15px 40px; border-radius: 5px; }
         li { margin-bottom: 8px; }
-        .back-books { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #fff; background: #27ae60; padding: 8px 15px; border-radius: 4px; font-weight: bold; }
-        .back-books:hover { background: #219653; }
+        
+        /* Navigation Buttons */
+        .nav-bar { margin-bottom: 25px; }
+        .nav-btn { display: inline-block; margin-right: 10px; text-decoration: none; color: #fff; background: #34495e; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 14px; }
+        .nav-btn:hover { background: #2c3e50; }
+        .nav-btn.books { background: #27ae60; }
+        .nav-btn.books:hover { background: #219653; }
+
         .author-name { font-size: 16px; color: #e67e22; font-weight: bold; margin-bottom: 20px; display: block; }
         .chapter-box { margin-bottom: 25px; border-bottom: 1px dashed #eee; padding-bottom: 15px; }
         
@@ -32,7 +38,11 @@
 </head>
 <body>
     <div class="container">
-        <a href="trading-books.html" class="back-books">&larr; Sabhi Books ki List par Wapas Jayein</a>
+        <!-- Navigation Buttons -->
+        <div class="nav-bar">
+            <a href="index.html" class="nav-btn">&larr; Home Page</a>
+            <a href="trading-books.html" class="nav-btn books">&larr; Sabhi Books ki List</a>
+        </div>
         
         <h1>The First Trading Manual: Foundation Course and Strategies</h1>
         <span class="author-name">Author: Tom Hougaard (Trader Tom)[cite: 4]</span>
@@ -83,7 +93,7 @@
             <p>Market ke trend ko pehchanne aur daily preparation ke liye kuch behtareen tools hain:</p>
             <ul>
                 <li><strong>Three Bar Swing (3-Bar Rule):</strong> Yeh ek simple mechanical indicator hai jisme pichle 3 bars ke high ya low ke break hone par trend change ka pata chalta hai[cite: 71, 73].</li>
-                <li><strong>Daily Work Routine:</strong> Subah uthkar economic calendar (Forex Factory) par red-flagged news check karna aur चुsinda currency pairs (jaise EURUSD, GBPUSD, EURJPY) par focus karna chahiye[cite: 20, 76].</li>
+                <li><strong>Daily Work Routine:</strong> Subah uthkar economic calendar (Forex Factory) par red-flagged news check karna aur chusinda currency pairs (jaise EURUSD, GBPUSD, EURJPY) par focus karna chahiye[cite: 20, 76].</li>
             </ul>
         </div>
 

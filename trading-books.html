@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Books List - ICT Forex Academy</title>
+    <title>Trading Books Index - Trading Library</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; line-height: 1.6; }
         .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; font-size: 28px; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
-        .back-home { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #fff; background: #3498db; padding: 8px 15px; border-radius: 4px; font-weight: bold; }
-        .back-home:hover { background: #2980b9; }
+        h1 { color: #2c3e50; font-size: 26px; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 15px; }
+        .book-card { background: #fafafa; border: 1px solid #e1e4e8; padding: 20px; border-radius: 6px; margin-bottom: 20px; transition: 0.3s; }
+        .book-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: #3498db; }
+        .book-card h3 { margin-top: 0; color: #2980b9; }
+        .book-card h3 a { text-decoration: none; color: #2980b9; }
+        .book-card h3 a:hover { text-decoration: underline; }
+        .author { font-size: 14px; color: #e67e22; font-weight: bold; margin-bottom: 8px; display: block; }
+        .disclaimer-box { background: #e8f4fd; border-left: 4px solid #3498db; padding: 12px 15px; margin-bottom: 25px; font-size: 14px; color: #2c3e50; border-radius: 0 4px 4px 0; }
         
-        /* Upar ka notice box */
-        .top-notice {
-            background-color: #e8f4fd;
-            border-left: 5px solid #3498db;
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            border-radius: 4px;
-            color: #1a5276;
-            font-size: 15px;
-        }
-
+        .nav-bar { margin-bottom: 20px; }
+        .nav-btn { display: inline-block; text-decoration: none; color: #fff; background: #34495e; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 14px; }
+        .nav-btn:hover { background: #2c3e50; }
+        
         /* Ad Box Styling */
         .ad-container {
             background: #fffcf0;
@@ -33,48 +31,44 @@
             color: #b7950b;
             font-size: 13px;
         }
-
-        /* Books ki List Style */
-        .book-list { display: flex; flex-direction: column; gap: 15px; }
-        .book-card { background: #f9f9f9; border: 1px solid #ddd; padding: 20px; border-radius: 6px; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .book-card:hover { transform: translateY(-2px); background: #f1f5f8; border-color: #3498db; }
-        .book-card a { font-size: 20px; color: #2980b9; text-decoration: none; font-weight: bold; display: block; margin-bottom: 5px; }
-        .book-card a:hover { color: #1b4f72; text-decoration: underline; }
-        .author-name { font-size: 14px; color: #e67e22; font-weight: bold; display: block; margin-bottom: 8px; }
-        .book-desc { font-size: 14px; color: #666; }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="back-home">&larr; Home Page par Wapas Jayein</a>
+        <!-- Navigation Button -->
+        <div class="nav-bar">
+            <a href="index.html" class="nav-btn">&larr; Home Page par Wapas Jayein</a>
+        </div>
         
         <h1>Trading Books Important Notes List</h1>
         
-        <!-- TOP ADVERTISEMENT SPACE -->
+        <!-- TOP AD SPACE -->
         <div class="ad-container">
             <span>📢 [Yahan apna Google AdSense Ad Unit Code paste karein]</span>
         </div>
 
-        <!-- Upar ka Notice -->
-        <div class="top-notice">
-            <strong>Mahatvapurna Soochana:</strong> Yeh sabhi books ki koi poori kitab (Full Book) nahi hain. In sabhi books mein se mukhya aur important notes nikal kar list banayi gayi hai, taki aap trading ke concepts ko aasani se samajh saken.
+        <div class="disclaimer-box">
+            <strong>Mahatvapurna Soochna:</strong> Yeh sabhi books ki koi poori kitab (Full Book) nahi hain. In sabhi books mein se mukhya aur important notes nikal kar list banayi gayi hai, taki aap trading ke concepts ko aasani se samajh saken.
         </div>
 
         <p>Niche di gayi list mein se aap jis bhi book ke notes padhna chahte hain, uske naam par click karein:</p>
-        
-        <!-- Books ki List -->
-        <div class="book-list">
-            <div class="book-card">
-                <a href="trading-volatility.html">Trading Volatility: Correlation, Term Structure and Skew</a>
-                <span class="author-name">Author: Colin Bennett</span>
-                <div class="book-desc">Options, volatility, smile, skew aur term structure ke mukhya notes aur trading strategies.</div>
-            </div>
 
-            <!-- Jab aap aage aur books joden, toh yeh box copy karke niche paste kar dena aur naya page bana lena -->
+        <!-- Book 1 -->
+        <div class="book-card">
+            <h3><a href="trading-volatility.html">Trading Volatility: Correlation, Term Structure and Skew</a></h3>
+            <span class="author">Author: Colin Bennett</span>
+            <p>Options, volatility, smile, skew aur term structure ke mukhya notes aur trading strategies.</p>
         </div>
 
-        <!-- BOTTOM ADVERTISEMENT SPACE -->
-        <div class="ad-container" style="margin-top: 40px;">
+        <!-- Book 2 -->
+        <div class="book-card">
+            <h3><a href="trading-manual-tom.html">The First Trading Manual: Foundation Course and Strategies</a></h3>
+            <span class="author">Author: Tom Hougaard (Trader Tom)[cite: 4]</span>
+            <p>24-hour trading cycle, Price action principles, Candlestick patterns, 4-bar fractal, aur trading psychology ke mahatvapurna notes.</p>
+        </div>
+
+        <!-- BOTTOM AD SPACE -->
+        <div class="ad-container">
             <span>📢 [Yahan Niche ka Google AdSense Code paste karein]</span>
         </div>
     </div>
