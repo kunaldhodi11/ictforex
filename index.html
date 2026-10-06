@@ -86,8 +86,8 @@
             </div>
         </a>
 
-        <!-- Desktop Navigation - Corrected to trading-books.html -->
-        <nav class="hidden md:flex items-center gap-4 text-xs font-bold text-gray-300">
+        <!-- Desktop Navigation & Mobile Menu Container -->
+        <nav class="hidden md:flex items-center gap-4 text-xs font-bold text-gray-300" id="desktopNav">
             <a href="index.html" class="text-green-400 hover:text-green-300 transition flex items-center gap-1"><i class="fa-solid fa-house"></i> Home</a>
             <a href="free-learning.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-book-open text-[10px]"></i> Free Learning</a>
             <a href="trading-books.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-book text-[10px]"></i> Trading Books</a>
@@ -101,8 +101,23 @@
             <a href="profile.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
                 <i class="fa-solid fa-user"></i> Profile
             </a>
+            <!-- Mobile Hamburger Menu Button -->
+            <button onclick="toggleMobileMenu()" class="md:hidden bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black p-2.5 rounded-xl transition shadow">
+                <i class="fa-solid fa-bars text-base"></i>
+            </button>
         </div>
     </header>
+
+    <!-- MOBILE DROPDOWN MENU -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#131b2e]/98 border-b border-gray-800 px-6 py-4 space-y-3 text-xs font-bold text-gray-300 relative z-40 shadow-2xl">
+        <a href="index.html" class="block py-2 text-green-400"><i class="fa-solid fa-house mr-2"></i> Home</a>
+        <a href="free-learning.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-book-open mr-2"></i> Free Learning</a>
+        <a href="trading-books.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-book mr-2"></i> Trading Books</a>
+        <a href="rules.html" class="block py-2 hover:text-blue-400"><i class="fa-solid fa-shield mr-2"></i> Trading Rules</a>
+        <a href="about.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-circle-info mr-2"></i> About Us</a>
+        <a href="community.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-users mr-2"></i> Community</a>
+        <a href="vip-course.html" class="block py-2 hover:text-yellow-400"><i class="fa-solid fa-crown mr-2"></i> VIP Academy</a>
+    </div>
 
     <!-- HOMEPAGE CONTENT -->
     <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-10 space-y-8 relative z-10">
@@ -135,6 +150,18 @@
         <p>ICT Forex Academy © 2026. All rights reserved.</p>
         <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
     </footer>
+
+    <!-- SCRIPT FOR MOBILE MENU -->
+    <script>
+        function toggleMobileMenu() {
+            var menu = document.getElementById("mobileMenu");
+            if (menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+            }
+        }
+    </script>
 
 </body>
 </html>
