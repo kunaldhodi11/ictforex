@@ -1,97 +1,179 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Books Index - Trading Library</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; line-height: 1.6; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; font-size: 26px; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 15px; }
-        .book-card { background: #fafafa; border: 1px solid #e1e4e8; padding: 20px; border-radius: 6px; margin-bottom: 20px; transition: 0.3s; }
-        .book-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: #3498db; }
-        .book-card h3 { margin-top: 0; color: #2980b9; }
-        .book-card h3 a { text-decoration: none; color: #2980b9; }
-        .book-card h3 a:hover { text-decoration: underline; }
-        .author { font-size: 14px; color: #e67e22; font-weight: bold; margin-bottom: 8px; display: block; }
-        .disclaimer-box { background: #e8f4fd; border-left: 4px solid #3498db; padding: 12px 15px; margin-bottom: 25px; font-size: 14px; color: #2c3e50; border-radius: 0 4px 4px 0; }
-        
-        .nav-bar { margin-bottom: 20px; }
-        .nav-btn { display: inline-block; text-decoration: none; color: #fff; background: #34495e; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 14px; }
-        .nav-btn:hover { background: #2c3e50; }
-        
-        /* Ad Box Styling */
-        .ad-container {
-            background: #fffcf0;
-            border: 2px dashed #f39c12;
-            padding: 15px;
-            text-align: center;
-            border-radius: 6px;
-            margin: 25px 0;
-            color: #b7950b;
-            font-size: 13px;
+    <title>Trading Books Index | ICT Forex Academy</title>
+    <meta name="description" content="Explore professional trading and financial books notes index system in Hinglish.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 500: '#22c55e', 600: '#16a34a' },
+                        secondary: { 500: '#a855f7', 600: '#9333ea' },
+                        accent: { 500: '#eab308' }
+                    }
+                }
+            }
         }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container">
-        <!-- Navigation Button -->
-        <div class="nav-bar">
-            <a href="index.html" class="nav-btn">&larr; Home Page par Wapas Jayein</a>
-        </div>
-        
-        <h1>Trading Books Important Notes List</h1>
-        
-        <!-- TOP AD SPACE -->
-        <div class="ad-container">
-            <span>📢 [Yahan apna Google AdSense Ad Unit Code paste karein]</span>
-        </div>
+<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-        <div class="disclaimer-box">
-            <strong>Mahatvapurna Soochna:</strong> Yeh sabhi books ki koi poori kitab (Full Book) nahi hain. In sabhi books mein se mukhya aur important notes nikal kar list banayi gayi hai, taki aap trading ke concepts ko aasani se samajh saken.
-        </div>
-
-        <p>Niche di gayi list mein se aap jis bhi book ke notes padhna chahte hain, uske naam par click karein:</p>
-
-        <!-- Book 1 -->
-        <div class="book-card">
-            <h3><a href="intelligent-investor.html">The Intelligent Investor: The Definitive Book on Value Investing</a></h3>
-            <span class="author">Author: Benjamin Graham</span>
-            <p>Mr. Market ka concept, Margin of Safety, value investing aur Defensive vs Enterprising investor ki strategies.</p>
-        </div>
-
-        <!-- Book 2 -->
-        <div class="book-card">
-            <h3><a href="security-analysis.html">Security Analysis: The Classic 1934 Edition</a></h3>
-            <span class="author">Author: Benjamin Graham & David L. Dodd</span>
-            <p>Warren Buffett ki ultimate favorite "Bible" of investing, Intrinsic value, financial statements analysis aur stock valuation ke mukhya niyam.</p>
-        </div>
-
-        <!-- Book 3 -->
-        <div class="book-card">
-            <h3><a href="rich-dad-poor-dad.html">Rich Dad Poor Dad: What the Rich Teach Their Kids About Money</a></h3>
-            <span class="author">Author: Robert Kiyosaki</span>
-            <p>Assets vs Liabilities ka farq, financial education ka mahatva aur paise ko apne liye kaam karane ke mukhya niyam.</p>
-        </div>
-
-        <!-- Book 4 -->
-        <div class="book-card">
-            <h3><a href="trading-volatility.html">Trading Volatility: Correlation, Term Structure and Skew</a></h3>
-            <span class="author">Author: Colin Bennett</span>
-            <p>Options, volatility, smile, skew aur term structure ke mukhya notes aur trading strategies.</p>
-        </div>
-
-        <!-- Book 5 -->
-        <div class="book-card">
-            <h3><a href="trading-manual-tom.html">The First Trading Manual: Foundation Course and Strategies</a></h3>
-            <span class="author">Author: Tom Hougaard (Trader Tom)</span>
-            <p>24-hour trading cycle, Price action principles, Candlestick patterns, 4-bar fractal, aur trading psychology ke mahatvapurna notes.</p>
-        </div>
-
-        <!-- BOTTOM AD SPACE -->
-        <div class="ad-container">
-            <span>📢 [Yahan Niche ka Google AdSense Code paste karein]</span>
-        </div>
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 text-gray-950 text-[11px] font-black py-2 px-4 text-center tracking-wide shadow flex flex-wrap items-center justify-center gap-3 relative z-10">
+        <span>🔥 Trusted Brokers:</span>
+        <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" class="bg-gray-950 text-yellow-400 px-2.5 py-0.5 rounded-md hover:bg-black transition">Octa Account &rarr;</a>
+        <span>|</span>
+        <a href="https://affs.click/m2rkP" target="_blank" class="bg-gray-950 text-yellow-400 px-2.5 py-0.5 rounded-md hover:bg-black transition">XM Account &rarr;</a>
     </div>
+
+    <!-- HEADER -->
+    <header class="bg-[#131b2e]/95 backdrop-blur border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-xl">
+        <a href="index.html" class="flex items-center gap-2.5 group cursor-pointer">
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] flex items-center justify-center flex-shrink-0">
+                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
+                    <span class="text-xs md:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-xs md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 drop-shadow">
+                    ICT FOREX ACADEMY
+                </h1>
+                <p class="text-[9px] md:text-[10px] text-gray-400 font-medium tracking-wide">Institutional Smart Money</p>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-4 text-xs font-bold text-gray-300">
+            <a href="index.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="free-learning.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-book-open text-[10px]"></i> Free Learning</a>
+            <a href="trading-books.html" class="text-green-400 hover:text-green-300 transition flex items-center gap-1"><i class="fa-solid fa-book text-[10px]"></i> Trading Books</a>
+            <a href="rules.html" class="hover:text-blue-400 transition flex items-center gap-1"><i class="fa-solid fa-shield text-[10px]"></i> Trading Rules</a>
+            <a href="about.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-circle-info text-[10px]"></i> About Us</a>
+            <a href="community.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-users text-[10px]"></i> Community</a>
+            <a href="vip-course.html" class="hover:text-yellow-400 transition flex items-center gap-1"><i class="fa-solid fa-crown text-[10px]"></i> VIP Academy</a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+            <a href="profile.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+                <i class="fa-solid fa-user"></i> Profile
+            </a>
+            <!-- Mobile Hamburger Menu Button -->
+            <button onclick="toggleMobileMenu()" class="md:hidden bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black p-2.5 rounded-xl transition shadow">
+                <i class="fa-solid fa-bars text-base"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE DROPDOWN MENU -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#131b2e]/98 border-b border-gray-800 px-6 py-4 space-y-3 text-xs font-bold text-gray-300 relative z-40 shadow-2xl">
+        <a href="index.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-house mr-2"></i> Home</a>
+        <a href="free-learning.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-book-open mr-2"></i> Free Learning</a>
+        <a href="trading-books.html" class="block py-2 text-green-400"><i class="fa-solid fa-book mr-2"></i> Trading Books</a>
+        <a href="rules.html" class="block py-2 hover:text-blue-400"><i class="fa-solid fa-shield mr-2"></i> Trading Rules</a>
+        <a href="about.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-circle-info mr-2"></i> About Us</a>
+        <a href="community.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-users mr-2"></i> Community</a>
+        <a href="vip-course.html" class="block py-2 hover:text-yellow-400"><i class="fa-solid fa-crown mr-2"></i> VIP Academy</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-8 space-y-6 relative z-10">
+        
+        <div class="bg-[#131b2e] border border-gray-800 rounded-2xl p-6 md:p-8 shadow-xl">
+            <h2 class="text-xl md:text-2xl font-black text-white mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-book text-green-400"></i> Trading Books Important Notes List
+            </h2>
+            
+            <!-- TOP AD SPACE -->
+            <div class="bg-amber-950/30 border border-amber-500/40 p-4 rounded-xl text-center text-xs text-amber-300 my-4">
+                <span>📢 [Yahan apna Google AdSense Ad Unit Code paste karein]</span>
+            </div>
+
+            <div class="bg-blue-950/40 border-l-4 border-blue-500 p-4 text-xs md:text-sm text-gray-300 rounded-r-xl mb-6 leading-relaxed">
+                <strong class="text-white">Mahatvapurna Soochna:</strong> Yeh sabhi books ki koi poori kitab (Full Book) nahi hain. In sabhi books mein se mukhya aur important notes nikal kar list banayi gayi hai, taki aap trading ke concepts ko aasani se samajh saken.
+            </div>
+
+            <p class="text-xs md:text-sm text-gray-400 mb-6">Niche di gayi list mein se aap jis bhi book ke notes padhna chahte hain, uske naam par click karein:</p>
+
+            <div class="space-y-4">
+                <!-- Book 1 -->
+                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
+                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Benjamin Graham</span>
+                    <h3 class="text-sm md:text-base font-black text-white mb-2">
+                        <a href="intelligent-investor.html" class="hover:text-green-400 transition">1. The Intelligent Investor: The Definitive Book on Value Investing &rarr;</a>
+                    </h3>
+                    <p class="text-xs text-gray-400">Mr. Market ka concept, Margin of Safety, value investing aur Defensive vs Enterprising investor ki strategies.</p>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
+                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Benjamin Graham & David L. Dodd</span>
+                    <h3 class="text-sm md:text-base font-black text-white mb-2">
+                        <a href="security-analysis.html" class="hover:text-green-400 transition">2. Security Analysis: The Classic 1934 Edition &rarr;</a>
+                    </h3>
+                    <p class="text-xs text-gray-400">Warren Buffett ki ultimate favorite "Bible" of investing, Intrinsic value, financial statements analysis aur stock valuation ke mukhya niyam.</p>
+                </div>
+
+                <!-- Book 3 -->
+                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
+                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Robert Kiyosaki</span>
+                    <h3 class="text-sm md:text-base font-black text-white mb-2">
+                        <a href="rich-dad-poor-dad.html" class="hover:text-green-400 transition">3. Rich Dad Poor Dad: What the Rich Teach Their Kids About Money &rarr;</a>
+                    </h3>
+                    <p class="text-xs text-gray-400">Assets vs Liabilities ka farq, financial education ka mahatva aur paise ko apne liye kaam karane ke mukhya niyam.</p>
+                </div>
+
+                <!-- Book 4 -->
+                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
+                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Colin Bennett</span>
+                    <h3 class="text-sm md:text-base font-black text-white mb-2">
+                        <a href="trading-volatility.html" class="hover:text-green-400 transition">4. Trading Volatility: Correlation, Term Structure and Skew &rarr;</a>
+                    </h3>
+                    <p class="text-xs text-gray-400">Options, volatility, smile, skew aur term structure ke mukhya notes aur trading strategies.</p>
+                </div>
+
+                <!-- Book 5 -->
+                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
+                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Tom Hougaard (Trader Tom)</span>
+                    <h3 class="text-sm md:text-base font-black text-white mb-2">
+                        <a href="trading-manual-tom.html" class="hover:text-green-400 transition">5. The First Trading Manual: Foundation Course and Strategies &rarr;</a>
+                    </h3>
+                    <p class="text-xs text-gray-400">24-hour trading cycle, Price action principles, Candlestick patterns, 4-bar fractal, aur trading psychology ke mahatvapurna notes.</p>
+                </div>
+            </div>
+
+            <!-- BOTTOM AD SPACE -->
+            <div class="bg-amber-950/30 border border-amber-500/40 p-4 rounded-xl text-center text-xs text-amber-300 mt-6">
+                <span>📢 [Yahan Niche ka Google AdSense Code paste karein]</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#131b2e]/90 backdrop-blur border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2 relative z-10">
+        <p>ICT Forex Academy © 2026. All rights reserved.</p>
+        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
+    </footer>
+
+    <!-- SCRIPT FOR MOBILE MENU -->
+    <script>
+        function toggleMobileMenu() {
+            var menu = document.getElementById("mobileMenu");
+            if (menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+            }
+        }
+    </script>
+
 </body>
 </html>
