@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Books Important Notes & Summary</title>
+    <title>Trading Books Important Notes List</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; line-height: 1.6; }
         .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; font-size: 28px; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 15px; }
+        h1 { color: #2c3e50; font-size: 28px; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px; }
         
-        /* Top Notice Box Styling */
+        /* Upar ka notice box */
         .top-notice {
             background-color: #e8f4fd;
             border-left: 5px solid #3498db;
@@ -20,40 +20,42 @@
             font-size: 15px;
         }
 
-        .books-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .book-card { background: #f9f9f9; padding: 20px; border-left: 5px solid #27ae60; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s; }
-        .book-card:hover { transform: translateY(-3px); background: #f1f5f8; }
-        .book-card a { text-decoration: none; font-size: 20px; color: #2980b9; font-weight: bold; display: block; margin-bottom: 5px; }
-        .book-card a:hover { color: #1b4f72; text-decoration: underline; }
-        .author-name { font-size: 14px; color: #e67e22; font-weight: bold; margin-bottom: 10px; display: block; }
+        /* Upar se niche tak books ki list */
+        .book-list { display: flex; flex-direction: column; gap: 15px; }
+        .book-item { background: #f9f9f9; padding: 20px; border-left: 5px solid #27ae60; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.3s; }
+        .book-item:hover { transform: translateY(-2px); background: #f1f5f8; }
+        .book-item a { text-decoration: none; font-size: 20px; color: #2980b9; font-weight: bold; display: block; margin-bottom: 5px; }
+        .book-item a:hover { color: #1b4f72; text-decoration: underline; }
+        .author-name { font-size: 14px; color: #e67e22; font-weight: bold; margin-bottom: 8px; display: block; }
         .book-desc { font-size: 14px; color: #666; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Trading Books & Important Notes Library</h1>
+        <h1>Trading Books Important Notes List</h1>
         
-        <!-- Top par saaf-saaf likha hua notice -->
+        <!-- Upar likha hua notice -->
         <div class="top-notice">
-            <strong>Mahatvapurna Soochana:</strong> Yahan di gayi saari books koi poori kitaab nahi hain. In sabhi books mein se mukhya aur <strong>important notes</strong> nikal kar aapke liye summarize kiye gaye hain, taki aap trading ke concepts ko aasani se samajh saken.
+            <strong>Mahatvapurna Soochana:</strong> Yeh sabhi books ki koi poori kitab (Full Book) nahi hain. In sabhi books mein se mukhya aur important notes nikal kar list banayi gayi hai, taki aap trading ke concepts ko aasani se samajh saken.
         </div>
 
-        <p>Niche di gayi list mein se apni pasand ki book par click karke uske notes padhein:</p>
+        <p>Niche di gayi list mein se aap jis bhi book ke notes padhna chahte hain, uske naam par click karein:</p>
         
-        <div class="books-grid">
+        <!-- Upar se niche tak books ki list -->
+        <div class="book-list">
             <!-- Book 1 -->
-            <div class="book-card">
+            <div class="book-item">
                 <a href="book.html">Trading Volatility: Correlation, Term Structure and Skew</a>
                 <span class="author-name">Author: Colin Bennett</span>
                 <div class="book-desc">Options, volatility, smile, skew aur term structure ke mukhya notes aur trading strategies.</div>
             </div>
 
-            <!-- Jab aap aage aur books joden, toh is box ko copy karke niche paste kar dena -->
-            <!--
-            <div class="book-card">
-                <a href="second-book.html">Dusri Book Ka Naam</a>
+            <!-- Jab aap aage aur books joden, toh bas ishi format ko copy karke niche paste kar dena -->
+            <!-- 
+            <div class="book-item">
+                <a href="dusri-book.html">Book Ka Naam Yahan Likhein</a>
                 <span class="author-name">Author: Author Ka Naam</span>
-                <div class="book-desc">Book ke notes ki choti jankari.</div>
+                <div class="book-desc">Book ke bare mein choti jankari.</div>
             </div>
             -->
         </div>
