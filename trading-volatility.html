@@ -12,8 +12,14 @@
         p { color: #555; }
         ul { background: #f9f9f9; padding: 15px 20px 15px 40px; border-radius: 5px; }
         li { margin-bottom: 8px; }
-        .back-books { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #fff; background: #27ae60; padding: 8px 15px; border-radius: 4px; font-weight: bold; }
-        .back-books:hover { background: #219653; }
+        
+        /* Navigation Buttons */
+        .nav-bar { margin-bottom: 25px; }
+        .nav-btn { display: inline-block; margin-right: 10px; text-decoration: none; color: #fff; background: #34495e; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 14px; }
+        .nav-btn:hover { background: #2c3e50; }
+        .nav-btn.books { background: #27ae60; }
+        .nav-btn.books:hover { background: #219653; }
+
         .author-name { font-size: 16px; color: #e67e22; font-weight: bold; margin-bottom: 20px; display: block; }
         .chapter-box { margin-bottom: 25px; border-bottom: 1px dashed #eee; padding-bottom: 15px; }
         
@@ -32,7 +38,11 @@
 </head>
 <body>
     <div class="container">
-        <a href="trading-books.html" class="back-books">&larr; Sabhi Books ki List par Wapas Jayein</a>
+        <!-- Navigation Buttons -->
+        <div class="nav-bar">
+            <a href="index.html" class="nav-btn">&larr; Home Page</a>
+            <a href="trading-books.html" class="nav-btn books">&larr; Sabhi Books ki List</a>
+        </div>
         
         <h1>Trading Volatility: Correlation, Term Structure and Skew</h1>
         <span class="author-name">Author: Colin Bennett</span>
