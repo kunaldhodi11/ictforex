@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi" class="dark">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,40 +25,75 @@
     </script>
     <style>
         @keyframes chartMove {
-            0% { transform: translateY(0px); opacity: 0.2; }
-            50% { transform: translateY(-15px); opacity: 0.5; }
-            100% { transform: translateY(0px); opacity: 0.2; }
+            0% { transform: translateY(0px); opacity: 0.15; }
+            50% { transform: translateY(-15px); opacity: 0.4; }
+            100% { transform: translateY(0px); opacity: 0.15; }
         }
         .bg-candle-1 { animation: chartMove 4s ease-in-out infinite; }
         .bg-candle-2 { animation: chartMove 3s ease-in-out infinite 1s; }
         .bg-candle-3 { animation: chartMove 5s ease-in-out infinite 0.5s; }
         .bg-candle-4 { animation: chartMove 3.5s ease-in-out infinite 1.5s; }
+        .bg-candle-5 { animation: chartMove 4.5s ease-in-out infinite 0.8s; }
+        .bg-candle-6 { animation: chartMove 3.2s ease-in-out infinite 2s; }
+        .bg-candle-7 { animation: chartMove 4.8s ease-in-out infinite 0.3s; }
+        .bg-candle-8 { animation: chartMove 3.8s ease-in-out infinite 1.2s; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeInUp 0.7s ease-out forwards; }
+        .fade-in-delay-1 { animation: fadeInUp 0.7s ease-out 0.15s forwards; opacity: 0; }
+        .fade-in-delay-2 { animation: fadeInUp 0.7s ease-out 0.3s forwards; opacity: 0; }
+        .fade-in-delay-3 { animation: fadeInUp 0.7s ease-out 0.45s forwards; opacity: 0; }
+        .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(34,197,94,0.15); }
     </style>
 </head>
 <body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-    <!-- BACKGROUND LIVE MOVING CANDLESTICK CHART THEME -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
+    <!-- BACKGROUND LIVE MOVING CANDLESTICK CHART THEME (FULL WIDTH) -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-20">
         <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:3rem_3rem]"></div>
-        <div class="absolute top-20 left-[10%] flex flex-col items-center bg-candle-1">
+        <div class="absolute top-20 left-[8%] flex flex-col items-center bg-candle-1">
             <div class="w-0.5 h-12 bg-green-500"></div>
             <div class="w-4 h-16 bg-green-500 rounded-sm shadow-[0_0_10px_#22c55e]"></div>
             <div class="w-0.5 h-8 bg-green-500"></div>
         </div>
-        <div class="absolute top-40 left-[25%] flex flex-col items-center bg-candle-2">
+        <div class="absolute top-40 left-[18%] flex flex-col items-center bg-candle-2">
             <div class="w-0.5 h-10 bg-red-500"></div>
             <div class="w-4 h-20 bg-red-500 rounded-sm shadow-[0_0_10px_#ef4444]"></div>
             <div class="w-0.5 h-6 bg-red-500"></div>
         </div>
-        <div class="absolute top-16 left-[40%] flex flex-col items-center bg-candle-3">
+        <div class="absolute top-16 left-[30%] flex flex-col items-center bg-candle-3">
             <div class="w-0.5 h-14 bg-green-500"></div>
             <div class="w-4 h-24 bg-green-500 rounded-sm shadow-[0_0_10px_#22c55e]"></div>
             <div class="w-0.5 h-10 bg-green-500"></div>
         </div>
-        <div class="absolute top-32 left-[55%] flex flex-col items-center bg-candle-4">
+        <div class="absolute top-32 left-[42%] flex flex-col items-center bg-candle-4">
             <div class="w-0.5 h-8 bg-red-500"></div>
             <div class="w-4 h-14 bg-red-500 rounded-sm shadow-[0_0_10px_#ef4444]"></div>
             <div class="w-0.5 h-12 bg-red-500"></div>
+        </div>
+        <!-- Right side candles -->
+        <div class="absolute top-24 left-[58%] flex flex-col items-center bg-candle-5">
+            <div class="w-0.5 h-10 bg-green-500"></div>
+            <div class="w-4 h-18 bg-green-500 rounded-sm shadow-[0_0_10px_#22c55e]"></div>
+            <div class="w-0.5 h-8 bg-green-500"></div>
+        </div>
+        <div class="absolute top-44 left-[68%] flex flex-col items-center bg-candle-6">
+            <div class="w-0.5 h-6 bg-red-500"></div>
+            <div class="w-4 h-16 bg-red-500 rounded-sm shadow-[0_0_10px_#ef4444]"></div>
+            <div class="w-0.5 h-10 bg-red-500"></div>
+        </div>
+        <div class="absolute top-12 left-[78%] flex flex-col items-center bg-candle-7">
+            <div class="w-0.5 h-12 bg-green-500"></div>
+            <div class="w-4 h-22 bg-green-500 rounded-sm shadow-[0_0_10px_#22c55e]"></div>
+            <div class="w-0.5 h-8 bg-green-500"></div>
+        </div>
+        <div class="absolute top-36 left-[88%] flex flex-col items-center bg-candle-8">
+            <div class="w-0.5 h-8 bg-red-500"></div>
+            <div class="w-4 h-12 bg-red-500 rounded-sm shadow-[0_0_10px_#ef4444]"></div>
+            <div class="w-0.5 h-14 bg-red-500"></div>
         </div>
     </div>
 
@@ -98,22 +133,15 @@
         </nav>
 
         <div class="flex items-center gap-2">
-            <!-- Profile Button -->
             <a href="profile.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-3 py-2 rounded-xl transition shadow flex items-center gap-1.5">
                 <i class="fa-solid fa-user"></i> <span class="hidden sm:inline">Profile</span>
             </a>
-            
-            <!-- Login Button (Shown when logged out) -->
             <a href="login.html" id="authLoginBtn" class="bg-green-600 hover:bg-green-700 text-white text-xs font-black px-3 py-2 rounded-xl transition shadow flex items-center gap-1.5">
                 <i class="fa-solid fa-right-to-bracket"></i> Login
             </a>
-
-            <!-- Logout Button (Shown when logged in) -->
             <button id="authLogoutBtn" style="display: none;" class="bg-red-600 hover:bg-red-700 text-white text-xs font-black px-3 py-2 rounded-xl transition shadow flex items-center gap-1.5">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
             </button>
-
-            <!-- Mobile Hamburger Menu Button -->
             <button onclick="toggleMobileMenu()" class="md:hidden bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black p-2.5 rounded-xl transition shadow">
                 <i class="fa-solid fa-bars text-base"></i>
             </button>
@@ -135,13 +163,15 @@
         </div>
     </div>
 
-    <!-- HOMEPAGE CONTENT -->
-    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-10 space-y-8 relative z-10">
-        <div class="bg-gradient-to-r from-green-800/90 via-emerald-950/90 to-teal-950/90 backdrop-blur-md border border-green-500/30 rounded-3xl p-6 md:p-12 shadow-2xl text-center relative overflow-hidden">
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-10 space-y-12 relative z-10">
+
+        <!-- HERO SECTION -->
+        <div class="bg-gradient-to-r from-green-800/90 via-emerald-950/90 to-teal-950/90 backdrop-blur-md border border-green-500/30 rounded-3xl p-6 md:p-12 shadow-2xl text-center relative overflow-hidden fade-in">
             <span class="bg-yellow-500 text-gray-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow">
                 #1 Institutional Trading Academy
             </span>
-            <h2 class="text-xl md:text-5xl font-black text-white mt-4 mb-4 leading-tight">
+            <h2 class="text-2xl md:text-5xl font-black text-white mt-4 mb-4 leading-tight">
                 Master Professional Trading, Price Action & <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">ICT Liquidity</span>
             </h2>
             <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
@@ -159,12 +189,229 @@
                 </a>
             </div>
         </div>
+
+        <!-- STATS SECTION -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in-delay-1">
+            <div class="bg-[#131b2e]/80 border border-green-500/20 rounded-2xl p-5 text-center card-hover">
+                <div class="text-3xl font-black text-green-400">5000+</div>
+                <div class="text-xs text-gray-400 mt-1 font-semibold">Active Students</div>
+            </div>
+            <div class="bg-[#131b2e]/80 border border-purple-500/20 rounded-2xl p-5 text-center card-hover">
+                <div class="text-3xl font-black text-purple-400">50+</div>
+                <div class="text-xs text-gray-400 mt-1 font-semibold">Free Lessons</div>
+            </div>
+            <div class="bg-[#131b2e]/80 border border-yellow-500/20 rounded-2xl p-5 text-center card-hover">
+                <div class="text-3xl font-black text-yellow-400">10+</div>
+                <div class="text-xs text-gray-400 mt-1 font-semibold">Trading Books</div>
+            </div>
+            <div class="bg-[#131b2e]/80 border border-blue-500/20 rounded-2xl p-5 text-center card-hover">
+                <div class="text-3xl font-black text-blue-400">95%</div>
+                <div class="text-xs text-gray-400 mt-1 font-semibold">Success Rate</div>
+            </div>
+        </div>
+
+        <!-- WHAT YOU WILL LEARN -->
+        <div class="fade-in-delay-2">
+            <h3 class="text-xl md:text-3xl font-black text-center text-white mb-2">What You Will <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">Learn</span></h3>
+            <p class="text-center text-gray-400 text-xs mb-8">Professional trading strategies used by institutional traders</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-[#131b2e]/80 border border-green-500/20 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-chart-line text-green-400 text-xl"></i>
+                    </div>
+                    <h4 class="font-black text-white text-sm mb-2">ICT Smart Money Concepts</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Learn how institutional traders move markets. Understand liquidity zones, order blocks, and fair value gaps.</p>
+                </div>
+                <div class="bg-[#131b2e]/80 border border-purple-500/20 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-fire text-purple-400 text-xl"></i>
+                    </div>
+                    <h4 class="font-black text-white text-sm mb-2">Price Action & Candlesticks</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Master candlestick patterns, support/resistance, and price action signals that predict market reversals.</p>
+                </div>
+                <div class="bg-[#131b2e]/80 border border-yellow-500/20 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-shield-halved text-yellow-400 text-xl"></i>
+                    </div>
+                    <h4 class="font-black text-white text-sm mb-2">Risk Management</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Protect your capital with proven risk management rules, position sizing, and trading discipline strategies.</p>
+                </div>
+                <div class="bg-[#131b2e]/80 border border-blue-500/20 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-droplet text-blue-400 text-xl"></i>
+                    </div>
+                    <h4 class="font-black text-white text-sm mb-2">Liquidity Mapping</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Identify where stop hunts occur and how banks trap retail traders. Trade with the institutions, not against them.</p>
+                </div>
+                <div class="bg-[#131b2e]/80 border border-red-500/20 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-clock text-red-400 text-xl"></i>
+                    </div>
+                    <h4 class="font-black text-white text-sm mb-2">Trading Sessions & Time</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Understand London, New York, and Asian sessions. Know exactly when to trade for maximum profitability.</p>
+                </div>
+                <div class="bg-[#131b2e]/80 border border-teal-500/20 rounded-2xl p-6 card-hover">
+                    <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-brain text-teal-400 text-xl"></i>
+                    </div>
+                    <h4 class="font-black text-white text-sm mb-2">Trading Psychology</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed">Build the right mindset to trade consistently without emotions. The biggest edge in trading is your mental game.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- COURSES SECTION -->
+        <div class="fade-in-delay-3">
+            <h3 class="text-xl md:text-3xl font-black text-center text-white mb-2">Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Courses</span></h3>
+            <p class="text-center text-gray-400 text-xs mb-8">Choose your learning path — free or premium</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-[#131b2e]/80 border border-green-500/30 rounded-2xl p-6 flex flex-col card-hover">
+                    <div class="bg-green-500/20 text-green-400 text-[10px] font-black px-3 py-1 rounded-full w-fit mb-4">FREE</div>
+                    <h4 class="font-black text-white text-base mb-2">Free Trading Course</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed mb-4">Start your journey with candlestick basics, chart reading, and entry-level ICT concepts. No cost, no catch.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-check text-green-400"></i> Candlestick Patterns</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-check text-green-400"></i> Basic Price Action</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-check text-green-400"></i> Support & Resistance</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-check text-green-400"></i> Introduction to SMC</li>
+                    </ul>
+                    <a href="free-learning.html" class="mt-auto bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-5 py-3 rounded-xl transition text-center">Start Free &rarr;</a>
+                </div>
+                <div class="bg-[#131b2e]/80 border border-purple-500/30 rounded-2xl p-6 flex flex-col card-hover">
+                    <div class="bg-purple-500/20 text-purple-400 text-[10px] font-black px-3 py-1 rounded-full w-fit mb-4">RESOURCES</div>
+                    <h4 class="font-black text-white text-base mb-2">Trading Books Library</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed mb-4">Access a curated collection of the best forex and trading books used by professional traders worldwide.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> ICT Trading Books</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> Market Structure Books</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> Psychology Books</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> Strategy Guides</li>
+                    </ul>
+                    <a href="trading-books.html" class="mt-auto bg-purple-600 hover:bg-purple-700 text-white font-black text-xs px-5 py-3 rounded-xl transition text-center">Browse Books &rarr;</a>
+                </div>
+                <div class="bg-gradient-to-b from-yellow-900/40 to-amber-950/60 border border-yellow-500/40 rounded-2xl p-6 flex flex-col card-hover relative overflow-hidden">
+                    <div class="absolute top-3 right-3 bg-yellow-500 text-gray-950 text-[9px] font-black px-2 py-0.5 rounded-full">BEST VALUE</div>
+                    <div class="bg-yellow-500/20 text-yellow-400 text-[10px] font-black px-3 py-1 rounded-full w-fit mb-4">VIP PREMIUM</div>
+                    <h4 class="font-black text-white text-base mb-2">VIP Masterclass</h4>
+                    <p class="text-gray-400 text-xs leading-relaxed mb-4">Full mentorship with live sessions, trade reviews, 1-on-1 support, and lifetime access to all premium content.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-crown text-yellow-400"></i> Full ICT Masterclass</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-crown text-yellow-400"></i> Live Trade Reviews</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-crown text-yellow-400"></i> 1-on-1 Mentorship</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-crown text-yellow-400"></i> Private Community Access</li>
+                        <li class="text-xs text-gray-300 flex items-center gap-2"><i class="fa-solid fa-crown text-yellow-400"></i> Lifetime Updates</li>
+                    </ul>
+                    <a href="vip-course.html" class="mt-auto bg-gradient-to-r from-yellow-500 to-amber-600 hover:opacity-90 text-gray-950 font-black text-xs px-5 py-3 rounded-xl transition text-center">Join VIP &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TESTIMONIALS -->
+        <div>
+            <h3 class="text-xl md:text-3xl font-black text-center text-white mb-2">What Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">Students Say</span></h3>
+            <p class="text-center text-gray-400 text-xs mb-8">Real results from real traders</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-[#131b2e]/80 border border-gray-700 rounded-2xl p-5 card-hover">
+                    <div class="flex items-center gap-1 mb-3">
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                    </div>
+                    <p class="text-gray-300 text-xs leading-relaxed mb-4">"ICT Forex Academy changed how I see the markets. I stopped losing and started trading like a professional within 2 months."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-green-500/30 flex items-center justify-center text-green-400 font-black text-xs">R</div>
+                        <div>
+                            <div class="text-xs font-black text-white">Rahul S.</div>
+                            <div class="text-[10px] text-gray-500">Forex Trader, Mumbai</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#131b2e]/80 border border-gray-700 rounded-2xl p-5 card-hover">
+                    <div class="flex items-center gap-1 mb-3">
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                    </div>
+                    <p class="text-gray-300 text-xs leading-relaxed mb-4">"The SMC concepts here are explained better than any paid course I've taken. Free content is unbelievably valuable!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-black text-xs">A</div>
+                        <div>
+                            <div class="text-xs font-black text-white">Arjun M.</div>
+                            <div class="text-[10px] text-gray-500">Crypto & Forex Trader</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#131b2e]/80 border border-gray-700 rounded-2xl p-5 card-hover">
+                    <div class="flex items-center gap-1 mb-3">
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                        <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                    </div>
+                    <p class="text-gray-300 text-xs leading-relaxed mb-4">"VIP mentorship was worth every rupee. Live session reviews and direct support helped me become consistently profitable."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-yellow-500/30 flex items-center justify-center text-yellow-400 font-black text-xs">P</div>
+                        <div>
+                            <div class="text-xs font-black text-white">Priya K.</div>
+                            <div class="text-[10px] text-gray-500">VIP Student, Delhi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA BANNER -->
+        <div class="bg-gradient-to-r from-green-700/80 to-teal-800/80 border border-green-500/30 rounded-3xl p-8 text-center shadow-2xl">
+            <h3 class="text-xl md:text-3xl font-black text-white mb-3">Ready to Start Trading Professionally?</h3>
+            <p class="text-gray-300 text-xs md:text-sm mb-6 max-w-xl mx-auto">Join thousands of traders who are learning ICT Smart Money Concepts for free. No experience needed.</p>
+            <a href="free-learning.html" class="inline-block bg-white text-green-700 hover:bg-gray-100 font-black text-sm px-8 py-4 rounded-xl transition shadow-lg">
+                <i class="fa-solid fa-rocket mr-2"></i> Start For Free Today
+            </a>
+        </div>
+
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-[#131b2e]/90 backdrop-blur border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2 relative z-10">
-        <p>ICT Forex Academy © 2026. All rights reserved.</p>
-        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
+    <footer class="bg-[#131b2e]/90 backdrop-blur border-t border-gray-800 mt-12 relative z-10">
+        <div class="max-w-6xl mx-auto px-4 md:px-10 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-red-600 to-green-500 flex items-center justify-center">
+                            <span class="text-[9px] font-black text-white">ICT</span>
+                        </div>
+                        <span class="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-green-400">ICT FOREX ACADEMY</span>
+                    </div>
+                    <p class="text-gray-500 text-xs leading-relaxed">Learn professional trading with institutional strategies. Free forever for basics.</p>
+                </div>
+                <div>
+                    <h5 class="text-xs font-black text-white mb-3 uppercase tracking-wider">Quick Links</h5>
+                    <div class="space-y-2">
+                        <a href="free-learning.html" class="block text-xs text-gray-400 hover:text-green-400 transition">Free Learning</a>
+                        <a href="trading-books.html" class="block text-xs text-gray-400 hover:text-green-400 transition">Trading Books</a>
+                        <a href="rules.html" class="block text-xs text-gray-400 hover:text-green-400 transition">Trading Rules</a>
+                        <a href="vip-course.html" class="block text-xs text-gray-400 hover:text-yellow-400 transition">VIP Academy</a>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="text-xs font-black text-white mb-3 uppercase tracking-wider">Community</h5>
+                    <div class="space-y-2">
+                        <a href="community.html" class="block text-xs text-gray-400 hover:text-green-400 transition"><i class="fa-brands fa-telegram mr-1"></i> Telegram Group</a>
+                        <a href="about.html" class="block text-xs text-gray-400 hover:text-green-400 transition"><i class="fa-solid fa-circle-info mr-1"></i> About Us</a>
+                        <a href="privacy-policy.html" class="block text-xs text-gray-400 hover:text-green-400 transition"><i class="fa-solid fa-shield mr-1"></i> Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-4 text-center">
+                <p class="text-xs text-gray-500">ICT Forex Academy &copy; 2026. All rights reserved. &nbsp;|&nbsp; <a href="privacy-policy.html" class="text-green-400 hover:underline">Privacy Policy & Terms</a></p>
+                <p class="text-[10px] text-gray-600 mt-1">Trading involves risk. Past performance does not guarantee future results.</p>
+            </div>
+        </div>
     </footer>
 
     <!-- MOBILE MENU SCRIPT -->
@@ -179,13 +426,12 @@
         }
     </script>
 
-    <!-- FIREBASE INITIALIZATION & AUTH STATE LISTENER -->
+    <!-- FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 
-        // Your Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
             authDomain: "ict-forex.firebaseapp.com",
@@ -196,12 +442,10 @@
             measurementId: "G-32WBMZK9DW"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const auth = getAuth(app);
 
-        // Track Auth State & Toggle UI
         onAuthStateChanged(auth, (user) => {
             const loginBtn = document.getElementById("authLoginBtn");
             const logoutBtn = document.getElementById("authLogoutBtn");
@@ -209,13 +453,11 @@
             const mobileLogout = document.getElementById("mobileLogoutBtn");
 
             if (user) {
-                // User is logged in
                 if(loginBtn) loginBtn.style.display = "none";
                 if(logoutBtn) logoutBtn.style.display = "flex";
                 if(mobileLogin) mobileLogin.style.display = "none";
                 if(mobileLogout) mobileLogout.style.display = "block";
             } else {
-                // User is logged out
                 if(loginBtn) loginBtn.style.display = "flex";
                 if(logoutBtn) logoutBtn.style.display = "none";
                 if(mobileLogin) mobileLogin.style.display = "block";
@@ -223,7 +465,6 @@
             }
         });
 
-        // Logout Event Handler
         const performLogout = () => {
             signOut(auth).then(() => {
                 window.location.href = "index.html";
