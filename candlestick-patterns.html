@@ -1,266 +1,1226 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candlestick Patterns Masterclass - ICT Forex Academy</title>
-    <meta name="description" content="Learn forex candlestick patterns with animated visuals. Master Hammer, Doji, Engulfing, and Shooting Star candles easily.">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: { 500: '#22c55e', 600: '#16a34a' },
-                        secondary: { 500: '#a855f7', 600: '#9333ea' },
-                        accent: { 500: '#eab308' }
-                    }
-                }
-            }
-        }
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candlestick Patterns | ICT Forex Academy</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{box-sizing:border-box}
+body{background:#0b0f19;color:#f3f4f6;font-family:'Segoe UI',sans-serif;margin:0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeUp .5s ease forwards}
+.card{background:#131b2e;border:1px solid #1f2937;border-radius:1rem;transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 0 0 1px rgba(99,102,241,.3),0 8px 32px rgba(0,0,0,.5);transform:translateY(-2px)}
+.tag{display:inline-flex;align-items:center;font-size:9px;font-weight:900;padding:2px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.05em}
+.nav-link.active{border-left:3px solid #22c55e;background:rgba(34,197,94,.1);color:#86efac}
+.section-title{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.section-title h2{font-size:20px;font-weight:900;color:#fff}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#131b2e}
+::-webkit-scrollbar-thumb{background:#374151;border-radius:3px}
+table{width:100%;border-collapse:collapse}
+table th,table td{padding:8px 12px;font-size:11px;border-bottom:1px solid #1f2937;text-align:left}
+table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.pattern-card{background:#131b2e;border:1px solid #1f2937;border-radius:14px;padding:16px;transition:all .2s}
+.pattern-card:hover{border-color:rgba(99,102,241,.4);box-shadow:0 4px 20px rgba(0,0,0,.4);transform:translateY(-2px)}
+.signal-bull{color:#22c55e;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25)}
+.signal-bear{color:#ef4444;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25)}
+.signal-neutral{color:#f59e0b;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25)}
+@media(max-width:768px){.pattern-grid{grid-template-columns:repeat(2,1fr)}.sidebar-nav{display:none}}
+</style>
 </head>
-<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between">
+<body class="min-h-screen">
 
-    <!-- HEADER -->
-    <header class="bg-[#131b2e] border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-xl">
-        <a href="index.html" class="flex items-center gap-2.5 group cursor-pointer">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] flex items-center justify-center flex-shrink-0">
-                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
-                    <span class="text-xs md:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
-                </div>
-            </div>
-            <div>
-                <h1 class="text-xs md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 drop-shadow">
-                    ICT FOREX ACADEMY
-                </h1>
-                <p class="text-[9px] md:text-[10px] text-gray-400 font-medium tracking-wide">Institutional Smart Money</p>
-            </div>
-        </a>
+<!-- ANNOUNCEMENT BAR -->
+<div style="background:linear-gradient(90deg,#059669,#0d9488);color:#022c22;font-size:10px;font-weight:900;padding:6px 8px;text-align:center;display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:6px;overflow:hidden">
+  <span>🔥 Trusted Brokers:</span>
+  <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" style="background:#022c22;color:#fbbf24;padding:2px 10px;border-radius:6px;text-decoration:none">Octa →</a>
+  <span>|</span>
+  <a href="https://affs.click/m2rkP" target="_blank" style="background:#022c22;color:#fbbf24;padding:2px 10px;border-radius:6px;text-decoration:none">XM →</a>
+</div>
 
-        <nav class="hidden md:flex items-center gap-5 text-xs font-bold text-gray-300">
-            <a href="index.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-house text-[10px]"></i> Home</a>
-            <a href="free-learning.html" class="text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-book-open text-[10px]"></i> Free Learning</a>
-            <a href="rules.html" class="hover:text-blue-400 transition">Trading Rules</a>
-            <a href="about.html" class="hover:text-green-400 transition">About Us</a>
-            <a href="vip-course.html" class="hover:text-yellow-400 transition flex items-center gap-1"><i class="fa-solid fa-crown text-[10px]"></i> VIP Academy</a>
-        </nav>
+<!-- HEADER -->
+<header style="background:rgba(19,27,46,.97);border-bottom:1px solid #1f2937;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)">
+  <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+    <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#f97316,#22c55e);padding:2px;display:flex;align-items:center;justify-content:center">
+      <div style="width:100%;height:100%;background:#131b2e;border-radius:50%;display:flex;align-items:center;justify-content:center">
+        <span style="font-size:9px;font-weight:900;background:linear-gradient(90deg,#ef4444,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent">ICT</span>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:900;background:linear-gradient(90deg,#ef4444,#f97316,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent">ICT FOREX ACADEMY</div>
+      <div style="font-size:9px;color:#6b7280">Professional Trading Education</div>
+    </div>
+  </a>
+  <div style="display:flex;gap:8px">
+    <a href="free-learning.html" style="color:#22c55e;font-size:11px;font-weight:700;padding:6px 12px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);text-decoration:none">← Courses</a>
+    <a href="login.html" id="authLoginBtn" style="background:#16a34a;color:#fff;font-size:11px;font-weight:900;padding:6px 12px;border-radius:10px;text-decoration:none">Login</a>
+    <button id="authLogoutBtn" style="display:none;background:#dc2626;color:#fff;font-size:11px;font-weight:900;padding:6px 12px;border-radius:10px;border:none;cursor:pointer">Logout</button>
+  </div>
+</header>
 
-        <div class="flex items-center gap-2">
-            <a href="free-learning.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-arrow-left"></i> Back to Hub
-            </a>
+<!-- BREADCRUMB -->
+<div style="background:rgba(19,27,46,.5);border-bottom:1px solid #1f2937;padding:8px 20px;font-size:10px;color:#6b7280;display:flex;align-items:center;gap:6px">
+  <a href="index.html" style="color:#6b7280;text-decoration:none">Home</a>
+  <span>›</span>
+  <a href="free-learning.html" style="color:#6b7280;text-decoration:none">Free Learning</a>
+  <span>›</span>
+  <span style="color:#22c55e;font-weight:700">Candlestick Patterns</span>
+</div>
+
+<div style="display:flex;max-width:1280px;margin:0 auto;width:100%">
+
+<!-- SIDEBAR -->
+<aside class="sidebar-nav" style="width:210px;flex-shrink:0;border-right:1px solid #1f2937;padding:16px;position:sticky;top:82px;max-height:calc(100vh - 82px);overflow-y:auto">
+  <div style="font-size:9px;font-weight:900;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Chapter 2</div>
+  <a href="#intro" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">📖 Introduction</a>
+  <a href="#anatomy" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">🕯️ Anatomy</a>
+  <div style="font-size:9px;font-weight:900;color:#4b5563;text-transform:uppercase;letter-spacing:.1em;margin:12px 0 4px 10px">Single Candle</div>
+  <a href="#doji" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Doji Family (5)</a>
+  <a href="#hammer" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Hammer Family (4)</a>
+  <a href="#marubozu" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Marubozu (2)</a>
+  <a href="#spinning" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Spinning &amp; Belt (4)</a>
+  <div style="font-size:9px;font-weight:900;color:#4b5563;text-transform:uppercase;letter-spacing:.1em;margin:12px 0 4px 10px">Double Candle</div>
+  <a href="#engulfing" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Engulfing (2)</a>
+  <a href="#harami" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Harami (4)</a>
+  <a href="#tweezer" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Tweezer (2)</a>
+  <a href="#piercing" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Piercing &amp; Dark Cloud</a>
+  <a href="#kicker" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Kicker (2)</a>
+  <a href="#meeting" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Meeting Lines (2)</a>
+  <div style="font-size:9px;font-weight:900;color:#4b5563;text-transform:uppercase;letter-spacing:.1em;margin:12px 0 4px 10px">Triple Candle</div>
+  <a href="#morning" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Stars (4)</a>
+  <a href="#soldiers" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Soldiers &amp; Crows (2)</a>
+  <a href="#inside" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Inside/Outside (4)</a>
+  <a href="#abandoned" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Abandoned Baby (2)</a>
+  <a href="#rare" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Rare Patterns (6)</a>
+  <a href="#entry" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#f59e0b;text-decoration:none;margin-bottom:2px">⚡ Entry Module</a>
+  <div style="margin-top:16px;padding-top:16px;border-top:1px solid #1f2937">
+    <a href="support-resistance.html" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#6b7280;text-decoration:none">← Chapter 1: S&amp;R</a>
+    <a href="price-action.html" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#6b7280;text-decoration:none">→ Price Action</a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main style="flex:1;padding:24px 20px 60px;min-width:0" class="fade">
+
+<!-- HERO -->
+<div style="border-bottom:1px solid #1f2937;padding-bottom:28px;margin-bottom:32px">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+    <span class="tag" style="background:rgba(34,197,94,.15);color:#22c55e">Chapter 2</span>
+    <span style="color:#6b7280;font-size:10px">47 Patterns · Complete A-Z Guide · Single, Double &amp; Triple Candles</span>
+  </div>
+  <h1 style="font-size:clamp(28px,5vw,52px);font-weight:900;color:#fff;margin:0 0 12px">Candlestick <span style="background:linear-gradient(90deg,#22c55e,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Patterns</span></h1>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;max-width:700px;margin:0 0 20px">The most complete candlestick pattern guide — every pattern explained with professional SVG chart examples, psychology behind each candle, and exact trade setup rules. From basics to pro-level patterns.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px">
+    <div style="background:#131b2e;border:1px solid #1f2937;border-radius:10px;padding:10px 16px;text-align:center">
+      <div style="font-size:22px;font-weight:900;color:#22c55e">47</div>
+      <div style="font-size:10px;color:#6b7280">Patterns</div>
+    </div>
+    <div style="background:#131b2e;border:1px solid #1f2937;border-radius:10px;padding:10px 16px;text-align:center">
+      <div style="font-size:22px;font-weight:900;color:#60a5fa">47</div>
+      <div style="font-size:10px;color:#6b7280">SVG Charts</div>
+    </div>
+    <div style="background:#131b2e;border:1px solid #1f2937;border-radius:10px;padding:10px 16px;text-align:center">
+      <div style="font-size:22px;font-weight:900;color:#f59e0b">A-Z</div>
+      <div style="font-size:10px;color:#6b7280">Complete</div>
+    </div>
+    <div style="background:#131b2e;border:1px solid #1f2937;border-radius:10px;padding:10px 16px;text-align:center">
+      <div style="font-size:22px;font-weight:900;color:#a78bfa">Pro</div>
+      <div style="font-size:10px;color:#6b7280">Level</div>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section id="intro" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title"><h2>📖 Why Candlesticks Matter</h2></div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.8;margin-bottom:16px">Candlestick charts were invented by Japanese rice trader <strong style="color:#fff">Homma Munehisa</strong> in the 1700s. He discovered that market prices are not just driven by supply and demand — but also by <strong style="color:#22c55e">emotions of traders</strong>. Every candle tells you 4 crucial things:</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:20px">
+    <div class="card" style="padding:16px;text-align:center">
+      <div style="font-size:28px;font-weight:900;color:#22c55e">O</div>
+      <div style="font-size:12px;font-weight:900;color:#fff">Open</div>
+      <div style="font-size:10px;color:#6b7280">Where price started</div>
+    </div>
+    <div class="card" style="padding:16px;text-align:center">
+      <div style="font-size:28px;font-weight:900;color:#60a5fa">H</div>
+      <div style="font-size:12px;font-weight:900;color:#fff">High</div>
+      <div style="font-size:10px;color:#6b7280">Highest reached</div>
+    </div>
+    <div class="card" style="padding:16px;text-align:center">
+      <div style="font-size:28px;font-weight:900;color:#f87171">L</div>
+      <div style="font-size:12px;font-weight:900;color:#fff">Low</div>
+      <div style="font-size:10px;color:#6b7280">Lowest reached</div>
+    </div>
+    <div class="card" style="padding:16px;text-align:center">
+      <div style="font-size:28px;font-weight:900;color:#fbbf24">C</div>
+      <div style="font-size:12px;font-weight:900;color:#fff">Close</div>
+      <div style="font-size:10px;color:#6b7280">Where price ended</div>
+    </div>
+  </div>
+  <div style="background:#131b2e;border:1px solid #1f2937;border-left:3px solid #22c55e;border-radius:12px;padding:16px">
+    <p style="color:#9ca3af;font-size:12px;line-height:1.7;margin:0">🔑 <strong style="color:#fff">Key principle:</strong> A candlestick pattern is only meaningful when it appears at a <strong style="color:#22c55e">key price level</strong> (support, resistance, or a major swing point). A Hammer in the middle of nowhere means nothing. A Hammer at a key support = high-probability trade.</p>
+  </div>
+</section>
+
+<!-- ANATOMY -->
+<section id="anatomy" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title"><h2>🕯️ Anatomy of a Candlestick</h2></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div>
+      <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:16px">Every candlestick has <strong style="color:#fff">3 parts</strong>: the Body, Upper Wick (Shadow), and Lower Wick. The body shows the range between Open and Close. Wicks show how far price went beyond the body but was rejected.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:12px">
+          <div style="width:16px;height:48px;background:#22c55e;border-radius:4px;flex-shrink:0"></div>
+          <div><div style="font-size:12px;font-weight:900;color:#22c55e">Green / Bullish</div><div style="font-size:10px;color:#9ca3af">Close ABOVE Open. Buyers won the session.</div></div>
         </div>
-    </header>
-
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-10 space-y-8">
-        
-        <!-- Google AdSense Top Ad Space -->
-        <div class="w-full bg-gray-900 border border-dashed border-gray-700 rounded-2xl p-4 text-center text-gray-500 text-xs shadow-inner">
-            [ Google AdSense Top Banner Ad Space ]
+        <div style="display:flex;align-items:center;gap:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:12px">
+          <div style="width:16px;height:48px;background:#ef4444;border-radius:4px;flex-shrink:0"></div>
+          <div><div style="font-size:12px;font-weight:900;color:#ef4444">Red / Bearish</div><div style="font-size:10px;color:#9ca3af">Close BELOW Open. Sellers won the session.</div></div>
         </div>
-
-        <!-- HERO TITLE -->
-        <div class="bg-gradient-to-r from-gray-900 via-[#131b2e] to-gray-900 border border-gray-800 rounded-3xl p-6 md:p-10 shadow-2xl text-center space-y-4">
-            <span class="bg-green-500/15 text-green-400 border border-green-500/30 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow">
-                🕯️ Module 2: Price Behavior
-            </span>
-            <h2 class="text-2xl md:text-4xl font-black text-white leading-tight">
-                Mastering <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-300">Candlestick Patterns</span>
-            </h2>
-            <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto leading-relaxed">
-                Sikhein ki candlestick kya hoti hai, yeh market me buyers aur sellers ka mood kaise batati hai, aur charts par inka use karke accurate trade entry kaise li jaati hai.
-            </p>
+        <div style="display:flex;align-items:center;gap:12px;background:rgba(156,163,175,.08);border:1px solid rgba(156,163,175,.2);border-radius:12px;padding:12px">
+          <div style="width:2px;height:48px;background:#9ca3af;margin:0 7px;flex-shrink:0"></div>
+          <div><div style="font-size:12px;font-weight:900;color:#9ca3af">Wick (Shadow)</div><div style="font-size:10px;color:#9ca3af">Price went there but was rejected. Long wick = strong rejection.</div></div>
         </div>
+      </div>
+    </div>
+    <div class="card" style="padding:12px">
+      <div style="font-size:9px;font-weight:900;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">📊 Full Anatomy Chart</div>
+      <svg viewBox="0 0 320 300" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+        <rect width="320" height="300" fill="#0b0f19" rx="8"/>
+        <line x1="80" y1="30" x2="80" y2="75" stroke="#22c55e" stroke-width="2"/>
+        <rect x="58" y="75" width="44" height="90" fill="#22c55e" rx="3"/>
+        <line x1="80" y1="165" x2="80" y2="210" stroke="#22c55e" stroke-width="2"/>
+        <line x1="106" y1="30" x2="130" y2="30" stroke="#374151" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="133" y="34" fill="#60a5fa" font-size="10" font-weight="bold">HIGH</text>
+        <line x1="106" y1="75" x2="130" y2="75" stroke="#374151" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="133" y="79" fill="#22c55e" font-size="10" font-weight="bold">CLOSE</text>
+        <text x="58" y="125" fill="#9ca3af" font-size="9">BODY</text>
+        <line x1="106" y1="165" x2="130" y2="165" stroke="#374151" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="133" y="169" fill="#fbbf24" font-size="10" font-weight="bold">OPEN</text>
+        <line x1="106" y1="210" x2="130" y2="210" stroke="#374151" stroke-width="1" stroke-dasharray="1,2"/>
+        <text x="133" y="214" fill="#60a5fa" font-size="10" font-weight="bold">LOW</text>
+        <text x="58" y="238" fill="#22c55e" font-size="12" font-weight="bold" text-anchor="middle">BULLISH</text>
+        <text x="12" y="53" fill="#9ca3af" font-size="8">Upper</text>
+        <text x="14" y="63" fill="#9ca3af" font-size="8">Wick</text>
+        <line x1="55" y1="53" x2="45" y2="53" stroke="#4b5563" stroke-width="1"/>
+        <text x="12" y="185" fill="#9ca3af" font-size="8">Lower</text>
+        <text x="14" y="195" fill="#9ca3af" font-size="8">Wick</text>
+        <line x1="55" y1="188" x2="45" y2="188" stroke="#4b5563" stroke-width="1"/>
+        <line x1="240" y1="30" x2="240" y2="80" stroke="#ef4444" stroke-width="2"/>
+        <rect x="218" y="80" width="44" height="90" fill="#ef4444" rx="3"/>
+        <line x1="240" y1="170" x2="240" y2="220" stroke="#ef4444" stroke-width="2"/>
+        <text x="185" y="84" fill="#fbbf24" font-size="10" font-weight="bold">OPEN</text>
+        <text x="185" y="174" fill="#ef4444" font-size="10" font-weight="bold">CLOSE</text>
+        <text x="218" y="238" fill="#ef4444" font-size="12" font-weight="bold" text-anchor="middle">BEARISH</text>
+        <line x1="160" y1="265" x2="320" y2="265" stroke="#1f2937" stroke-width="1"/>
+        <text x="240" y="280" fill="#6b7280" font-size="9" text-anchor="middle">Body = Open to Close</text>
+        <text x="80" y="280" fill="#6b7280" font-size="9" text-anchor="middle">Wicks = Price rejection</text>
+      </svg>
+    </div>
+  </div>
+</section>
 
-        <!-- WHAT IS A CANDLESTICK & ITS ROLE -->
-        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
-            <h3 class="text-sm md:text-base font-black text-white flex items-center gap-2">
-                <i class="fa-solid fa-circle-question text-green-400"></i> Candlestick Pattern Kya Hai aur Iska Market Me Kya Role Hai?
-            </h3>
-            <div class="space-y-3 text-xs md:text-sm text-gray-300 leading-relaxed">
-                <p>
-                    Ek candlestick chart par price ke utaar-chadhaw (movement) ko dikhane ka sabse behtareen tarika hai. Iske zariye hamein ek hi nazar me 4 cheezein pata chalti hain: <strong class="text-white">Open (Shuruat), High (Sabse Upar), Low (Sabse Neeche), aur Close (Ant).</strong>
-                </p>
-                <p>
-                    <strong class="text-green-400">Market Me Role:</strong> Candlestick sirf line nahi hai, yeh market ke psychology (psychology of traders) ko darshati hai. Jab bade institutional players ya smart money market me entry karte hain, toh candles ka size aur unki wick (poonch) bata deti hai ki ab market kis disha me jaane wala hai.
-                </p>
-            </div>
+<!-- SINGLE CANDLE DIVIDER -->
+<div style="display:flex;align-items:center;gap:12px;margin:40px 0 24px">
+  <div style="height:1px;flex:1;background:#1f2937"></div>
+  <span style="font-size:11px;font-weight:900;color:#6b7280;text-transform:uppercase;letter-spacing:.15em">Single Candlestick Patterns</span>
+  <div style="height:1px;flex:1;background:#1f2937"></div>
+</div>
 
-            <!-- ANIMATED CANDLE ANATOMY VISUAL -->
-            <div class="bg-[#0b0f19] p-6 rounded-2xl border border-gray-800 flex flex-col md:flex-row items-center justify-around gap-6">
-                <div class="text-center space-y-2">
-                    <div class="h-36 w-16 mx-auto relative flex flex-col items-center justify-center animate-pulse">
-                        <!-- Upper Wick -->
-                        <div class="w-1 h-8 bg-green-500"></div>
-                        <!-- Body -->
-                        <div class="w-12 h-20 bg-green-500 rounded-md shadow-[0_0_15px_rgba(34,197,94,0.4)] flex items-center justify-center">
-                            <span class="text-[9px] font-black text-gray-950 rotate-90">BULLISH</span>
-                        </div>
-                        <!-- Lower Wick -->
-                        <div class="w-1 h-8 bg-green-500"></div>
-                    </div>
-                    <p class="text-xs font-bold text-green-400">Green Candle (Buyers Jeet Rahe Hain)</p>
-                </div>
+<!-- DOJI FAMILY -->
+<section id="doji" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(245,158,11,.15);color:#f59e0b">Neutral / Reversal</span>
+    <h2>Doji Family</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">A Doji forms when <strong style="color:#fff">Open ≈ Close</strong>. It represents complete indecision — neither buyers nor sellers are in control. The type of Doji and its location on the chart determine its meaning. At key levels, Dojis are extremely powerful signals.</p>
+  <div class="pattern-grid">
 
-                <div class="text-center space-y-2">
-                    <div class="h-36 w-16 mx-auto relative flex flex-col items-center justify-center animate-pulse">
-                        <!-- Upper Wick -->
-                        <div class="w-1 h-8 bg-red-500"></div>
-                        <!-- Body -->
-                        <div class="w-12 h-20 bg-red-500 rounded-md shadow-[0_0_15px_rgba(239,68,68,0.4)] flex items-center justify-center">
-                            <span class="text-[9px] font-black text-white rotate-90">BEARISH</span>
-                        </div>
-                        <!-- Lower Wick -->
-                        <div class="w-1 h-8 bg-red-500"></div>
-                    </div>
-                    <p class="text-xs font-bold text-red-400">Red Candle (Sellers Jeet Rahe Hain)</p>
-                </div>
-            </div>
+    <!-- 1. Standard Doji -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#f59e0b;margin-bottom:10px;text-transform:uppercase">1. Standard Doji</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="10" x2="50" y2="58" stroke="#9ca3af" stroke-width="2"/>
+        <rect x="34" y="58" width="32" height="4" fill="#9ca3af" rx="1"/>
+        <line x1="50" y1="62" x2="50" y2="115" stroke="#9ca3af" stroke-width="2"/>
+        <text x="50" y="126" fill="#9ca3af" font-size="8" text-anchor="middle">Indecision</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Open = Close. Equal wicks above and below. Neither buyers nor sellers won. Perfect balance.</div>
+      <div style="margin-top:8px;background:rgba(245,158,11,.1);border-radius:8px;padding:8px;font-size:10px;color:#f59e0b">📍 <strong>Signal:</strong> Wait for next candle to confirm direction.</div>
+    </div>
+
+    <!-- 2. Dragonfly Doji -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">2. Dragonfly Doji 🐉</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <rect x="34" y="28" width="32" height="5" fill="#22c55e" rx="2"/>
+        <line x1="50" y1="33" x2="50" y2="115" stroke="#22c55e" stroke-width="2"/>
+        <text x="50" y="126" fill="#22c55e" font-size="8" text-anchor="middle">Bullish</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Open = Close = High. Very long lower wick. Buyers completely rejected the low prices and pushed price back to the top.</div>
+      <div style="margin-top:8px;background:rgba(34,197,94,.1);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">📍 <strong>Entry:</strong> BUY above next bullish candle. SL below the Doji low.</div>
+    </div>
+
+    <!-- 3. Gravestone Doji -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">3. Gravestone Doji ⚰️</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="10" x2="50" y2="90" stroke="#ef4444" stroke-width="2"/>
+        <rect x="34" y="90" width="32" height="5" fill="#ef4444" rx="2"/>
+        <text x="50" y="115" fill="#ef4444" font-size="8" text-anchor="middle">Bearish</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Open = Close = Low. Long upper wick. Sellers completely rejected the high prices and pushed back down to the bottom.</div>
+      <div style="margin-top:8px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">📍 <strong>Entry:</strong> SELL below next bearish candle. SL above Doji high.</div>
+    </div>
+
+    <!-- 4. Long-Legged Doji -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#f59e0b;margin-bottom:10px;text-transform:uppercase">4. Long-Legged Doji</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="8" x2="50" y2="60" stroke="#f59e0b" stroke-width="2"/>
+        <rect x="34" y="60" width="32" height="5" fill="#f59e0b" rx="2"/>
+        <line x1="50" y1="65" x2="50" y2="117" stroke="#f59e0b" stroke-width="2"/>
+        <text x="50" y="127" fill="#f59e0b" font-size="7" text-anchor="middle">Extreme Indecision</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Very long wicks both ways, tiny/no body. Wild session — both sides tried but failed. Market is confused.</div>
+      <div style="margin-top:8px;background:rgba(245,158,11,.1);border-radius:8px;padding:8px;font-size:10px;color:#f59e0b">📍 <strong>Signal:</strong> Major move coming. Watch for breakout.</div>
+    </div>
+
+    <!-- 5. Four Price Doji -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#a78bfa;margin-bottom:10px;text-transform:uppercase">5. Four Price Doji</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <rect x="25" y="60" width="50" height="4" fill="#a78bfa" rx="2"/>
+        <text x="50" y="115" fill="#a78bfa" font-size="8" text-anchor="middle">O=H=L=C</text>
+        <text x="50" y="127" fill="#6b7280" font-size="7" text-anchor="middle">No movement at all</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Open = High = Low = Close. Just a flat horizontal line. Extremely rare. Seen in very low-volume markets or news lockdown periods.</div>
+      <div style="margin-top:8px;background:rgba(167,139,250,.1);border-radius:8px;padding:8px;font-size:10px;color:#a78bfa">📍 <strong>Signal:</strong> Complete market halt. Avoid trading.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HAMMER FAMILY -->
+<section id="hammer" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(34,197,94,.15);color:#22c55e">Reversal Signals</span>
+    <h2>Hammer Family</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">Hammer patterns have a <strong style="color:#fff">small body and a long wick on one side</strong>. They signal strong rejection of a price level. The SAME shape can be bullish or bearish depending on where it appears in the trend.</p>
+  <div class="pattern-grid">
+
+    <!-- 6. Hammer -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">6. Hammer 🔨</div>
+      <svg viewBox="0 0 100 150" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="150" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="12" x2="50" y2="22" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="33" y="22" width="34" height="30" fill="#22c55e" rx="3"/>
+        <line x1="50" y1="52" x2="50" y2="120" stroke="#22c55e" stroke-width="2.5"/>
+        <text x="50" y="133" fill="#22c55e" font-size="8" text-anchor="middle" font-weight="bold">BULLISH</text>
+        <text x="50" y="144" fill="#6b7280" font-size="7" text-anchor="middle">At downtrend bottom</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Small body at top. Long lower wick = 2x or 3x the body size. Buyers pushed price back up from a low. Found at the <strong style="color:#fff">bottom of a downtrend</strong>.</div>
+      <div style="margin-top:8px;background:rgba(34,197,94,.1);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">📍 <strong>Entry:</strong> BUY above next green candle. SL = below hammer low.</div>
+    </div>
+
+    <!-- 7. Inverted Hammer -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">7. Inverted Hammer</div>
+      <svg viewBox="0 0 100 150" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="150" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="18" x2="50" y2="82" stroke="#22c55e" stroke-width="2.5"/>
+        <rect x="33" y="82" width="34" height="30" fill="#22c55e" rx="3"/>
+        <line x1="50" y1="112" x2="50" y2="120" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="50" y="133" fill="#22c55e" font-size="8" text-anchor="middle" font-weight="bold">BULLISH</text>
+        <text x="50" y="144" fill="#6b7280" font-size="7" text-anchor="middle">Potential reversal</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Small body at bottom. Long upper wick. Buyers tried to push higher. Appears at <strong style="color:#fff">bottom of downtrend</strong>. Weaker than Hammer — needs confirmation.</div>
+      <div style="margin-top:8px;background:rgba(34,197,94,.1);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">📍 <strong>Entry:</strong> Wait for next green candle to confirm before buying.</div>
+    </div>
+
+    <!-- 8. Hanging Man -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">8. Hanging Man 🪝</div>
+      <svg viewBox="0 0 100 150" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="150" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="12" x2="50" y2="22" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="33" y="22" width="34" height="30" fill="#ef4444" rx="3"/>
+        <line x1="50" y1="52" x2="50" y2="120" stroke="#ef4444" stroke-width="2.5"/>
+        <text x="50" y="133" fill="#ef4444" font-size="8" text-anchor="middle" font-weight="bold">BEARISH</text>
+        <text x="50" y="144" fill="#6b7280" font-size="7" text-anchor="middle">At uptrend top</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Same shape as Hammer but appears at <strong style="color:#fff">top of uptrend</strong>. Sellers tested lower prices. Weakness is showing — trend may reverse down.</div>
+      <div style="margin-top:8px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">📍 <strong>Entry:</strong> SELL below next red candle. SL above Hanging Man high.</div>
+    </div>
+
+    <!-- 9. Shooting Star -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">9. Shooting Star ⭐</div>
+      <svg viewBox="0 0 100 150" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="150" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="18" x2="50" y2="82" stroke="#ef4444" stroke-width="2.5"/>
+        <rect x="33" y="82" width="34" height="30" fill="#ef4444" rx="3"/>
+        <line x1="50" y1="112" x2="50" y2="120" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="50" y="133" fill="#ef4444" font-size="8" text-anchor="middle" font-weight="bold">BEARISH</text>
+        <text x="50" y="144" fill="#6b7280" font-size="7" text-anchor="middle">At uptrend top</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Small body at bottom. Long upper wick = 2x+ body. At <strong style="color:#fff">top of uptrend</strong>. Sellers strongly rejected higher prices. One of the most reliable single-candle bearish signals.</div>
+      <div style="margin-top:8px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">📍 <strong>Entry:</strong> SELL on next red candle. SL above Shooting Star high.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MARUBOZU -->
+<section id="marubozu" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(96,165,250,.15);color:#60a5fa">Momentum</span>
+    <h2>Marubozu</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px"><strong style="color:#fff">Marubozu means "bald" in Japanese</strong> — no wicks at all. This is the most powerful momentum candle. One side dominated completely from open to close with zero hesitation.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:14px;text-transform:uppercase">10. Bullish Marubozu</div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <svg viewBox="0 0 60 120" style="width:56px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+          <rect width="60" height="120" fill="#0b0f19" rx="6"/>
+          <rect x="8" y="10" width="44" height="100" fill="#22c55e" rx="4"/>
+          <text x="30" y="8" fill="#22c55e" font-size="6" text-anchor="middle">No wick</text>
+        </svg>
+        <div>
+          <p style="font-size:11px;color:#9ca3af;line-height:1.6;margin:0 0 10px">No wicks. Opens at Low, Closes at High. 100% buyers controlled the session. Strong momentum — more upside expected.</p>
+          <div style="font-size:10px;color:#22c55e;background:rgba(34,197,94,.1);border-radius:8px;padding:8px">Body itself becomes key support zone. Buy pullbacks to this body.</div>
         </div>
-
-        <!-- DETAILED INDIVIDUAL CANDLES (WITH ANIMATED BOXES) -->
-        <div class="space-y-6">
-            <h3 class="text-base font-black text-white flex items-center gap-2">
-                <i class="fa-solid fa-fire text-yellow-400"></i> Sabse Important Candlestick Patterns (Charts me Kaise Pehchanein)
-            </h3>
-
-            <!-- 1. HAMMER -->
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl hover:border-green-500 transition">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400 text-lg">
-                            <i class="fa-solid fa-hammer"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-sm md:text-base font-black text-green-400">1. Hammer Pattern (Hathoda Candle)</h4>
-                            <p class="text-[11px] text-gray-400">Trend Reversal Sign (Bullish)</p>
-                        </div>
-                    </div>
-                    <!-- Animated Mini Hammer Preview -->
-                    <div class="bg-[#0b0f19] px-4 py-2 rounded-xl border border-gray-800 flex items-center gap-3">
-                        <div class="h-10 w-4 flex flex-col items-center animate-bounce">
-                            <div class="w-0.5 h-2 bg-green-400"></div>
-                            <div class="w-3.5 h-4 bg-green-500 rounded-sm"></div>
-                            <div class="w-0.5 h-6 bg-green-400"></div>
-                        </div>
-                        <span class="text-[10px] text-green-400 font-bold">Long Lower Wick</span>
-                    </div>
-                </div>
-                <div class="space-y-2 text-xs text-gray-300 leading-relaxed border-t border-gray-800 pt-3">
-                    <p><strong class="text-white">Yeh Kya Hai:</strong> Iska chota sa body upar hota hai aur lambi poonch (wick) neeche ki taraf hoti hai (bilkul hathode jaisi).</p>
-                    <p><strong class="text-green-400">Market Me Kaise Kaam Karta Hai:</strong> Jab market gir raha hota hai aur support level par achanak Hammer candle banti hai, toh iska matlab hai ki sellers ne price ko neeche dhakela tha lekin buyers ne zor lagakar price ko wapas upar khinch liya.</p>
-                    <p><strong class="text-white">Chart Par Kaise Dekhein:</strong> Downtrend ke ant me support ke paas Hammer dikhe toh **BUY** trade ka strong signal mana jata hai.</p>
-                </div>
-            </div>
-
-            <!-- 2. SHOOTING STAR -->
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl hover:border-red-500 transition">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-lg">
-                            <i class="fa-solid fa-meteor"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-sm md:text-base font-black text-red-400">2. Shooting Star Pattern</h4>
-                            <p class="text-[11px] text-gray-400">Trend Reversal Sign (Bearish)</p>
-                        </div>
-                    </div>
-                    <!-- Animated Mini Shooting Star Preview -->
-                    <div class="bg-[#0b0f19] px-4 py-2 rounded-xl border border-gray-800 flex items-center gap-3">
-                        <div class="h-10 w-4 flex flex-col items-center animate-bounce">
-                            <div class="w-0.5 h-6 bg-red-400"></div>
-                            <div class="w-3.5 h-4 bg-red-500 rounded-sm"></div>
-                            <div class="w-0.5 h-2 bg-red-400"></div>
-                        </div>
-                        <span class="text-[10px] text-red-400 font-bold">Long Upper Wick</span>
-                    </div>
-                </div>
-                <div class="space-y-2 text-xs text-gray-300 leading-relaxed border-t border-gray-800 pt-3">
-                    <p><strong class="text-white">Yeh Kya Hai:</strong> Yeh Hammer ka bilkul ulta hota hai. Iski lambi wick upar ki taraf hoti hai aur chota body neeche hota hai.</p>
-                    <p><strong class="text-red-400">Market Me Kaise Kaam Karta Hai:</strong> Jab market badh raha hota hai aur resistance level par Shooting Star banti hai, iska matlab buyers ne price upar le jaane ki koshish ki par sellers ne haavi hokar price ko wapas neeche gira diya.</p>
-                    <p><strong class="text-white">Chart Par Kaise Dekhein:</strong> Uptrend ke top par resistance ke paas yeh dikhe toh **SELL** ka sign hota hai.</p>
-                </div>
-            </div>
-
-            <!-- 3. DOJI -->
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl hover:border-yellow-500 transition">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-lg">
-                            <i class="fa-solid fa-plus"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-sm md:text-base font-black text-yellow-400">3. Doji Pattern (Plus Sign Candle)</h4>
-                            <p class="text-[11px] text-gray-400">Market Indecision (Confusion)</p>
-                        </div>
-                    </div>
-                    <!-- Animated Mini Doji Preview -->
-                    <div class="bg-[#0b0f19] px-4 py-2 rounded-xl border border-gray-800 flex items-center gap-3">
-                        <div class="h-10 w-4 flex flex-col items-center justify-center animate-pulse">
-                            <div class="w-0.5 h-4 bg-yellow-400"></div>
-                            <div class="w-3.5 h-1 bg-yellow-400 rounded-sm"></div>
-                            <div class="w-0.5 h-4 bg-yellow-400"></div>
-                        </div>
-                        <span class="text-[10px] text-yellow-400 font-bold">Equal Open & Close</span>
-                    </div>
-                </div>
-                <div class="space-y-2 text-xs text-gray-300 leading-relaxed border-t border-gray-800 pt-3">
-                    <p><strong class="text-white">Yeh Kya Hai:</strong> Doji candle wahi khulti hai aur wahi band ho jaati hai (plus ya cross (+) jaisi dikhti hai).</p>
-                    <p><strong class="text-yellow-400">Market Me Kaise Kaam Karta Hai:</strong> Iska matlab hai ki na toh buyers jeet paaye aur na hi sellers. Market me poori tarah confusion (indecision) hai.</p>
-                    <p><strong class="text-white">Chart Par Kaise Dekhein:</strong> Agar lamba trend chal raha hai aur achanak Doji ban jaye, toh samajh jao ki ab trend rukne wala hai ya reverse hone wala hai.</p>
-                </div>
-            </div>
-
-            <!-- 4. ENGULFING PATTERN -->
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl hover:border-blue-500 transition">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-lg">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-sm md:text-base font-black text-blue-400">4. Engulfing Pattern (Bullish & Bearish)</h4>
-                            <p class="text-[11px] text-gray-400">Strong Momentum Takeover</p>
-                        </div>
-                    </div>
-                    <!-- Animated Mini Engulfing Preview -->
-                    <div class="bg-[#0b0f19] px-4 py-2 rounded-xl border border-gray-800 flex items-center gap-2">
-                        <div class="h-8 w-2 bg-red-500 rounded-sm"></div>
-                        <div class="text-gray-500 text-xs">&rarr;</div>
-                        <div class="h-12 w-5 bg-green-500 rounded-sm animate-pulse"></div>
-                        <span class="text-[10px] text-blue-400 font-bold ml-1">Badi Candle Choti ko Nigal Leti Hai</span>
-                    </div>
-                </div>
-                <div class="space-y-2 text-xs text-gray-300 leading-relaxed border-t border-gray-800 pt-3">
-                    <p><strong class="text-white">Yeh Kya Hai:</strong> Jab doosri candle pehli candle ko poori tarah se apne andar cover (engulf) kar leti hai.</p>
-                    <p><strong class="text-blue-400">Market Me Kaise Kaam Karta Hai:</strong> 
-                        <br>• <strong class="text-green-400">Bullish Engulfing:</strong> Red candle ke baad ek badi green candle bane jo red ko poori tarah dhak le (Strong Buy).
-                        <br>• <strong class="text-red-400">Bearish Engulfing:</strong> Green candle ke baad ek badi red candle bane jo green ko dhak le (Strong Sell).
-                    </p>
-                    <p><strong class="text-white">Chart Par Kaise Dekhein:</strong> Support ya Resistance ke paas Engulfing pattern sabse zyada accurate result deta hai.</p>
-                </div>
-            </div>
-
+      </div>
+    </div>
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:14px;text-transform:uppercase">11. Bearish Marubozu</div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <svg viewBox="0 0 60 120" style="width:56px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+          <rect width="60" height="120" fill="#0b0f19" rx="6"/>
+          <rect x="8" y="10" width="44" height="100" fill="#ef4444" rx="4"/>
+          <text x="30" y="8" fill="#ef4444" font-size="6" text-anchor="middle">No wick</text>
+        </svg>
+        <div>
+          <p style="font-size:11px;color:#9ca3af;line-height:1.6;margin:0 0 10px">No wicks. Opens at High, Closes at Low. 100% sellers controlled. Strong bearish momentum — more downside expected.</p>
+          <div style="font-size:10px;color:#ef4444;background:rgba(239,68,68,.1);border-radius:8px;padding:8px">Body becomes key resistance. Sell any rally into this body zone.</div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <!-- Google AdSense Bottom Ad Space -->
-        <div class="w-full bg-gray-900 border border-dashed border-gray-700 rounded-2xl p-6 text-center text-gray-500 text-xs shadow-inner">
-            [ Google AdSense Bottom Banner Ad Space ]
+<!-- SPINNING TOP + BELT HOLD -->
+<section id="spinning" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(156,163,175,.15);color:#9ca3af">Indecision &amp; Momentum</span>
+    <h2>Spinning Top &amp; Belt Hold</h2>
+  </div>
+  <div class="pattern-grid">
+
+    <!-- 12. Spinning Top Bullish -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">12. Spinning Top (Bullish)</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="12" x2="50" y2="50" stroke="#9ca3af" stroke-width="1.5"/>
+        <rect x="34" y="50" width="32" height="26" fill="#22c55e" rx="3"/>
+        <line x1="50" y1="76" x2="50" y2="114" stroke="#9ca3af" stroke-width="1.5"/>
+        <text x="50" y="125" fill="#22c55e" font-size="8" text-anchor="middle">Indecision</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Small body, equal wicks both sides. Both buyers and sellers active but neither dominates. Market is hesitating.</div>
+      <div style="margin-top:8px;background:rgba(34,197,94,.08);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">At support = bullish reversal possible.</div>
+    </div>
+
+    <!-- 13. Spinning Top Bearish -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">13. Spinning Top (Bearish)</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="12" x2="50" y2="50" stroke="#9ca3af" stroke-width="1.5"/>
+        <rect x="34" y="50" width="32" height="26" fill="#ef4444" rx="3"/>
+        <line x1="50" y1="76" x2="50" y2="114" stroke="#9ca3af" stroke-width="1.5"/>
+        <text x="50" y="125" fill="#ef4444" font-size="8" text-anchor="middle">Indecision</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Same as bullish version but a red body. At resistance levels this signals a potential reversal downward.</div>
+      <div style="margin-top:8px;background:rgba(239,68,68,.08);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">At resistance = bearish reversal possible.</div>
+    </div>
+
+    <!-- 14. Bullish Belt Hold -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">14. Bullish Belt Hold</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <rect x="34" y="22" width="32" height="72" fill="#22c55e" rx="3"/>
+        <line x1="50" y1="94" x2="50" y2="110" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="50" y="122" fill="#22c55e" font-size="8" text-anchor="middle">Opens at Low</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Opens at the low of the session (no lower wick), closes near the high. Strong bullish candle. Buyers controlled from the very open.</div>
+      <div style="margin-top:8px;background:rgba(34,197,94,.1);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">📍 Bullish signal. Enter BUY on next candle.</div>
+    </div>
+
+    <!-- 15. Bearish Belt Hold -->
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">15. Bearish Belt Hold</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="12" x2="50" y2="28" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="34" y="28" width="32" height="72" fill="#ef4444" rx="3"/>
+        <text x="50" y="118" fill="#ef4444" font-size="8" text-anchor="middle">Opens at High</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Opens at the high of the session (no upper wick), closes near the low. Sellers controlled from the very open. Strong bearish signal.</div>
+      <div style="margin-top:8px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">📍 Bearish signal. Enter SELL on next candle.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DOUBLE CANDLE DIVIDER -->
+<div style="display:flex;align-items:center;gap:12px;margin:40px 0 24px">
+  <div style="height:1px;flex:1;background:#1f2937"></div>
+  <span style="font-size:11px;font-weight:900;color:#6b7280;text-transform:uppercase;letter-spacing:.15em">Double Candlestick Patterns</span>
+  <div style="height:1px;flex:1;background:#1f2937"></div>
+</div>
+
+<!-- ENGULFING -->
+<section id="engulfing" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(96,165,250,.15);color:#60a5fa">Strong Reversal</span>
+    <h2>Engulfing Patterns</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">One of the <strong style="color:#fff">most reliable and widely-used</strong> reversal patterns. The second candle completely engulfs (covers) the entire body of the first candle — showing a complete shift in who is in control.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+    <div class="card" style="padding:20px;border-color:rgba(34,197,94,.2)">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:14px;text-transform:uppercase">16. Bullish Engulfing 🟢</div>
+      <div style="display:flex;align-items:flex-start;gap:16px">
+        <svg viewBox="0 0 110 160" style="width:90px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+          <rect width="110" height="160" fill="#0b0f19" rx="6"/>
+          <line x1="18" y1="18" x2="18" y2="32" stroke="#ef4444" stroke-width="1.5" opacity="0.35"/>
+          <rect x="10" y="20" width="16" height="16" fill="#ef4444" rx="1" opacity="0.35"/>
+          <line x1="38" y1="28" x2="38" y2="44" stroke="#ef4444" stroke-width="1.5" opacity="0.35"/>
+          <rect x="30" y="30" width="16" height="18" fill="#ef4444" rx="1" opacity="0.35"/>
+          <line x1="62" y1="42" x2="62" y2="54" stroke="#ef4444" stroke-width="1.5"/>
+          <rect x="54" y="54" width="16" height="22" fill="#ef4444" rx="2"/>
+          <line x1="62" y1="76" x2="62" y2="84" stroke="#ef4444" stroke-width="1.5"/>
+          <line x1="88" y1="36" x2="88" y2="46" stroke="#22c55e" stroke-width="2"/>
+          <rect x="79" y="46" width="18" height="54" fill="#22c55e" rx="2"/>
+          <line x1="88" y1="100" x2="88" y2="110" stroke="#22c55e" stroke-width="2"/>
+          <text x="55" y="130" fill="#22c55e" font-size="8" text-anchor="middle" font-weight="bold">2nd ENGULFS 1st</text>
+          <text x="55" y="142" fill="#9ca3af" font-size="7" text-anchor="middle">↓ Downtrend reversed</text>
+        </svg>
+        <div>
+          <p style="font-size:11px;color:#9ca3af;line-height:1.6;margin:0 0 10px">At the bottom of a downtrend: green candle's body fully covers the previous red candle's body. Buyers took complete control. Very high probability reversal.</p>
+          <div style="font-size:10px;color:#22c55e;background:rgba(34,197,94,.1);border-radius:8px;padding:10px">
+            <div>✅ Entry: BUY on close of green candle</div>
+            <div>🛑 SL: Below the low of the pattern</div>
+            <div>🎯 TP: Next resistance (min 1:2 RR)</div>
+          </div>
         </div>
+      </div>
+    </div>
 
-    </main>
+    <div class="card" style="padding:20px;border-color:rgba(239,68,68,.2)">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:14px;text-transform:uppercase">17. Bearish Engulfing 🔴</div>
+      <div style="display:flex;align-items:flex-start;gap:16px">
+        <svg viewBox="0 0 110 160" style="width:90px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+          <rect width="110" height="160" fill="#0b0f19" rx="6"/>
+          <line x1="18" y1="90" x2="18" y2="105" stroke="#22c55e" stroke-width="1.5" opacity="0.35"/>
+          <rect x="10" y="76" width="16" height="16" fill="#22c55e" rx="1" opacity="0.35"/>
+          <line x1="38" y1="80" x2="38" y2="94" stroke="#22c55e" stroke-width="1.5" opacity="0.35"/>
+          <rect x="30" y="64" width="16" height="18" fill="#22c55e" rx="1" opacity="0.35"/>
+          <line x1="62" y1="55" x2="62" y2="64" stroke="#22c55e" stroke-width="1.5"/>
+          <rect x="54" y="42" width="16" height="22" fill="#22c55e" rx="2"/>
+          <line x1="62" y1="38" x2="62" y2="30" stroke="#22c55e" stroke-width="1.5"/>
+          <line x1="88" y1="24" x2="88" y2="34" stroke="#ef4444" stroke-width="2"/>
+          <rect x="79" y="34" width="18" height="58" fill="#ef4444" rx="2"/>
+          <line x1="88" y1="92" x2="88" y2="102" stroke="#ef4444" stroke-width="2"/>
+          <text x="55" y="122" fill="#ef4444" font-size="8" text-anchor="middle" font-weight="bold">2nd ENGULFS 1st</text>
+          <text x="55" y="134" fill="#9ca3af" font-size="7" text-anchor="middle">↑ Uptrend reversed</text>
+        </svg>
+        <div>
+          <p style="font-size:11px;color:#9ca3af;line-height:1.6;margin:0 0 10px">At the top of an uptrend: red candle's body fully covers the previous green candle's body. Sellers took complete control. High probability sell signal.</p>
+          <div style="font-size:10px;color:#ef4444;background:rgba(239,68,68,.1);border-radius:8px;padding:10px">
+            <div>✅ Entry: SELL on close of red candle</div>
+            <div>🛑 SL: Above the high of the pattern</div>
+            <div>🎯 TP: Next support (min 1:2 RR)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- FOOTER -->
-    <footer class="bg-[#131b2e] border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2">
-        <p>ICT Forex Academy © 2026. All rights reserved.</p>
-        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
-    </footer>
+<!-- HARAMI -->
+<section id="harami" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(245,158,11,.15);color:#f59e0b">Reversal (Needs Confirmation)</span>
+    <h2>Harami Patterns</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px"><strong style="color:#fff">"Harami" means pregnant in Japanese</strong>. The first candle is large, the second is small and fits inside the first candle's body like a baby. It signals momentum is fading but needs confirmation.</p>
+  <div class="pattern-grid">
 
-</body>
-</html>
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">18. Bullish Harami</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="35" y1="12" x2="35" y2="22" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="22" y="22" width="26" height="70" fill="#ef4444" rx="3"/>
+        <line x1="35" y1="92" x2="35" y2="102" stroke="#ef4444" stroke-width="1.5"/>
+        <line x1="65" y1="42" x2="65" y2="50" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="52" y="50" width="26" height="32" fill="#22c55e" rx="3"/>
+        <line x1="65" y1="82" x2="65" y2="90" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="50" y="118" fill="#9ca3af" font-size="7" text-anchor="middle">Small inside large</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Large red candle, then small green inside it. Bearish momentum slowing. At support = possible bottom. Needs next candle to confirm.</div>
+      <div style="margin-top:8px;background:rgba(34,197,94,.08);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">Wait for 3rd green candle. Then BUY.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">19. Bearish Harami</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="35" y1="12" x2="35" y2="22" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="22" y="22" width="26" height="70" fill="#22c55e" rx="3"/>
+        <line x1="35" y1="92" x2="35" y2="102" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="65" y1="42" x2="65" y2="50" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="52" y="50" width="26" height="32" fill="#ef4444" rx="3"/>
+        <line x1="65" y1="82" x2="65" y2="90" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="50" y="118" fill="#9ca3af" font-size="7" text-anchor="middle">Small inside large</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Large green candle, then small red inside it. Bullish momentum slowing. At resistance = possible top. Needs next candle to confirm.</div>
+      <div style="margin-top:8px;background:rgba(239,68,68,.08);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">Wait for 3rd red candle. Then SELL.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">20. Bullish Harami Cross</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="35" y1="12" x2="35" y2="22" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="22" y="22" width="26" height="70" fill="#ef4444" rx="3"/>
+        <line x1="35" y1="92" x2="35" y2="102" stroke="#ef4444" stroke-width="1.5"/>
+        <line x1="65" y1="45" x2="65" y2="60" stroke="#f59e0b" stroke-width="1.5"/>
+        <rect x="52" y="60" width="26" height="4" fill="#f59e0b" rx="1"/>
+        <line x1="65" y1="64" x2="65" y2="80" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="50" y="114" fill="#f59e0b" font-size="7" text-anchor="middle">Doji inside red</text>
+        <text x="50" y="124" fill="#9ca3af" font-size="7" text-anchor="middle">= Stronger signal</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Same as Bullish Harami but the second candle is a Doji. Stronger signal because the Doji shows complete indecision after the strong sell.</div>
+      <div style="margin-top:8px;background:rgba(34,197,94,.08);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">Stronger bullish reversal than regular Harami.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">21. Bearish Harami Cross</div>
+      <svg viewBox="0 0 100 130" style="width:100%;max-width:100px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="35" y1="12" x2="35" y2="22" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="22" y="22" width="26" height="70" fill="#22c55e" rx="3"/>
+        <line x1="35" y1="92" x2="35" y2="102" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="65" y1="45" x2="65" y2="60" stroke="#f59e0b" stroke-width="1.5"/>
+        <rect x="52" y="60" width="26" height="4" fill="#f59e0b" rx="1"/>
+        <line x1="65" y1="64" x2="65" y2="80" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="50" y="114" fill="#f59e0b" font-size="7" text-anchor="middle">Doji inside green</text>
+        <text x="50" y="124" fill="#9ca3af" font-size="7" text-anchor="middle">= Stronger signal</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Same as Bearish Harami but the second candle is a Doji. Stronger bearish signal because Doji shows complete indecision after the strong buy.</div>
+      <div style="margin-top:8px;background:rgba(239,68,68,.08);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">Stronger bearish reversal than regular Harami.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TWEEZER -->
+<section id="tweezer" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(167,139,250,.15);color:#a78bfa">Precision Reversal</span>
+    <h2>Tweezer Patterns</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">Two candles with the <strong style="color:#fff">exactly same High (top) or same Low (bottom)</strong>. Price tested a level twice and was rejected both times. Institutions are defending that exact price.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:12px;text-transform:uppercase">22. Tweezer Bottom 📌</div>
+      <svg viewBox="0 0 160 130" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="160" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="55" y1="22" x2="55" y2="42" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="40" y="42" width="30" height="36" fill="#ef4444" rx="2"/>
+        <line x1="18" y1="100" x2="142" y2="100" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="80" y="115" fill="#fbbf24" font-size="8" text-anchor="middle" font-weight="bold">Same Low ↓</text>
+        <line x1="55" y1="78" x2="55" y2="100" stroke="#ef4444" stroke-width="1.5"/>
+        <line x1="105" y1="22" x2="105" y2="42" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="90" y="42" width="30" height="36" fill="#22c55e" rx="2"/>
+        <line x1="105" y1="78" x2="105" y2="100" stroke="#22c55e" stroke-width="1.5"/>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Both candles reach the same low. Price tested that level twice and was rejected. Strong buyers at that exact price. <strong style="color:#22c55e">BUY above 2nd candle. SL below twin lows.</strong></p>
+    </div>
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:12px;text-transform:uppercase">23. Tweezer Top 📌</div>
+      <svg viewBox="0 0 160 130" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="160" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="18" y1="28" x2="142" y2="28" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="80" y="20" fill="#fbbf24" font-size="8" text-anchor="middle" font-weight="bold">Same High ↑</text>
+        <line x1="55" y1="28" x2="55" y2="42" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="40" y="42" width="30" height="36" fill="#22c55e" rx="2"/>
+        <line x1="55" y1="78" x2="55" y2="95" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="105" y1="28" x2="105" y2="42" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="90" y="42" width="30" height="36" fill="#ef4444" rx="2"/>
+        <line x1="105" y1="78" x2="105" y2="95" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="80" y="115" fill="#ef4444" font-size="8" text-anchor="middle">Sellers at exact same level</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Both candles reach the same high. Price tried to break higher twice but was rejected. Strong sellers defending that level. <strong style="color:#ef4444">SELL below 2nd candle. SL above twin highs.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- PIERCING / DARK CLOUD -->
+<section id="piercing" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(251,146,60,.15);color:#fb923c">Moderate Reversal</span>
+    <h2>Piercing Line &amp; Dark Cloud Cover</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:12px;text-transform:uppercase">24. Piercing Line</div>
+      <svg viewBox="0 0 130 130" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="130" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="42" y1="15" x2="42" y2="24" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="28" y="24" width="28" height="60" fill="#ef4444" rx="3"/>
+        <line x1="42" y1="84" x2="42" y2="94" stroke="#ef4444" stroke-width="1.5"/>
+        <line x1="15" y1="54" x2="115" y2="54" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="68" y="50" fill="#fbbf24" font-size="7">50% midpoint</text>
+        <line x1="88" y1="97" x2="88" y2="103" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="74" y="40" width="28" height="57" fill="#22c55e" rx="3"/>
+        <line x1="88" y1="38" x2="88" y2="30" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="65" y="120" fill="#22c55e" font-size="8" text-anchor="middle">Closes above 50%</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Large red candle. Then green candle opens BELOW the red's low but closes ABOVE 50% of the red body. Buyers fighting back. <strong style="color:#22c55e">BUY on confirmation.</strong></p>
+    </div>
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:12px;text-transform:uppercase">25. Dark Cloud Cover</div>
+      <svg viewBox="0 0 130 130" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="130" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="42" y1="25" x2="42" y2="34" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="28" y="34" width="28" height="60" fill="#22c55e" rx="3"/>
+        <line x1="42" y1="94" x2="42" y2="104" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="15" y1="64" x2="115" y2="64" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="68" y="60" fill="#fbbf24" font-size="7">50% midpoint</text>
+        <line x1="88" y1="22" x2="88" y2="28" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="74" y="28" width="28" height="58" fill="#ef4444" rx="3"/>
+        <line x1="88" y1="86" x2="88" y2="96" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="65" y="120" fill="#ef4444" font-size="8" text-anchor="middle">Closes below 50%</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Large green candle. Then red candle opens ABOVE the green's high but closes BELOW 50% of the green body. Sellers fighting back. <strong style="color:#ef4444">SELL on confirmation.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- KICKER -->
+<section id="kicker" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(239,68,68,.15);color:#ef4444">Most Powerful 2-Candle</span>
+    <h2>Kicker Patterns</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">The <strong style="color:#fff">Kicker is the most powerful 2-candle pattern</strong>. Price gaps completely in the opposite direction from one candle to the next. This shows an instantaneous, violent shift in market sentiment — usually driven by major news.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:12px;text-transform:uppercase">26. Bullish Kicker 🚀</div>
+      <svg viewBox="0 0 140 130" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="140" height="130" fill="#0b0f19" rx="6"/>
+        <line x1="45" y1="22" x2="45" y2="32" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="30" y="32" width="30" height="65" fill="#ef4444" rx="3"/>
+        <line x1="45" y1="97" x2="45" y2="107" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="82" y="50" fill="#fbbf24" font-size="8" text-anchor="middle">← GAP</text>
+        <line x1="62" y1="32" x2="80" y2="32" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="62" y1="22" x2="80" y2="22" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="86" y="15" width="30" height="55" fill="#22c55e" rx="3"/>
+        <line x1="101" y1="70" x2="101" y2="80" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="70" y="110" fill="#22c55e" font-size="8" text-anchor="middle" font-weight="bold">Gap Up → Buy!</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">A red candle, then price gaps UP and opens as a bullish (green) candle. The gap is never retested. Extremely bullish signal. Often appears after news.</p>
+    </div>
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:12px;text-transform:uppercase">27. Bearish Kicker 📉</div>
+      <svg viewBox="0 0 140 130" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="140" height="130" fill="#0b0f19" rx="6"/>
+        <rect x="30" y="22" width="30" height="55" fill="#22c55e" rx="3"/>
+        <line x1="45" y1="77" x2="45" y2="88" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="82" y="70" fill="#fbbf24" font-size="8" text-anchor="middle">← GAP</text>
+        <line x1="62" y1="77" x2="80" y2="77" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="62" y1="88" x2="80" y2="88" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="101" y1="77" x2="101" y2="90" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="86" y="90" width="30" height="55" fill="#ef4444" rx="3"/>
+        <text x="70" y="118" fill="#ef4444" font-size="8" text-anchor="middle" font-weight="bold">Gap Down → Sell!</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">A green candle, then price gaps DOWN and opens as a bearish (red) candle. The gap is never retested. Extremely bearish signal. One of the strongest sells.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEETING LINES -->
+<section id="meeting" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(96,165,250,.15);color:#60a5fa">Reversal</span>
+    <h2>Meeting Lines (Counterattack)</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">Two candles where the <strong style="color:#fff">second candle closes at the same price as the first</strong>. After an opposite-colored large candle, the second candle reverses and closes at the same level.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:12px;text-transform:uppercase">28. Bullish Meeting Lines</div>
+      <svg viewBox="0 0 130 120" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="130" height="120" fill="#0b0f19" rx="6"/>
+        <line x1="42" y1="15" x2="42" y2="25" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="28" y="25" width="28" height="60" fill="#ef4444" rx="3"/>
+        <line x1="15" y1="85" x2="115" y2="85" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="65" y="97" fill="#fbbf24" font-size="8" text-anchor="middle">Same Close Level</text>
+        <line x1="88" y1="112" x2="88" y2="105" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="74" y="50" width="28" height="35" fill="#22c55e" rx="3"/>
+        <line x1="88" y1="48" x2="88" y2="40" stroke="#22c55e" stroke-width="1.5"/>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">After a large red candle, the green candle opens lower but closes at the SAME price as the red candle. Buyers absorbed all the selling pressure. Bullish reversal signal.</p>
+    </div>
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:12px;text-transform:uppercase">29. Bearish Meeting Lines</div>
+      <svg viewBox="0 0 130 120" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="130" height="120" fill="#0b0f19" rx="6"/>
+        <line x1="42" y1="15" x2="42" y2="25" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="28" y="25" width="28" height="55" fill="#22c55e" rx="3"/>
+        <line x1="42" y1="80" x2="42" y2="90" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="15" y1="25" x2="115" y2="25" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="65" y="18" fill="#fbbf24" font-size="8" text-anchor="middle">Same Close Level</text>
+        <line x1="88" y1="12" x2="88" y2="25" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="74" y="25" width="28" height="55" fill="#ef4444" rx="3"/>
+        <line x1="88" y1="80" x2="88" y2="90" stroke="#ef4444" stroke-width="1.5"/>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">After a large green candle, the red candle opens higher but closes at the SAME price as the green candle. Sellers absorbed all the buying pressure. Bearish reversal signal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRIPLE CANDLE DIVIDER -->
+<div style="display:flex;align-items:center;gap:12px;margin:40px 0 24px">
+  <div style="height:1px;flex:1;background:#1f2937"></div>
+  <span style="font-size:11px;font-weight:900;color:#6b7280;text-transform:uppercase;letter-spacing:.15em">Triple Candlestick Patterns</span>
+  <div style="height:1px;flex:1;background:#1f2937"></div>
+</div>
+
+<!-- STAR PATTERNS -->
+<section id="morning" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(245,158,11,.15);color:#f59e0b">Most Powerful Reversal</span>
+    <h2>Star Patterns</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">Star patterns are 3-candle formations and among the <strong style="color:#fff">most reliable reversal signals</strong> in all of technical analysis. Widely trusted by institutional traders globally.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+
+    <div class="card" style="padding:20px;border-color:rgba(34,197,94,.2)">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:14px;text-transform:uppercase">30. Morning Star ⭐ (Bullish)</div>
+      <svg viewBox="0 0 240 160" style="width:100%;border-radius:10px;margin-bottom:12px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="240" height="160" fill="#0b0f19" rx="6"/>
+        <line x1="55" y1="15" x2="55" y2="28" stroke="#ef4444" stroke-width="2"/>
+        <rect x="38" y="28" width="34" height="68" fill="#ef4444" rx="3"/>
+        <line x1="55" y1="96" x2="55" y2="108" stroke="#ef4444" stroke-width="2"/>
+        <text x="55" y="122" fill="#ef4444" font-size="9" text-anchor="middle" font-weight="bold">1. Big Red</text>
+        <text x="55" y="133" fill="#6b7280" font-size="7" text-anchor="middle">Sellers win</text>
+        <line x1="120" y1="108" x2="120" y2="118" stroke="#9ca3af" stroke-width="1.5"/>
+        <rect x="105" y="118" width="30" height="14" fill="#9ca3af" rx="2"/>
+        <line x1="120" y1="132" x2="120" y2="142" stroke="#9ca3af" stroke-width="1.5"/>
+        <text x="120" y="156" fill="#f59e0b" font-size="9" text-anchor="middle" font-weight="bold">2. Small Star</text>
+        <line x1="188" y1="18" x2="188" y2="30" stroke="#22c55e" stroke-width="2"/>
+        <rect x="171" y="30" width="34" height="68" fill="#22c55e" rx="3"/>
+        <line x1="188" y1="98" x2="188" y2="110" stroke="#22c55e" stroke-width="2"/>
+        <text x="188" y="124" fill="#22c55e" font-size="9" text-anchor="middle" font-weight="bold">3. Big Green</text>
+        <text x="188" y="135" fill="#6b7280" font-size="7" text-anchor="middle">Buyers win</text>
+      </svg>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
+        <div style="display:flex;align-items:flex-start;gap:8px"><span style="width:18px;height:18px;border-radius:50%;background:#ef4444;color:#fff;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span><p style="font-size:10px;color:#9ca3af;margin:0">Large bearish candle — sellers in full control</p></div>
+        <div style="display:flex;align-items:flex-start;gap:8px"><span style="width:18px;height:18px;border-radius:50%;background:#6b7280;color:#fff;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span><p style="font-size:10px;color:#9ca3af;margin:0">Small candle (star) — indecision, sellers losing power</p></div>
+        <div style="display:flex;align-items:flex-start;gap:8px"><span style="width:18px;height:18px;border-radius:50%;background:#22c55e;color:#fff;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span><p style="font-size:10px;color:#9ca3af;margin:0">Large bullish candle closing above midpoint of candle 1</p></div>
+      </div>
+      <div style="background:rgba(34,197,94,.1);border-radius:10px;padding:10px;font-size:10px;color:#22c55e">
+        ✅ Entry: BUY on close of candle 3<br>🛑 SL: Below candle 2 low<br>🎯 TP: Previous resistance (min 1:3 RR)
+      </div>
+    </div>
+
+    <div class="card" style="padding:20px;border-color:rgba(239,68,68,.2)">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:14px;text-transform:uppercase">31. Evening Star 🌙 (Bearish)</div>
+      <svg viewBox="0 0 240 160" style="width:100%;border-radius:10px;margin-bottom:12px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="240" height="160" fill="#0b0f19" rx="6"/>
+        <line x1="55" y1="62" x2="55" y2="75" stroke="#22c55e" stroke-width="2"/>
+        <rect x="38" y="22" width="34" height="40" fill="#22c55e" rx="3"/>
+        <line x1="55" y1="20" x2="55" y2="14" stroke="#22c55e" stroke-width="2"/>
+        <text x="55" y="90" fill="#22c55e" font-size="9" text-anchor="middle" font-weight="bold">1. Big Green</text>
+        <line x1="120" y1="8" x2="120" y2="18" stroke="#9ca3af" stroke-width="1.5"/>
+        <rect x="105" y="18" width="30" height="14" fill="#9ca3af" rx="2"/>
+        <line x1="120" y1="32" x2="120" y2="40" stroke="#9ca3af" stroke-width="1.5"/>
+        <text x="120" y="55" fill="#f59e0b" font-size="9" text-anchor="middle" font-weight="bold">2. Small Star</text>
+        <line x1="188" y1="38" x2="188" y2="50" stroke="#ef4444" stroke-width="2"/>
+        <rect x="171" y="50" width="34" height="68" fill="#ef4444" rx="3"/>
+        <line x1="188" y1="118" x2="188" y2="128" stroke="#ef4444" stroke-width="2"/>
+        <text x="188" y="142" fill="#ef4444" font-size="9" text-anchor="middle" font-weight="bold">3. Big Red</text>
+        <text x="188" y="153" fill="#6b7280" font-size="7" text-anchor="middle">Sellers win</text>
+      </svg>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
+        <div style="display:flex;align-items:flex-start;gap:8px"><span style="width:18px;height:18px;border-radius:50%;background:#22c55e;color:#fff;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span><p style="font-size:10px;color:#9ca3af;margin:0">Large bullish candle — buyers in full control</p></div>
+        <div style="display:flex;align-items:flex-start;gap:8px"><span style="width:18px;height:18px;border-radius:50%;background:#6b7280;color:#fff;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span><p style="font-size:10px;color:#9ca3af;margin:0">Small candle at top — indecision, buyers exhausted</p></div>
+        <div style="display:flex;align-items:flex-start;gap:8px"><span style="width:18px;height:18px;border-radius:50%;background:#ef4444;color:#fff;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span><p style="font-size:10px;color:#9ca3af;margin:0">Large bearish candle closing below midpoint of candle 1</p></div>
+      </div>
+      <div style="background:rgba(239,68,68,.1);border-radius:10px;padding:10px;font-size:10px;color:#ef4444">
+        ✅ Entry: SELL on close of candle 3<br>🛑 SL: Above candle 2 high<br>🎯 TP: Previous support (min 1:3 RR)
+      </div>
+    </div>
+  </div>
+
+  <!-- Doji Stars -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">32. Morning Doji Star ⭐ (Stronger)</div>
+      <p style="font-size:11px;color:#9ca3af;line-height:1.6">Same as Morning Star but the middle candle is a Doji (perfect indecision). The reversal signal is significantly stronger because the Doji shows sellers completely lost control before buyers took over.</p>
+      <div style="margin-top:10px;background:rgba(34,197,94,.1);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">Stronger than regular Morning Star. Enter BUY on candle 3 close.</div>
+    </div>
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">33. Evening Doji Star 🌙 (Stronger)</div>
+      <p style="font-size:11px;color:#9ca3af;line-height:1.6">Same as Evening Star but the middle candle is a Doji (perfect indecision). Much stronger bearish reversal because the Doji shows buyers completely lost control before sellers took over.</p>
+      <div style="margin-top:10px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">Stronger than regular Evening Star. Enter SELL on candle 3 close.</div>
+    </div>
+  </div>
+</section>
+
+<!-- THREE SOLDIERS / CROWS -->
+<section id="soldiers" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(96,165,250,.15);color:#60a5fa">Trend Continuation</span>
+    <h2>Three Soldiers &amp; Three Crows</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:12px;text-transform:uppercase">34. Three White Soldiers 🏹</div>
+      <svg viewBox="0 0 200 140" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="140" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="80" x2="50" y2="92" stroke="#22c55e" stroke-width="2"/>
+        <rect x="36" y="48" width="28" height="32" fill="#22c55e" rx="3"/>
+        <line x1="50" y1="46" x2="50" y2="40" stroke="#22c55e" stroke-width="2"/>
+        <line x1="100" y1="65" x2="100" y2="78" stroke="#22c55e" stroke-width="2"/>
+        <rect x="86" y="30" width="28" height="35" fill="#22c55e" rx="3"/>
+        <line x1="100" y1="28" x2="100" y2="22" stroke="#22c55e" stroke-width="2"/>
+        <line x1="150" y1="48" x2="150" y2="60" stroke="#22c55e" stroke-width="2"/>
+        <rect x="136" y="14" width="28" height="34" fill="#22c55e" rx="3"/>
+        <line x1="150" y1="12" x2="150" y2="6" stroke="#22c55e" stroke-width="2"/>
+        <text x="100" y="112" fill="#22c55e" font-size="9" text-anchor="middle" font-weight="bold">Each candle closes higher</text>
+        <text x="100" y="124" fill="#9ca3af" font-size="8" text-anchor="middle">Strong bullish momentum</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">3 consecutive large green candles, each closing higher than the previous and each opening within the prior body. Strong uptrend continuation. <strong style="color:#22c55e">Don't chase — buy the pullback.</strong></p>
+    </div>
+    <div class="card" style="padding:20px">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:12px;text-transform:uppercase">35. Three Black Crows 🦅</div>
+      <svg viewBox="0 0 200 140" style="width:100%;border-radius:10px;margin-bottom:10px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="140" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="18" x2="50" y2="28" stroke="#ef4444" stroke-width="2"/>
+        <rect x="36" y="28" width="28" height="34" fill="#ef4444" rx="3"/>
+        <line x1="50" y1="62" x2="50" y2="72" stroke="#ef4444" stroke-width="2"/>
+        <line x1="100" y1="36" x2="100" y2="46" stroke="#ef4444" stroke-width="2"/>
+        <rect x="86" y="46" width="28" height="36" fill="#ef4444" rx="3"/>
+        <line x1="100" y1="82" x2="100" y2="92" stroke="#ef4444" stroke-width="2"/>
+        <line x1="150" y1="58" x2="150" y2="68" stroke="#ef4444" stroke-width="2"/>
+        <rect x="136" y="68" width="28" height="38" fill="#ef4444" rx="3"/>
+        <line x1="150" y1="106" x2="150" y2="116" stroke="#ef4444" stroke-width="2"/>
+        <text x="100" y="130" fill="#ef4444" font-size="9" text-anchor="middle" font-weight="bold">Each candle closes lower</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">3 consecutive large red candles, each closing lower. Strong downtrend signal. Appears after a top or during a breakdown. <strong style="color:#ef4444">Sell any rally. Bearish momentum is very strong.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- THREE INSIDE/OUTSIDE -->
+<section id="inside" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(167,139,250,.15);color:#a78bfa">Confirmed Reversal</span>
+    <h2>Three Inside &amp; Three Outside</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">These are Harami and Engulfing patterns <strong style="color:#fff">confirmed by a 3rd candle</strong>. Much more reliable because the reversal is proven — not just potential.</p>
+  <div class="pattern-grid">
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">36. Three Inside Up</div>
+      <svg viewBox="0 0 160 130" style="width:100%;max-width:160px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="160" height="130" fill="#0b0f19" rx="6"/>
+        <rect x="15" y="15" width="34" height="70" fill="#ef4444" rx="3"/>
+        <line x1="32" y1="13" x2="32" y2="15" stroke="#ef4444" stroke-width="1.5"/>
+        <line x1="32" y1="85" x2="32" y2="95" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="60" y="38" width="28" height="30" fill="#22c55e" rx="2"/>
+        <line x1="74" y1="36" x2="74" y2="38" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="74" y1="68" x2="74" y2="72" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="108" y="10" width="34" height="60" fill="#22c55e" rx="3"/>
+        <line x1="125" y1="8" x2="125" y2="10" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="125" y1="70" x2="125" y2="78" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="80" y="112" fill="#22c55e" font-size="8" text-anchor="middle" font-weight="bold">Harami + Confirm</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Red → Small Green inside → Big Green breaking above. Confirmed bullish reversal. Enter BUY on 3rd candle close.</div>
+    </div>
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">37. Three Inside Down</div>
+      <svg viewBox="0 0 160 130" style="width:100%;max-width:160px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="160" height="130" fill="#0b0f19" rx="6"/>
+        <rect x="15" y="15" width="34" height="70" fill="#22c55e" rx="3"/>
+        <line x1="32" y1="13" x2="32" y2="15" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="32" y1="85" x2="32" y2="95" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="60" y="30" width="28" height="30" fill="#ef4444" rx="2"/>
+        <line x1="74" y1="28" x2="74" y2="30" stroke="#ef4444" stroke-width="1.5"/>
+        <line x1="74" y1="60" x2="74" y2="68" stroke="#ef4444" stroke-width="1.5"/>
+        <rect x="108" y="30" width="34" height="68" fill="#ef4444" rx="3"/>
+        <line x1="125" y1="28" x2="125" y2="30" stroke="#ef4444" stroke-width="1.5"/>
+        <line x1="125" y1="98" x2="125" y2="106" stroke="#ef4444" stroke-width="1.5"/>
+        <text x="80" y="120" fill="#ef4444" font-size="8" text-anchor="middle" font-weight="bold">Harami + Confirm</text>
+      </svg>
+      <div style="margin-top:10px;font-size:10px;color:#9ca3af;line-height:1.6">Green → Small Red inside → Big Red breaking below. Confirmed bearish reversal. Enter SELL on 3rd candle close.</div>
+    </div>
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">38. Three Outside Up</div>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Bullish Engulfing (2 candles) then a 3rd candle that closes even higher = confirmed uptrend reversal. Most reliable of the three-candle bullish patterns.</p>
+      <div style="margin-top:8px;background:rgba(34,197,94,.1);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">Engulfing + Confirm candle = high probability BUY.</div>
+    </div>
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">39. Three Outside Down</div>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Bearish Engulfing (2 candles) then a 3rd candle that closes even lower = confirmed downtrend reversal. Most reliable of the three-candle bearish patterns.</p>
+      <div style="margin-top:8px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">Engulfing + Confirm candle = high probability SELL.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABANDONED BABY -->
+<section id="abandoned" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(239,68,68,.15);color:#ef4444">Rare &amp; Extremely Powerful</span>
+    <h2>Abandoned Baby</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">One of the <strong style="color:#fff">rarest and most powerful</strong> candlestick patterns. A Doji appears isolated between two large candles with gaps on both sides. When you see this, act immediately — it almost never fails at key levels.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card" style="padding:20px;border-color:rgba(34,197,94,.3)">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:12px;text-transform:uppercase">40. Bullish Abandoned Baby 👶</div>
+      <svg viewBox="0 0 260 140" style="width:100%;border-radius:10px;margin-bottom:12px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="140" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="20" x2="50" y2="30" stroke="#ef4444" stroke-width="2"/>
+        <rect x="36" y="30" width="28" height="60" fill="#ef4444" rx="3"/>
+        <line x1="50" y1="90" x2="50" y2="100" stroke="#ef4444" stroke-width="2"/>
+        <!-- Gap down, then Doji isolated -->
+        <line x1="130" y1="110" x2="130" y2="118" stroke="#9ca3af" stroke-width="1.5"/>
+        <rect x="116" y="118" width="28" height="4" fill="#f59e0b" rx="1"/>
+        <line x1="130" y1="122" x2="130" y2="130" stroke="#9ca3af" stroke-width="1.5"/>
+        <!-- Gap up, then big green -->
+        <line x1="210" y1="20" x2="210" y2="30" stroke="#22c55e" stroke-width="2"/>
+        <rect x="196" y="30" width="28" height="60" fill="#22c55e" rx="3"/>
+        <line x1="210" y1="90" x2="210" y2="100" stroke="#22c55e" stroke-width="2"/>
+        <text x="50" y="120" fill="#ef4444" font-size="8" text-anchor="middle">Big Red</text>
+        <text x="130" y="118" fill="#f59e0b" font-size="7" text-anchor="middle">Doji</text>
+        <text x="210" y="120" fill="#22c55e" font-size="8" text-anchor="middle">Big Green</text>
+        <text x="130" y="132" fill="#a78bfa" font-size="7" text-anchor="middle">← GAP both sides →</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Large red candle → gap down → isolated Doji → gap up → large green candle. Both gaps show the Doji is completely isolated. Extremely strong buy signal.</p>
+      <div style="margin-top:10px;background:rgba(34,197,94,.1);border-radius:8px;padding:10px;font-size:10px;color:#22c55e">
+        ✅ Entry: BUY on close of green candle<br>🛑 SL: Below the Doji low<br>🎯 Min R:R: 1:4
+      </div>
+    </div>
+    <div class="card" style="padding:20px;border-color:rgba(239,68,68,.3)">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:12px;text-transform:uppercase">41. Bearish Abandoned Baby 👶</div>
+      <svg viewBox="0 0 260 140" style="width:100%;border-radius:10px;margin-bottom:12px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="140" fill="#0b0f19" rx="6"/>
+        <line x1="50" y1="40" x2="50" y2="50" stroke="#22c55e" stroke-width="2"/>
+        <rect x="36" y="50" width="28" height="60" fill="#22c55e" rx="3"/>
+        <line x1="50" y1="110" x2="50" y2="120" stroke="#22c55e" stroke-width="2"/>
+        <line x1="130" y1="20" x2="130" y2="28" stroke="#9ca3af" stroke-width="1.5"/>
+        <rect x="116" y="28" width="28" height="4" fill="#f59e0b" rx="1"/>
+        <line x1="130" y1="32" x2="130" y2="40" stroke="#9ca3af" stroke-width="1.5"/>
+        <line x1="210" y1="40" x2="210" y2="50" stroke="#ef4444" stroke-width="2"/>
+        <rect x="196" y="50" width="28" height="60" fill="#ef4444" rx="3"/>
+        <line x1="210" y1="110" x2="210" y2="120" stroke="#ef4444" stroke-width="2"/>
+        <text x="50" y="132" fill="#22c55e" font-size="8" text-anchor="middle">Big Green</text>
+        <text x="130" y="55" fill="#f59e0b" font-size="7" text-anchor="middle">Doji</text>
+        <text x="210" y="132" fill="#ef4444" font-size="8" text-anchor="middle">Big Red</text>
+        <text x="130" y="66" fill="#a78bfa" font-size="7" text-anchor="middle">← GAP both sides →</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Large green candle → gap up → isolated Doji → gap down → large red candle. Both gaps show the Doji is completely isolated. Extremely strong sell signal.</p>
+      <div style="margin-top:10px;background:rgba(239,68,68,.1);border-radius:8px;padding:10px;font-size:10px;color:#ef4444">
+        ✅ Entry: SELL on close of red candle<br>🛑 SL: Above the Doji high<br>🎯 Min R:R: 1:4
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RARE / ADVANCED PATTERNS -->
+<div style="display:flex;align-items:center;gap:12px;margin:40px 0 24px">
+  <div style="height:1px;flex:1;background:#1f2937"></div>
+  <span style="font-size:11px;font-weight:900;color:#6b7280;text-transform:uppercase;letter-spacing:.15em">Rare &amp; Advanced Patterns</span>
+  <div style="height:1px;flex:1;background:#1f2937"></div>
+</div>
+
+<section id="rare" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(167,139,250,.15);color:#a78bfa">Advanced</span>
+    <h2>Rare &amp; Advanced Patterns</h2>
+  </div>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">These patterns are less common but appear in real markets. Knowing them gives you a significant edge over traders who only know the basics. Most traders have never heard of these.</p>
+  <div class="pattern-grid">
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">42. Three Line Strike (Bullish)</div>
+      <svg viewBox="0 0 180 120" style="width:100%;border-radius:8px;margin-bottom:8px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="180" height="120" fill="#0b0f19" rx="6"/>
+        <!-- 3 red candles going down -->
+        <rect x="12" y="20" width="22" height="30" fill="#ef4444" rx="2"/>
+        <rect x="42" y="35" width="22" height="32" fill="#ef4444" rx="2"/>
+        <rect x="72" y="50" width="22" height="34" fill="#ef4444" rx="2"/>
+        <!-- Big green engulfing all 3 -->
+        <rect x="106" y="12" width="28" height="80" fill="#22c55e" rx="3"/>
+        <text x="90" y="110" fill="#22c55e" font-size="8" text-anchor="middle" font-weight="bold">3 Red → 1 Big Green</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">3 consecutive red candles followed by 1 large green candle that engulfs all 3. Counter-intuitive: this is actually a <strong style="color:#22c55e">bullish continuation</strong>. Bears exhausted, bulls take over.</p>
+      <div style="margin-top:8px;background:rgba(34,197,94,.1);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">BUY after 4th green candle closes. Very reliable.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">43. Three Line Strike (Bearish)</div>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">3 consecutive red candles followed by 1 large green candle that engulfs all 3. Looks bullish but is actually a <strong style="color:#ef4444">bearish continuation signal</strong>. Institutions buy back briefly to sell more at higher prices.</p>
+      <div style="margin-top:8px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">Counter-intuitive: SELL the rally after the 4th green candle.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">44. Upside Gap Two Crows</div>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Large green candle, then 2 small red candles that gap up but stay above the green candle. Bearish reversal forming at the top. The gap is the warning sign — sellers appearing despite high prices.</p>
+      <div style="margin-top:8px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">Bearish reversal. Watch for breakdown below the gap.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#22c55e;margin-bottom:10px;text-transform:uppercase">45. Stick Sandwich</div>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Red candle, then green candle, then red candle with the SAME closing price as the first red candle. The green is sandwiched. A bullish reversal signal — sellers tried twice at the same level and couldn't break lower.</p>
+      <div style="margin-top:8px;background:rgba(34,197,94,.1);border-radius:8px;padding:8px;font-size:10px;color:#22c55e">Bullish reversal. Double-bottom forming at same close price.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:10px;text-transform:uppercase">46. Advance Block</div>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Three green candles like White Soldiers but each has progressively smaller bodies and longer upper wicks. Shows buyers are weakening and losing momentum. Bearish reversal warning — uptrend about to stall.</p>
+      <div style="margin-top:8px;background:rgba(239,68,68,.1);border-radius:8px;padding:8px;font-size:10px;color:#ef4444">Warning sign at resistance. Reduce longs, watch for reversal.</div>
+    </div>
+
+    <div class="pattern-card">
+      <div style="font-size:11px;font-weight:900;color:#a78bfa;margin-bottom:10px;text-transform:uppercase">47. High Wave Candle</div>
+      <svg viewBox="0 0 80 120" style="width:70px;margin:0 auto 8px;display:block" xmlns="http://www.w3.org/2000/svg">
+        <rect width="80" height="120" fill="#0b0f19" rx="6"/>
+        <line x1="40" y1="6" x2="40" y2="46" stroke="#a78bfa" stroke-width="2"/>
+        <rect x="28" y="46" width="24" height="20" fill="#22c55e" rx="2"/>
+        <line x1="40" y1="66" x2="40" y2="106" stroke="#a78bfa" stroke-width="2"/>
+        <text x="40" y="116" fill="#a78bfa" font-size="7" text-anchor="middle">Extreme Noise</text>
+      </svg>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Small body with extremely long wicks on BOTH sides. Huge volatility with no clear direction. Price traveled far up AND down but closed near the open. Market is in maximum confusion.</p>
+      <div style="margin-top:8px;background:rgba(167,139,250,.1);border-radius:8px;padding:8px;font-size:10px;color:#a78bfa">Avoid trading. Wait for clarity. Major move incoming.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ENTRY MODULE -->
+<section id="entry" style="scroll-margin-top:100px;margin-bottom:48px">
+  <div style="background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(251,191,36,.05));border:1px solid rgba(245,158,11,.25);border-radius:20px;padding:28px">
+    <div class="section-title">
+      <span class="tag" style="background:rgba(245,158,11,.2);color:#f59e0b">⚡ Entry Module</span>
+      <h2>How to Trade Candlestick Patterns</h2>
+    </div>
+    <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:24px">A pattern alone means nothing. It's the <strong style="color:#fff">location + pattern + confirmation</strong> that creates a high-probability trade. Use this 3-step system for every trade:</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:28px">
+      <div style="background:#131b2e;border:1px solid rgba(245,158,11,.2);border-radius:16px;padding:18px">
+        <div style="font-size:36px;font-weight:900;color:#f59e0b;margin-bottom:8px">1</div>
+        <h3 style="font-size:14px;font-weight:900;color:#fff;margin:0 0 8px">Location</h3>
+        <p style="font-size:11px;color:#9ca3af;line-height:1.6;margin:0">Is the pattern forming at a <strong style="color:#fff">key support, resistance, or major swing level?</strong> Location is 60% of the trade quality. A pattern in the middle of nowhere is worthless.</p>
+      </div>
+      <div style="background:#131b2e;border:1px solid rgba(245,158,11,.2);border-radius:16px;padding:18px">
+        <div style="font-size:36px;font-weight:900;color:#f59e0b;margin-bottom:8px">2</div>
+        <h3 style="font-size:14px;font-weight:900;color:#fff;margin:0 0 8px">Pattern</h3>
+        <p style="font-size:11px;color:#9ca3af;line-height:1.6;margin:0">Is there a valid candlestick pattern? Must show clear <strong style="color:#fff">rejection or reversal energy</strong> at the key level. The candle must be complete — never enter on an unfinished candle.</p>
+      </div>
+      <div style="background:#131b2e;border:1px solid rgba(245,158,11,.2);border-radius:16px;padding:18px">
+        <div style="font-size:36px;font-weight:900;color:#f59e0b;margin-bottom:8px">3</div>
+        <h3 style="font-size:14px;font-weight:900;color:#fff;margin:0 0 8px">Confirmation</h3>
+        <p style="font-size:11px;color:#9ca3af;line-height:1.6;margin:0">Wait for the <strong style="color:#fff">next candle to confirm</strong> the direction. Enter on close of confirmation candle. Never FOMO — if you miss it, the market will give you another setup.</p>
+      </div>
+    </div>
+
+    <!-- Entry Cheat Sheet Table -->
+    <div style="background:#0b0f19;border-radius:14px;overflow:hidden;margin-bottom:24px">
+      <div style="padding:12px 16px;border-bottom:1px solid #1f2937;font-size:10px;font-weight:900;color:#9ca3af;text-transform:uppercase;letter-spacing:.1em">📋 Entry Cheat Sheet — All Patterns</div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr style="background:#131b2e">
+            <th>Pattern</th><th>Signal</th><th>Entry Trigger</th><th>Stop Loss</th><th>Min R:R</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="color:#fff">Dragonfly Doji</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">Above next green candle</td><td style="color:#9ca3af">Below Doji low</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Gravestone Doji</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">Below next red candle</td><td style="color:#9ca3af">Above Doji high</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Hammer</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">Above next green candle</td><td style="color:#9ca3af">Below Hammer low</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Shooting Star</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">Below next red candle</td><td style="color:#9ca3af">Above Star high</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Hanging Man</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">Below next red candle</td><td style="color:#9ca3af">Above Hanging Man high</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Bullish Marubozu</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">On pullback to body</td><td style="color:#9ca3af">Below Marubozu low</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Bearish Marubozu</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">On rally to body</td><td style="color:#9ca3af">Above Marubozu high</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Bullish Engulfing</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">On close of green candle</td><td style="color:#9ca3af">Below pattern low</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Bearish Engulfing</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">On close of red candle</td><td style="color:#9ca3af">Above pattern high</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Tweezer Bottom</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">Above 2nd candle close</td><td style="color:#9ca3af">Below twin lows</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Tweezer Top</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">Below 2nd candle close</td><td style="color:#9ca3af">Above twin highs</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Bullish Kicker</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">On close of green candle</td><td style="color:#9ca3af">Below the gap</td><td style="color:#f59e0b">1:3</td></tr>
+            <tr><td style="color:#fff">Bearish Kicker</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">On close of red candle</td><td style="color:#9ca3af">Above the gap</td><td style="color:#f59e0b">1:3</td></tr>
+            <tr><td style="color:#fff">Morning Star</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">On close of candle 3</td><td style="color:#9ca3af">Below candle 2 low</td><td style="color:#f59e0b">1:3</td></tr>
+            <tr><td style="color:#fff">Evening Star</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">On close of candle 3</td><td style="color:#9ca3af">Above candle 2 high</td><td style="color:#f59e0b">1:3</td></tr>
+            <tr><td style="color:#fff">Three White Soldiers</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">Buy pullback after 3rd candle</td><td style="color:#9ca3af">Below recent swing low</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Three Black Crows</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">Sell rally after 3rd candle</td><td style="color:#9ca3af">Above recent swing high</td><td style="color:#f59e0b">1:2</td></tr>
+            <tr><td style="color:#fff">Abandoned Baby (Bull)</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">On close of green candle</td><td style="color:#9ca3af">Below the Doji low</td><td style="color:#f59e0b">1:4</td></tr>
+            <tr><td style="color:#fff">Abandoned Baby (Bear)</td><td style="color:#ef4444">🔴 SELL</td><td style="color:#9ca3af">On close of red candle</td><td style="color:#9ca3af">Above the Doji high</td><td style="color:#f59e0b">1:4</td></tr>
+            <tr><td style="color:#fff">Three Line Strike (Bull)</td><td style="color:#22c55e">🟢 BUY</td><td style="color:#9ca3af">After 4th red candle closes</td><td style="color:#9ca3af">Below 4th candle low</td><td style="color:#f59e0b">1:3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Do's and Don'ts -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="background:#131b2e;border:1px solid rgba(239,68,68,.2);border-radius:14px;padding:18px">
+        <h3 style="font-size:13px;font-weight:900;color:#ef4444;margin:0 0 12px">❌ Never Do This</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#ef4444;font-size:11px;margin-top:1px">✖</span><p style="font-size:11px;color:#9ca3af;margin:0">Enter before the candle closes (pattern must be 100% complete)</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#ef4444;font-size:11px;margin-top:1px">✖</span><p style="font-size:11px;color:#9ca3af;margin:0">Trade patterns without a clear key level nearby</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#ef4444;font-size:11px;margin-top:1px">✖</span><p style="font-size:11px;color:#9ca3af;margin:0">Trade against the higher timeframe trend</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#ef4444;font-size:11px;margin-top:1px">✖</span><p style="font-size:11px;color:#9ca3af;margin:0">Enter every single pattern you see (be selective)</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#ef4444;font-size:11px;margin-top:1px">✖</span><p style="font-size:11px;color:#9ca3af;margin:0">Trade without a stop loss — ever, no exceptions</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#ef4444;font-size:11px;margin-top:1px">✖</span><p style="font-size:11px;color:#9ca3af;margin:0">Risk more than 1-2% of your account per trade</p></div>
+        </div>
+      </div>
+      <div style="background:#131b2e;border:1px solid rgba(34,197,94,.2);border-radius:14px;padding:18px">
+        <h3 style="font-size:13px;font-weight:900;color:#22c55e;margin:0 0 12px">✅ Always Do This</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#22c55e;font-size:11px;margin-top:1px">✔</span><p style="font-size:11px;color:#9ca3af;margin:0">Top-down analysis first: Daily → H4 → H1 → M15</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#22c55e;font-size:11px;margin-top:1px">✔</span><p style="font-size:11px;color:#9ca3af;margin:0">Mark key levels BEFORE price arrives at them</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#22c55e;font-size:11px;margin-top:1px">✔</span><p style="font-size:11px;color:#9ca3af;margin:0">Wait for candle to close before entering the trade</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#22c55e;font-size:11px;margin-top:1px">✔</span><p style="font-size:11px;color:#9ca3af;margin:0">Prefer London (8am) and New York (1pm GMT) sessions</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#22c55e;font-size:11px;margin-top:1px">✔</span><p style="font-size:11px;color:#9ca3af;margin:0">Keep a trading journal and review every trade</p></div>
+          <div style="display:flex;align-items:flex-start;gap:8px"><span style="color:#22c55e;font-size:11px;margin-top:1px">✔</span><p style="font-size:11px;color:#9ca3af;margin:0">Higher timeframe candles carry more weight and reliability</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLETE REFERENCE TABLE -->
+<section style="margin-bottom:48px">
+  <h2 style="font-size:20px;font-weight:900;color:#fff;margin:0 0 20px">📊 Complete Pattern Reference — All 47 Patterns</h2>
+  <div class="card" style="overflow:hidden">
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr style="background:#0b0f19">
+          <th>#</th><th>Pattern Name</th><th>Type</th><th>Candles</th><th>Signal</th><th>Strength</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="color:#6b7280">1</td><td style="color:#fff">Standard Doji</td><td style="color:#9ca3af">Single</td><td>1</td><td style="color:#f59e0b">Neutral</td><td>⭐⭐</td></tr>
+          <tr><td style="color:#6b7280">2</td><td style="color:#fff">Dragonfly
