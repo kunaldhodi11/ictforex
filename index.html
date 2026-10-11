@@ -69,7 +69,7 @@
     {"@type":"Question","name":"Forex trading course free mein kahan se seekhein India mein?","acceptedAnswer":{"@type":"Answer","text":"ICT Forex Academy pe aap free mein forex trading seekh sakte hain. Candlestick patterns, support resistance, price action sab free mein available hai."}},
     {"@type":"Question","name":"ICT kya hota hai forex mein?","acceptedAnswer":{"@type":"Answer","text":"ICT (Inner Circle Trader) ek advanced trading methodology hai jisme Order Blocks, Fair Value Gaps, Breaker Blocks aur Liquidity concepts sikhaye jaate hain."}},
     {"@type":"Question","name":"Kya beginner bhi forex seekh sakta hai?","acceptedAnswer":{"@type":"Answer","text":"Haan! ICT Forex Academy ka course bilkul beginner ke liye design kiya gaya hai. Koi bhi pehle se experience nahi chahiye."}},
-    {"@type":"Question","name":"Forex trading India mein legal hai?","acceptedAnswer":{"@type":"Answer","text":"India mein INR-based currency pairs (USD/INR, EUR/INR) NSE/BSE pe trade karna legal hai. International brokers ke through trading ke liye financial advisor se advice lein."}}
+    {"@type":"Question","name":"Forex trading India mein legal hai?","acceptedAnswer":{"@type":"Answer","text":"India mein sirf INR-based currency pairs (USD/INR, EUR/INR, GBP/INR, JPY/INR) aur kuch cross pairs recognised exchanges (NSE, BSE, MSE) pe SEBI-registered broker ke through trade karna legal hai. FEMA ke under Indian residents ka online international forex brokers pe margin trading karna allowed nahi hai."}}
   ]
 }
 </script>
@@ -198,7 +198,8 @@ p{line-height:1.7}
 .fact-l{font-size:10px;color:var(--muted);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
 
 /* ADS SLOT */
-.ads-slot{background:rgba(19,27,46,.4);border:1px dashed #2d3748;border-radius:10px;padding:16px;text-align:center;color:#374151;font-size:10px;margin:0 16px;min-height:90px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.ads-slot{display:none;margin:0 16px;min-height:90px;align-items:center;justify-content:center;position:relative;z-index:1}
+.ads-slot:has(ins.adsbygoogle){display:flex}
 
 /* SECTION */
 .section{padding:56px 16px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
@@ -266,7 +267,11 @@ p{line-height:1.7}
 
 /* BROKERS */
 .broker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;max-width:780px;margin:0 auto}
-.broker-card{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:22px;text-align:center;transition:all .22s;display:block}
+.broker-card{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:22px;text-align:left;transition:all .22s;display:block}
+.broker-card ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.broker-card li{font-size:12px;color:var(--text2);display:flex;gap:8px;align-items:flex-start;line-height:1.6}
+.broker-card li i{margin-top:4px;font-size:11px}
+.legal-note{max-width:780px;margin:16px auto 0;color:var(--muted);font-size:11px;line-height:1.7;text-align:center}
 .broker-card:hover{border-color:rgba(245,158,11,.45);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
 .broker-logo{font-size:36px;margin-bottom:10px}
 .broker-name{font-size:20px;font-weight:900;color:#fff;margin-bottom:4px}
@@ -309,7 +314,7 @@ p{line-height:1.7}
 .footer-bottom{max-width:1200px;margin:0 auto;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .footer-bottom p,.footer-bottom a{font-size:11px;color:var(--muted)}
 .footer-bottom a:hover{color:var(--green)}
-.disclaimer{max-width:1200px;margin:14px auto 0;color:#374151;font-size:10px;line-height:1.7;text-align:center}
+.disclaimer{max-width:1200px;margin:14px auto 0;color:var(--muted);font-size:10px;line-height:1.7;text-align:center}
 
 /* MOBILE STICKY CTA */
 .mobile-sticky{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(9,13,22,.95);border-top:1px solid var(--border);padding:10px 16px;z-index:90;backdrop-filter:blur(12px);gap:10px}
@@ -365,11 +370,9 @@ p{line-height:1.7}
 </div>
 
 <!-- ANNOUNCEMENT BAR -->
-<div class="topbar" role="banner">
-  <span>🔥 Trusted Regulated Brokers for Indian Traders:</span>
-  <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" rel="noopener sponsored" class="topbar-link"><i class="fa-solid fa-arrow-right"></i> Octa — Open Account</a>
-  <span style="color:#6b7280">|</span>
-  <a href="https://affs.click/m2rkP" target="_blank" rel="noopener sponsored" class="topbar-link"><i class="fa-solid fa-arrow-right"></i> XM — Open Account</a>
+<div class="topbar">
+  <span>Safe trading: India mein forex sirf SEBI-registered broker ke through INR pairs mein trade karein.</span>
+  <a href="#brokers" class="topbar-link"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Legal Tareeka Jaano</a>
 </div>
 
 <!-- HEADER -->
@@ -437,7 +440,7 @@ p{line-height:1.7}
 <!-- FACTS -->
 <div class="facts">
   <div class="fact"><div class="fact-n">47+</div><div class="fact-l">Candlestick Patterns</div></div>
-  <div class="fact"><div class="fact-n">5+</div><div class="fact-l">Free Chapters</div></div>
+  <div class="fact"><div class="fact-n">4</div><div class="fact-l">Free Modules</div></div>
   <div class="fact"><div class="fact-n">100%</div><div class="fact-l">Free Core Course</div></div>
   <div class="fact"><div class="fact-n">₹0</div><div class="fact-l">Cost to Start</div></div>
 </div>
@@ -445,7 +448,7 @@ p{line-height:1.7}
 <!-- ADS SLOT TOP -->
 <div class="ads-slot" style="margin-top:24px">
   <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX" data-ad-format="horizontal"></ins> -->
-  <span style="font-size:11px;color:#374151">[ Advertisement ]</span>
+
 </div>
 
 <!-- BILINGUAL SECTION -->
@@ -459,7 +462,7 @@ p{line-height:1.7}
         <span class="bi-pill">📊 Chart Examples</span>
         <span class="bi-pill">⏰ Indian Timing</span>
         <span class="bi-pill">💬 Simple Language</span>
-        <span class="bi-pill">🔄 Roz Naya Content</span>
+        <span class="bi-pill">🪜 Step-by-Step</span>
       </div>
     </div>
   </div>
@@ -601,7 +604,7 @@ p{line-height:1.7}
     </div>
     <div class="tip-body" id="dailyTip">Loading today's tip...</div>
     <div class="tip-footer">
-      <span>📅 Roz update hota hai</span>
+      <span>📅 Har din alag tip</span>
       <a href="free-learning.html" class="btn-tip">Aur seekhne ke liye →</a>
     </div>
   </div>
@@ -610,7 +613,7 @@ p{line-height:1.7}
 <!-- ADS SLOT MIDDLE -->
 <div class="ads-slot" style="margin:0 16px 40px">
   <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXX" data-ad-slot="XXXXXXX" data-ad-format="rectangle"></ins> -->
-  <span style="font-size:11px;color:#374151">[ Advertisement ]</span>
+
 </div>
 
 <!-- WHAT YOU LEARN -->
@@ -636,46 +639,52 @@ p{line-height:1.7}
 <section class="section">
   <div class="sec-hd">
     <div class="sec-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">⭐ Why Choose Us</div>
-    <h2>ICT Forex Academy Kyu Chunein?</h2>
+    <h2>ICT Forex Academy Kyun Chunein?</h2>
     <p class="sec-sub">Woh course jo hum chahte the jab hum shuru kar rahe the — wahi course humne banaya.</p>
   </div>
   <div class="why-grid">
     <div class="why-card"><div class="why-em">🆓</div><div><h4>Core Course Free Hai</h4><p>Koi hidden fees nahi. Sabse important content bilkul free mein available hai.</p></div></div>
-    <div class="why-card"><div class="why-em">🇮🇳</div><div><h4>Indian Traders Ke Liye</h4><p>Indian market timing, INR accounts, aur Indian broker support — sab soch ke banaya.</p></div></div>
+    <div class="why-card"><div class="why-em">🇮🇳</div><div><h4>Indian Traders Ke Liye</h4><p>IST market timing, INR pairs aur Indian rules — sab dhyan mein rakh ke banaya.</p></div></div>
     <div class="why-card"><div class="why-em">📊</div><div><h4>Professional SVG Charts</h4><p>Har concept TradingView-style real charts ke saath explain kiya gaya hai.</p></div></div>
     <div class="why-card"><div class="why-em">⚡</div><div><h4>A-Z Complete Coverage</h4><p>Basics se advanced ICT tak — ek platform pe poori journey.</p></div></div>
-    <div class="why-card"><div class="why-em">📱</div><div><h4>Mobile Pe Perfectly Kaam Karta Hai</h4><p>Phone, tablet ya desktop — kisi bhi device pe perfectly padhain.</p></div></div>
+    <div class="why-card"><div class="why-em">📱</div><div><h4>Mobile Pe Perfectly Kaam Karta Hai</h4><p>Phone, tablet ya desktop — kisi bhi device pe aaram se padhein.</p></div></div>
     <div class="why-card"><div class="why-em">🎯</div><div><h4>Entry Rules Included</h4><p>Har pattern ke saath exact entry, SL aur TP rules.</p></div></div>
-    <div class="why-card"><div class="why-em">🔄</div><div><h4>Regular Updates</h4><p>Naya content, daily tips — site pe roz aane ka reason milega.</p></div></div>
+    <div class="why-card"><div class="why-em">🔄</div><div><h4>Daily Trading Tip</h4><p>Har din ek naya practical tip — chhoti aadat, badi improvement.</p></div></div>
     <div class="why-card"><div class="why-em">💬</div><div><h4>Community Support</h4><p>Telegram community mein sawaal poochho, analysis share karo.</p></div></div>
   </div>
 </section>
 
 <!-- BROKERS -->
-<section style="background:rgba(15,23,42,.5);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:56px 16px;position:relative;z-index:1">
+<section id="brokers" aria-labelledby="brokers-h2" style="background:rgba(15,23,42,.5);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:56px 16px;position:relative;z-index:1">
   <div style="max-width:1200px;margin:0 auto">
     <div class="sec-hd">
-      <div class="sec-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">🏦 Trusted Partners</div>
-      <h2>Recommended <span style="color:var(--gold)">Regulated Brokers</span></h2>
-      <p class="sec-sub">Hum sirf woh brokers recommend karte hain jo regulated hain, low spreads dete hain, aur Indian traders ke liye support karte hain.</p>
+      <div class="sec-tag" style="background:rgba(245,158,11,.1);color:var(--gold)">🏦 Safe &amp; Legal Trading</div>
+      <h2 id="brokers-h2">India Mein Forex <span style="color:var(--gold)">Legal Tareeke Se</span></h2>
+      <p class="sec-sub">Real paisa lagane se pehle yeh samajh lo — kaunsa tareeka legal hai aur kaunsa aapko mushkil mein daal sakta hai.</p>
     </div>
     <div class="broker-grid">
-      <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" rel="noopener sponsored" class="broker-card">
-        <div class="broker-logo">🌊</div>
-        <div class="broker-name">Octa</div>
-        <div class="broker-reg">✅ Regulated · Low Spreads · Fast Withdrawal</div>
-        <p class="broker-desc">Indian traders support karta hai. UPI aur bank deposit available. Beginner ke liye achha option.</p>
-        <span class="broker-btn">Account Kholein →</span>
-      </a>
-      <a href="https://affs.click/m2rkP" target="_blank" rel="noopener sponsored" class="broker-card">
-        <div class="broker-logo">⚡</div>
-        <div class="broker-name">XM</div>
-        <div class="broker-reg">✅ CySEC Regulated · MT4/MT5 · Zero Commission</div>
-        <p class="broker-desc">Duniya bhar mein trusted broker. Indian Rupee deposits, MT4 aur MT5 support available.</p>
-        <span class="broker-btn">Account Kholein →</span>
-      </a>
+      <div class="broker-card">
+        <div class="broker-name" style="font-size:17px">✅ Kya Allowed Hai</div>
+        <ul>
+          <li><i class="fa-solid fa-check" style="color:var(--green)" aria-hidden="true"></i> INR pairs: USD/INR, EUR/INR, GBP/INR, JPY/INR</li>
+          <li><i class="fa-solid fa-check" style="color:var(--green)" aria-hidden="true"></i> Cross pairs: EUR/USD, GBP/USD, USD/JPY (exchange pe)</li>
+          <li><i class="fa-solid fa-check" style="color:var(--green)" aria-hidden="true"></i> Sirf NSE, BSE ya MSE pe currency derivatives</li>
+          <li><i class="fa-solid fa-check" style="color:var(--green)" aria-hidden="true"></i> SEBI-registered Indian broker ke through</li>
+        </ul>
+        <a href="https://www.sebi.gov.in/intermediaries.html" target="_blank" rel="noopener" class="broker-btn">Broker SEBI pe Verify Karo →</a>
+      </div>
+      <div class="broker-card">
+        <div class="broker-name" style="font-size:17px">⛔ Kya Allowed Nahi Hai</div>
+        <ul>
+          <li><i class="fa-solid fa-xmark" style="color:var(--red)" aria-hidden="true"></i> Online international forex/CFD brokers pe trading</li>
+          <li><i class="fa-solid fa-xmark" style="color:var(--red)" aria-hidden="true"></i> UPI, card ya crypto se offshore broker mein deposit</li>
+          <li><i class="fa-solid fa-xmark" style="color:var(--red)" aria-hidden="true"></i> &ldquo;Guaranteed profit&rdquo; wale signal / account handling schemes</li>
+          <li><i class="fa-solid fa-xmark" style="color:var(--red)" aria-hidden="true"></i> RBI Alert List wale platforms (FEMA violation)</li>
+        </ul>
+        <a href="https://www.rbi.org.in/" target="_blank" rel="noopener" class="broker-btn" style="background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)">RBI Alert List Check Karo →</a>
+      </div>
     </div>
-    <p style="text-align:center;color:#374151;font-size:10px;margin-top:16px">⚠️ Affiliate Disclosure: Agar aap hamare link se account kholtein hain toh hume commission milta hai. Hamesha demo account se shuru karein.</p>
+    <p class="legal-note">⚠️ Yeh jaankari sirf educational hai, legal advice nahi. Real account kholne se pehle hamesha demo account se practice karein aur kisi SEBI-registered advisor se salah lein.</p>
   </div>
 </section>
 
@@ -713,7 +722,7 @@ p{line-height:1.7}
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Indian traders ke liye kaunsa broker best hai? <i class="fa fa-plus"></i></button>
-        <div class="faq-a">Octa aur XM dono achhe options hain. Dono regulated hain, INR deposits support karte hain. Hamesha pehle free demo account se practice karein.<div class="faq-hindi">Octa aur XM dono Indian traders ke liye acche hain।</div></div>
+        <div class="faq-a">Sirf woh broker chuno jo SEBI-registered ho aur NSE/BSE pe currency derivatives offer karta ho. Broker ka registration sebi.gov.in pe verify karo. Offshore forex apps (jo UPI se deposit lete hain) se door raho — wo India mein authorised nahi hain. Shuruaat hamesha demo account se karein.<div class="faq-hindi">हमेशा SEBI-registered broker ही चुनें।</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Forex trading seekhne mein kitna time lagta hai? <i class="fa fa-plus"></i></button>
@@ -721,7 +730,7 @@ p{line-height:1.7}
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Kya India mein forex trading legal hai? <i class="fa fa-plus"></i></button>
-        <div class="faq-a">India mein INR-based pairs (USD/INR, EUR/INR) NSE/BSE pe trade karna legal hai. International brokers ke baare mein financial advisor se consult karein.<div class="faq-hindi">NSE/BSE pe INR pairs trade करना legal है।</div></div>
+        <div class="faq-a">Haan, lekin sirf ek tareeke se: INR pairs (USD/INR, EUR/INR, GBP/INR, JPY/INR) aur kuch cross pairs, NSE/BSE/MSE pe, SEBI-registered broker ke through. FEMA ke under Indian residents ka online international forex brokers pe margin trading karna allowed nahi hai, aur RBI aise kai platforms ko apni Alert List mein daal chuka hai.<div class="faq-hindi">सिर्फ NSE/BSE पर SEBI-registered broker से INR pairs trade करना legal है।</div></div>
       </div>
     </div>
   </div>
@@ -844,14 +853,18 @@ const app=initializeApp({
 getAnalytics(app);
 const auth=getAuth(app);
 const performLogout=()=>signOut(auth).then(()=>location.href='index.html').catch(console.error);
+['authLogoutBtn','mobileLogoutBtn'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el)el.addEventListener('click',performLogout);
+});
 onAuthStateChanged(auth,u=>{
   ['authLoginBtn','mobileLoginLink'].forEach(id=>{
     const el=document.getElementById(id);
-    if(el)el.style.display=u?'none':'block';
+    if(el)el.style.display=u?'none':'';
   });
   ['authLogoutBtn','mobileLogoutBtn'].forEach(id=>{
     const el=document.getElementById(id);
-    if(el){el.style.display=u?'flex':'none';el.addEventListener('click',performLogout);}
+    if(el)el.style.display=u?'flex':'none';
   });
 });
 </script>
