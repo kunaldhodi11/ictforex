@@ -1,208 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In - ICT Forex Academy</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #030712; color: #f3f4f6; font-family: sans-serif; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
-        nav { background-color: #111827; border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 50; }
-        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 16px; display: flex; justify-content: space-between; height: 64px; align-items: center; }
-        .logo { font-size: 20px; font-weight: bold; color: #f59e0b; text-decoration: none; letter-spacing: 1px; }
-        .nav-links { display: flex; gap: 24px; align-items: center; }
-        .nav-links a { color: #d1d5db; text-decoration: none; font-size: 14px; transition: color 0.2s; }
-        .nav-links a:hover, .nav-links a.active { color: #f59e0b; }
-        main { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }
-        .card { max-width: 400px; width: 100%; background-color: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); }
-        .card-header { text-align: center; margin-bottom: 24px; }
-        .card-header h1 { font-size: 24px; font-weight: bold; color: #ffffff; margin-bottom: 8px; }
-        .card-header p { font-size: 14px; color: #9ca3af; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 14px; font-weight: 500; color: #d1d5db; margin-bottom: 8px; }
-        .form-control { width: 100%; background-color: #030712; border: 1px solid #1f2937; border-radius: 8px; padding: 12px 16px; color: #ffffff; font-size: 14px; outline: none; transition: border-color 0.2s; }
-        .form-control:focus { border-color: #f59e0b; }
-        .forgot-pass { text-align: right; margin-top: -8px; margin-bottom: 16px; }
-        .forgot-pass a { font-size: 13px; color: #9ca3af; text-decoration: none; transition: color 0.2s; }
-        .forgot-pass a:hover { color: #f59e0b; text-decoration: underline; }
-        .btn { width: 100%; background-color: #f59e0b; color: #030712; font-weight: bold; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; margin-top: 8px; transition: background-color 0.2s; }
-        .btn:hover { background-color: #d97706; }
-        .footer-text { text-align: center; margin-top: 24px; font-size: 14px; color: #9ca3af; }
-        .footer-text a { color: #f59e0b; text-decoration: none; font-weight: 500; }
-        .footer-text a:hover { text-decoration: underline; }
-        
-        #message-box { 
-            padding: 12px; 
-            border-radius: 8px; 
-            font-size: 14px; 
-            text-align: center; 
-            margin-bottom: 20px; 
-            font-weight: 500;
-            display: none; 
-        }
-        .error-msg { background-color: #450a0a !important; color: #f87171 !important; border: 1px solid #7f1d1d !important; display: block !important; }
-        .success-msg { background-color: #064e3b !important; color: #34d399 !important; border: 1px solid #065f46 !important; display: block !important; }
-
-        footer { background-color: #111827; border-top: 1px solid #1f2937; padding: 24px 0; text-align: center; font-size: 14px; color: #9ca3af; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="Sign in to your ICT Forex Academy account to continue your forex trading education.">
+  <title>Sign In | ICT Forex Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2b;--panel2:#101f31;--line:rgba(148,163,184,.17);--muted:#9aabc0;--text:#f5f8fc;--gold:#f6b94b;--gold2:#ffd985;--blue:#5bb8ff}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    .site-nav{height:76px;border-bottom:1px solid var(--line);background:rgba(7,17,31,.86);backdrop-filter:blur(18px);position:relative;z-index:5}
+    .nav-inner{width:min(1180px,calc(100% - 44px));height:100%;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:.4px}
+    .brand-mark{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#ffd985,#e69b27);color:#091321;box-shadow:0 8px 24px rgba(246,185,75,.17);font-size:17px}
+    .brand-name{font-size:16px;line-height:1.1}.brand-name small{display:block;margin-top:5px;color:#91a3b9;font:600 9px 'DM Sans',sans-serif;letter-spacing:2.1px}
+    .nav-links{display:flex;align-items:center;gap:28px;color:#bdc9d8;font-size:13px;font-weight:600}
+    .nav-links a{transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--gold2)}
+    .nav-login{padding:10px 15px;border:1px solid rgba(246,185,75,.38);border-radius:10px;color:var(--gold2)!important}
+    main{flex:1;display:flex;align-items:center;justify-content:center;padding:52px 22px 64px;position:relative;isolation:isolate}
+    main:before,main:after{content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(2px)}
+    main:before{width:440px;height:440px;top:5%;left:-190px;background:radial-gradient(circle,rgba(36,125,201,.13),transparent 68%)}
+    main:after{width:520px;height:520px;right:-250px;bottom:-120px;background:radial-gradient(circle,rgba(246,185,75,.09),transparent 70%)}
+    .auth-layout{width:min(1040px,100%);display:grid;grid-template-columns:1.05fr .95fr;align-items:stretch;border:1px solid rgba(148,163,184,.18);border-radius:26px;overflow:hidden;background:rgba(12,26,42,.72);box-shadow:0 30px 100px rgba(0,0,0,.28);backdrop-filter:blur(18px)}
+    .story-panel{padding:48px 44px;position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(18,43,66,.97),rgba(8,20,34,.98));border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;min-height:560px}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--gold2);font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase}
+    .eyebrow:before{content:"";height:1px;width:22px;background:var(--gold)}
+    .story-panel h1{font:600 clamp(32px,4vw,47px)/1.13 'Space Grotesk',sans-serif;letter-spacing:-1.5px;margin:22px 0 18px;max-width:440px}
+    .story-panel h1 span{color:var(--gold2)}
+    .story-copy{color:#a9b8ca;font-size:14px;line-height:1.85;max-width:400px}
+    .chart-card{margin:36px 0 28px;padding:18px;border:1px solid rgba(148,163,184,.17);border-radius:18px;background:linear-gradient(135deg,rgba(9,24,40,.7),rgba(13,35,55,.52));position:relative}
+    .chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+    .chart-label{font-size:11px;color:#a7b7c9;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+    .market-status{font-size:10px;color:#69e0b0;background:rgba(34,197,137,.1);padding:6px 8px;border-radius:20px}
+    .chart-graphic{height:108px;width:100%;display:block}
+    .chart-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .chart-stat{border-top:1px solid var(--line);padding-top:11px}.chart-stat small{display:block;color:#8fa2b8;font-size:10px;margin-bottom:5px}.chart-stat strong{font:600 15px 'Space Grotesk',sans-serif}.positive{color:#67ddb1}
+    .feature-list{display:grid;gap:13px;margin-top:24px}
+    .feature{display:flex;align-items:center;gap:12px;color:#d4deea;font-size:12px}
+    .feature-icon{height:28px;width:28px;border:1px solid rgba(246,185,75,.22);background:rgba(246,185,75,.08);border-radius:9px;display:grid;place-items:center;color:var(--gold2);font-size:11px;flex:none}
+    .auth-panel{padding:48px 44px;display:flex;flex-direction:column;justify-content:center}
+    .mobile-brand{display:none}
+    .auth-topline{display:flex;align-items:center;gap:8px;color:#80d8b2;font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;margin-bottom:22px}
+    .auth-topline i{font-size:13px}
+    .auth-panel h2{font:600 30px/1.2 'Space Grotesk',sans-serif;letter-spacing:-.7px;margin-bottom:10px}
+    .auth-subtitle{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:29px}
+    #message-box{display:none;padding:12px 14px;border-radius:11px;font-size:12px;line-height:1.55;margin-bottom:18px;overflow-wrap:anywhere}
+    .error-msg{display:block!important;background:rgba(239,68,68,.1)!important;color:#ffaaaa!important;border:1px solid rgba(248,113,113,.3)!important}
+    .success-msg{display:block!important;background:rgba(16,185,129,.1)!important;color:#86efc0!important;border:1px solid rgba(52,211,153,.25)!important}
+    .form-group{margin-bottom:19px}
+    .label-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+    .form-group label{color:#d8e2ed;font-size:12px;font-weight:600}
+    .input-wrap{position:relative}
+    .input-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#7f93aa;font-size:13px;pointer-events:none}
+    .form-control{width:100%;height:51px;background:rgba(4,13,24,.68);border:1px solid rgba(148,163,184,.23);border-radius:12px;padding:0 46px 0 43px;color:#f6f8fb;font:500 13px 'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s,background .2s}
+    .form-control::placeholder{color:#63758b}
+    .form-control:focus{border-color:rgba(246,185,75,.8);box-shadow:0 0 0 4px rgba(246,185,75,.09);background:rgba(5,15,27,.95)}
+    .password-toggle{position:absolute;right:13px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#8da0b6;cursor:pointer;padding:7px;font-size:13px}
+    .password-toggle:hover{color:var(--gold2)}
+    .forgot-row{display:flex;justify-content:flex-end;margin-top:-5px;margin-bottom:21px}
+    .forgot-row a{font-size:12px;color:var(--gold2);font-weight:600}.forgot-row a:hover{text-decoration:underline}
+    .submit-btn{width:100%;min-height:51px;display:flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:12px;background:linear-gradient(100deg,#ffd57d,#f3b23f);color:#111b28;font:700 13px 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 10px 28px rgba(246,185,75,.13);transition:transform .2s,box-shadow .2s,filter .2s}
+    .submit-btn:hover{transform:translateY(-1px);box-shadow:0 13px 32px rgba(246,185,75,.22);filter:brightness(1.04)}
+    .submit-btn:disabled{opacity:.7;cursor:wait;transform:none}
+    .divider{display:flex;align-items:center;gap:13px;color:#72849a;font-size:10px;margin:23px 0}
+    .divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}
+    .signup-prompt{text-align:center;font-size:12px;color:#9eafc2;line-height:1.8}
+    .signup-prompt a{color:var(--gold2);font-weight:700;margin-left:4px}.signup-prompt a:hover{text-decoration:underline}
+    .security-note{display:flex;align-items:center;justify-content:center;gap:8px;color:#788ba1;font-size:10px;margin-top:26px;text-align:center}
+    .security-note i{color:#65d6a5}
+    footer{border-top:1px solid var(--line);padding:20px 22px;text-align:center;color:#71839a;font-size:11px}
+    footer a{color:#a8b8ca}footer a:hover{color:var(--gold2)}
+    @media(max-width:850px){.auth-layout{max-width:560px;grid-template-columns:1fr}.story-panel{display:none}.auth-panel{padding:40px clamp(24px,7vw,48px)}.mobile-brand{display:flex;justify-content:center;margin-bottom:30px}.nav-links{gap:16px}.nav-links a:not(.nav-login){display:none}}
+    @media(max-width:480px){.site-nav{height:68px}.nav-inner{width:calc(100% - 30px)}.brand-mark{width:35px;height:35px}.brand-name{font-size:14px}.nav-login{padding:9px 11px;font-size:12px}.nav-links{gap:0}main{padding:28px 14px 38px}.auth-layout{border-radius:20px}.auth-panel{padding:30px 22px}.auth-panel h2{font-size:27px}.auth-subtitle{margin-bottom:24px}.mobile-brand{margin-bottom:26px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
 </head>
 <body>
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="brand" aria-label="ICT Forex Academy home">
+        <span class="brand-mark"><i class="fa-solid fa-chart-line"></i></span>
+        <span class="brand-name">ICT FOREX<small>ACADEMY</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="free-learning.html">Free Learning</a>
+        <a href="vip-course.html">VIP Course</a>
+        <a href="login.html" id="auth-nav-link" class="nav-login active">Sign in <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left:6px"></i></a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">ICT FOREX</a>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="free-learning.html">Free Learning</a>
-                <a href="vip-course.html">VIP Course</a>
-                <a href="login.html" id="auth-nav-link" class="active">Portal Login</a>
-            </div>
+  <main>
+    <section class="auth-layout" aria-label="Sign in to ICT Forex Academy">
+      <aside class="story-panel">
+        <div>
+          <span class="eyebrow">Your next chapter starts here</span>
+          <h1>Trade with a plan.<br><span>Learn with purpose.</span></h1>
+          <p class="story-copy">Welcome back to your learning space. Continue building your market knowledge with structured lessons and practical trading education.</p>
+          <div class="chart-card" aria-label="Decorative market chart illustration">
+            <div class="chart-head"><span class="chart-label">Market mindset</span><span class="market-status"><i class="fa-solid fa-circle" style="font-size:6px;margin-right:5px"></i>Plan • Patience • Process</span></div>
+            <svg class="chart-graphic" viewBox="0 0 420 120" role="img" aria-label="Decorative upward candlestick chart">
+              <defs><linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#54b8ff" stop-opacity=".22"/><stop offset="100%" stop-color="#54b8ff" stop-opacity="0"/></linearGradient></defs>
+              <g stroke="#8ba2bb" stroke-opacity=".13" stroke-width="1"><path d="M0 20H420M0 50H420M0 80H420M0 110H420"/><path d="M60 0V120M130 0V120M200 0V120M270 0V120M340 0V120"/></g>
+              <path d="M0 95 L32 88 L57 96 L86 67 L112 75 L139 55 L166 64 L195 43 L221 52 L250 32 L276 43 L303 24 L331 36 L356 16 L388 24 L420 8 L420 120 L0 120Z" fill="url(#chartGlow)"/>
+              <path d="M0 95 L32 88 L57 96 L86 67 L112 75 L139 55 L166 64 L195 43 L221 52 L250 32 L276 43 L303 24 L331 36 L356 16 L388 24 L420 8" fill="none" stroke="#63c1ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <g stroke-width="2" stroke-linecap="round"><path d="M43 50V88M35 60H51M35 78H51" stroke="#f6b94b"/><path d="M91 47V79M83 53H99M83 69H99" stroke="#58d6a5"/><path d="M145 35V70M137 44H153M137 59H153" stroke="#58d6a5"/><path d="M198 24V57M190 32H206M190 48H206" stroke="#f6b94b"/><path d="M252 13V44M244 20H260M244 34H260" stroke="#58d6a5"/><path d="M309 8V37M301 14H317M301 29H317" stroke="#58d6a5"/><path d="M367 2V27M359 8H375M359 20H375" stroke="#f6b94b"/></g>
+            </svg>
+            <div class="chart-stats"><div class="chart-stat"><small>Focus</small><strong>Process</strong></div><div class="chart-stat"><small>Approach</small><strong>Structured</strong></div><div class="chart-stat"><small>Priority</small><strong class="positive">Risk first</strong></div></div>
+          </div>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main>
-        <div class="card">
-            <div class="card-header">
-                <h1>Sign In</h1>
-                <p>Welcome back to ICT Forex Academy</p>
-            </div>
-
-            <!-- Message Box -->
-            <div id="message-box"></div>
-
-            <div id="login-form">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="login-email" required class="form-control" placeholder="you@example.com">
-                </div>
-
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="login-password" required class="form-control" placeholder="••••••••">
-                </div>
-
-                <!-- Forgot Password Link -->
-                <div class="forgot-pass">
-                    <a href="forgot-password.html">Forgot Password?</a>
-                </div>
-
-                <button type="button" onclick="handleLogin()" class="btn">Sign In</button>
-            </div>
-
-            <div class="footer-text">
-                Don't have an account? <a href="signup.html">Sign Up</a>
-            </div>
+        <div>
+          <div class="feature-list">
+            <div class="feature"><span class="feature-icon"><i class="fa-solid fa-book-open"></i></span>Pick up your learning journey anytime</div>
+            <div class="feature"><span class="feature-icon"><i class="fa-solid fa-chart-simple"></i></span>Explore structured trading education</div>
+            <div class="feature"><span class="feature-icon"><i class="fa-solid fa-shield-halved"></i></span>Build knowledge with risk awareness</div>
+          </div>
         </div>
-    </main>
+      </aside>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 ICT Forex Academy. All rights reserved.</p>
-    </footer>
+      <div class="auth-panel">
+        <a href="index.html" class="brand mobile-brand">
+          <span class="brand-mark"><i class="fa-solid fa-chart-line"></i></span>
+          <span class="brand-name">ICT FOREX<small>ACADEMY</small></span>
+        </a>
+        <div class="auth-topline"><i class="fa-solid fa-lock"></i> Member sign in</div>
+        <h2>Welcome back</h2>
+        <p class="auth-subtitle">Sign in with your registered email and password to access your account.</p>
 
-    <!-- Firebase Login & Firestore Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        <div id="message-box" role="status" aria-live="polite"></div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
-            authDomain: "ict-forex.firebaseapp.com",
-            projectId: "ict-forex",
-            storageBucket: "ict-forex.firebasestorage.app",
-            messagingSenderId: "10739160076",
-            appId: "1:10739160076:web:0560474e8cf4a43254ca29",
-            measurementId: "G-32WBMZK9DW"
+        <form id="login-form" onsubmit="event.preventDefault(); handleLogin();">
+          <div class="form-group">
+            <div class="label-row"><label for="login-email">Email address</label></div>
+            <div class="input-wrap">
+              <i class="fa-regular fa-envelope input-icon"></i>
+              <input type="email" id="login-email" name="email" required autocomplete="email" class="form-control" placeholder="name@example.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="label-row"><label for="login-password">Password</label></div>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock input-icon"></i>
+              <input type="password" id="login-password" name="password" required autocomplete="current-password" class="form-control" placeholder="Enter your password">
+              <button type="button" class="password-toggle" id="toggle-password" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="forgot-row"><a href="forgot-password.html">Forgot password?</a></div>
+          <button type="submit" id="login-submit" class="submit-btn"><span>Sign in to your account</span><i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+
+        <div class="divider">NEW TO ICT FOREX ACADEMY?</div>
+        <p class="signup-prompt">Create an account to get started.<br><a href="signup.html">Create your free account <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;margin-left:3px"></i></a></p>
+        <p class="security-note"><i class="fa-solid fa-shield-halved"></i> Your sign-in is handled securely through Firebase Authentication.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 ICT Forex Academy · <a href="privacy-policy.html">Privacy Policy</a> · Educational content only; trading involves risk.</footer>
+
+  <script>
+    const passwordToggle = document.getElementById('toggle-password');
+    passwordToggle.addEventListener('click', () => {
+      const field = document.getElementById('login-password');
+      const visible = field.type === 'password';
+      field.type = visible ? 'text' : 'password';
+      passwordToggle.innerHTML = visible ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+      passwordToggle.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+      passwordToggle.setAttribute('aria-pressed', String(visible));
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
+      authDomain: "ict-forex.firebaseapp.com",
+      projectId: "ict-forex",
+      storageBucket: "ict-forex.firebasestorage.app",
+      messagingSenderId: "10739160076",
+      appId: "1:10739160076:web:0560474e8cf4a43254ca29",
+      measurementId: "G-32WBMZK9DW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, (user) => {
+      const authLink = document.getElementById('auth-nav-link');
+      if (!authLink) return;
+      if (user) {
+        authLink.innerHTML = 'Sign out <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:6px"></i>';
+        authLink.href = "#";
+        authLink.onclick = async (e) => {
+          e.preventDefault();
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userAccess');
+          await signOut(auth);
+          window.location.reload();
         };
+      } else {
+        authLink.innerHTML = 'Sign in <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left:6px"></i>';
+        authLink.href = "login.html";
+        authLink.onclick = null;
+      }
+    });
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    window.handleLogin = async function() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const submit = document.getElementById('login-submit');
 
-        onAuthStateChanged(auth, (user) => {
-            const authLink = document.getElementById('auth-nav-link');
-            if (!authLink) return;
+      if (!email || !password) {
+        showMsg("Please enter your email address and password.", "error");
+        return;
+      }
 
-            if (user) {
-                authLink.textContent = "Logout";
-                authLink.href = "#";
-                authLink.onclick = async (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('userName');
-                    localStorage.removeItem('userAccess');
-                    await signOut(auth);
-                    window.location.reload();
-                };
-            } else {
-                authLink.textContent = "Portal Login";
-                authLink.href = "login.html";
-                authLink.onclick = null;
-            }
-        });
+      submit.disabled = true;
+      submit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Signing you in…</span>';
+      showMsg("Checking your account…", "success");
 
-        // Login Function with Firestore Integration
-        window.handleLogin = async function() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            const messageBox = document.getElementById('message-box');
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const userData = userDoc.exists() ? userDoc.data() : {};
 
-            messageBox.className = "";
-            messageBox.textContent = "";
-            messageBox.style.display = "none";
+        localStorage.setItem('userName', userData.fullName || user.displayName || "User");
+        localStorage.setItem('userAccess', userData.accessLevel || userData.courseAccess || "Free");
 
-            if (!email || !password) {
-                showMsg("Kripya email aur password bharein!", "error");
-                return;
-            }
-
-            try {
-                showMsg("Logging in...", "success");
-                // 1. Firebase Authentication
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                // 2. Fetch User Profile from Firestore (`users` collection)
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-
-                const userData = userDoc.exists() ? userDoc.data() : {};
-                // Support both current accessLevel and legacy courseAccess records.
-                localStorage.setItem('userName', userData.fullName || user.displayName || "User");
-                localStorage.setItem('userAccess', userData.accessLevel || userData.courseAccess || "Free");
-
-                showMsg("Successfully login ho gaya! Home page par bhej rahe hain...", "success");
-                
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 1500);
-
-            } catch (error) {
-                let errorMsg = "Login karne mein samasya aayi hai.";
-                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-                    errorMsg = "Email ya password galat hai!";
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMsg = "Email address galat format mein hai.";
-                } else {
-                    errorMsg = error.message;
-                }
-                showMsg(errorMsg, "error");
-            }
-        };
-
-        function showMsg(text, type) {
-            const messageBox = document.getElementById('message-box');
-            messageBox.textContent = text;
-            messageBox.style.display = "block";
-            if (type === 'error') {
-                messageBox.className = "error-msg";
-            } else {
-                messageBox.className = "success-msg";
-            }
+        showMsg("Sign in successful. Redirecting…", "success");
+        window.setTimeout(() => { window.location.href = "index.html"; }, 900);
+      } catch (error) {
+        let message = "We couldn't sign you in. Please try again.";
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+          message = "The email or password doesn't match. Please check and try again.";
+        } else if (error.code === 'auth/invalid-email') {
+          message = "Please enter a valid email address.";
+        } else if (error.code === 'auth/too-many-requests') {
+          message = "Too many attempts. Please wait a little before trying again.";
+        } else if (error.code === 'auth/network-request-failed') {
+          message = "Network issue. Check your internet connection and try again.";
         }
-    </script>
+        showMsg(message, "error");
+        submit.disabled = false;
+        submit.innerHTML = '<span>Sign in to your account</span><i class="fa-solid fa-arrow-right"></i>';
+      }
+    };
+
+    function showMsg(text, type) {
+      const messageBox = document.getElementById('message-box');
+      messageBox.textContent = text;
+      messageBox.className = type === 'error' ? 'error-msg' : 'success-msg';
+      messageBox.style.display = 'block';
+    }
+  </script>
 </body>
 </html>
