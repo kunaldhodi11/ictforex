@@ -182,7 +182,8 @@
                     uid: user.uid,
                     fullName: name,
                     email: email,
-                    courseAccess: "free", // Default course access level
+                    accessLevel: "Free", // Canonical access field used by login
+                    courseAccess: "free", // Keep legacy field for existing page compatibility
                     createdAt: new Date().toISOString()
                 });
 
