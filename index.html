@@ -43,40 +43,7 @@
 
 <!-- ===== GOOGLE ADS (add your publisher ID) ===== -->
 <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous">
-/* Premium scroll reveal + page progress */
-(function(){
-  const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealTargets=document.querySelectorAll('main section, body > section, .hero, .course-card, .learn-card, .why-card, .broker-card, .faq-item, .bilingual-banner, .facts .fact');
-  if(!reduceMotion && 'IntersectionObserver' in window){
-    document.body.classList.add('motion-ready');
-    revealTargets.forEach((el,index)=>{
-      if(el.classList.contains('scroll-reveal')) return;
-      el.classList.add('scroll-reveal');
-      if(el.matches('.course-card,.learn-card,.why-card,.broker-card,.faq-item,.facts .fact')){
-        el.style.setProperty('--reveal-delay',(Math.min(index%5,4)*65)+'ms');
-      }
-    });
-    const revealObserver=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add('is-visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },{threshold:0.12,rootMargin:'0px 0px -36px 0px'});
-    revealTargets.forEach(el=>revealObserver.observe(el));
-  }
-  let ticking=false;
-  const updateProgress=()=>{
-    const max=document.documentElement.scrollHeight-window.innerHeight;
-    const progress=max>0?Math.min(1,Math.max(0,window.scrollY/max)):0;
-    document.documentElement.style.setProperty('--scroll-progress',progress);
-    ticking=false;
-  };
-  window.addEventListener('scroll',()=>{if(!ticking){window.requestAnimationFrame(updateProgress);ticking=true;}},{passive:true});
-  window.addEventListener('resize',updateProgress,{passive:true});
-  updateProgress();
-})();
+
 
 </script> -->
 
@@ -892,6 +859,28 @@ if('IntersectionObserver' in window){
   }),{threshold:.08});
   document.querySelectorAll('.course-card,.learn-card,.why-card,.broker-card,.faq-item').forEach(el=>io.observe(el));
 }
+
+/* Premium scroll reveal + page progress */
+(function(){
+  const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealTargets=document.querySelectorAll('main section, body > section, .hero, .course-card, .learn-card, .why-card, .broker-card, .faq-item, .bilingual-banner, .facts .fact');
+  if(!reduceMotion && 'IntersectionObserver' in window){
+    document.body.classList.add('motion-ready');
+    revealTargets.forEach((el,index)=>{
+      el.classList.add('scroll-reveal');
+      if(el.matches('.course-card,.learn-card,.why-card,.broker-card,.faq-item,.facts .fact')) el.style.setProperty('--reveal-delay',(Math.min(index%5,4)*65)+'ms');
+    });
+    const revealObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver.unobserve(entry.target);}});
+    },{threshold:0.12,rootMargin:'0px 0px -36px 0px'});
+    revealTargets.forEach(el=>revealObserver.observe(el));
+  }
+  let ticking=false;
+  const updateProgress=()=>{const max=document.documentElement.scrollHeight-window.innerHeight;const progress=max>0?Math.min(1,Math.max(0,window.scrollY/max)):0;document.documentElement.style.setProperty('--scroll-progress',progress);ticking=false;};
+  window.addEventListener('scroll',()=>{if(!ticking){window.requestAnimationFrame(updateProgress);ticking=true;}},{passive:true});
+  window.addEventListener('resize',updateProgress,{passive:true});updateProgress();
+})();
+
 </script>
 
 <!-- FIREBASE AUTH + ANALYTICS -->
