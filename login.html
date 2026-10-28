@@ -169,11 +169,10 @@
                 const userDocRef = doc(db, "users", user.uid);
                 const userDoc = await getDoc(userDocRef);
 
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-                    localStorage.setItem('userName', userData.fullName || "User");
-                    localStorage.setItem('userAccess', userData.accessLevel || "Free");
-                }
+                const userData = userDoc.exists() ? userDoc.data() : {};
+                // Support both current accessLevel and legacy courseAccess records.
+                localStorage.setItem('userName', userData.fullName || user.displayName || "User");
+                localStorage.setItem('userAccess', userData.accessLevel || userData.courseAccess || "Free");
 
                 showMsg("Successfully login ho gaya! Home page par bhej rahe hain...", "success");
                 
