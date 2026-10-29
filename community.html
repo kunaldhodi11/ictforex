@@ -1,392 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Feed & Profiles | ICT Forex Academy</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: { 500: '#22c55e', 600: '#16a34a' },
-                        secondary: { 500: '#a855f7', 600: '#9333ea' },
-                        accent: { 500: '#eab308' }
-                    }
-                }
-            }
-        }
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<meta name="description" content="Connect with traders, share market analysis, and discuss trading education in the ICT Forex Academy community.">
+<title>Trader Community | ICT Forex Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2b;--panel2:#101f31;--line:rgba(148,163,184,.16);--muted:#91a3b9;--text:#f4f7fb;--gold:#f6b94b;--gold2:#ffdc91;--green:#62d9ad;--red:#ff8181}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{min-height:100vh;background:radial-gradient(ellipse at 15% -10%,#16324d 0,transparent 42%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.5}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}button{cursor:pointer}.shell{width:min(1240px,calc(100% - 36px));margin:auto}
+header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:#07111fe8;backdrop-filter:blur(18px)}.nav{height:74px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font:700 15px 'Space Grotesk',sans-serif;letter-spacing:.5px}.brand-mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#ffdf94,#e79b2d);color:#081321;box-shadow:0 7px 24px #f6b94b22}.brand small{display:block;margin-top:3px;color:var(--muted);font:600 9px 'DM Sans',sans-serif;letter-spacing:2px}.navlinks{display:flex;align-items:center;gap:22px;color:#bdc9d8;font-size:12px;font-weight:700}.navlinks a:hover{color:var(--gold2)}.navlinks .current{color:var(--gold2)}.nav-auth{border:1px solid #f6b94b55;padding:9px 13px;border-radius:10px;color:var(--gold2)!important}
+main{padding:34px 0 68px}.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:25px;padding:30px 34px;background:linear-gradient(110deg,#10273c 0%,#0d1b2b 58%,#17263a 100%);box-shadow:0 22px 60px #0002;margin-bottom:25px}.hero:after{content:"";position:absolute;right:-50px;top:-150px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,#f6b94b22,transparent 68%);pointer-events:none}.hero-inner{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:25px}.eyebrow{display:flex;align-items:center;gap:9px;color:var(--gold2);font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase}.eyebrow:before{content:"";width:22px;height:1px;background:var(--gold)}h1,h2,h3{font-family:'Space Grotesk',sans-serif}h1{font-size:clamp(29px,4vw,43px);line-height:1.12;letter-spacing:-1.2px;margin:12px 0 11px}h1 span{color:var(--gold2)}.hero p{max-width:620px;color:#aab9ca;font-size:13px;line-height:1.8}.hero-badge{flex-shrink:0;border:1px solid #62d9ad40;background:#62d9ad0d;color:#91f0c8;padding:10px 14px;border-radius:14px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:8px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px #62d9ad80}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:25px}.stat{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:#0c1a2bba;display:flex;align-items:center;gap:13px}.stat-icon{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;color:var(--gold2);background:#f6b94b13;border:1px solid #f6b94b25}.stat strong{display:block;font:700 19px 'Space Grotesk',sans-serif}.stat span{color:var(--muted);font-size:10px}
+.columns{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:20px;align-items:start}.feed-column{min-width:0}.section-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 1px 13px}.section-title{font:700 17px 'Space Grotesk',sans-serif;display:flex;align-items:center;gap:10px}.section-title i{color:var(--gold2)}.sort{background:#0d1b2b;border:1px solid var(--line);border-radius:10px;padding:9px 11px;color:#c6d1df;font-size:11px;outline:none}
+.card{border:1px solid var(--line);background:linear-gradient(145deg,#0d1b2b,#0b1726);border-radius:19px;box-shadow:0 12px 34px #0002}.composer{padding:19px;margin-bottom:18px}.composer-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}.avatar{width:42px;height:42px;flex-shrink:0;border-radius:14px;background:linear-gradient(145deg,#f6b94b,#e98e34);color:#101a27;display:grid;place-items:center;font-weight:800;font-size:13px}.composer-title{font-size:13px;font-weight:700}.composer-sub{color:var(--muted);font-size:10px;margin-top:2px}.composer textarea{width:100%;min-height:104px;resize:vertical;background:#07111f;border:1px solid var(--line);border-radius:13px;padding:13px 14px;color:var(--text);font-size:12px;outline:none}.composer textarea:focus,.field:focus{border-color:#f6b94b88;box-shadow:0 0 0 3px #f6b94b12}.composer textarea::placeholder,.field::placeholder{color:#64778e}.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}.chart-input{flex:1;min-width:0}.field{width:100%;background:#07111f;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--text);font-size:11px;outline:none}.primary-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;padding:11px 16px;background:linear-gradient(100deg,#ffda8a,#f0ad36);color:#101a27;font-size:11px;font-weight:800;white-space:nowrap;box-shadow:0 8px 22px #f6b94b1c;transition:transform .2s,box-shadow .2s}.primary-btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px #f6b94b2b}.primary-btn:disabled{opacity:.6;cursor:wait;transform:none}.muted-note{color:#8294a9;font-size:10px;line-height:1.6;margin-top:11px}.message{display:none;border-radius:11px;padding:11px 13px;font-size:11px;line-height:1.6;margin-bottom:12px;overflow-wrap:anywhere}.message.show{display:block}.message.error{background:#ef44441a;color:#ffaaaa;border:1px solid #f8717140}.message.success{background:#10b98115;color:#91eac5;border:1px solid #34d39935}
+.auth-prompt{padding:20px;display:flex;align-items:center;gap:13px;margin-bottom:18px}.auth-prompt .prompt-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;background:#f6b94b14;color:var(--gold2);font-size:16px;flex-shrink:0}.auth-prompt h3{font-size:13px;margin-bottom:3px}.auth-prompt p{font-size:11px;color:var(--muted)}.auth-prompt .primary-btn{margin-left:auto}
+.feed-status{font-size:10px;color:var(--muted);margin:0 0 12px 2px}.post{padding:19px;margin-bottom:14px;animation:rise .35s ease both}.post-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.author{display:flex;align-items:center;gap:11px;min-width:0}.author .avatar{width:40px;height:40px;border-radius:13px}.author-name{font-size:12px;font-weight:800;display:block;overflow-wrap:anywhere}.author-meta{color:var(--muted);font-size:10px;display:block;margin-top:2px}.post-tag{font-size:9px;color:var(--gold2);background:#f6b94b12;border:1px solid #f6b94b25;padding:5px 8px;border-radius:8px;white-space:nowrap}.post-content{white-space:pre-wrap;overflow-wrap:anywhere;color:#d2dce8;font-size:12px;line-height:1.85;margin:17px 0}.chart-link{display:inline-flex;align-items:center;gap:7px;color:var(--gold2);font-size:11px;margin:-3px 0 14px}.chart-link:hover{text-decoration:underline}.post-actions{display:flex;align-items:center;gap:18px;border-top:1px solid var(--line);padding-top:13px}.action{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;color:#9aabc0;font-size:11px;padding:3px 0}.action:hover{color:var(--gold2)}.action.liked{color:#ff8181}.action.liked i{font-weight:900}.comments{margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}.comment-form{display:flex;gap:8px;margin-bottom:12px}.comment-form .field{flex:1;min-width:0}.small-btn{border:1px solid #f6b94b55;background:#f6b94b12;color:var(--gold2);padding:0 13px;border-radius:10px;font-size:10px;font-weight:700}.comment-list{display:grid;gap:8px}.comment{background:#07111f;border:1px solid #94a3b912;border-radius:11px;padding:10px 12px;font-size:11px;color:#c5d1df;line-height:1.7;overflow-wrap:anywhere}.comment strong{color:var(--gold2);margin-right:5px}.empty{padding:38px 20px;text-align:center;border:1px dashed #94a3b92e;border-radius:18px;background:#0b172680}.empty-icon{width:54px;height:54px;margin:0 auto 14px;display:grid;place-items:center;border-radius:17px;color:var(--gold2);background:#f6b94b12;font-size:20px}.empty h3{font-size:16px;margin-bottom:7px}.empty p{font-size:11px;line-height:1.8;color:var(--muted);max-width:340px;margin:auto}
+.sidebar{display:grid;gap:14px}.side-card{padding:18px}.side-title{font:700 13px 'Space Grotesk',sans-serif;display:flex;align-items:center;gap:9px;margin-bottom:14px}.side-title i{color:var(--gold2)}.guidelines{display:grid;gap:12px}.guide{display:flex;gap:10px;align-items:flex-start;color:#b5c2d2;font-size:11px;line-height:1.6}.guide i{color:var(--green);margin-top:3px;font-size:11px}.risk-note{border:1px solid #f6b94b25;background:#f6b94b0b;border-radius:13px;padding:13px;color:#c6bda9;font-size:10px;line-height:1.8}.risk-note strong{display:block;color:var(--gold2);font-size:11px;margin-bottom:4px}.quick-links{display:grid;gap:8px}.quick-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px;border:1px solid var(--line);border-radius:11px;color:#c6d1df;font-size:11px;transition:border-color .2s,background .2s}.quick-link:hover{border-color:#f6b94b55;background:#f6b94b08}.quick-link i:first-child{width:18px;color:var(--gold2)}.quick-link span{flex:1}.quick-link .arrow{color:#71849a;font-size:10px}
+footer{border-top:1px solid var(--line);padding:22px 18px;text-align:center;color:#788ba1;font-size:10px;line-height:2}footer a{color:#b6c4d5}footer a:hover{color:var(--gold2)}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@media(max-width:920px){.columns{grid-template-columns:minmax(0,1fr) 245px;gap:14px}.hero{padding:25px}.stat{padding:13px}.side-card{padding:15px}}@media(max-width:720px){.shell{width:calc(100% - 24px)}.nav{height:66px}.navlinks{gap:13px}.navlinks a:not(.nav-auth):not(.current){display:none}.brand{font-size:13px}.brand-mark{width:36px;height:36px}.hero{padding:22px 20px;border-radius:20px}.hero-inner{align-items:flex-start;flex-direction:column;gap:15px}.hero-badge{padding:8px 11px}.stats{gap:8px}.stat{padding:11px;gap:8px}.stat-icon{width:32px;height:32px;border-radius:10px}.stat strong{font-size:16px}.stat span{font-size:9px}.columns{grid-template-columns:1fr}.sidebar{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar .side-card:last-child{grid-column:1/-1}.composer{padding:15px}.post{padding:15px}.auth-prompt{align-items:flex-start;flex-wrap:wrap}.auth-prompt .primary-btn{margin-left:56px}}@media(max-width:460px){.stats{grid-template-columns:1fr}.stat{padding:10px 13px}.stat-icon{width:35px;height:35px}.stat strong{font-size:17px}.stat span{font-size:10px}.sidebar{grid-template-columns:1fr}.sidebar .side-card:last-child{grid-column:auto}.composer-bottom{align-items:stretch;flex-direction:column}.primary-btn{width:100%}.section-title{font-size:15px}.sort{max-width:120px}.post-actions{gap:13px}.hero h1{font-size:30px}.navlinks .current{display:none}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
 </head>
-<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between">
-
-    <!-- HEADER -->
-    <header class="bg-[#131b2e] border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-xl">
-        <a href="index.html" class="flex items-center gap-2.5 group cursor-pointer">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] flex items-center justify-center flex-shrink-0">
-                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
-                    <span class="text-xs md:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
-                </div>
-            </div>
-            <div>
-                <h1 class="text-xs md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 drop-shadow">
-                    ICT FOREX ACADEMY
-                </h1>
-                <p class="text-[9px] md:text-[10px] text-gray-400 font-medium tracking-wide">Trader Community</p>
-            </div>
-        </a>
-
-        <nav class="flex items-center gap-3 text-xs font-bold text-gray-300">
-            <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
-                <i class="fa-solid fa-house"></i> Home
-            </a>
-            <a href="free-learning.html" class="hover:text-green-400 transition hidden sm:inline">Free Course</a>
-            <a href="login.html" id="auth-nav-link" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-user"></i> Login
-            </a>
-        </nav>
-    </header>
-
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-1 max-w-3xl w-full mx-auto p-4 md:p-6 space-y-6">
-
-        <!-- PROFILE HEADER CARD -->
-        <div id="profile-card" class="bg-gray-900 border border-gray-800 rounded-3xl p-6 shadow-xl hidden space-y-4">
-            <div class="flex items-start justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 p-1 flex items-center justify-center shadow-lg flex-shrink-0">
-                        <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
-                            <i class="fa-solid fa-user text-2xl text-green-400"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <a href="#" id="profile-profile-link" class="text-lg md:text-xl font-black text-white hover:text-green-400 transition inline-block">
-                            <span id="profile-username">Trader Name</span>
-                        </a>
-                        <a href="#" id="profile-ig-link" target="_blank" class="text-xs text-pink-400 hover:underline flex items-center gap-1 mt-0.5 hidden">
-                            <i class="fa-brands fa-instagram"></i> <span id="profile-ig-text">@username</span>
-                        </a>
-                    </div>
-                </div>
-                <button onclick="toggleEditProfile()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-bold px-3 py-1.5 rounded-xl transition border border-gray-700 cursor-pointer">
-                    <i class="fa-solid fa-pen"></i> Edit Profile
-                </button>
-            </div>
-
-            <p id="profile-bio-text" class="text-xs md:text-sm text-gray-300 italic">
-                "Smart Money Trader | Passionate about ICT concepts & Market Structure."
-            </p>
-
-            <div class="flex gap-6 pt-2 border-t border-gray-800 text-xs">
-                <div><span class="font-black text-white text-sm">0</span> <span class="text-gray-400">Posts</span></div>
-                <div><span class="font-black text-white text-sm">142</span> <span class="text-gray-400">Followers</span></div>
-                <div><span class="font-black text-white text-sm">85</span> <span class="text-gray-400">Following</span></div>
-            </div>
-
-            <div id="edit-profile-box" class="bg-[#0b0f19] border border-gray-800 p-4 rounded-2xl space-y-3 hidden">
-                <h4 class="text-xs font-bold text-green-400 uppercase">Update Your Profile</h4>
-                <input type="text" id="input-bio" placeholder="Write your bio..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-green-500">
-                <input type="text" id="input-ig" placeholder="Instagram Profile Link or Handle..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-xs text-gray-200 focus:outline-none focus:border-green-500">
-                <button onclick="saveProfileDetails()" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-4 py-2 rounded-xl transition cursor-pointer">
-                    Save Changes
-                </button>
-            </div>
-        </div>
-
-        <!-- CREATE POST BOX -->
-        <div id="create-post-container" class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3 hidden">
-            <h3 class="text-xs font-black uppercase tracking-wider text-green-400 flex items-center gap-1.5">
-                <i class="fa-solid fa-pen-nib"></i> Share Your Market Analysis
-            </h3>
-            <textarea id="post-text-input" rows="3" placeholder="What is your analysis on EURUSD or GBPUSD today?..." class="w-full bg-[#0b0f19] border border-gray-800 rounded-2xl p-3 text-xs md:text-sm text-gray-200 focus:outline-none focus:border-green-500 transition resize-none"></textarea>
-            
-            <div class="flex justify-between items-center pt-1">
-                <div class="flex items-center gap-2 text-gray-400 text-xs cursor-pointer hover:text-green-400 transition">
-                    <i class="fa-regular fa-image text-base"></i> <span class="hidden sm:inline">Add Chart Link</span>
-                </div>
-                <button id="publish-post-btn" onclick="publishPost()" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-6 py-2.5 rounded-xl transition shadow cursor-pointer">
-                    Publish Analysis
-                </button>
-            </div>
-        </div>
-
-        <!-- COMMUNITY FEED SECTION -->
-        <div class="space-y-4">
-            <div class="flex justify-between items-center px-1">
-                <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-globe text-green-400"></i> Global Trader Feeds
-                </h3>
-                <span class="text-[10px] text-gray-400 bg-gray-900 px-3 py-1 rounded-full border border-gray-800">Live Community</span>
-            </div>
-
-            <!-- FEED CONTAINER -->
-            <div id="feed-container" class="space-y-4">
-                
-                <!-- Sample Post 1 -->
-                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3 post-card">
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white text-xs">
-                                AK
-                            </div>
-                            <div>
-                                <a href="profile.html?user=Aakash Kumar" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
-                                    Aakash Kumar
-                                </a>
-                                <span class="text-[10px] text-gray-400 block">2 hours ago</span>
-                            </div>
-                        </div>
-                        <button class="bg-gray-800 hover:bg-green-500 hover:text-gray-950 text-green-400 border border-green-500/30 text-[10px] font-bold px-3 py-1 rounded-lg transition cursor-pointer">
-                            Follow +
-                        </button>
-                    </div>
-
-                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
-                        EURUSD is showing a clean market structure shift on the 15M timeframe. Expecting a retest of the 4H order block before continuation. What are your thoughts?[cite: 6]
-                    </p>
-
-                    <div class="flex items-center gap-6 pt-2 border-t border-gray-800/80 text-gray-400 text-xs">
-                        <button onclick="toggleLike(this)" class="flex items-center gap-1.5 hover:text-red-500 transition cursor-pointer"><i class="fa-regular fa-heart"></i> <span class="like-count">24</span>[cite: 6]</button>
-                        <button onclick="toggleCommentsSection(this)" class="flex items-center gap-1.5 hover:text-green-400 transition cursor-pointer"><i class="fa-regular fa-comment"></i> Comments[cite: 6]</button>
-                    </div>
-
-                    <!-- Comments Section -->
-                    <div class="comments-section hidden pt-3 border-t border-gray-800 space-y-3">
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="Write a comment..." class="comment-input flex-1 bg-[#0b0f19] border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500">
-                            <button onclick="addComment(this)" class="bg-green-500 hover:bg-green-600 text-gray-950 font-bold text-xs px-4 py-2 rounded-xl transition cursor-pointer">Post</button>
-                        </div>
-                        <div class="comments-list space-y-2 pt-1">
-                            <div class="bg-[#0b0f19] p-2.5 rounded-xl border border-gray-800/60 text-xs text-gray-300">
-                                <span class="font-bold text-green-400">Rohit Sharma:</span> Great analysis, completely agree with the 4H order block view![cite: 6]
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#131b2e] border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2">
-        <p>ICT Forex Academy © 2026. All rights reserved. Community Feed.[cite: 6]</p>
-        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a>[cite: 6]</p>
-    </footer>
-
-    <!-- JavaScript -->
-    <script>
-        function toggleEditProfile() {
-            const box = document.getElementById('edit-profile-box');
-            box.classList.toggle('hidden');
-        }
-
-        function saveProfileDetails() {
-            const bioInput = document.getElementById('input-bio').value;
-            const igInput = document.getElementById('input-ig').value;
-
-            if(bioInput) {
-                localStorage.setItem('userBio', bioInput);
-                document.getElementById('profile-bio-text').innerText = bioInput;
-            }
-            if(igInput) {
-                localStorage.setItem('userIg', igInput);
-                const igLink = document.getElementById('profile-ig-link');
-                const igText = document.getElementById('profile-ig-text');
-                igText.innerText = igInput;
-                igLink.href = igInput.startsWith('http') ? igInput : `https://${igInput}`;
-                igLink.classList.remove('hidden');
-            }
-            toggleEditProfile();
-            alert('Profile updated successfully!');[cite: 6]
-        }
-
-        function publishPost() {
-            const textInput = document.getElementById('post-text-input');
-            const content = textInput.value.trim();
-            if(!content) {
-                alert('Please write something to publish!');[cite: 6]
-                return;
-            }
-
-            const userName = localStorage.getItem('userName') || "Trader";
-            const initials = userName.substring(0, 2).toUpperCase();
-            const feedContainer = document.getElementById('feed-container');
-
-            const postHTML = `
-                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-xl space-y-3 post-card">
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-green-500 to-emerald-500 flex items-center justify-center font-bold text-gray-950 text-xs">
-                                ${initials}
-                            </div>
-                            <div>
-                                <a href="profile.html?user=${encodeURIComponent(userName)}" class="text-xs md:text-sm font-black text-white hover:text-green-400 transition relative z-20 cursor-pointer inline-block">
-                                    ${userName}
-                                </a>
-                                <span class="text-[10px] text-gray-400 block">Just now</span>
-                            </div>
-                        </div>
-                        <button class="bg-gray-800 hover:bg-green-500 hover:text-gray-950 text-green-400 border border-green-500/30 text-[10px] font-bold px-3 py-1 rounded-lg transition cursor-pointer">
-                            Follow +
-                        </button>
-                    </div>
-
-                    <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
-                        ${escapeHTML(content)}
-                    </p>
-
-                    <div class="flex items-center gap-6 pt-2 border-t border-gray-800/80 text-gray-400 text-xs">
-                        <button onclick="toggleLike(this)" class="flex items-center gap-1.5 hover:text-red-500 transition cursor-pointer"><i class="fa-regular fa-heart"></i> <span class="like-count">0</span></button>
-                        <button onclick="toggleCommentsSection(this)" class="flex items-center gap-1.5 hover:text-green-400 transition cursor-pointer"><i class="fa-regular fa-comment"></i> Comments</button>
-                    </div>
-
-                    <div class="comments-section hidden pt-3 border-t border-gray-800 space-y-3">
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="Write a comment..." class="comment-input flex-1 bg-[#0b0f19] border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-green-500">
-                            <button onclick="addComment(this)" class="bg-green-500 hover:bg-green-600 text-gray-950 font-bold text-xs px-4 py-2 rounded-xl transition cursor-pointer">Post</button>
-                        </div>
-                        <div class="comments-list space-y-2 pt-1"></div>
-                    </div>
-                </div>
-            `;
-
-            feedContainer.insertAdjacentHTML('afterbegin', postHTML);
-            textInput.value = '';
-        }
-
-        function toggleLike(btn) {
-            const icon = btn.querySelector('i');
-            const countSpan = btn.querySelector('.like-count');
-            let count = parseInt(countSpan.innerText);
-
-            if (icon.classList.contains('fa-regular')) {
-                icon.classList.replace('fa-regular', 'fa-solid');
-                icon.classList.add('text-red-500');
-                countSpan.innerText = count + 1;
-            } else {
-                icon.classList.replace('fa-solid', 'fa-regular');
-                icon.classList.remove('text-red-500');
-                countSpan.innerText = count - 1;
-            }
-        }
-
-        function toggleCommentsSection(btn) {
-            const postCard = btn.closest('.post-card');
-            const commentsSection = postCard.querySelector('.comments-section');
-            commentsSection.classList.toggle('hidden');
-        }
-
-        function addComment(btn) {
-            const postCard = btn.closest('.post-card');
-            const input = postCard.querySelector('.comment-input');
-            const commentText = input.value.trim();
-
-            if (!commentText) return;
-
-            const currentUserName = localStorage.getItem('userName') || "Trader";
-            const commentsList = postCard.querySelector('.comments-list');
-
-            const commentHTML = `
-                <div class="bg-[#0b0f19] p-2.5 rounded-xl border border-gray-800/60 text-xs text-gray-300">
-                    <span class="font-bold text-green-400">${escapeHTML(currentUserName)}:</span> ${escapeHTML(commentText)}
-                </div>
-            `;
-
-            commentsList.insertAdjacentHTML('beforeend', commentHTML);
-            input.value = '';
-        }
-
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)
-            );
-        }
-
-        document.addEventListener('click', function(event) {
-            const userLink = event.target.closest('a[href*="profile.html"]');
-            if (userLink) {
-                event.preventDefault();
-                const targetUrl = userLink.getAttribute('href');
-                window.location.href = targetUrl;
-            }
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedBio = localStorage.getItem('userBio');
-            const savedIg = localStorage.getItem('userIg');
-            if(savedBio) {
-                document.getElementById('profile-bio-text').innerText = savedBio;
-            }
-            if(savedIg) {
-                const igLink = document.getElementById('profile-ig-link');
-                const igText = document.getElementById('profile-ig-text');
-                igText.innerText = savedIg;
-                igLink.href = savedIg.startsWith('http') ? igIg : `https://${savedIg}`;
-                igLink.classList.remove('hidden');
-            }
-        });
-    </script>
-
-    <!-- Firebase Auth Script -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
-            authDomain: "ict-forex.firebaseapp.com",
-            projectId: "ict-forex",
-            storageBucket: "ict-forex.firebasestorage.app",
-            messagingSenderId: "10739160076",
-            appId: "1:10739160076:web:0560474e8cf4a43254ca29",
-            measurementId: "G-32WBMZK9DW"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        onAuthStateChanged(auth, (user) => {
-            const authLink = document.getElementById('auth-nav-link');
-            const profileCard = document.getElementById('profile-card');
-            const createPostContainer = document.getElementById('create-post-container');
-            
-            if (user) {
-                const userName = localStorage.getItem('userName') || "Trader";
-                if (profileCard) profileCard.classList.remove('hidden');
-                if (createPostContainer) createPostContainer.classList.remove('hidden');
-                
-                const profileUsername = document.getElementById('profile-username');
-                if (profileUsername) {
-                    profileUsername.innerText = userName;
-                    const profileProfileLink = document.getElementById('profile-profile-link');
-                    if (profileProfileLink) {
-                        profileProfileLink.href = `profile.html?user=${encodeURIComponent(userName)}`;
-                    }
-                }
-
-                if (authLink) {
-                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i>`;
-                    authLink.title = "Logout";
-                    authLink.href = "#";
-                    authLink.onclick = async (e) => {
-                        e.preventDefault();
-                        localStorage.clear();
-                        await signOut(auth);
-                        window.location.href = "login.html";
-                    };
-                }
-            } else {
-                if (authLink) {
-                    authLink.innerHTML = `<i class="fa-solid fa-user"></i> Login`;
-                    authLink.href = "login.html";
-                }
-            }
-        });
-    </script>
+<body>
+<header><div class="shell nav">
+<a class="brand" href="index.html"><span class="brand-mark"><i class="fa-solid fa-chart-line"></i></span><span>ICT FOREX<small>TRADING ACADEMY</small></span></a>
+<nav class="navlinks" aria-label="Main navigation"><a href="index.html">Home</a><a href="free-learning.html">Learn</a><a href="community.html" class="current">Community</a><a href="login.html" id="auth-nav-link" class="nav-auth"><i class="fa-regular fa-user"></i> Sign in</a></nav>
+</div></header>
+<main class="shell">
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Learn together · Grow with discipline</span><h1>Where traders <span>share ideas.</span></h1><p>Join the ICT Forex Academy community to discuss market analysis, ask thoughtful questions, and learn from other traders. Share ideas—not promises of profit.</p></div><div class="hero-badge"><span class="dot"></span> Community space</div></div></section>
+<section class="stats" aria-label="Community information">
+<div class="stat"><span class="stat-icon"><i class="fa-solid fa-comments"></i></span><div><strong id="post-count">—</strong><span>Community posts</span></div></div>
+<div class="stat"><span class="stat-icon"><i class="fa-solid fa-heart"></i></span><div><strong id="like-count">—</strong><span>Reactions shared</span></div></div>
+<div class="stat"><span class="stat-icon"><i class="fa-solid fa-shield-halved"></i></span><div><strong>Respect</strong><span>Our community standard</span></div></div>
+</section>
+<div class="columns"><section class="feed-column">
+<div id="composer-area"></div>
+<div class="section-head"><h2 class="section-title"><i class="fa-solid fa-wave-square"></i> Community feed</h2><select id="feed-sort" class="sort" aria-label="Sort community feed"><option value="newest">Newest first</option><option value="popular">Most liked</option></select></div>
+<p id="feed-status" class="feed-status" aria-live="polite">Connecting to the community…</p>
+<div id="feed-container"><div class="empty"><div class="empty-icon"><i class="fa-solid fa-spinner fa-spin"></i></div><h3>Loading community feed</h3><p>Fetching recent posts. Please wait a moment.</p></div></div>
+</section>
+<aside class="sidebar">
+<section class="card side-card"><h3 class="side-title"><i class="fa-solid fa-compass"></i> Community guidelines</h3><div class="guidelines"><div class="guide"><i class="fa-solid fa-check-circle"></i><span>Share your reasoning and timeframe when posting an analysis.</span></div><div class="guide"><i class="fa-solid fa-check-circle"></i><span>Be respectful. Discuss ideas without attacking other members.</span></div><div class="guide"><i class="fa-solid fa-check-circle"></i><span>Never share passwords, private account details, or payment information.</span></div><div class="guide"><i class="fa-solid fa-check-circle"></i><span>Avoid spam, fake profit claims, and guaranteed-return promises.</span></div></div></section>
+<section class="card side-card"><h3 class="side-title"><i class="fa-solid fa-book-open"></i> Keep learning</h3><div class="quick-links"><a class="quick-link" href="free-learning.html"><i class="fa-solid fa-graduation-cap"></i><span>Free learning course</span><i class="fa-solid fa-arrow-up-right-from-square arrow"></i></a><a class="quick-link" href="candlestick-patterns.html"><i class="fa-solid fa-chart-column"></i><span>Candlestick patterns</span><i class="fa-solid fa-arrow-up-right-from-square arrow"></i></a><a class="quick-link" href="rules.html"><i class="fa-solid fa-shield-halved"></i><span>Site rules</span><i class="fa-solid fa-arrow-up-right-from-square arrow"></i></a></div></section>
+<section class="risk-note"><strong><i class="fa-solid fa-triangle-exclamation"></i> Trading risk reminder</strong>Community posts are opinions for educational discussion, not financial advice. Trading can result in losses. Verify information independently and manage risk.</section>
+</aside></div>
+</main>
+<footer>© 2026 ICT Forex Academy · <a href="privacy-policy.html">Privacy Policy</a> · <a href="rules.html">Community rules</a><br>Educational content only. No profits are guaranteed.</footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",authDomain:"ict-forex.firebaseapp.com",projectId:"ict-forex",storageBucket:"ict-forex.firebasestorage.app",messagingSenderId:"10739160076",appId:"1:10739160076:web:0560474e8cf4a43254ca29",measurementId:"G-32WBMZK9DW"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const feed=document.getElementById('feed-container'),statusEl=document.getElementById('feed-status'),composerArea=document.getElementById('composer-area'),authLink=document.getElementById('auth-nav-link');
+let currentUser=null,allPosts=[],stopFeed=null,commentsListeners=new Map(),feedError=false;
+const safeText=value=>String(value??'');
+function initials(name){const parts=safeText(name).trim().split(/\s+/).filter(Boolean);return (parts.length>1?parts[0][0]+parts[parts.length-1][0]:(parts[0]||'T').slice(0,2)).toUpperCase();}
+function timeAgo(value){if(!value)return 'Just posted';const date=typeof value.toDate==='function'?value.toDate():new Date(value);if(Number.isNaN(date.getTime()))return 'Recently';const mins=Math.max(0,Math.floor((Date.now()-date.getTime())/60000));if(mins<1)return 'Just now';if(mins<60)return mins+'m ago';const hrs=Math.floor(mins/60);if(hrs<24)return hrs+'h ago';const days=Math.floor(hrs/24);if(days<7)return days+'d ago';return date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:date.getFullYear()!==new Date().getFullYear()?'numeric':undefined});}
+function showMessage(id,message,type){const el=document.getElementById(id);if(!el)return;el.textContent=message;el.className='message show '+type;}
+function renderComposer(){if(!currentUser){composerArea.innerHTML='<div class="card auth-prompt"><span class="prompt-icon"><i class="fa-solid fa-pen-nib"></i></span><div><h3>Have a market idea to share?</h3><p>Sign in to publish an analysis and join the discussion.</p></div><a class="primary-btn" href="login.html">Sign in <i class="fa-solid fa-arrow-right"></i></a></div>';return;}
+const name=safeText(currentUser.displayName||localStorage.getItem('userName')||'Trader');
+composerArea.innerHTML='<form id="post-form" class="card composer"><div id="post-message" class="message" role="status" aria-live="polite"></div><div class="composer-top"><div class="avatar">'+initials(name)+'</div><div><div class="composer-title">Share your market analysis</div><div class="composer-sub">Post a setup, ask a question, or share a learning insight.</div></div></div><label for="post-content" class="muted-note" style="display:block;margin:0 0 7px">Your post <span style="color:#ff8181">*</span></label><textarea id="post-content" maxlength="3000" required placeholder="What are you observing in the market? Include your reasoning and timeframe…"></textarea><div class="composer-bottom"><div class="chart-input"><label for="chart-url" class="muted-note" style="display:block;margin:0 0 6px">Optional chart link</label><input id="chart-url" class="field" type="url" maxlength="1000" placeholder="https://…"></div><button id="publish-btn" class="primary-btn" type="submit"><i class="fa-solid fa-paper-plane"></i> Publish post</button></div><p class="muted-note">Be respectful. Never post passwords, account details, or guaranteed-profit claims.</p></form>';
+document.getElementById('post-form').addEventListener('submit',publishPost);
+}
+function renderFeed(){const sort=document.getElementById('feed-sort').value;const posts=[...allPosts];if(sort==='popular')posts.sort((a,b)=>(b.likes||[]).length-(a.likes||[]).length);else posts.sort((a,b)=>timeMillis(b.createdAt)-timeMillis(a.createdAt));document.getElementById('post-count').textContent=String(allPosts.length);document.getElementById('like-count').textContent=String(allPosts.reduce((sum,p)=>sum+(Array.isArray(p.likes)?p.likes.length:0),0));feed.replaceChildren();if(feedError)return;if(!posts.length){feed.innerHTML='<div class="empty"><div class="empty-icon"><i class="fa-regular fa-comments"></i></div><h3>Start the conversation</h3><p>No community posts yet. Be the first to share a thoughtful market observation or ask a trading education question.</p></div>';return;}for(const post of posts)feed.appendChild(buildPost(post));}
+function timeMillis(value){if(!value)return 0;try{return typeof value.toMillis==='function'?value.toMillis():new Date(value).getTime()||0;}catch{return 0;}}
+function buildPost(post){const card=document.createElement('article');card.className='card post';card.dataset.postId=post.id;const head=document.createElement('div');head.className='post-head';const author=document.createElement('div');author.className='author';const avatar=document.createElement('div');avatar.className='avatar';avatar.textContent=initials(post.authorName);const details=document.createElement('div');const name=document.createElement('span');name.className='author-name';name.textContent=post.authorName||'Community member';const meta=document.createElement('span');meta.className='author-meta';meta.textContent=timeAgo(post.createdAt)+' · ICT Forex Community';details.append(name,meta);author.append(avatar,details);const tag=document.createElement('span');tag.className='post-tag';tag.textContent='Market discussion';head.append(author,tag);const body=document.createElement('p');body.className='post-content';body.textContent=post.content||'';card.append(head,body);if(post.chartUrl){try{const url=new URL(post.chartUrl);if(url.protocol==='https:'||url.protocol==='http:'){const link=document.createElement('a');link.className='chart-link';link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';link.innerHTML='<i class="fa-solid fa-arrow-up-right-from-square"></i> Open shared chart';card.append(link);}}catch{}}
+const actions=document.createElement('div');actions.className='post-actions';const likes=Array.isArray(post.likes)?post.likes:[];const like=document.createElement('button');like.type='button';like.className='action'+(currentUser&&likes.includes(currentUser.uid)?' liked':'');like.innerHTML='<i class="'+(currentUser&&likes.includes(currentUser.uid)?'fa-solid':'fa-regular')+' fa-heart"></i> <span>'+likes.length+'</span> Like';like.addEventListener('click',()=>toggleLike(post,like));const commentBtn=document.createElement('button');commentBtn.type='button';commentBtn.className='action';commentBtn.innerHTML='<i class="fa-regular fa-comment"></i> Comment';const comments=document.createElement('section');comments.className='comments';comments.hidden=true;commentBtn.addEventListener('click',()=>{comments.hidden=!comments.hidden;if(!comments.hidden)loadComments(post.id,comments);});actions.append(like,commentBtn);card.append(actions,comments);return card;}
+async function publishPost(event){event.preventDefault();if(!currentUser){return;}const form=document.getElementById('post-form'),text=document.getElementById('post-content'),chart=document.getElementById('chart-url'),button=document.getElementById('publish-btn');const content=text.value.trim(),chartUrl=chart.value.trim();if(!content){showMessage('post-message','Please write something before publishing.','error');text.focus();return;}if(content.length>3000){showMessage('post-message','Your post is too long. Please keep it under 3,000 characters.','error');return;}if(chartUrl){try{const url=new URL(chartUrl);if(!['http:','https:'].includes(url.protocol))throw Error();}catch{showMessage('post-message','Please enter a valid chart URL beginning with https:// or http://.','error');chart.focus();return;}}
+button.disabled=true;button.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Publishing…';try{await addDoc(collection(db,'communityPosts'),{authorId:currentUser.uid,authorName:safeText(currentUser.displayName||localStorage.getItem('userName')||'Trader').slice(0,100),content,chartUrl,likes:[],createdAt:serverTimestamp()});form.reset();showMessage('post-message','Your post has been published.','success');}catch(error){console.error('Community post error:',error);showMessage('post-message','Could not publish. The Firebase database may need communityPosts write permissions. Please try again later.','error');}finally{button.disabled=false;button.innerHTML='<i class="fa-solid fa-paper-plane"></i> Publish post';}}
+async function toggleLike(post,button){if(!currentUser){alert('Please sign in to like community posts.');return;}button.disabled=true;try{const liked=Array.isArray(post.likes)&&post.likes.includes(currentUser.uid);await updateDoc(doc(db,'communityPosts',post.id),{likes:liked?arrayRemove(currentUser.uid):arrayUnion(currentUser.uid)});}catch(error){console.error('Like update failed:',error);alert('Could not update your like. Check community database permissions and try again.');}finally{button.disabled=false;}}
+function loadComments(postId,section){if(section.dataset.loaded==='true')return;section.dataset.loaded='true';const form=document.createElement('form');form.className='comment-form';const input=document.createElement('input');input.className='field';input.type='text';input.maxLength=600;input.required=true;input.placeholder=currentUser?'Add a respectful comment…':'Sign in to comment';input.disabled=!currentUser;const send=document.createElement('button');send.className='small-btn';send.type='submit';send.textContent='Post';send.disabled=!currentUser;form.append(input,send);const list=document.createElement('div');list.className='comment-list';section.append(form,list);form.addEventListener('submit',async e=>{e.preventDefault();if(!currentUser)return;const value=input.value.trim();if(!value)return;send.disabled=true;try{await addDoc(collection(db,'communityPosts',postId,'comments'),{authorId:currentUser.uid,authorName:safeText(currentUser.displayName||localStorage.getItem('userName')||'Trader').slice(0,100),text:value,createdAt:serverTimestamp()});input.value='';}catch(error){console.error('Comment failed:',error);alert('Could not post comment. Check community database permissions and try again.');}finally{send.disabled=false;}});
+const q=query(collection(db,'communityPosts',postId,'comments'),orderBy('createdAt','asc'));const unsubscribe=onSnapshot(q,snapshot=>{list.replaceChildren();if(snapshot.empty){const empty=document.createElement('p');empty.className='muted-note';empty.textContent='No comments yet. Start a helpful discussion.';list.append(empty);return;}snapshot.forEach(item=>{const data=item.data(),row=document.createElement('div');row.className='comment';const strong=document.createElement('strong');strong.textContent=(data.authorName||'Trader')+':';const text=document.createElement('span');text.textContent=data.text||'';row.append(strong,text);list.append(row);});},error=>{console.error('Comments read failed:',error);const msg=document.createElement('p');msg.className='muted-note';msg.textContent='Comments are unavailable right now. Check Firestore read permissions.';list.replaceChildren(msg);});commentsListeners.set(postId,unsubscribe);}
+function subscribeFeed(){if(stopFeed)stopFeed();feedError=false;statusEl.textContent='Listening for community posts…';const q=query(collection(db,'communityPosts'),orderBy('createdAt','desc'));stopFeed=onSnapshot(q,snapshot=>{allPosts=snapshot.docs.map(item=>({id:item.id,...item.data()}));feedError=false;statusEl.textContent='Showing '+allPosts.length+' community '+(allPosts.length===1?'post':'posts')+'.';renderFeed();},error=>{console.error('Community feed failed:',error);feedError=true;statusEl.textContent='The community feed could not connect to Firebase.';feed.innerHTML='<div class="empty"><div class="empty-icon"><i class="fa-solid fa-plug-circle-xmark"></i></div><h3>Feed temporarily unavailable</h3><p>Check your connection and the Firestore rules for the communityPosts collection. Posts are not being stored in this browser as a fake substitute.</p></div>';document.getElementById('post-count').textContent='—';document.getElementById('like-count').textContent='—';});}
+document.getElementById('feed-sort').addEventListener('change',renderFeed);
+onAuthStateChanged(auth,user=>{currentUser=user;renderComposer();if(user){const name=safeText(user.displayName||localStorage.getItem('userName')||'Account');authLink.innerHTML='<i class="fa-solid fa-circle-check"></i> '+name+' · Sign out';authLink.href='#';authLink.onclick=async event=>{event.preventDefault();try{await signOut(auth);localStorage.removeItem('userName');localStorage.removeItem('userAccess');window.location.href='login.html';}catch(error){console.error(error);alert('Could not sign out. Please try again.');}};}else{authLink.innerHTML='<i class="fa-regular fa-user"></i> Sign in';authLink.href='login.html';authLink.onclick=null;}renderFeed();});
+subscribeFeed();
+window.addEventListener('beforeunload',()=>{if(stopFeed)stopFeed();commentsListeners.forEach(unsubscribe=>unsubscribe());});
+</script>
 </body>
 </html>
