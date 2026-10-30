@@ -55,16 +55,22 @@ service cloud.firestore {
                     && request.resource.data.fullName is string
                     && request.resource.data.fullName.size() <= 100
                     && request.resource.data.bio is string
-                    && request.resource.data.bio.size() <= 300;
+                    && request.resource.data.bio.size() <= 300
+                    && (!('photoURL' in request.resource.data)
+                        || (request.resource.data.photoURL is string
+                            && request.resource.data.photoURL.size() <= 500));
 
       allow update: if request.auth != null
                     && request.auth.uid == userId
                     && request.resource.data.diff(resource.data)
-                         .affectedKeys().hasOnly(['fullName', 'bio'])
+                         .affectedKeys().hasOnly(['fullName', 'bio', 'photoURL'])
                     && request.resource.data.fullName is string
                     && request.resource.data.fullName.size() <= 100
                     && request.resource.data.bio is string
-                    && request.resource.data.bio.size() <= 300;
+                    && request.resource.data.bio.size() <= 300
+                    && (!('photoURL' in request.resource.data)
+                        || (request.resource.data.photoURL is string
+                            && request.resource.data.photoURL.size() <= 500));
 
       allow delete: if false;
     }
