@@ -44,7 +44,18 @@ import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0
 import{getFirestore,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 const app=initializeApp({apiKey:"AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",authDomain:"ict-forex.firebaseapp.com",projectId:"ict-forex",storageBucket:"ict-forex.firebasestorage.app",messagingSenderId:"10739160076",appId:"1:10739160076:web:0560474e8cf4a43254ca29"});
 const auth=getAuth(app),db=getFirestore(app);
-onAuthStateChanged(auth,async user=>{if(!user){location.href="login.html";return}try{const a=await getDoc(doc(db,"vipAccess",user.uid));if(!a.exists()||a.data().approved!==true){document.body.style.visibility="visible";document.body.innerHTML='<main class="max-w-xl mx-auto p-10 text-center"><h1 class="text-2xl font-bold">VIP access required</h1><p class="mt-3">Approved account se login karein.</p><a class="text-emerald-300" href="vip-course.html">Back to VIP page</a></main>'}}catch(e){document.body.innerHTML='<main class="p-10 text-center">VIP access verify nahi ho saka. Please refresh karein.</main>'}});
+onAuthStateChanged(auth,async user=>{
+ if(!user){location.href="login.html";return}
+ try{
+  const access=await getDoc(doc(db,"vipAccess",user.uid));
+  if(access.exists()&&access.data().approved===true){document.body.style.visibility="visible";return}
+  document.body.style.visibility="visible";
+  document.body.innerHTML='<main class="max-w-xl mx-auto p-10 text-center"><h1 class="text-2xl font-bold">VIP access required</h1><p class="mt-3">Approved account se login karein.</p><a class="text-emerald-300" href="vip-course.html">Back to VIP page</a></main>';
+ }catch(error){
+  document.body.style.visibility="visible";
+  document.body.innerHTML='<main class="p-10 text-center">VIP access verify nahi ho saka. Please refresh karein.</main>';
+ }
+});
 </script>
 <script>
 const data = [
