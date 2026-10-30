@@ -102,13 +102,16 @@
                     </div>
 
                     <div class="mt-4 pt-4 border-t border-gray-800 space-y-2 text-left">
-                        <p class="text-[11px] text-gray-300 font-semibold">Account banane ke baad apni Trading ID yahan enter karein:</p>
-                        <div class="flex gap-2">
-                            <input type="text" id="trading-id-input" placeholder="Enter Trading Account ID..." class="flex-1 bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-yellow-500">
-                            <button onclick="submitAffiliateAccount()" class="bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black text-xs px-4 py-2 rounded-xl transition cursor-pointer">
-                                Unlock Free VIP
-                            </button>
+                        <p class="text-[11px] text-gray-300 font-semibold">Broker select karein aur account banane ke baad apni Trading ID submit karein:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <select id="broker-select" class="bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200">
+                                <option value="Octa">Octa</option><option value="XM">XM</option><option value="Exness">Exness</option>
+                            </select>
+                            <input type="text" id="trading-id-input" maxlength="100" placeholder="Trading Account ID..." class="sm:col-span-2 bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-yellow-500">
                         </div>
+                        <button id="vip-submit-button" type="button" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black text-xs px-4 py-3 rounded-xl transition cursor-pointer">Submit for Admin Approval</button>
+                        <p id="vip-application-status" class="text-xs text-gray-300" role="status" aria-live="polite"></p>
+                    </div>
                     </div>
                 </div>
 
@@ -159,38 +162,11 @@
         </p>
     </footer>
 
-    <!-- Script to handle unlock logic -->
-    <script>
-        function checkVipStatus() {
-            const isUnlocked = localStorage.getItem('vipUnlocked');
-            if (isUnlocked === 'true') {
-                document.getElementById('locked-view').classList.add('hidden');
-                document.getElementById('unlocked-view').classList.remove('hidden');
-                
-                const contentSec = document.getElementById('vip-content-section');
-                contentSec.classList.remove('opacity-50', 'pointer-events-none');
-            }
-        }
-
-        function submitAffiliateAccount() {
-            const tradingId = document.getElementById('trading-id-input').value.trim();
-            if (!tradingId) {
-                alert('Please enter your Trading Account ID!');
-                return;
-            }
-
-            localStorage.setItem('vipUnlocked', 'true');
-            alert('Account ID submitted successfully! VIP Access granted.');
-            checkVipStatus();
-        }
-
-        window.addEventListener('DOMContentLoaded', checkVipStatus);
-    </script>
-
     <!-- Firebase Auth Protection Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",
@@ -204,27 +180,83 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
+        const lockedView = document.getElementById('locked-view');
+        const unlockedView = document.getElementById('unlocked-view');
+        const contentSection = document.getElementById('vip-content-section');
+        const statusMessage = document.getElementById('vip-application-status');
+        const submitButton = document.getElementById('vip-submit-button');
 
-        onAuthStateChanged(auth, (user) => {
-            const authLink = document.getElementById('auth-nav-link');
-            if (!user) {
-                window.location.href = "login.html";
-            } else {
-                const userName = localStorage.getItem('userName') || "User";
-                if (authLink) {
-                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
-                    authLink.href = "#";
-                    authLink.onclick = async (e) => {
-                        e.preventDefault();
-                        localStorage.removeItem('userName');
-                        localStorage.removeItem('userAccess');
-                        localStorage.removeItem('vipUnlocked');
-                        await signOut(auth);
-                        window.location.href = "login.html";
-                    };
-                }
+        function showApproved() {
+            lockedView.classList.add('hidden');
+            unlockedView.classList.remove('hidden');
+            contentSection.classList.remove('opacity-50', 'pointer-events-none');
+        }
+        function showLocked() {
+            lockedView.classList.remove('hidden');
+            unlockedView.classList.add('hidden');
+            contentSection.classList.add('opacity-50', 'pointer-events-none');
+        }
+        async function refreshVipStatus(user) {
+            showLocked();
+            const access = await getDoc(doc(db, 'vipAccess', user.uid));
+            if (access.exists() && access.data().approved === true) { showApproved(); return; }
+            const application = await getDoc(doc(db, 'vipApplications', user.uid));
+            if (application.exists()) {
+                statusMessage.textContent = application.data().status === 'rejected'
+                    ? 'Application reject hui hai. Admin se contact karein.'
+                    : 'Application Pending hai. Admin approval ke baad VIP course unlock hoga.';
+                submitButton.disabled = true;
+                submitButton.textContent = 'Application Submitted';
+                submitButton.classList.add('opacity-60', 'cursor-not-allowed');
+            } else statusMessage.textContent = 'Approval milne tak VIP course locked rahega.';
+        }
+        submitButton.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            const broker = document.getElementById('broker-select').value;
+            const tradingId = document.getElementById('trading-id-input').value.trim();
+            if (!user) { window.location.href = 'login.html'; return; }
+            if (tradingId.length < 3 || tradingId.length > 100) {
+                statusMessage.textContent = 'Valid Trading ID enter karein (3–100 characters).'; return;
+            }
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+            try {
+                await setDoc(doc(db, 'vipApplications', user.uid), {
+                    uid: user.uid, broker, tradingId, status: 'pending', createdAt: serverTimestamp()
+                });
+                document.getElementById('trading-id-input').disabled = true;
+                document.getElementById('broker-select').disabled = true;
+                statusMessage.textContent = 'Application submit ho gayi hai. Admin approval ka wait karein; course abhi locked rahega.';
+                submitButton.textContent = 'Application Submitted';
+                submitButton.classList.add('opacity-60', 'cursor-not-allowed');
+            } catch (error) {
+                console.error('VIP application submission failed:', error);
+                statusMessage.textContent = 'Submit nahi hua. Firebase Rules publish hone ke baad dobara try karein.';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit for Admin Approval';
             }
         });
-    </script>
+        onAuthStateChanged(auth, async (user) => {
+            const authLink = document.getElementById('auth-nav-link');
+            if (!user) { window.location.href = "login.html"; return; }
+            const userName = localStorage.getItem('userName') || "User";
+            if (authLink) {
+                authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
+                authLink.href = "#";
+                authLink.onclick = async (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('userAccess');
+                    await signOut(auth);
+                    window.location.href = "login.html";
+                };
+            }
+            try { await refreshVipStatus(user); }
+            catch (error) {
+                console.error('Could not load VIP status:', error);
+                statusMessage.textContent = 'VIP status load nahi hua. Page refresh karein.';
+            }
+        });   </script>
 </body>
 </html>
