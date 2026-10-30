@@ -12,7 +12,7 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import {getAuth,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import {getFirestore,collection,getDocs,doc,setDoc,updateDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-const ADMIN="z2WKjc5DCxb85G G1SGpZ55wPfFD2".replace(" ","");
+const ADMIN="z2WKjc5DCxb85G71SGpZ55wPfFD2";
 const config={apiKey:"AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",authDomain:"ict-forex.firebaseapp.com",projectId:"ict-forex",storageBucket:"ict-forex.firebasestorage.app",messagingSenderId:"10739160076",appId:"1:10739160076:web:0560474e8cf4a43254ca29",measurementId:"G-32WBMZK9DW"};
 const app=initializeApp(config),auth=getAuth(app),db=getFirestore(app);let rows=[];
 const el=id=>document.getElementById(id),safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
