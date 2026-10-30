@@ -89,8 +89,25 @@ service cloud.firestore {
                     && request.resource.data.createdAt == request.time;
       allow read: if request.auth != null
                   && (request.auth.uid == userId || request.auth.uid == 'z2WKjc5DCxb85G71SGpZ55wPfFD2');
-      allow update, delete: if request.auth != null
-                            && request.auth.uid == 'z2WKjc5DCxb85G71SGpZ55wPfFD2';
+      allow update: if request.auth != null
+                    && (
+                      request.auth.uid == 'z2WKjc5DCxb85G71SGpZ55wPfFD2'
+                      ||
+                      (
+                        request.auth.uid == userId
+                        && resource.data.status == 'rejected'
+                        && request.resource.data.keys().hasOnly(['uid', 'broker', 'tradingId', 'status', 'createdAt'])
+                        && request.resource.data.uid == userId
+                        && request.resource.data.broker in ['Exness', 'Octa', 'XM']
+                        && request.resource.data.tradingId is string
+                        && request.resource.data.tradingId.size() >= 3
+                        && request.resource.data.tradingId.size() <= 100
+                        && request.resource.data.status == 'pending'
+                        && request.resource.data.createdAt == request.time
+                      )
+                    );
+      allow delete: if request.auth != null
+                    && request.auth.uid == 'z2WKjc5DCxb85G71SGpZ55wPfFD2';
     }
 
     // VIP entitlement is readable by its owner, but only the admin can grant or revoke it.
