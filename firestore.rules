@@ -75,6 +75,31 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // VIP applications: users can submit their own request; only the admin can review them.
+    match /vipApplications/{userId} {
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.data.keys().hasOnly(['uid', 'broker', 'tradingId', 'status', 'createdAt'])
+                    && request.resource.data.uid == userId
+                    && request.resource.data.broker in ['Exness', 'Octa', 'XM']
+                    && request.resource.data.tradingId is string
+                    && request.resource.data.tradingId.size() >= 3
+                    && request.resource.data.tradingId.size() <= 100
+                    && request.resource.data.status == 'pending'
+                    && request.resource.data.createdAt == request.time;
+      allow read: if request.auth != null
+                  && (request.auth.uid == userId || request.auth.uid == 'z2WKjc5DCxb85G71SGpZ55wPfFD2');
+      allow update, delete: if request.auth != null
+                            && request.auth.uid == 'z2WKjc5DCxb85G71SGpZ55wPfFD2';
+    }
+
+    // VIP entitlement is readable by its owner, but only the admin can grant or revoke it.
+    match /vipAccess/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create, update, delete: if request.auth != null
+                                    && request.auth.uid == 'z2WKjc5DCxb85G71SGpZ55wPfFD2';
+    }
+
     // Community posts
     match /communityPosts/{postId} {
       allow read: if request.auth != null;
