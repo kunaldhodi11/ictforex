@@ -52,11 +52,6 @@
 
     <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-10 space-y-8">
         
-        <!-- GOOGLE AD SLOT -->
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-center text-xs text-gray-500">
-            [ Google AdSense Top Ad Space ]
-        </div>
-
         <div class="bg-gradient-to-r from-yellow-900 via-amber-950 to-stone-900 border-2 border-yellow-500/40 rounded-3xl p-6 md:p-10 shadow-2xl text-center relative overflow-hidden">
             <span class="bg-yellow-500 text-gray-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow">
                 👑 Exclusive VIP Masterclass
@@ -79,7 +74,7 @@
                                 <span class="text-xs font-black text-yellow-400 block mb-1">1. Exness</span>
                                 <p class="text-[10px] text-gray-300 leading-tight">Instant Withdrawals, Raw Spreads & High Leverage.</p>
                             </div>
-                            <a href="YOUR_EXNESS_AFFILIATE_LINK" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-[10px] py-2 rounded-lg transition text-center block">Create Account</a>
+                            <span class="bg-gray-700 text-gray-300 font-black text-[10px] py-2 rounded-lg text-center block">Affiliate link coming soon</span>
                         </div>
                         
                         <!-- Octa (Live Link) -->
@@ -103,6 +98,7 @@
 
                     <div class="mt-4 pt-4 border-t border-gray-800 space-y-2 text-left">
                         <p class="text-[11px] text-gray-300 font-semibold">Broker select karein aur account banane ke baad apni Trading ID submit karein:</p>
+                        <p class="text-[10px] text-gray-400">Trading ID admin manually verify karega. Submit karne se VIP turant unlock nahi hoga.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                             <select id="broker-select" class="bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200">
                                 <option value="Octa">Octa</option><option value="XM">XM</option><option value="Exness">Exness</option>
@@ -112,13 +108,12 @@
                         <button id="vip-submit-button" type="button" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black text-xs px-4 py-3 rounded-xl transition cursor-pointer">Submit for Admin Approval</button>
                         <p id="vip-application-status" class="text-xs text-gray-300" role="status" aria-live="polite"></p>
                     </div>
-                    </div>
                 </div>
 
                 <!-- Unlocked View (Hidden by default) -->
                 <div id="unlocked-view" class="hidden space-y-3">
                     <div class="text-green-400 font-black text-sm flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-circle-check text-lg"></i> VIP Access Unlocked Successfully!
+                        <i class="fa-solid fa-circle-check text-lg"></i> VIP Access Approved!
                     </div>
                     <p class="text-xs text-gray-300">Aapka VIP Mentorship course ab active hai. Niche diye gaye modules se padhna shuru karein.</p>
                 </div>
@@ -148,10 +143,6 @@
             </div>
         </div>
 
-        <!-- GOOGLE AD SLOT 2 -->
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-center text-xs text-gray-500">
-            [ Google AdSense Bottom Ad Space ]
-        </div>
     </main>
 
     <!-- FOOTER -->
@@ -203,13 +194,22 @@
             if (access.exists() && access.data().approved === true) { showApproved(); return; }
             const application = await getDoc(doc(db, 'vipApplications', user.uid));
             if (application.exists()) {
-                statusMessage.textContent = application.data().status === 'rejected'
-                    ? 'Application reject hui hai. Admin se contact karein.'
-                    : 'Application Pending hai. Admin approval ke baad VIP course unlock hoga.';
-                submitButton.disabled = true;
-                submitButton.textContent = 'Application Submitted';
-                submitButton.classList.add('opacity-60', 'cursor-not-allowed');
-            } else statusMessage.textContent = 'Approval milne tak VIP course locked rahega.';
+                const applicationStatus = application.data().status;
+                if (applicationStatus === 'rejected') {
+                    statusMessage.textContent = 'Aapki application reject hui hai. Details check karke dobara submit kar sakte hain.';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Resubmit for Approval';
+                    submitButton.classList.remove('opacity-60', 'cursor-not-allowed');
+                } else {
+                    statusMessage.textContent = 'Application Pending hai. Admin approval ke baad VIP course unlock hoga.';
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Application Submitted';
+                    submitButton.classList.add('opacity-60', 'cursor-not-allowed');
+                }
+            } else {
+                statusMessage.textContent = 'Approval milne tak VIP course locked rahega.';
+                submitButton.disabled = false;
+            }
         }
         submitButton.addEventListener('click', async () => {
             const user = auth.currentUser;
@@ -222,9 +222,16 @@
             submitButton.disabled = true;
             submitButton.textContent = 'Submitting...';
             try {
-                await setDoc(doc(db, 'vipApplications', user.uid), {
+                const applicationRef = doc(db, 'vipApplications', user.uid);
+                const existingApplication = await getDoc(applicationRef);
+                const applicationData = {
                     uid: user.uid, broker, tradingId, status: 'pending', createdAt: serverTimestamp()
-                });
+                };
+                if (existingApplication.exists()) {
+                    await setDoc(applicationRef, applicationData);
+                } else {
+                    await setDoc(applicationRef, applicationData);
+                }
                 document.getElementById('trading-id-input').disabled = true;
                 document.getElementById('broker-select').disabled = true;
                 statusMessage.textContent = 'Application submit ho gayi hai. Admin approval ka wait karein; course abhi locked rahega.';
