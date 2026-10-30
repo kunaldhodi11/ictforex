@@ -1,188 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trader Profile | ICT Forex Academy</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: { 500: '#22c55e', 600: '#16a34a' },
-                        secondary: { 500: '#a855f7', 600: '#9333ea' },
-                        accent: { 500: '#eab308' }
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between">
-
-    <!-- HEADER -->
-    <header class="bg-[#131b2e] border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-xl">
-        <a href="index.html" class="flex items-center gap-2.5 group cursor-pointer">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] flex items-center justify-center flex-shrink-0">
-                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
-                    <span class="text-xs md:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
-                </div>
-            </div>
-            <div>
-                <h1 class="text-xs md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 drop-shadow">
-                    ICT FOREX ACADEMY
-                </h1>
-                <p class="text-[9px] md:text-[10px] text-gray-400 font-medium tracking-wide">Trader Profile</p>
-            </div>
-        </a>
-
-        <nav class="flex items-center gap-3 text-xs font-bold text-gray-300">
-            <a href="community.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
-                <i class="fa-solid fa-arrow-left"></i> Back to Community
-            </a>
-        </nav>
-    </header>
-
-    <!-- MAIN PROFILE CONTAINER -->
-    <main class="flex-1 max-w-3xl w-full mx-auto p-4 md:p-8 space-y-6">
-
-        <!-- PROFILE CARD -->
-        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 shadow-xl space-y-5">
-            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
-                <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 p-1 flex items-center justify-center shadow-lg flex-shrink-0">
-                    <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
-                        <i class="fa-solid fa-user text-3xl text-green-400"></i>
-                    </div>
-                </div>
-                <div class="flex-1 space-y-2">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <h2 id="view-username" class="text-xl md:text-2xl font-black text-white">Loading...</h2>
-                        <button id="follow-action-btn" onclick="toggleFollow(this)" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-xs px-5 py-2 rounded-xl transition shadow cursor-pointer">
-                            Follow +
-                        </button>
-                    </div>
-                    
-                    <!-- Instagram Link -->
-                    <a href="#" id="view-ig-link" target="_blank" class="text-xs text-pink-400 hover:underline inline-flex items-center gap-1.5 hidden">
-                        <i class="fa-brands fa-instagram text-sm"></i> <span id="view-ig-text">Instagram Profile</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Bio -->
-            <div class="bg-[#0b0f19] border border-gray-800 rounded-2xl p-4">
-                <span class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1 font-bold">Bio</span>
-                <p id="view-bio-text" class="text-xs md:text-sm text-gray-300 italic">
-                    Loading trader bio...
-                </p>
-            </div>
-
-            <!-- Stats -->
-            <div class="flex justify-around sm:justify-start sm:gap-10 pt-2 text-xs border-t border-gray-800">
-                <div class="text-center sm:text-left"><span class="font-black text-white text-sm block">1</span> <span class="text-gray-400">Posts</span></div>
-                <div class="text-center sm:text-left"><span id="followers-count" class="font-black text-white text-sm block">142</span> <span class="text-gray-400">Followers</span></div>
-                <div class="text-center sm:text-left"><span class="font-black text-white text-sm block">85</span> <span class="text-gray-400">Following</span></div>
-            </div>
-        </div>
-
-        <!-- USER'S POSTS SECTION -->
-        <div class="space-y-4">
-            <h3 class="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2 px-1">
-                <i class="fa-solid fa-chart-line text-green-400"></i> Trader's Market Analyses
-            </h3>
-
-            <div id="user-posts-container" class="space-y-4">
-                <div class="bg-gray-900 border border-gray-800 rounded-3xl p-5 text-gray-300 text-xs space-y-2">
-                    <p id="user-sample-post" class="leading-relaxed">EURUSD is showing a clean market structure shift on the 15M timeframe. Expecting a retest of the 4H order block before continuation. What are your thoughts? 📊🔥</p>
-                    <span class="text-[10px] text-gray-500 block">Posted recently</span>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#131b2e] border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2">
-        <p>ICT Forex Academy © 2026. All rights reserved.</p>
-        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
-    </footer>
-
-    <!-- Script to Load Profile Details from URL -->
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const usernameParam = urlParams.get('user');
-
-            if (usernameParam) {
-                const decodedUser = decodeURIComponent(usernameParam);
-                document.getElementById('view-username').innerText = decodedUser;
-                
-                const loggedInUser = localStorage.getItem('userName');
-                
-                // Agar yeh logged-in user ki apni profile hai
-                if (loggedInUser === decodedUser) {
-                    const bio = localStorage.getItem('userBio');
-                    const ig = localStorage.getItem('userIg');
-
-                    if (bio) {
-                        document.getElementById('view-bio-text').innerText = bio;
-                    } else {
-                        document.getElementById('view-bio-text').innerText = "Smart Money Trader | ICT Mentorship Student";
-                    }
-
-                    if (ig) {
-                        const igLink = document.getElementById('view-ig-link');
-                        const igText = document.getElementById('view-ig-text');
-                        igText.innerText = ig;
-                        igLink.href = ig.startsWith('http') ? ig : `https://${ig}`;
-                        igLink.classList.remove('hidden');
-                    }
-                    
-                    // Apni profile par follow button chupayein
-                    const followBtn = document.getElementById('follow-action-btn');
-                    if(followBtn) followBtn.style.display = 'none';
-
-                } else {
-                    // Doosre user (jaise Aakash Kumar ya koi aur) ke liye data
-                    if (decodedUser === "Aakash Kumar") {
-                        document.getElementById('view-bio-text').innerText = "Smart Money Trader | Passionate about ICT concepts & Market Structure.";
-                    } else {
-                        document.getElementById('view-bio-text').innerText = "Passionate Forex Trader following ICT & Smart Money Concepts.";
-                    }
-                }
-            } else {
-                // Agar URL mein user name nahi hai, toh logged-in user ka dikhayein
-                const loggedInUser = localStorage.getItem('userName');
-                if (loggedInUser) {
-                    document.getElementById('view-username').innerText = loggedInUser;
-                    const bio = localStorage.getItem('userBio');
-                    if (bio) document.getElementById('view-bio-text').innerText = bio;
-                    const followBtn = document.getElementById('follow-action-btn');
-                    if(followBtn) followBtn.style.display = 'none';
-                } else {
-                    document.getElementById('view-username').innerText = "Trader Profile";
-                }
-            }
-        });
-
-        function toggleFollow(btn) {
-            const followersElem = document.getElementById('followers-count');
-            let count = parseInt(followersElem.innerText);
-            if (btn.innerText.includes("Follow +")) {
-                btn.innerText = "Following ✓";
-                btn.classList.remove('bg-green-500', 'hover:bg-green-600');
-                btn.classList.add('bg-gray-800', 'text-green-400', 'border', 'border-green-500/30');
-                followersElem.innerText = count + 1;
-            } else {
-                btn.innerText = "Follow +";
-                btn.classList.remove('bg-gray-800', 'text-green-400', 'border', 'border-green-500/30');
-                btn.classList.add('bg-green-500', 'hover:bg-green-600');
-                followersElem.innerText = count - 1;
-            }
-        }
-    </script>
-</body>
-</html>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07111f">
+<title>Trader Profile | ICTFOREX Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2b;--line:rgba(148,163,184,.17);--muted:#91a3b9;--text:#f5f8fc;--gold:#f6b94b;--blue:#42b8ff;--green:#36d399}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 0%,#12304a 0,transparent 32%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}a{color:inherit;text-decoration:none}.shell{width:min(1000px,calc(100% - 32px));margin:auto}header{height:72px;border-bottom:1px solid var(--line);background:#07111fe8;backdrop-filter:blur(16px);position:sticky;top:0;z-index:5}.nav{height:100%;display:flex;align-items:center;justify-content:space-between}.brand{font:700 16px 'Space Grotesk';letter-spacing:.5px}.brand i{color:var(--gold);margin-right:9px}.navlinks{display:flex;gap:20px;color:#c2cede;font-size:12px;font-weight:700}.navlinks a:hover{color:var(--gold)}main{padding:38px 0 70px}.panel{border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#0e1d2e,#0a1726);box-shadow:0 18px 55px #0003}.profile{padding:26px}.top{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.avatar{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fbd58a,#d99124);color:#101a27;font:700 27px 'Space Grotesk';border:4px solid #ffffff12}.identity{flex:1;min-width:180px}.identity h1{font:700 26px 'Space Grotesk';margin:0 0 6px}.handle{font-size:12px;color:var(--muted)}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid #f6b94b66;border-radius:11px;padding:10px 16px;background:linear-gradient(100deg,#ffda8a,#f0ad36);color:#101a27;font-weight:800;font-size:12px;cursor:pointer}.btn.secondary{background:#10243a;color:#dce8f5;border-color:var(--line)}.btn:disabled{opacity:.6;cursor:wait}.bio{margin:22px 0 18px;color:#d1dce9;font-size:13px;line-height:1.7;white-space:pre-wrap}.stats{display:flex;gap:30px;border-top:1px solid var(--line);padding-top:18px}.stat{font-size:11px;color:var(--muted);cursor:pointer}.stat strong{display:block;color:white;font-size:17px;margin-bottom:3px}.section-title{font:700 16px 'Space Grotesk';margin:28px 0 14px}.posts{display:grid;gap:13px}.post{padding:18px}.post-meta{color:var(--muted);font-size:11px;margin-bottom:10px}.post p{font-size:13px;line-height:1.7;white-space:pre-wrap}.post img{max-width:100%;max-height:420px;object-fit:contain;border-radius:13px;border:1px solid var(--line)}.empty,.notice{padding:22px;color:var(--muted);font-size:13px;text-align:center}.edit{display:none;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.edit.show{display:block}.edit label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}.edit textarea{width:100%;min-height:80px;background:#07111f;border:1px solid var(--line);border-radius:11px;padding:12px;color:white;font:13px 'DM Sans';resize:vertical}.edit .btn{margin-top:9px}.status{font-size:12px;color:var(--muted);margin-top:12px}footer{text-align:center;color:#71839a;font-size:11px;padding:25px;border-top:1px solid var(--line)}
+@media(max-width:600px){.navlinks{gap:11px;font-size:11px}.profile{padding:19px}.identity h1{font-size:22px}.stats{justify-content:space-between;gap:10px}}
+</style></head>
+<body>
+<header><div class="shell nav"><a class="brand" href="community.html"><i class="fa-solid fa-chart-line"></i>ICTFOREX COMMUNITY</a><nav class="navlinks"><a href="community.html">Community Feed</a><a href="index.html">Home</a><a id="account-link" href="login.html">Sign in</a></nav></div></header>
+<main class="shell">
+<section class="panel profile">
+<div class="top"><div class="avatar" id="avatar">T</div><div class="identity"><h1 id="name">Loading profile…</h1><div class="handle" id="handle">ICTFOREX trader</div></div><div class="actions"><button class="btn" id="follow-btn" hidden>Follow</button><button class="btn secondary" id="edit-btn" hidden><i class="fa-solid fa-pen"></i> Edit profile</button></div></div>
+<p class="bio" id="bio">Loading profile details…</p>
+<div class="stats"><div class="stat"><strong id="posts-count">0</strong>Posts</div><div class="stat"><strong id="followers-count">0</strong>Followers</div><div class="stat"><strong id="following-count">0</strong>Following</div></div>
+<div class="edit" id="edit-panel"><label for="bio-input">Your trading bio (up to 300 characters)</label><textarea id="bio-input" maxlength="300" placeholder="Example: Forex trader | Learning ICT & Smart Money Concepts"></textarea><button class="btn" id="save-bio">Save profile</button><div class="status" id="edit-status"></div></div>
+</section>
+<h2 class="section-title"><i class="fa-solid fa-chart-line" style="color:var(--gold)"></i> Trading posts</h2>
+<section class="posts" id="posts"><div class="panel empty">Loading posts…</div></section>
+</main><footer>ICTFOREX Community · Share knowledge, respect risk, grow together.</footer>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,setDoc,deleteDoc,collection,getDocs,query,where}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",authDomain:"ict-forex.firebaseapp.com",projectId:"ict-forex",storageBucket:"ict-forex.firebasestorage.app",messagingSenderId:"10739160076",appId:"1:10739160076:web:0560474e8cf4a43254ca29",measurementId:"G-32WBMZK9DW"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);let viewer=null,targetUid=null,targetData={};
+const initials=s=>String(s||'Trader').trim().split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'T';
+function msg(s){$('edit-status').textContent=s;}
+async function loadProfile(){
+ if(!targetUid){$('posts').innerHTML='<div class="panel empty">No profile selected. Sign in to view your profile.</div>';return;}
+ const snap=await getDoc(doc(db,'users',targetUid));
+ if(!snap.exists()){$('name').textContent='Trader profile';$('bio').textContent='This trader profile is not available yet.';return;}
+ targetData=snap.data();const name=targetData.fullName||targetData.displayName||'ICTFOREX Trader';
+ $('name').textContent=name;$('handle').textContent='ICTFOREX member';$('avatar').textContent=initials(name);$('bio').textContent=targetData.bio||'No bio added yet. Share what you are learning in the markets.';
+ $('bio-input').value=targetData.bio||'';
+ const [posts,followers,following]=await Promise.all([
+ getDocs(query(collection(db,'communityPosts'),where('authorId','==',targetUid))),
+ getDocs(collection(db,'users',targetUid,'followers')),
+ getDocs(collection(db,'users',targetUid,'following'))
+ ]);
+ $('posts-count').textContent=posts.size;$('followers-count').textContent=followers.size;$('following-count').textContent=following.size;
+ const list=posts.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>dateMs(b.createdAt)-dateMs(a.createdAt));
+ const box=$('posts');box.replaceChildren();
+ if(!list.length){box.innerHTML='<div class="panel empty">No posts yet. Share your first market analysis in the Community Feed.</div>';return;}
+ for(const p of list){const card=document.createElement('article');card.className='panel post';const meta=document.createElement('div');meta.className='post-meta';meta.textContent=dateLabel(p.createdAt)+' · '+(Array.isArray(p.likes)?p.likes.length:0)+' likes';const body=document.createElement('p');body.textContent=p.content||'';card.append(meta,body);if(typeof p.imageUrl==='string'&&p.imageUrl.startsWith('https://res.cloudinary.com/')){const img=document.createElement('img');img.src=p.imageUrl;img.alt='Trading chart';card.append(img);}box.append(card);}
+}
+function dateMs(v){try{return v?.toMillis?v.toMillis():new Date(v||0).getTime()||0}catch{return 0}}
+function dateLabel(v){const n=dateMs(v);return n?new Date(n).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}):'Recently posted'}
+async function refreshFollow(){if(!viewer||!targetUid||viewer.uid===targetUid){$('follow-btn').hidden=true;return;}const ref=doc(db,'users',viewer.uid,'following',targetUid);const snap=await getDoc(ref);$('follow-btn').hidden=false;$('follow-btn').textContent=snap.exists()?'Following ✓':'Follow +';$('follow-btn').classList.toggle('secondary',snap.exists());}
+$('follow-btn').addEventListener('click',async()=>{if(!viewer){location.href='login.html?returnUrl='+encodeURIComponent(location.pathname+location.search);return;}const btn=$('follow-btn');btn.disabled=true;try{const followingRef=doc(db,'users',viewer.uid,'following',targetUid),followerRef=doc(db,'users',targetUid,'followers',viewer.uid);const existing=await getDoc(followingRef);if(existing.exists()){await Promise.all([deleteDoc(followingRef),deleteDoc(followerRef)]);}else{const data={uid:viewer.uid,fullName:viewer.displayName||localStorage.getItem('userName')||'Trader',createdAt:new Date().toISOString()};await Promise.all([setDoc(followingRef,data),setDoc(followerRef,{uid:viewer.uid,createdAt:new Date().toISOString()})]);}await loadProfile();await refreshFollow();}catch(e){console.error('Follow action failed',e);alert('Follow update failed. Firestore security rules may need updating.');}finally{btn.disabled=false;}});
+$('edit-btn').addEventListener('click',()=>$('edit-panel').classList.toggle('show'));
+$('save-bio').addEventListener('click',async()=>{if(!viewer||viewer.uid!==targetUid)return;const bio=$('bio-input').value.trim();if(bio.length>300){msg('Bio must be 300 characters or less.');return;}try{await setDoc(doc(db,'users',viewer.uid),{uid:viewer.uid,fullName:viewer.displayName||localStorage.getItem('userName')||'Trader',bio},{merge:true});$('bio').textContent=bio||'No bio added yet.';msg('Profile updated successfully.');}catch(e){console.error(e);msg('Could not save profile. Check Firestore permissions.');}});
+onAuthStateChanged(auth,async user=>{viewer=user;$('account-link').textContent=user?(user.displayName||'Account'):'Sign in';$('account-link').href=user?'profile.html?uid='+encodeURIComponent(user.uid):'login.html';const params=new URLSearchParams(location.search);targetUid=params.get('uid')||(user?user.uid:null);if(user&&targetUid===user.uid){$('edit-btn').hidden=false;if(!$('bio-input').value)$('bio-input').value='';}try{await loadProfile();await refreshFollow();}catch(e){console.error('Profile load failed',e);$('posts').innerHTML='<div class="panel empty">Could not load this profile. Please refresh or check Firestore permissions.</div>';}}); 
+</script></body></html>
