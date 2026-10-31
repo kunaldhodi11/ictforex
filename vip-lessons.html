@@ -179,18 +179,75 @@ data.forEach((chapter,i)=>{const sec=document.createElement("section");sec.id="c
 </script>
 <script>
 (function renderCoreCharts(){
- const colors=["#26a69a","#ef5350"], labels=["STRUCTURE","MSS","FVG","OB","LIQUIDITY","RETEST","RANGE","SWEEP","POI","ENTRY"];
+ const specs={
+  "ict-core-0":["MARKET STRUCTURE","HH","HL","BULLISH BOS"],
+  "ict-core-1":["MARKET STRUCTURE SHIFT","SSL SWEEP","MSS","DISPLACEMENT"],
+  "ict-core-2":["FAIR VALUE GAP","BULLISH FVG","IMBALANCE","RETRACE"],
+  "ict-core-3":["BULLISH FVG","DISPLACEMENT","FVG ZONE","RETEST"],
+  "ict-core-4":["BEARISH FVG","DISPLACEMENT","FVG ZONE","RETEST"],
+  "ict-core-5":["INVERSE FVG","FVG BREAK","ROLE REVERSAL","RETEST"],
+  "ict-core-6":["OPTIMAL TRADE ENTRY","0.79","0.705","0.62"],
+  "ict-core-7":["SESSION KILL ZONE","LONDON","NEW YORK","SESSION HIGH"],
+  "ict-core-8":["JUDAS SWING","ASIA RANGE","LIQUIDITY RAID","REVERSAL"],
+  "ict-core-9":["ICT ENTRY MODEL","SWEEP","MSS","FVG ENTRY"],
+  "smc-core-0":["BREAK OF STRUCTURE","PRIOR HIGH","BOS","CONTINUATION"],
+  "smc-core-1":["CHANGE OF CHARACTER","LOWER HIGH","CHoCH","SHIFT"],
+  "smc-core-2":["BULLISH ORDER BLOCK","BULLISH OB","DEMAND","RETEST"],
+  "smc-core-3":["BEARISH ORDER BLOCK","BEARISH OB","SUPPLY","RETEST"],
+  "smc-core-4":["BREAKER BLOCK","FAILED OB","BREAKER","RETEST"],
+  "smc-core-5":["MITIGATION BLOCK","MITIGATION ZONE","REACTION","STRUCTURE"],
+  "smc-core-6":["PREMIUM / DISCOUNT","PREMIUM","EQUILIBRIUM 50%","DISCOUNT"],
+  "smc-core-7":["SUPPLY & DEMAND","SUPPLY ZONE","DEMAND ZONE","REACTION"],
+  "smc-core-8":["DISPLACEMENT","IMPULSE","STRUCTURE BREAK","IMBALANCE"],
+  "smc-core-9":["SMC TRADE MODEL","LIQUIDITY","CHoCH","ORDER BLOCK"],
+  "liq-core-0":["BUY-SIDE LIQUIDITY","EQUAL HIGHS","BSL POOL","SWEEP"],
+  "liq-core-1":["SELL-SIDE LIQUIDITY","EQUAL LOWS","SSL POOL","SWEEP"],
+  "liq-core-2":["EQUAL HIGHS / LOWS","EQH","EQL","LIQUIDITY POOLS"],
+  "liq-core-3":["LIQUIDITY SWEEP","BSL RAID","RETURN BELOW","BEARISH SHIFT"],
+  "liq-core-4":["SWEEP VS BREAKOUT","LEVEL","SWEEP / RECLAIM","ACCEPTANCE"],
+  "liq-core-5":["INDUCEMENT","MINOR HIGH","INDUCEMENT","MAIN LIQUIDITY"],
+  "liq-core-6":["PREVIOUS DAY LEVELS","PDH","PDL","CURRENT PRICE"],
+  "liq-core-7":["PREVIOUS WEEK LEVELS","PWH","PWL","WEEKLY RANGE"],
+  "liq-core-8":["ASIAN RANGE LIQUIDITY","ASIA HIGH","ASIA LOW","LONDON RAID"],
+  "liq-core-9":["LIQUIDITY MAP","BSL","SSL","KEY LEVELS"]
+ };
+ const palette={grid:"#202a36",text:"#aab4c3",bull:"#26a69a",bear:"#ef5350",gold:"#f5c451",blue:"#5799e8",purple:"#a78bfa"};
  document.querySelectorAll(".core-chart").forEach((el,index)=>{
-  let seed=index*37+19; const rand=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
-  const candles=[];let p=105;
-  for(let i=0;i<32;i++){const o=p,move=(rand()-.46)*17,c=o+move,h=Math.max(o,c)+rand()*8,l=Math.min(o,c)-rand()*8;candles.push({o,c,h,l});p=c}
-  const W=520,H=170,plotH=132,min=Math.min(...candles.map(x=>x.l))-4,max=Math.max(...candles.map(x=>x.h))+4;
-  const y=v=>14+(max-v)/(max-min)*plotH,step=14,cw=7;
-  let svg='<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true"><rect width="'+W+'" height="'+H+'" fill="#0b0e14"/>';
-  for(let k=0;k<5;k++){let yy=20+k*29;svg+='<path d="M0 '+yy+'H520" stroke="#202b38" stroke-width="1"/><text x="496" y="'+(yy-3)+'" class="axis">'+(max-(max-min)*k/4).toFixed(1)+'</text>'}
-  candles.forEach((c,i)=>{let x=10+i*step,up=c.c>=c.o,col=colors[up?0:1];svg+='<path d="M'+(x+cw/2)+' '+y(c.h)+'V'+y(c.l)+'" stroke="'+col+'" stroke-width="1.2"/><rect x="'+x+'" y="'+Math.min(y(c.o),y(c.c))+'" width="'+cw+'" height="'+Math.max(2,Math.abs(y(c.o)-y(c.c)))+'" fill="'+col+'" stroke="'+col+'"/>'});
-  const kind=index%5,level=y(candles[15].h);if(kind===0){svg+='<path d="M10 '+level+'H455" stroke="#fbbf24" stroke-dasharray="5 4"/><text x="18" y="'+(level-5)+'" fill="#fbbf24" class="annotation">SWING LEVEL / BOS</text>'}else if(kind===1){let yy=y((candles[12].h+candles[14].l)/2);svg+='<rect x="150" y="'+yy+'" width="190" height="20" fill="#8b5cf6" opacity=".22" stroke="#a78bfa"/><text x="160" y="'+(yy-4)+'" fill="#c4b5fd" class="annotation">POI / FVG ZONE</text>'}else if(kind===2){svg+='<path d="M10 '+level+'H455" stroke="#ef5350" stroke-dasharray="5 4"/><text x="18" y="'+(level-5)+'" fill="#fca5a5" class="annotation">LIQUIDITY LEVEL</text>'}else if(kind===3){svg+='<path d="M350 20L350 120L390 120" fill="none" stroke="#60a5fa" stroke-dasharray="4 3"/><text x="355" y="16" fill="#93c5fd" class="annotation">RETEST</text>'}else{svg+='<path d="M10 145H455" stroke="#64748b" stroke-dasharray="3 4"/><text x="18" y="140" fill="#cbd5e1" class="annotation">RANGE / CONFIRMATION</text>'}
-  svg+='<text x="8" y="163" class="axis">09:00</text><text x="220" y="163" class="axis">10:30</text><text x="420" y="163" class="axis">12:00</text><text x="462" y="163" class="axis">SIM</text></svg>';el.innerHTML=svg;
+  const id=el.dataset.chart,sp=specs[id]||["PRICE ACTION","LEVEL","ZONE","RETEST"];
+  let seed=index*7919+431;const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
+  const W=760,H=330,left=18,right=66,top=38,bottom=270,plotW=right===0?W:W-left-right,plotH=bottom-top;
+  let price=100;const bars=[];
+  for(let i=0;i< fifty();i++){const o=price;let drift=(index%3===0?.25:index%3===1?-.16:.04);let impulse=(i>18&&i<24?(index%2===0?1.8:-1.8):0);let c=o+(rnd()-.48)*3.2+drift+impulse;let h=Math.max(o,c)+rnd()*1.8,l=Math.min(o,c)-rnd()*1.8;bars.push({o,c,h,l,v:20+rnd()*75});price=c}
+  function fifty(){return 48}
+  const min=Math.min(...bars.map(b=>b.l))-2,max=Math.max(...bars.map(b=>b.h))+2;
+  const X=i=>left+i*(plotW/48)+2,Y=v=>top+(max-v)/(max-min)*plotH;
+  const step=plotW/48,cw=Math.max(5,step*.58);
+  const line=(x1,y1,x2,y2,color,dash="")=>'<path d="M'+x1+' '+y1+'L'+x2+' '+y2+'" stroke="'+color+'" stroke-width="1.3" '+(dash?'stroke-dasharray="'+dash+'"':'')+'/>';
+  const label=(x,y,t,color=palette.gold)=>'<text x="'+x+'" y="'+y+'" fill="'+color+'" font-size="10" font-weight="700">'+t+'</text>';
+  let svg='<svg class="tv-svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+sp[0]+' educational candlestick chart"><rect width="'+W+'" height="'+H+'" fill="#0b0e14"/><rect x="0" y="0" width="'+W+'" height="27" fill="#111821"/><text x="14" y="18" fill="#e5e7eb" font-size="12" font-weight="700">XAUUSD · 5m</text><text x="145" y="18" fill="#9ca3af" font-size="10">O 2,3xx.xx  H 2,3xx.xx  L 2,3xx.xx  C 2,3xx.xx</text><text x="665" y="18" fill="#26a69a" font-size="10">SIMULATED</text>';
+  for(let k=0;k<=5;k++){let yy=top+k*plotH/5;svg+=line(left,yy,W-right+4,yy,palette.grid)+ '<text x="'+(W-right+10)+'" y="'+(yy+3)+'" fill="'+palette.text+'" font-size="9">'+(max-(max-min)*k/5).toFixed(2)+'</text>'}
+  for(let k=0;k<=6;k++){let xx=left+k*plotW/6;svg+=line(xx,top,xx,bottom,palette.grid)+ '<text x="'+(xx-10)+'" y="291" fill="'+palette.text+'" font-size="9">'+["08:00","08:30","09:00","09:30","10:00","10:30","11:00"][k]+'</text>'}
+  bars.forEach((b,i)=>{let x=X(i),up=b.c>=b.o,col=up?palette.bull:palette.bear;svg+='<path d="M'+(x+cw/2)+' '+Y(b.h)+'V'+Y(b.l)+'" stroke="'+col+'" stroke-width="1.4"/><rect x="'+x+'" y="'+Math.min(Y(b.o),Y(b.c))+'" width="'+cw+'" height="'+Math.max(2,Math.abs(Y(b.o)-Y(b.c)))+'" fill="'+col+'" rx=".5"/>';let vh=b.v/100*24;svg+='<rect x="'+x+'" y="'+(bottom+30-vh)+'" width="'+cw+'" height="'+vh+'" fill="'+col+'" opacity=".55"/>'});
+  const zone=(x1,x2,hi,lo,color,opacity=.17)=>'<rect x="'+x1+'" y="'+Y(hi)+'" width="'+(x2-x1)+'" height="'+Math.max(8,Y(lo)-Y(hi))+'" fill="'+color+'" opacity="'+opacity+'" stroke="'+color+'" stroke-width="1"/>';
+  const horizontal=(idx,text,color=palette.gold)=>{let yy=Y(bars[idx].h);svg+=line(left,yy,W-right,yy,color,"5 4")+label(left+8,yy-6,text,color)};
+  const idn=Number((id.match(/-(\d+)$/)||[])[1]||0);
+  if(id.startsWith("ict-core")){
+   if(idn===2||idn===3||idn===4||idn===5||idn===9){let bullish=idn!==4;let hi=max-(max-min)*.43,lo=hi-(max-min)*.12;svg+=zone(X(19),X(40),hi,lo,palette.purple,.23)+label(X(20),Y(hi)-7,sp[1], "#c4b5fd")+label(X(33),Y(lo)+14,sp[2],"#c4b5fd");if(idn===5){svg+=line(X(27),Y(hi),X(27),Y(lo),palette.bear,"4 3")+label(X(28),Y(hi)-12,"FVG FLIPPED",palette.bear)}}
+   else if(idn===6){let hi=max-(max-min)*.30,lo=max-(max-min)*.66;svg+=zone(X(14),X(42),hi,lo,palette.blue,.18);[.62,.705,.79].forEach((r,j)=>{let yy=Y(max-(max-min)*r);svg+=line(X(12),yy,W-right,yy,j===1?palette.gold:palette.blue,"4 4")+label(X(13),yy-4,["0.62","0.705","0.79"][j],palette.blue)})}
+   else if(idn===7){svg+='<rect x="'+X(15)+'" y="'+top+'" width="'+(X(27)-X(15))+'" height="'+(bottom-top)+'" fill="#5799e8" opacity=".08"/><rect x="'+X(32)+'" y="'+top+'" width="'+(X(43)-X(32))+'" height="'+(bottom-top)+'" fill="#a78bfa" opacity=".08"/>'+label(X(16),top+13,"LONDON",palette.blue)+label(X(33),top+13,"NEW YORK",palette.purple)}
+   else if(idn===8){let hi=Y(max-(max-min)*.25),lo=Y(max-(max-min)*.72);svg+=zone(X(5),X(30),max-(max-min)*.25,max-(max-min)*.72,palette.gold,.08)+line(X(5),hi,X(31),hi,palette.gold,"4 3")+line(X(5),lo,X(31),lo,palette.gold,"4 3")+label(X(7),hi-7,"ASIA RANGE",palette.gold)+label(X(28),top+25,"JUDAS SWING",palette.bear)}
+   else{horizontal(15,sp[1]);horizontal(31,sp[2],palette.blue);svg+=label(X(32),top+15,sp[3],palette.bull)}
+  }else if(id.startsWith("smc-core")){
+   if(idn===2||idn===3||idn===4||idn===5||idn===7||idn===9){let bullish=[2,5,9].includes(idn),hi=max-(max-min)*.35,lo=hi-(max-min)*.15;svg+=zone(X(10),X(28),hi,lo,bullish?palette.bull:palette.bear,.20)+label(X(11),Y(hi)-7,sp[1],bullish?"#5eead4":"#fca5a5")+label(X(29),Y(lo)+14,sp[2]);if(idn===4){svg+=line(X(28),Y(hi),X(42),Y(hi),palette.gold,"4 3")+label(X(29),Y(hi)-8,"BREAKER RETEST")}}
+   else if(idn===6){let mid=(max+min)/2;svg+='<rect x="'+left+'" y="'+top+'" width="'+plotW+'" height="'+(Y(mid)-top)+'" fill="#ef5350" opacity=".07"/><rect x="'+left+'" y="'+Y(mid)+'" width="'+plotW+'" height="'+(bottom-Y(mid))+'" fill="#26a69a" opacity=".07"/>'+line(left,Y(mid),W-right,Y(mid),palette.gold,"5 4")+label(left+8,top+14,"PREMIUM",palette.bear)+label(left+8,Y(mid)+15,"DISCOUNT",palette.bull)+label(X(34),Y(mid)-6,"EQUILIBRIUM",palette.gold)}
+   else{horizontal(14,sp[1]);horizontal(29,sp[2],palette.blue);svg+=label(X(30),top+15,sp[3],palette.bull)}
+  }else{
+   if(idn===0||idn===2||idn===6||idn===7||idn===8||idn===9){let y=Y(bars[15].h);svg+=line(left,y,W-right,y,palette.gold,"5 4")+line(left,y+12,W-right,y+12,palette.gold,"5 4")+label(left+8,y-7,sp[1])+label(left+8,y+25,sp[2],palette.blue)}
+   else if(idn===1){let y=Y(bars[20].l);svg+=line(left,y,W-right,y,palette.bear,"5 4")+line(left,y-12,W-right,y-12,palette.bear,"5 4")+label(left+8,y+14,"EQUAL LOWS",palette.bear)+label(X(30),top+18,"SSL SWEEP",palette.gold)}
+   else if(idn===3||idn===4||idn===5){let y=Y(bars[18].h);svg+=line(left,y,W-right,y,palette.gold,"5 4")+label(left+8,y-7,sp[1])+label(X(29),top+18,sp[2],palette.bear)+label(X(34),top+34,sp[3],palette.bull)}
+  }
+  svg+='<text x="14" y="320" fill="#8290a3" font-size="9">Volume (illustrative)</text><text x="600" y="320" fill="#8290a3" font-size="9">ICTFOREX · EDUCATIONAL</text></svg>';
+  el.innerHTML='<div class="tv-top"><strong>'+sp[0]+'</strong><small>5m · Candlestick · Volume · Simulated data</small></div>'+svg+'<div class="tv-caption"><b>Chart study:</b> '+sp[1]+' → '+sp[2]+' → '+sp[3]+'. Labels and zones are educational illustrations, not live prices or trading signals.</div>';
  });
 })();
 </script>
