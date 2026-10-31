@@ -1,169 +1,35 @@
-<!DOCTYPE html>
-<html lang="hi" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Books Index | ICT Forex Academy</title>
-    <meta name="description" content="Explore professional trading and financial books notes index system in Hinglish.">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: { 500: '#22c55e', 600: '#16a34a' },
-                        secondary: { 500: '#a855f7', 600: '#9333ea' },
-                        accent: { 500: '#eab308' }
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+<!doctype html>
+<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trading Books Library | ICT Forex Academy</title><meta name="description" content="Five original Hinglish study-note guides for investing, trading, financial literacy and volatility.">
+<style>
+:root{color-scheme:dark;--bg:#080d18;--panel:#111b2d;--panel2:#162238;--line:#26364e;--muted:#9aa9bd;--text:#e8eef7;--green:#31d18a;--gold:#f5bd55;--blue:#73b7ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#14243b 0,transparent 42%),var(--bg);color:var(--text);font:16px/1.75 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}.wrap{width:min(960px,calc(100% - 32px));margin:auto}
+.top{border-bottom:1px solid var(--line);background:#0b1322eF;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}.brand{font-weight:900;letter-spacing:.06em;color:#fff}.brand span{color:var(--green)}.navlinks{display:flex;gap:18px;font-size:13px;font-weight:700}.navlinks a{color:#c8d4e4}
+.hero{padding:42px 0 26px}.eyebrow{color:var(--green);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:900}.hero h1{font-size:clamp(27px,5vw,44px);line-height:1.16;margin:10px 0}.author{color:var(--gold);font-weight:700;margin:0 0 16px}.intro{color:#c2cede;max-width:800px}
+.notice{border:1px solid #39506e;background:#102039;border-left:4px solid var(--blue);padding:14px 16px;border-radius:12px;color:#d5e3f5;font-size:13px;margin:22px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:24px 0}.card,.section{background:linear-gradient(145deg,var(--panel),#0f192a);border:1px solid var(--line);border-radius:16px;padding:20px}.card h2,.section h2{font-size:19px;margin:0 0 8px}.card p{margin:0;color:#b9c7d9;font-size:14px}
+.section{margin:16px 0}.section h2{color:#fff}.section p{color:#c5d1df}.section ul{padding-left:22px;color:#c5d1df}.section li{margin:8px 0}.tag{display:inline-block;color:var(--green);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;margin-bottom:8px}
+.callout{border:1px solid #55472c;background:#2a2417;border-radius:12px;padding:14px 16px;color:#f1dfb9;margin:18px 0;font-size:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;padding:10px 15px;border-radius:10px;background:#183b32;border:1px solid #28644e;color:#d9ffef;font-weight:800;font-size:13px}.btn.secondary{background:#17253b;border-color:#344b69;color:#dceaff}
+footer{border-top:1px solid var(--line);margin-top:42px;padding:22px 0;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:650px){.navlinks{gap:10px;font-size:11px}.grid{grid-template-columns:1fr}.card,.section{padding:16px}.hero{padding-top:30px}}
 
-    <!-- TOP ANNOUNCEMENT BAR -->
-    <div class="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-700 text-gray-950 text-[11px] font-black py-2 px-4 text-center tracking-wide shadow flex flex-wrap items-center justify-center gap-3 relative z-10">
-        <span>🔥 Trusted Brokers:</span>
-        <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" class="bg-gray-950 text-yellow-400 px-2.5 py-0.5 rounded-md hover:bg-black transition">Octa Account &rarr;</a>
-        <span>|</span>
-        <a href="https://affs.click/m2rkP" target="_blank" class="bg-gray-950 text-yellow-400 px-2.5 py-0.5 rounded-md hover:bg-black transition">XM Account &rarr;</a>
-    </div>
-
-    <!-- HEADER -->
-    <header class="bg-[#131b2e]/95 backdrop-blur border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-xl">
-        <a href="index.html" class="flex items-center gap-2.5 group cursor-pointer">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] flex items-center justify-center flex-shrink-0">
-                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
-                    <span class="text-xs md:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
-                </div>
-            </div>
-            <div>
-                <h1 class="text-xs md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 drop-shadow">
-                    ICT FOREX ACADEMY
-                </h1>
-                <p class="text-[9px] md:text-[10px] text-gray-400 font-medium tracking-wide">Institutional Smart Money</p>
-            </div>
-        </a>
-
-        <!-- Desktop Navigation -->
-        <nav class="hidden md:flex items-center gap-4 text-xs font-bold text-gray-300">
-            <a href="index.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-house"></i> Home</a>
-            <a href="free-learning.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-book-open text-[10px]"></i> Free Learning</a>
-            <a href="trading-books.html" class="text-green-400 hover:text-green-300 transition flex items-center gap-1"><i class="fa-solid fa-book text-[10px]"></i> Trading Books</a>
-            <a href="rules.html" class="hover:text-blue-400 transition flex items-center gap-1"><i class="fa-solid fa-shield text-[10px]"></i> Trading Rules</a>
-            <a href="about.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-circle-info text-[10px]"></i> About Us</a>
-            <a href="community.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-users text-[10px]"></i> Community</a>
-            <a href="vip-course.html" class="hover:text-yellow-400 transition flex items-center gap-1"><i class="fa-solid fa-crown text-[10px]"></i> VIP Academy</a>
-        </nav>
-
-        <div class="flex items-center gap-2">
-            <a href="profile.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-user"></i> Profile
-            </a>
-            <!-- Mobile Hamburger Menu Button -->
-            <button onclick="toggleMobileMenu()" class="md:hidden bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black p-2.5 rounded-xl transition shadow">
-                <i class="fa-solid fa-bars text-base"></i>
-            </button>
-        </div>
-    </header>
-
-    <!-- MOBILE DROPDOWN MENU -->
-    <div id="mobileMenu" class="hidden md:hidden bg-[#131b2e]/98 border-b border-gray-800 px-6 py-4 space-y-3 text-xs font-bold text-gray-300 relative z-40 shadow-2xl">
-        <a href="index.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-house mr-2"></i> Home</a>
-        <a href="free-learning.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-book-open mr-2"></i> Free Learning</a>
-        <a href="trading-books.html" class="block py-2 text-green-400"><i class="fa-solid fa-book mr-2"></i> Trading Books</a>
-        <a href="rules.html" class="block py-2 hover:text-blue-400"><i class="fa-solid fa-shield mr-2"></i> Trading Rules</a>
-        <a href="about.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-circle-info mr-2"></i> About Us</a>
-        <a href="community.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-users mr-2"></i> Community</a>
-        <a href="vip-course.html" class="block py-2 hover:text-yellow-400"><i class="fa-solid fa-crown mr-2"></i> VIP Academy</a>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-8 space-y-6 relative z-10">
-        
-        <div class="bg-[#131b2e] border border-gray-800 rounded-2xl p-6 md:p-8 shadow-xl">
-            <h2 class="text-xl md:text-2xl font-black text-white mb-3 flex items-center gap-2">
-                <i class="fa-solid fa-book text-green-400"></i> Trading Books Important Notes List
-            </h2>
-
-            <div class="bg-blue-950/40 border-l-4 border-blue-500 p-4 text-xs md:text-sm text-gray-300 rounded-r-xl mb-6 leading-relaxed">
-                <strong class="text-white">Mahatvapurna Soochna:</strong> Yeh sabhi books ki koi poori kitab (Full Book) nahi hain. In sabhi books mein se mukhya aur important notes nikal kar list banayi gayi hai, taki aap trading ke concepts ko aasani se samajh saken.
-            </div>
-
-            <p class="text-xs md:text-sm text-gray-400 mb-6">Niche di gayi list mein se aap jis bhi book ke notes padhna chahte hain, uske naam par click karein:</p>
-
-            <div class="space-y-4">
-                <!-- Book 1 -->
-                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
-                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Benjamin Graham</span>
-                    <h3 class="text-sm md:text-base font-black text-white mb-2">
-                        <a href="intelligent-investor.html" class="hover:text-green-400 transition">1. The Intelligent Investor: The Definitive Book on Value Investing &rarr;</a>
-                    </h3>
-                    <p class="text-xs text-gray-400">Mr. Market ka concept, Margin of Safety, value investing aur Defensive vs Enterprising investor ki strategies.</p>
-                </div>
-
-                <!-- Book 2 -->
-                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
-                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Benjamin Graham & David L. Dodd</span>
-                    <h3 class="text-sm md:text-base font-black text-white mb-2">
-                        <a href="security-analysis.html" class="hover:text-green-400 transition">2. Security Analysis: The Classic 1934 Edition &rarr;</a>
-                    </h3>
-                    <p class="text-xs text-gray-400">Warren Buffett ki ultimate favorite "Bible" of investing, Intrinsic value, financial statements analysis aur stock valuation ke mukhya niyam.</p>
-                </div>
-
-                <!-- Book 3 -->
-                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
-                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Robert Kiyosaki</span>
-                    <h3 class="text-sm md:text-base font-black text-white mb-2">
-                        <a href="rich-dad-poor-dad.html" class="hover:text-green-400 transition">3. Rich Dad Poor Dad: What the Rich Teach Their Kids About Money &rarr;</a>
-                    </h3>
-                    <p class="text-xs text-gray-400">Assets vs Liabilities ka farq, financial education ka mahatva aur paise ko apne liye kaam karane ke mukhya niyam.</p>
-                </div>
-
-                <!-- Book 4 -->
-                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
-                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Colin Bennett</span>
-                    <h3 class="text-sm md:text-base font-black text-white mb-2">
-                        <a href="trading-volatility.html" class="hover:text-green-400 transition">4. Trading Volatility: Correlation, Term Structure and Skew &rarr;</a>
-                    </h3>
-                    <p class="text-xs text-gray-400">Options, volatility, smile, skew aur term structure ke mukhya notes aur trading strategies.</p>
-                </div>
-
-                <!-- Book 5 -->
-                <div class="bg-[#1a233a] border border-gray-800 p-4 md:p-5 rounded-xl hover:border-green-500/50 transition">
-                    <span class="text-[11px] font-bold text-amber-400 block mb-1">Author: Tom Hougaard (Trader Tom)</span>
-                    <h3 class="text-sm md:text-base font-black text-white mb-2">
-                        <a href="trading-manual-tom.html" class="hover:text-green-400 transition">5. The First Trading Manual: Foundation Course and Strategies &rarr;</a>
-                    </h3>
-                    <p class="text-xs text-gray-400">24-hour trading cycle, Price action principles, Candlestick patterns, 4-bar fractal, aur trading psychology ke mahatvapurna notes.</p>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#131b2e]/90 backdrop-blur border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2 relative z-10">
-        <p>ICT Forex Academy © 2026. All rights reserved.</p>
-        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
-    </footer>
-
-    <!-- SCRIPT FOR MOBILE MENU -->
-    <script>
-        function toggleMobileMenu() {
-            var menu = document.getElementById("mobileMenu");
-            if (menu.classList.contains("hidden")) {
-                menu.classList.remove("hidden");
-            } else {
-                menu.classList.add("hidden");
-            }
-        }
-    </script>
-
-</body>
-</html>
+.library-hero{padding:46px 0 22px}.count{display:inline-block;padding:6px 11px;border-radius:99px;background:#15392e;border:1px solid #28664d;color:#a8f3d0;font-size:12px;font-weight:900}
+.book{display:flex;gap:18px;align-items:flex-start}.cover{width:76px;min-width:76px;height:104px;border-radius:9px;background:linear-gradient(145deg,#1d473c,#101a2b 75%);border:1px solid #3a5d55;display:flex;align-items:center;justify-content:center;color:#b4f4d8;font-weight:900;font-size:22px;box-shadow:0 8px 20px #0005}.book h2{font-size:17px;margin:0 0 5px}.book .by{color:var(--gold);font-size:12px;font-weight:800;margin:0 0 8px}.book p{margin:0;color:#b9c7d9;font-size:13px}.read{display:inline-flex;margin-top:12px;background:#173c32;border:1px solid #2b6c52;border-radius:9px;padding:8px 12px;color:#d7ffed;font-size:12px;font-weight:900}
+@media(max-width:650px){.book{gap:12px}.cover{width:60px;min-width:60px;height:84px;font-size:18px}}
+</style></head><body>
+<div class="top"><div class="wrap nav"><a class="brand" href="index.html">ICT <span>FOREX</span> ACADEMY</a><nav class="navlinks"><a href="index.html">Home</a><a href="trading-books.html">Books Library</a></nav></div></div>
+<main class="wrap"><header class="library-hero"><div class="eyebrow">Learn · Read · Practice</div><h1>Trading Books Library</h1><p class="intro">Selected investing, trading aur financial-literacy books ke concise Hinglish study notes. Har guide mein key ideas, practical context aur risk reminders diye gaye hain.</p><p class="count">5 BOOK STUDY GUIDES</p></header>
+<div class="notice"><strong>Reading note:</strong> Yeh original educational notes hain, complete books ya official publisher summaries nahi. Original books alag se kharidein/borrow karein. Notes ko financial advice na samjhein.</div>
+<div class="grid">
+<article class="card book"><div class="cover">TI</div><div><h2>The Intelligent Investor</h2><p class="by">Benjamin Graham</p><p>Value investing, Mr. Market, defensive investing aur margin of safety.</p><a class="read" href="intelligent-investor.html">Read study notes →</a></div></article>
+<article class="card book"><div class="cover">SA</div><div><h2>Security Analysis: The Classic 1934 Edition</h2><p class="by">Benjamin Graham & David L. Dodd</p><p>Financial statements, earnings power, debt claims aur valuation discipline.</p><a class="read" href="security-analysis.html">Read study notes →</a></div></article>
+<article class="card book"><div class="cover">RD</div><div><h2>Rich Dad Poor Dad</h2><p class="by">Robert T. Kiyosaki</p><p>Financial education, cash flow, assets, liabilities aur money habits.</p><a class="read" href="rich-dad-poor-dad.html">Read study notes →</a></div></article>
+<article class="card book"><div class="cover">TV</div><div><h2>Trading Volatility: Correlation, Term Structure and Skew</h2><p class="by">Colin Bennett</p><p>Options, implied volatility, Greeks, skew, term structure aur correlation.</p><a class="read" href="trading-volatility.html">Read study notes →</a></div></article>
+<article class="card book"><div class="cover">TM</div><div><h2>The First Trading Manual: Foundation Course and Strategies</h2><p class="by">Tom Hougaard</p><p>Market structure, price action, trade management aur psychology.</p><a class="read" href="trading-manual-tom.html">Read study notes →</a></div></article>
+</div>
+<div class="callout">Educational use only. Trading and investing involve risk, including loss of capital. Options and leveraged products can carry substantial risk.</div>
+<div class="actions"><a class="btn" href="index.html">← Back to Home</a></div></main>
+<footer><div class="wrap">© 2026 ICT Forex Academy · <a href="privacy-policy.html">Privacy Policy & Terms</a></div></footer>
+</body></html>
