@@ -16,7 +16,7 @@ onAuthStateChanged(auth, async (user) => {
                     };
                 }
 
-                // By default sab kuch locked rakhein ge jab tak database me approved na ho
+                // By default, keep all content locked until approval is recorded in the database.
                 document.getElementById('unlocked-view').classList.add('hidden');
                 document.getElementById('vip-content-section').classList.add('opacity-50', 'pointer-events-none');
 
@@ -28,12 +28,12 @@ onAuthStateChanged(auth, async (user) => {
                     if (userSnap.exists()) {
                         const data = userSnap.data();
                         if (data.status === 'approved') {
-                            // Sirf aur sirf tabhi khulega jab status 'approved' hoga
+                            // Unlock only when the status is 'approved'.
                             document.getElementById('locked-view').classList.add('hidden');
                             document.getElementById('unlocked-view').classList.remove('hidden');
                             document.getElementById('vip-content-section').classList.remove('opacity-50', 'pointer-events-none');
                         } else if (data.status === 'pending') {
-                            // Agar pending hai toh form ki jagah pending message dikhayega
+                            // If the request is pending, show a pending-status message instead of the form.
                             document.getElementById('locked-view').innerHTML = `
                                 <div class="text-center space-y-3 py-4">
                                     <div class="text-yellow-400 font-black text-sm"><i class="fa-solid fa-clock-rotate-left"></i> Verification Pending</div>
