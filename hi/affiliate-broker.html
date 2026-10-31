@@ -1,0 +1,49 @@
+onAuthStateChanged(auth, async (user) => {
+            const authLink = document.getElementById('auth-nav-link');
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                currentUser = user;
+                const userName = user.displayName || "User";
+                
+                if (authLink) {
+                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
+                    authLink.href = "#";
+                    authLink.onclick = async (e) => {
+                        e.preventDefault();
+                        await signOut(auth);
+                        window.location.href = "login.html";
+                    };
+                }
+
+                // By default sab kuch locked rakhein ge jab tak database me approved na ho
+                document.getElementById('unlocked-view').classList.add('hidden');
+                document.getElementById('vip-content-section').classList.add('opacity-50', 'pointer-events-none');
+
+                // Strict Firestore Check
+                try {
+                    const userRef = doc(db, "vipRequests", user.uid);
+                    const userSnap = await getDoc(userRef);
+                    
+                    if (userSnap.exists()) {
+                        const data = userSnap.data();
+                        if (data.status === 'approved') {
+                            // Sirf aur sirf tabhi khulega jab status 'approved' hoga
+                            document.getElementById('locked-view').classList.add('hidden');
+                            document.getElementById('unlocked-view').classList.remove('hidden');
+                            document.getElementById('vip-content-section').classList.remove('opacity-50', 'pointer-events-none');
+                        } else if (data.status === 'pending') {
+                            // Agar pending hai toh form ki jagah pending message dikhayega
+                            document.getElementById('locked-view').innerHTML = `
+                                <div class="text-center space-y-3 py-4">
+                                    <div class="text-yellow-400 font-black text-sm"><i class="fa-solid fa-clock-rotate-left"></i> Verification Pending</div>
+                                    <p class="text-xs text-gray-300">Aapki Trading ID (<span class="text-green-400 font-bold">${data.tradingId}</span>) admin review me hai. Approve hote hi access mil jayega.</p>
+                                </div>
+                            `;
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error fetching status:", err);
+                }
+            }
+        });
