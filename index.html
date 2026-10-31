@@ -15,6 +15,12 @@
 
 
 <link rel="canonical" href="https://ictforex.in/">
+<link rel="alternate" hreflang="en" href="https://ictforex.in/">
+<link rel="alternate" hreflang="hi" href="https://ictforex.in/hi/">
+<link rel="alternate" hreflang="es" href="https://ictforex.in/es/">
+<link rel="alternate" hreflang="ar" href="https://ictforex.in/ar/">
+<link rel="alternate" hreflang="fr" href="https://ictforex.in/fr/">
+<link rel="alternate" hreflang="x-default" href="https://ictforex.in/">
 
 <!-- ===== OPEN GRAPH (WhatsApp, Facebook preview) ===== -->
 <meta property="og:type" content="website">
@@ -397,6 +403,13 @@ main,.header,.topbar,footer,.mobile-sticky,.mobile-nav{position:relative;z-index
 @media(max-width:768px){.motion-ready main section.scroll-reveal{transform:translate3d(0,26px,0) scale(.995);filter:none}.motion-ready main section.scroll-reveal[data-scene-side="left"],.motion-ready main section.scroll-reveal[data-scene-side="right"]{transform:translate3d(0,26px,0) scale(.995)}.motion-ready main section.scroll-reveal.is-visible,.motion-ready main section.scroll-reveal.is-visible[data-scene-side="left"],.motion-ready main section.scroll-reveal.is-visible[data-scene-side="right"]{transform:none}}
 @media(prefers-reduced-motion:reduce){body::before{transition:none}.motion-ready main section.scroll-reveal,.motion-ready .course-card.scroll-reveal,.motion-ready .learn-card.scroll-reveal,.motion-ready .why-card.scroll-reveal,.motion-ready .broker-card.scroll-reveal,.motion-ready .faq-item.scroll-reveal{opacity:1;filter:none;transform:none;transition:none}}
 
+
+/* GLOBAL LANGUAGE SELECTOR */
+.language-switcher{position:relative;display:inline-flex;align-items:center;margin-left:auto;margin-right:14px;z-index:100}
+.language-switcher select{appearance:none;background:#111827;color:#f8fafc;border:1px solid rgba(148,163,184,.35);border-radius:10px;padding:10px 34px 10px 12px;font:700 12px inherit;cursor:pointer;min-width:132px}
+.language-switcher:after{content:'⌄';position:absolute;right:12px;color:#cbd5e1;pointer-events:none}
+.language-switcher select:focus{outline:2px solid #60a5fa;outline-offset:2px}
+@media(max-width:768px){.header .language-switcher{margin-left:auto;margin-right:10px}.language-switcher select{min-width:108px;padding:9px 28px 9px 9px;font-size:11px}}
 </style>
 </head>
 <body>
@@ -424,6 +437,7 @@ main,.header,.topbar,footer,.mobile-sticky,.mobile-nav{position:relative;z-index
       <div class="brand-sub">Global Forex Education Platform</div>
     </div>
   </a>
+  <div class="language-switcher" aria-label="Select website language"><select id="siteLanguage" aria-label="Select language"><option value="en">🇬🇧 English</option><option value="hi">🇮🇳 हिंदी</option><option value="es">🇪🇸 Español</option><option value="ar">🇸🇦 العربية</option><option value="fr">🇫🇷 Français</option></select></div>
   <nav class="nav-desktop" aria-label="Main navigation">
     <a href="/" class="active">Home</a>
     <a href="free-learning.html">Free Course</a>
@@ -915,5 +929,22 @@ onAuthStateChanged(auth,u=>{
 });
 </script>
 
+<script>
+/* Language routing: English is the default; remember visitor choice. */
+(function(){
+ const selector=document.getElementById('siteLanguage');
+ if(!selector)return;
+ const paths={en:'/',hi:'/hi/',es:'/es/',ar:'/ar/',fr:'/fr/'};
+ const current=location.pathname.split('/').filter(Boolean)[0];
+ const known=['hi','es','ar','fr'];
+ const active=known.includes(current)?current:'en';
+ selector.value=active;
+ selector.addEventListener('change',function(){
+   const lang=this.value;
+   try{localStorage.setItem('ictforex-language',lang)}catch(e){}
+   location.href=paths[lang]||'/';
+ });
+})();
+</script>
 </body>
 </html>
