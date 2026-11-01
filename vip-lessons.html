@@ -89,12 +89,46 @@ nav a{display:block;padding:7px;color:#a9b8cc;font-size:12px;border-radius:8px}n
 <section id="checklist" class="card"><div class="kicker">BEFORE EVERY TRADE</div><h2>Professional pre-trade checklist</h2><div class="grid sm:grid-cols-2 gap-3 mt-4 text-sm text-slate-300">
 <label><input type="checkbox"> Higher-timeframe bias and invalidation are clear</label><label><input type="checkbox"> PDH/PDL and liquidity levels are marked</label><label><input type="checkbox"> Price is at a meaningful point of interest</label><label><input type="checkbox"> The sweep / displacement / MSS criteria are met</label><label><input type="checkbox"> The stop is beyond logical invalidation</label><label><input type="checkbox"> Position size is calculated from the risk percentage</label><label><input type="checkbox"> The target is placed at a logical liquidity level</label><label><input type="checkbox"> News, spread, and daily loss limits are checked</label><label><input type="checkbox"> A screenshot and journal note have been saved</label></div><p class="mt-4">If the checklist is incomplete, skipping the trade is also a disciplined decision.</p></section>
 <section class="card"><div class="kicker">STUDY ROUTINE</div><h2>A Daily 30–45 Minute Practice Plan</h2><p>Study one lesson each day, mark the concept on two or three historical charts, and save a screenshot. Backtest a single entry model across 30–50 examples. Include spreads, commissions, and slippage, then forward-test the model on a demo account. Review results using R-multiples, drawdown, and rule adherence; do not judge a strategy by profit screenshots alone.</p></section>
+<section id="chart-analysis-lessons" class="space-y-6 mt-10">
+ <div class="kicker">VISUAL ICT / SMC TRAINING</div>
+ <h2>Chart Analysis Lessons — Learn by Seeing</h2>
+ <p>These annotated charts are educational illustrations, not live prices or trade signals. Follow the sequence to understand how a trader can build a plan. Always confirm the same conditions on the live chart before considering a trade.</p>
+ <article class="card space-y-3">
+  <h3>Lesson 1 — Gold (XAUUSD): Liquidity Sweep to Bearish Setup</h3>
+  <img src="assets/images/vip-gold-ict-analysis.svg" alt="Illustrative Gold chart showing liquidity sweep, order block, fair value gap, entry area, invalidation and target" style="width:100%;height:auto;border-radius:12px;border:1px solid #334155" loading="lazy">
+  <ol class="list-decimal pl-5 text-sm text-slate-300 space-y-2">
+   <li><b>Mark liquidity:</b> identify obvious swing highs/lows and equal highs/lows where stop orders may cluster.</li>
+   <li><b>Wait for the sweep:</b> price trades beyond a visible liquidity level, then watch whether it rejects and returns.</li>
+   <li><b>Seek confirmation:</b> look for displacement and a market-structure shift; a wick alone is not confirmation.</li>
+   <li><b>Refine the area:</b> study the last opposing candle (Order Block) and any Fair Value Gap left by displacement.</li>
+   <li><b>Plan risk:</b> define invalidation beyond the sweep/structure and choose a realistic target at opposing liquidity. Position size comes from the stop distance and risk limit.</li>
+  </ol>
+  <p><b>Practice task:</b> find three historical XAUUSD examples and mark the sweep, confirmation, OB/FVG, invalidation and target. Record examples that fail too.</p>
+ </article>
+ <article class="card space-y-3">
+  <h3>Lesson 2 — NAS100: Liquidity Sweep to Bullish Setup</h3>
+  <img src="assets/images/vip-nas100-ict-analysis.svg" alt="Illustrative NAS100 chart showing liquidity sweep, order block, fair value gap, entry area, invalidation and target" style="width:100%;height:auto;border-radius:12px;border:1px solid #334155" loading="lazy">
+  <ol class="list-decimal pl-5 text-sm text-slate-300 space-y-2">
+   <li><b>Set context:</b> use a higher timeframe to identify direction, range and important swing points.</li>
+   <li><b>Mark sell-side liquidity:</b> note equal lows and clear swing lows below price.</li>
+   <li><b>Wait for a sweep and reclaim:</b> price takes liquidity and returns above the level; wait for bullish displacement / structure shift.</li>
+   <li><b>Identify the retracement zone:</b> mark a valid bullish Order Block or FVG created by displacement.</li>
+   <li><b>Define the trade:</b> entry is only considered after confirmation; stop goes beyond the invalidation point and target is chosen from a logical liquidity objective.</li>
+  </ol>
+  <p><b>Practice task:</b> repeat the process on 5-minute NAS100 charts, then compare with 15-minute and 1-hour context. Do not assume every sweep reverses.</p>
+ </article>
+ <div class="card">
+  <h3>Important: how to use the live charts below</h3>
+  <p>Use the Gold and NAS100 TradingView charts after studying these examples. Change timeframe, locate the same concepts, and take screenshots for your journal. The annotated illustrations above use simulated candles and are not connected to live market data. TradingView data availability and delay depend on its provider.</p>
+ </div>
+</section>
+
 <section id="live-tradingview" class="space-y-4 mt-8">
  <div class="kicker">LIVE MARKET CHARTS · POWERED BY TRADINGVIEW</div>
- <h2>21 Real TradingView Charts — Gold, Forex & NAS100</h2>
+ <h2>Two Live TradingView Charts — Gold & NAS100</h2>
  <p>Interactive TradingView charts with real market-feed data where available. Change symbols, timeframes, zoom, and use the chart tools provided by TradingView. Data availability and delay depend on the market-data provider; these charts are for analysis and education, not trade execution.</p>
  <div class="flex flex-wrap gap-2 text-xs">
-  <span class="tv-tag">21 interactive charts</span><span class="tv-tag">Candlesticks</span><span class="tv-tag">Dark theme</span><span class="tv-tag">Lazy-loaded for speed</span>
+  <span class="tv-tag">2 interactive charts</span><span class="tv-tag">Candlesticks</span><span class="tv-tag">Dark theme</span><span class="tv-tag">Lazy-loaded for speed</span>
  </div>
  <div class="tv-live-grid">
   <article class="tv-live-card" data-symbol="OANDA:XAUUSD" data-interval="5"><div class="tv-live-head"><strong>Gold · XAUUSD</strong><span>5 minute</span></div><div class="tv-live-mount"><div class="tv-live-placeholder">Loading TradingView chart when visible…</div></div></article>
