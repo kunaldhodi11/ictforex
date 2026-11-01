@@ -67,7 +67,8 @@
                 <div id="locked-view">
                     <p class="text-xs text-yellow-400 font-bold mb-3">VIP access application: review the broker information and local legal requirements before proceeding.</p>
                     
-                    <div class="mb-4 rounded-xl border border-red-500/40 bg-red-950/40 p-3 text-left"><p class="text-[11px] font-bold text-red-300">Important notice for people in India</p><p class="mt-1 text-[10px] leading-relaxed text-gray-300">The RBI Alert List published on 22 October 2024 names OctaFX and XM. The RBI says the list is not exhaustive and absence from it does not prove authorisation. This is not a live status check. Do not open or fund an account for forex/CFD transactions from India unless you independently confirm that the specific entity, platform and transaction are permitted under current Indian law. <a class="text-yellow-300 underline" href="https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4235" target="_blank" rel="noopener noreferrer">RBI Alert List</a> · <a class="text-yellow-300 underline" href="https://www.rbi.org.in/Scripts/FAQView.aspx?Id=146" target="_blank" rel="noopener noreferrer">RBI Forex FAQ</a>.</p></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+                    <div class="mb-4 rounded-xl border border-blue-500/40 bg-blue-950/30 p-3 text-left"><p class="text-[11px] font-bold text-blue-200">Regulatory and local-law notice</p><p class="mt-1 text-[10px] leading-relaxed text-gray-300">Broker availability, financial-product rules and regulatory protections differ by country. Before registering, depositing or trading, independently verify that the specific provider, legal entity and product are authorised and permitted where you live. This website is educational and does not provide legal or financial advice.</p><label for="visitor-country" class="mt-3 block text-[10px] font-bold text-blue-100">Select your country to view relevant information</label><select id="visitor-country" class="mt-2 w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-xs text-white"><option value="other" selected>Outside India / Other country</option><option value="IN">India</option></select></div>
+                    <div id="india-regulatory-notice" hidden class="mb-4 rounded-xl border border-red-500/40 bg-red-950/40 p-3 text-left"><p class="text-[11px] font-bold text-red-300">Important notice for people in India</p><p class="mt-1 text-[10px] leading-relaxed text-gray-300">The RBI Alert List published on 22 October 2024 names OctaFX and XM. The RBI says the list is not exhaustive and absence from it does not prove authorisation. This is not a live status check. Do not open or fund an account for forex/CFD transactions from India unless you independently confirm that the specific entity, platform and transaction are permitted under current Indian law. <a class="text-yellow-300 underline" href="https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4235" target="_blank" rel="noopener noreferrer">RBI Alert List</a> · <a class="text-yellow-300 underline" href="https://www.rbi.org.in/Scripts/FAQView.aspx?Id=146" target="_blank" rel="noopener noreferrer">RBI Forex FAQ</a>.</p></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
                         <!-- Octa (Live Link) -->
                         <div class="bg-gray-900 border border-gray-800 p-3.5 rounded-xl flex flex-col justify-between space-y-2">
                             <div>
@@ -249,5 +250,15 @@
                 statusMessage.textContent = 'VIP status could not be loaded. Please refresh the page.';
             }
         });   </script>
+<script>
+(function () {
+  const country = document.getElementById('visitor-country');
+  const indiaNotice = document.getElementById('india-regulatory-notice');
+  if (!country || !indiaNotice) return;
+  country.addEventListener('change', function () {
+    indiaNotice.hidden = country.value !== 'IN';
+  });
+})();
+</script>
 </body>
 </html>
