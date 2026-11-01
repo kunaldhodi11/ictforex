@@ -117,7 +117,7 @@
             <div>
               <p class="text-[10px] font-black tracking-[.2em] text-green-400">ICTFOREX PRIVATE LEARNING LIBRARY</p>
               <h3 class="text-xl md:text-2xl font-black text-white mt-2">Complete ICT, SMC & Liquidity Masterclass</h3>
-              <p class="text-xs text-gray-400 mt-2">50 detailed lessons • 7 chapters • 6 chart diagrams • Hindi-language explanations</p>
+              <p class="text-xs text-gray-400 mt-2">50 detailed lessons • 7 chapters • 6 chart diagrams • English-language explanations</p>
             </div>
             <span class="text-yellow-400 text-xs font-black border border-yellow-500/30 rounded-full px-3 py-2">VIP COURSE</span>
           </div>
@@ -180,18 +180,18 @@
             if (application.exists()) {
                 const applicationStatus = application.data().status;
                 if (applicationStatus === 'rejected') {
-                    statusMessage.textContent = 'Aapki application reject hui hai. Details check karke dobara submit kar sakte hain.';
+                    statusMessage.textContent = 'Your application was rejected. Review the details and submit it again if needed.';
                     submitButton.disabled = false;
                     submitButton.textContent = 'Resubmit for Approval';
                     submitButton.classList.remove('opacity-60', 'cursor-not-allowed');
                 } else {
-                    statusMessage.textContent = 'Application Pending hai. Admin approval ke baad VIP course unlock hoga.';
+                    statusMessage.textContent = 'Your application is pending. The VIP course will unlock after admin approval.';
                     submitButton.disabled = true;
                     submitButton.textContent = 'Application Submitted';
                     submitButton.classList.add('opacity-60', 'cursor-not-allowed');
                 }
             } else {
-                statusMessage.textContent = 'Approval milne tak VIP course locked rahega.';
+                statusMessage.textContent = 'The VIP course will remain locked until your application is approved.';
                 submitButton.disabled = false;
             }
         }
@@ -201,7 +201,7 @@
             const tradingId = document.getElementById('trading-id-input').value.trim();
             if (!user) { window.location.href = 'login.html'; return; }
             if (tradingId.length < 3 || tradingId.length > 100) {
-                statusMessage.textContent = 'Valid Trading ID enter karein (3–100 characters).'; return;
+                statusMessage.textContent = 'Enter a valid Trading ID (3–100 characters).'; return;
             }
             submitButton.disabled = true;
             submitButton.textContent = 'Submitting...';
@@ -218,12 +218,12 @@
                 }
                 document.getElementById('trading-id-input').disabled = true;
                 document.getElementById('broker-select').disabled = true;
-                statusMessage.textContent = 'Application submit ho gayi hai. Admin approval ka wait karein; course abhi locked rahega.';
+                statusMessage.textContent = 'Your application has been submitted. Please wait for admin approval; the course will remain locked for now.';
                 submitButton.textContent = 'Application Submitted';
                 submitButton.classList.add('opacity-60', 'cursor-not-allowed');
             } catch (error) {
                 console.error('VIP application submission failed:', error);
-                statusMessage.textContent = 'Submit nahi hua. Firebase Rules publish hone ke baad dobara try karein.';
+                statusMessage.textContent = 'Submission failed. Please try again after publishing the Firebase Rules.';
                 submitButton.disabled = false;
                 submitButton.textContent = 'Submit for Admin Approval';
             }
@@ -246,7 +246,7 @@
             try { await refreshVipStatus(user); }
             catch (error) {
                 console.error('Could not load VIP status:', error);
-                statusMessage.textContent = 'VIP status load nahi hua. Page refresh karein.';
+                statusMessage.textContent = 'VIP status could not be loaded. Please refresh the page.';
             }
         });   </script>
 </body>
