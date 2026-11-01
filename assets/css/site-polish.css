@@ -1,0 +1,21 @@
+/* ICT Forex Academy — shared smooth interaction layer */
+:root{scroll-behavior:smooth;scroll-padding-top:88px}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+a,button,input[type="button"],input[type="submit"],select,textarea{ -webkit-tap-highlight-color:transparent }
+a,button,input[type="button"],input[type="submit"]{
+  transition:transform .2s cubic-bezier(.2,.75,.25,1),box-shadow .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease,opacity .2s ease,filter .2s ease
+}
+button:active:not(:disabled),input[type="button"]:active:not(:disabled),input[type="submit"]:active:not(:disabled){transform:translateY(1px) scale(.985)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid #60a5fa;outline-offset:3px
+}
+button:disabled,input:disabled{cursor:not-allowed;opacity:.65}
+@media(hover:hover) and (pointer:fine){
+  button:hover:not(:disabled),input[type="button"]:hover:not(:disabled),input[type="submit"]:hover:not(:disabled){filter:brightness(1.05)}
+  a:hover{opacity:.92}
+}
+@media(prefers-reduced-motion:reduce){
+  :root,html{scroll-behavior:auto!important}
+  a,button,input,select,textarea{transition:none!important}
+  button:active:not(:disabled),input[type="button"]:active:not(:disabled),input[type="submit"]:active:not(:disabled){transform:none}
+}
