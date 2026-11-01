@@ -47,3 +47,36 @@ button:disabled,input:disabled{cursor:not-allowed;opacity:.65}
     :where(.card,.book,.stat,.side-card,.quick-link,.guide,.callout,.notice):hover{transform:none;box-shadow:none}
   }
 }
+
+
+/* Refinement: smoother navigation and more consistent micro-interactions */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:ict-page-out .16s ease-in both}
+::view-transition-new(root){animation:ict-page-in .24s ease-out both}
+@keyframes ict-page-out{to{opacity:.94}}
+@keyframes ict-page-in{from{opacity:.0}to{opacity:1}}
+:where(h1,h2,h3,[id]){scroll-margin-top:6.5rem}
+:where(.navlinks a,.nav a){
+  position:relative;
+  text-decoration:none;
+  transition:color .2s ease,opacity .2s ease,background-color .2s ease,transform .2s ease;
+}
+@media(hover:hover) and (pointer:fine){
+  :where(.navlinks a,.nav a):hover{transform:translateY(-1px)}
+}
+:where(.primary-btn,.btn,.quick-link){
+  transition:transform .2s cubic-bezier(.2,.75,.25,1),box-shadow .2s ease,filter .2s ease,background-color .2s ease,border-color .2s ease;
+}
+:where(.primary-btn,.btn):active:not(:disabled){transform:translateY(1px) scale(.985)}
+:where(input,select,textarea){
+  transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease;
+}
+:where(input,select,textarea):focus-visible{
+  box-shadow:0 0 0 3px rgba(96,165,250,.14);
+}
+:where(img,video){height:auto}
+@media(prefers-reduced-motion:reduce){
+  @view-transition{navigation:none}
+  ::view-transition-old(root),::view-transition-new(root){animation:none!important}
+  :where(.navlinks a,.nav a,.primary-btn,.btn,.quick-link,input,select,textarea){transition:none!important}
+}
