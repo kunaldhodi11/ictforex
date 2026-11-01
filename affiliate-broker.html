@@ -1,49 +1,28 @@
-onAuthStateChanged(auth, async (user) => {
-            const authLink = document.getElementById('auth-nav-link');
-            if (!user) {
-                window.location.href = "login.html";
-            } else {
-                currentUser = user;
-                const userName = user.displayName || "User";
-                
-                if (authLink) {
-                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
-                    authLink.href = "#";
-                    authLink.onclick = async (e) => {
-                        e.preventDefault();
-                        await signOut(auth);
-                        window.location.href = "login.html";
-                    };
-                }
-
-                // By default, keep all content locked until approval is recorded in the database.
-                document.getElementById('unlocked-view').classList.add('hidden');
-                document.getElementById('vip-content-section').classList.add('opacity-50', 'pointer-events-none');
-
-                // Strict Firestore Check
-                try {
-                    const userRef = doc(db, "vipRequests", user.uid);
-                    const userSnap = await getDoc(userRef);
-                    
-                    if (userSnap.exists()) {
-                        const data = userSnap.data();
-                        if (data.status === 'approved') {
-                            // Unlock only when the status is 'approved'.
-                            document.getElementById('locked-view').classList.add('hidden');
-                            document.getElementById('unlocked-view').classList.remove('hidden');
-                            document.getElementById('vip-content-section').classList.remove('opacity-50', 'pointer-events-none');
-                        } else if (data.status === 'pending') {
-                            // If the request is pending, show a pending-status message instead of the form.
-                            document.getElementById('locked-view').innerHTML = `
-                                <div class="text-center space-y-3 py-4">
-                                    <div class="text-yellow-400 font-black text-sm"><i class="fa-solid fa-clock-rotate-left"></i> Verification Pending</div>
-                                    <p class="text-xs text-gray-300">Your Trading ID (<span class="text-green-400 font-bold">${data.tradingId}</span>) is under administrator review. Access will be granted after approval.</p>
-                                </div>
-                            `;
-                        }
-                    }
-                } catch (err) {
-                    console.error("Error fetching status:", err);
-                }
-            }
-        });
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07111f">
+<title>Partner Brokers | ICT Forex Academy</title>
+<meta name="description" content="Explore ICT Forex Academy partner brokers and learn how to request VIP course access.">
+<link rel="canonical" href="https://ictforex.in/affiliate-broker.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{color-scheme:dark;--bg:#07111f;--line:#26394d;--muted:#a6b6c8;--gold:#f6b94b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#173752,transparent 35%),var(--bg);color:#f5f8fc;font-family:'DM Sans',sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1060px,calc(100% - 32px));margin:auto}header{height:70px;border-bottom:1px solid var(--line);background:#07111fee;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}.nav{height:100%;display:flex;align-items:center;justify-content:space-between}.brand{font:700 16px 'Space Grotesk';letter-spacing:.04em}.brand i{color:var(--gold);margin-right:9px}.links{display:flex;gap:18px;font-size:12px;font-weight:700;color:#c5d1df}.links a:hover{color:var(--gold)}main{padding:52px 0 70px}.hero{text-align:center;max-width:780px;margin:0 auto 40px}.tag{display:inline-block;color:var(--gold);border:1px solid #f6b94b55;background:#f6b94b12;padding:7px 13px;border-radius:99px;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.hero h1{font:700 clamp(34px,6vw,56px)/1.08 'Space Grotesk';margin:20px 0 14px;letter-spacing:-.04em}.hero h1 span{color:var(--gold)}.hero p{font-size:14px;line-height:1.8;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.card{padding:25px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#122940,#0b1929);box-shadow:0 18px 45px #0003;transition:.25s}.card:hover{transform:translateY(-4px);border-color:#f6b94b88}.logo{width:50px;height:50px;display:grid;place-items:center;border-radius:14px;background:#f6b94b18;color:var(--gold);font:700 15px 'Space Grotesk'}.card h2{font:700 24px 'Space Grotesk';margin:17px 0 7px}.card p{font-size:12px;line-height:1.8;color:var(--muted)}.btn{display:inline-flex;gap:8px;align-items:center;padding:11px 15px;border-radius:10px;background:linear-gradient(100deg,#ffda8a,#f0ad36);color:#101a27;font-size:11px;font-weight:800;margin:12px 8px 0 0}.btn.alt{background:#ffffff08;color:#dce8f5;border:1px solid var(--line)}.notice,.panel{border:1px solid var(--line);background:#102238;border-radius:18px;padding:20px;margin-top:20px}.notice{border-color:#42b8ff44;background:#42b8ff0c}.notice p,.panel p{font-size:11px;line-height:1.8;color:#b8c7d7;margin:5px 0}.notice strong{color:#eaf4ff}.panel{margin-top:34px;padding:26px}.panel h2{font:700 22px 'Space Grotesk';margin:0 0 8px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.step{padding:16px;border:1px solid var(--line);border-radius:13px;background:#071522;font-size:11px;line-height:1.7;color:#c5d1df}.step b{display:block;color:var(--gold);font:700 19px 'Space Grotesk';margin-bottom:7px}.risk{border-color:#f6b94b55}.risk h3{font-size:12px;color:var(--gold);margin:0}.footer{border-top:1px solid var(--line);padding:23px 0;text-align:center;color:#91a3b9;font-size:10px}.footer a{color:var(--gold)}@media(max-width:680px){.grid,.steps{grid-template-columns:1fr}.links{gap:10px}.links a:nth-child(2),.links a:nth-child(3){display:none}main{padding-top:36px}.card{padding:21px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="brand" href="index.html"><i class="fa-solid fa-chart-line"></i> ICT FOREX ACADEMY</a><nav class="links"><a href="index.html">Home</a><a href="vip-course.html">VIP Course</a><a href="trading-books.html">Learning</a><a href="login.html">Login</a></nav></div></header>
+<main class="wrap">
+<section class="hero"><span class="tag"><i class="fa-solid fa-handshake"></i> Partner broker directory</span><h1>Trade informed.<br><span>Learn with confidence.</span></h1><p>Explore the partner brokers currently listed by ICT Forex Academy. Review each provider's terms, regulatory information, fees and local availability before making your own decision.</p></section>
+<section class="grid">
+<article class="card"><div class="logo">OCTA</div><h2>Octa</h2><p>Visit Octa's platform to review account types, trading conditions, fees and legal information applicable to your country.</p><a class="btn" href="https://octasl.click/iM6jXCv0KXv" target="_blank" rel="noopener noreferrer">Visit Octa <i class="fa-solid fa-arrow-up-right-from-square"></i></a><a class="btn alt" href="vip-course.html">VIP details</a></article>
+<article class="card"><div class="logo">XM</div><h2>XM</h2><p>Visit XM's platform to review account types, trading conditions, fees and legal information applicable to your country.</p><a class="btn" href="https://affs.click/m2rkP" target="_blank" rel="noopener noreferrer">Visit XM <i class="fa-solid fa-arrow-up-right-from-square"></i></a><a class="btn alt" href="vip-course.html">VIP details</a></article>
+</section>
+<section class="notice"><p><strong>Partner disclosure:</strong> ICT Forex Academy may receive compensation if you register through these partner links. This does not mean a broker is suitable for you. Check the provider's regulatory entity, product terms and availability in your country. Leveraged forex and CFD trading carries a high risk of loss.</p></section>
+<section class="panel"><span class="tag">Private learning access</span><h2 style="margin-top:15px">How to request VIP course access</h2><p>After opening an account with a listed broker, sign in and submit your Trading ID on the VIP Course page. An administrator manually reviews each request. Sending a request does not unlock lessons immediately.</p><div class="steps"><div class="step"><b>01</b>Review the broker's terms and decide independently whether to open an account.</div><div class="step"><b>02</b>Sign in and submit your broker and Trading ID on the VIP Course page.</div><div class="step"><b>03</b>Wait for manual review. VIP lessons unlock only after approval.</div></div><a class="btn" href="vip-course.html">Go to VIP Course <i class="fa-solid fa-arrow-right"></i></a></section>
+<section class="panel risk"><h3><i class="fa-solid fa-triangle-exclamation"></i> Trading risk disclosure</h3><p>Forex and CFD trading involve substantial risk and may not be suitable for all investors. You can lose your invested capital. This website provides education, not financial advice, investment recommendations or guaranteed results. Never trade with money you cannot afford to lose.</p></section>
+</main>
+<footer class="footer"><div class="wrap">ICT Forex Academy © 2026 · <a href="privacy-policy.html">Privacy Policy & Terms</a></div></footer>
+</body></html>
