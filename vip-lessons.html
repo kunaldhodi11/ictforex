@@ -124,7 +124,7 @@ nav a{display:block;padding:7px;color:#a9b8cc;font-size:12px;border-radius:8px}n
   card.dataset.loaded='true';
   const mount=card.querySelector('.tv-live-mount');
   mount.innerHTML='<div class="tv-live-placeholder">Connecting to TradingView…</div>';
-  if(!widgetModule) widgetModule=import('https://www.tradingview-widget.com/w/en/tv-advanced-chart.js');
+  if(!widgetModule) widgetModule=import('https://widgets.tradingview-widget.com/w/en/tv-advanced-chart.js');
   widgetModule.then(()=>{
    const chart=document.createElement('tv-advanced-chart');
    chart.setAttribute('symbol',card.dataset.symbol);
