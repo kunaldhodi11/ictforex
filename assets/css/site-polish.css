@@ -19,3 +19,31 @@ button:disabled,input:disabled{cursor:not-allowed;opacity:.65}
   a,button,input,select,textarea{transition:none!important}
   button:active:not(:disabled),input[type="button"]:active:not(:disabled),input[type="submit"]:active:not(:disabled){transform:none}
 }
+
+
+/* Extra polish for learning, books, rules, about, community and VIP pages */
+:where(.card,.book,.stat,.side-card,.quick-link,.guide,.callout,.notice,.library-hero,.hero,.intro){
+  transition:transform .24s cubic-bezier(.2,.75,.25,1),box-shadow .24s ease,border-color .24s ease,background-color .24s ease;
+}
+@media(hover:hover) and (pointer:fine){
+  :where(.card,.book,.stat,.side-card,.quick-link,.guide,.callout,.notice):hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 28px rgba(0,0,0,.18);
+  }
+  :where(.book,.card,.side-card,.quick-link,.guide):hover{
+    border-color:rgba(96,165,250,.38);
+  }
+}
+:where(.book,.card,.side-card,.quick-link,.guide):focus-within{
+  outline:1px solid rgba(96,165,250,.45);
+  outline-offset:2px;
+}
+:where(img,video,iframe){max-width:100%}
+@media(prefers-reduced-motion:reduce){
+  :where(.card,.book,.stat,.side-card,.quick-link,.guide,.callout,.notice,.library-hero,.hero,.intro){
+    transition:none!important;
+  }
+  @media(hover:hover) and (pointer:fine){
+    :where(.card,.book,.stat,.side-card,.quick-link,.guide,.callout,.notice):hover{transform:none;box-shadow:none}
+  }
+}
