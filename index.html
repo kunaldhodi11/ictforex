@@ -410,6 +410,35 @@ main,.header,.topbar,footer,.mobile-sticky,.mobile-nav{position:relative;z-index
 .language-switcher:after{content:'⌄';position:absolute;right:12px;color:#cbd5e1;pointer-events:none}
 .language-switcher select:focus{outline:2px solid #60a5fa;outline-offset:2px}
 @media(max-width:768px){.header .language-switcher{margin-left:auto;margin-right:10px}.language-switcher select{min-width:108px;padding:9px 28px 9px 9px;font-size:11px}}
+
+
+/* ===== POLISHED INTERACTION LAYER ===== */
+html{scroll-behavior:smooth;scroll-padding-top:92px}
+:where(a,button,input[type="button"],input[type="submit"],[role="button"]){-webkit-tap-highlight-color:transparent}
+:where(button,.btn,.cta-btn,.nav-btn,a.button,input[type="button"],input[type="submit"]){
+  transition:transform .22s cubic-bezier(.2,.75,.25,1),box-shadow .22s ease,background-color .22s ease,border-color .22s ease,color .22s ease,filter .22s ease;
+  transform:translateZ(0)
+}
+:where(button,.btn,.cta-btn,.nav-btn,a.button,input[type="button"],input[type="submit"]):active:not(:disabled){
+  transform:translateY(1px) scale(.985);
+  filter:brightness(.96)
+}
+:where(button,.btn,.cta-btn,.nav-btn,a.button,input[type="button"],input[type="submit"]):focus-visible{
+  outline:2px solid #60a5fa;
+  outline-offset:3px
+}
+:where(button,a,input,select,textarea):disabled{cursor:not-allowed;opacity:.62}
+@media(hover:hover) and (pointer:fine){
+  :where(button,.btn,.cta-btn,.nav-btn,a.button,input[type="button"],input[type="submit"]):hover:not(:disabled){
+    filter:brightness(1.06)
+  }
+  a:not(.btn):not(.button):not(.nav-btn){transition:color .2s ease,opacity .2s ease}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  :where(a,button,input,select,textarea){transition:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -946,5 +975,11 @@ onAuthStateChanged(auth,u=>{
  });
 })();
 </script>
+
+<script>
+/* Keep browser-native scroll restoration on refresh/back navigation. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
+</script>
+
 </body>
 </html>
