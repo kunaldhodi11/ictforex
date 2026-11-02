@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi" class="dark">
+<html lang="hi-Latn" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,7 +46,7 @@
             </a>
             <!-- Auth Link for User Name & Logout -->
             <a href="login.html" id="auth-nav-link" class="hidden sm:flex bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow items-center gap-1.5">
-                <i class="fa-solid fa-user"></i> Login
+                <i class="fa-solid fa-user"></i> Login Karein
             </a>
         </nav>
     </header>
@@ -61,43 +61,43 @@
                 ICT Smart Money Concepts, Liquidity & <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Risk Management</span>
             </h2>
             <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
-                Unlock professional institutional methodologies. Master order blocks, market maker models, strict market rules, and professional risk frameworks.
+                Institutional trading methodologies ko step-by-step seekhein. Order Blocks, Market Maker Models, market rules aur professional Risk Management ko detail mein samjhein.
             </p>
             
             <div id="vip-status-banner" class="bg-gray-950/90 border border-yellow-500/50 p-6 rounded-2xl shadow-xl max-w-3xl mx-auto space-y-4">
                 <div id="locked-view">
-                    <p class="text-xs text-yellow-400 font-bold mb-3">🔥 Get Lifetime VIP Access 100% FREE by joining any partner broker below!</p>
+                    <p class="text-xs text-yellow-400 font-bold mb-3">🔥 Neeche diye gaye partner broker ke through account banakar Lifetime VIP Access ke liye apply karein. VIP approval terms ke mutabik milega.</p>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
                         <!-- Octa (Live Link) -->
                         <div class="bg-gray-900 border border-gray-800 p-3.5 rounded-xl flex flex-col justify-between space-y-2">
                             <div>
                                 <span class="text-xs font-black text-yellow-400 block mb-1">2. Octa</span>
-                                <p class="text-[10px] text-gray-300 leading-tight">Low deposit, user-friendly app & copy trading features.</p>
+                                <p class="text-[10px] text-gray-300 leading-tight">Low deposit, user-friendly app aur copy trading features.</p>
                             </div>
-                            <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-[10px] py-2 rounded-lg transition text-center block">Create Account</a>
+                            <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-[10px] py-2 rounded-lg transition text-center block">Account Banayein</a>
                         </div>
                         
                         <!-- XM (Live Link) -->
                         <div class="bg-gray-900 border border-gray-800 p-3.5 rounded-xl flex flex-col justify-between space-y-2">
                             <div>
                                 <span class="text-xs font-black text-yellow-400 block mb-1">3. XM</span>
-                                <p class="text-[10px] text-gray-300 leading-tight">Strict regulatory compliance, highly secure execution.</p>
+                                <p class="text-[10px] text-gray-300 leading-tight">Regulatory compliance aur trading execution ki details broker ki official website par check karein.</p>
                             </div>
-                            <a href="https://affs.click/m2rkP" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-[10px] py-2 rounded-lg transition text-center block">Create Account</a>
+                            <a href="https://affs.click/m2rkP" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-950 font-black text-[10px] py-2 rounded-lg transition text-center block">Account Banayein</a>
                         </div>
                     </div>
 
                     <div class="mt-4 pt-4 border-t border-gray-800 space-y-2 text-left">
                         <p class="text-[11px] text-gray-300 font-semibold">Broker select karein aur account banane ke baad apni Trading ID submit karein:</p>
-                        <p class="text-[10px] text-gray-400">Trading ID admin manually verify karega. Submit karne se VIP turant unlock nahi hoga.</p>
+                        <p class="text-[10px] text-gray-400">Admin aapki Trading ID manually verify karega. Application submit karte hi VIP access unlock nahi hoga.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <select id="broker-select" class="bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200">
                                 <option value="XM">XM</option><option value="Octa">Octa</option>
                             </select>
-                            <input type="text" id="trading-id-input" maxlength="100" placeholder="Trading Account ID..." class="sm:col-span-2 bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-yellow-500">
+                            <input type="text" id="trading-id-input" maxlength="100" placeholder="Apni Trading Account ID enter karein..." class="sm:col-span-2 bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-yellow-500">
                         </div>
-                        <button id="vip-submit-button" type="button" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black text-xs px-4 py-3 rounded-xl transition cursor-pointer">Submit for Admin Approval</button>
+                        <button id="vip-submit-button" type="button" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-950 font-black text-xs px-4 py-3 rounded-xl transition cursor-pointer">Admin Approval ke liye Submit Karein</button>
                         <p id="vip-application-status" class="text-xs text-gray-300" role="status" aria-live="polite"></p>
                     </div>
                 </div>
@@ -105,9 +105,9 @@
                 <!-- Unlocked View (Hidden by default) -->
                 <div id="unlocked-view" class="hidden space-y-3">
                     <div class="text-green-400 font-black text-sm flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-circle-check text-lg"></i> VIP Access Approved!
+                        <i class="fa-solid fa-circle-check text-lg"></i> VIP Access Approve Ho Gaya!
                     </div>
-                    <p class="text-xs text-gray-300">Aapka VIP Mentorship course ab active hai. Niche diye gaye modules se padhna shuru karein.</p>
+                    <p class="text-xs text-gray-300">Aapka VIP Mentorship Course active hai. Neeche diye gaye modules se padhna shuru karein.</p>
                 </div>
             </div>
         </div>
@@ -117,16 +117,16 @@
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p class="text-[10px] font-black tracking-[.2em] text-green-400">ICTFOREX PRIVATE LEARNING LIBRARY</p>
-              <h3 class="text-xl md:text-2xl font-black text-white mt-2">Complete ICT, SMC Aur Liquidity Masterclass</h3>
-              <p class="text-xs text-gray-400 mt-2">50 detailed lessons • 7 chapters • 6 chart diagrams • Hindi/Hinglish explanations</p>
+              <h3 class="text-xl md:text-2xl font-black text-white mt-2">Complete ICT, SMC aur Liquidity Masterclass</h3>
+              <p class="text-xs text-gray-400 mt-2">50 detailed lessons • 7 chapters • 6 chart diagrams • Hinglish explanations</p>
             </div>
             <span class="text-yellow-400 text-xs font-black border border-yellow-500/30 rounded-full px-3 py-2">VIP COURSE</span>
           </div>
-          <p class="text-sm text-gray-300 leading-relaxed">Market structure se lekar liquidity sweeps, FVG, Order Blocks, institutional models, entry confirmation, Stop Loss, Take Profit, Risk-to-Reward aur professional risk management tak complete learning path.</p>
+          <p class="text-sm text-gray-300 leading-relaxed">Market Structure se lekar Liquidity Sweeps, FVG, Order Blocks, Institutional Models, Entry Confirmation, Stop Loss, Take Profit, Risk-to-Reward aur professional Risk Management tak ka complete learning path.</p>
           <a href="vip-lessons.html" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-gray-950 font-black text-sm px-6 py-3 rounded-xl transition">
-            <i class="fa-solid fa-graduation-cap"></i> Start Complete VIP Masterclass
+            <i class="fa-solid fa-graduation-cap"></i> Complete VIP Masterclass Shuru Karein
           </a>
-          <p class="text-[10px] text-gray-500">Educational content only. No guaranteed profit or live trade signals.</p>
+          <p class="text-[10px] text-gray-500">Ye content sirf educational purpose ke liye hai. Guaranteed profit ya live trade signals nahi diye jate.</p>
         </section>
     </main>
 
@@ -134,7 +134,7 @@
     <footer class="bg-[#131b2e] border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2">
         <p>ICT Forex Academy © 2026. All rights reserved. VIP Institutional Mentorship.</p>
         <p>
-            <a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a>
+            <a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy aur Terms</a>
         </p>
     </footer>
 
@@ -181,18 +181,18 @@
             if (application.exists()) {
                 const applicationStatus = application.data().status;
                 if (applicationStatus === 'rejected') {
-                    statusMessage.textContent = 'Aapki application reject hui hai. Details check karke dobara submit kar sakte hain.';
+                    statusMessage.textContent = 'Aapki application reject ho gayi hai. Details check karke dobara submit kar sakte hain.';
                     submitButton.disabled = false;
                     submitButton.textContent = 'Resubmit for Approval';
                     submitButton.classList.remove('opacity-60', 'cursor-not-allowed');
                 } else {
-                    statusMessage.textContent = 'Application Pending hai. Admin approval ke baad VIP course unlock hoga.';
+                    statusMessage.textContent = 'Aapki application pending hai. Admin approval ke baad VIP Course unlock hoga.';
                     submitButton.disabled = true;
                     submitButton.textContent = 'Application Submitted';
                     submitButton.classList.add('opacity-60', 'cursor-not-allowed');
                 }
             } else {
-                statusMessage.textContent = 'Approval milne tak VIP course locked rahega.';
+                statusMessage.textContent = 'Admin approval milne tak VIP Course locked rahega.';
                 submitButton.disabled = false;
             }
         }
@@ -205,7 +205,7 @@
                 statusMessage.textContent = 'Valid Trading ID enter karein (3–100 characters).'; return;
             }
             submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
+            submitButton.textContent = 'Submit ho raha hai...';
             try {
                 const applicationRef = doc(db, 'vipApplications', user.uid);
                 const existingApplication = await getDoc(applicationRef);
@@ -219,14 +219,14 @@
                 }
                 document.getElementById('trading-id-input').disabled = true;
                 document.getElementById('broker-select').disabled = true;
-                statusMessage.textContent = 'Application submit ho gayi hai. Admin approval ka wait karein; course abhi locked rahega.';
+                statusMessage.textContent = 'Aapki application submit ho gayi hai. Admin approval ka wait karein. Tab tak course locked rahega.';
                 submitButton.textContent = 'Application Submitted';
                 submitButton.classList.add('opacity-60', 'cursor-not-allowed');
             } catch (error) {
                 console.error('VIP application submission failed:', error);
-                statusMessage.textContent = 'Submit nahi hua. Firebase Rules publish hone ke baad dobara try karein.';
+                statusMessage.textContent = 'Application submit nahi hui. Firebase Rules publish hone ke baad dobara try karein.';
                 submitButton.disabled = false;
-                submitButton.textContent = 'Submit for Admin Approval';
+                submitButton.textContent = 'Admin Approval ke liye Submit Karein';
             }
         });
         onAuthStateChanged(auth, async (user) => {
@@ -247,7 +247,7 @@
             try { await refreshVipStatus(user); }
             catch (error) {
                 console.error('Could not load VIP status:', error);
-                statusMessage.textContent = 'VIP status load nahi hua. Page refresh karein.';
+                statusMessage.textContent = 'VIP status load nahi ho paya. Page refresh karke dobara try karein.';
             }
         });   </script>
 <script>(function(){const pages=new Set(["index.html","free-learning.html","trading-books.html","rules.html","about.html","affiliate-broker.html","candlestick-patterns.html","price-action.html","support-resistance.html","intelligent-investor.html","security-analysis.html","rich-dad-poor-dad.html","trading-volatility.html","trading-manual-tom.html","vip-course.html","vip-lessons.html","community.html","privacy-policy.html","login.html","signup.html","forgot-password.html","profile.html"]);const p=location.pathname.split('/').filter(Boolean);const lang=['hi','es','ar','fr'].includes(p[0])?p[0]:'en';const slug=lang==='en'?(p.join('/')||'index.html'):p.slice(1).join('/')||'index.html';const dest=(l,s)=>l==='en'?(s==='index.html'?'/':'/'+s):l==='hi'?'/hi/'+(pages.has(s)?(s==='index.html'?'':s):''):'/'+l+'/';const selectors=[document.getElementById('siteLanguage'),...document.querySelectorAll('.hi-lang-switch')].filter(Boolean);selectors.forEach(x=>{x.value=lang;x.addEventListener('change',()=>{try{localStorage.setItem('ictforex-language',x.value)}catch(e){}location.href=dest(x.value,slug)})});let saved='';try{saved=localStorage.getItem('ictforex-language')||''}catch(e){}if(lang==='en'&&saved&&saved!=='en'){location.replace(dest(saved,slug));return}if(lang!=='en'&&saved!==lang){try{localStorage.setItem('ictforex-language',lang)}catch(e){}}})();</script></body>
