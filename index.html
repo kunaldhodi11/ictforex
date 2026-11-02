@@ -22,25 +22,20 @@
 
 <style>
 /* ============================================
-   NEON FROST GLASS - 2026 CINEMATIC THEME
+   NEON FROST GLASS & LIVE CHART BACKGROUND
    ============================================ */
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{background:#040711;color:#e2e8f0;font-family:'Inter',sans-serif;line-height:1.7;overflow-x:hidden;min-height:100vh;position:relative}
 
-/* LIVE TRADINGVIEW CANDLESTICK BACKGROUND EFFECT */
-body::before{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(circle at 20% 30%, rgba(34,197,94,0.12), transparent 40%),
-             radial-gradient(circle at 80% 70%, rgba(56,189,248,0.1), transparent 40%),
-             linear-gradient(rgba(4,7,17,0.85), rgba(4,7,17,0.92));
-}
+/* BACKGROUND CANDLESTICK CANVAS */
+#market-cinema-bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.45;}
 
 a{text-decoration:none;color:inherit}
 button{font-family:inherit;cursor:pointer}
 
 :root{
-  --glass-bg:rgba(15, 23, 42, 0.7);
+  --glass-bg:rgba(15, 23, 42, 0.75);
   --glass-border:rgba(56, 189, 248, 0.25);
   --neon-green:#22c55e;
   --neon-gold:#f59e0b;
@@ -54,7 +49,7 @@ button{font-family:inherit;cursor:pointer}
 ::-webkit-scrollbar-thumb{background:#1e293b;border-radius:3px}
 
 /* HEADER & NAVBAR */
-.header{background:rgba(4, 7, 17, 0.8);border-bottom:1px solid rgba(255,255,255,0.08);padding:14px clamp(20px, 4vw, 50px);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+.header{background:rgba(4, 7, 17, 0.85);border-bottom:1px solid rgba(255,255,255,0.08);padding:14px clamp(20px, 4vw, 50px);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
 .logo-link{display:flex;align-items:center;gap:12px}
 .logo-ring{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-green));padding:2px;box-shadow:var(--glow-cyan)}
 .logo-inner{width:100%;height:100%;background:#040711;border-radius:50%;display:flex;align-items:center;justify-content:center}
@@ -96,7 +91,7 @@ button{font-family:inherit;cursor:pointer}
 .trust-pill{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:999px;padding:8px 16px;font-size:11px;color:#94a3b8;display:flex;align-items:center;gap:8px;backdrop-filter:blur(10px)}
 
 /* FACTS BAR */
-.facts{display:grid;grid-template-columns:repeat(4,1fr);max-width:1100px;margin:0 auto 60px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:24px;overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 20px 50px rgba(0,0,0,0.5)}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);max-width:1100px;margin:0 auto 60px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:24px;overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 20px 50px rgba(0,0,0,0.5);position:relative;z-index:1}
 .fact{padding:28px 20px;text-align:center;border-right:1px solid rgba(255,255,255,0.06)}
 .fact:last-child{border-right:none}
 .fact-n{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:900;color:var(--neon-green);line-height:1;text-shadow:var(--glow-green)}
@@ -187,6 +182,9 @@ button{font-family:inherit;cursor:pointer}
 </style>
 </head>
 <body>
+
+<!-- LIVE CANDLESTICK CHART BACKGROUND CANVAS -->
+<canvas id="market-cinema-bg" aria-hidden="true"></canvas>
 
 <!-- HEADER -->
 <header class="header" role="banner">
@@ -441,6 +439,23 @@ function toggleFaq(btn){
   const icon = btn.querySelector('.fa');
   if(icon){ icon.className = open ? 'fa fa-minus' : 'fa fa-plus'; }
 }
+</script>
+
+<!-- LIVE BACKGROUND CANDLESTICK ANIMATION SCRIPT -->
+<script>
+(function(){
+ const canvas=document.getElementById('market-cinema-bg');if(!canvas)return;
+ const ctx=canvas.getContext('2d');if(!ctx)return;
+ let w=0,h=0,last=0,raf=0,phase=0,candles=[];
+ let seed=1947;function rand(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646;}
+ function build(){seed=1947;candles=[];let close=.52;const count=Math.max(30,Math.ceil(window.innerWidth/18));for(let i=0;i<count;i++){const open=close;close=Math.max(.2,Math.min(.8,open+(rand()-.49)*.09));candles.push({open,close,high:Math.max(open,close)+rand()*.07,low:Math.min(open,close)-rand()*.07,up:close>=open});}}
+ function resize(){w=window.innerWidth;h=window.innerHeight;canvas.width=w;canvas.height=h;build();}
+ function draw(now){raf=0;const dt=Math.min(40,now-(last||now));last=now;phase+=dt*.00015;ctx.clearRect(0,0,w,h);
+ ctx.lineWidth=1;const spacing=w/candles.length,drift=(phase*25)%spacing,base=h*0.5,chartH=h*0.4;
+ candles.forEach((c,i)=>{let x=i*spacing-drift+spacing;if(x<-spacing)x+=w+spacing;const y=v=>base-(v-.5)*chartH,high=y(c.high),low=y(c.low),op=y(c.open),cl=y(c.close),col=c.up?'rgba(34,197,94,0.35)':'rgba(239,68,68,0.35)';ctx.strokeStyle=col;ctx.beginPath();ctx.moveTo(x,high);ctx.lineTo(x,low);ctx.stroke();const top=Math.min(op,cl),bh=Math.max(2,Math.abs(cl-op));ctx.fillStyle=col;ctx.fillRect(x-4,top,8,bh);});
+ raf=requestAnimationFrame(draw);}
+ resize();raf=requestAnimationFrame(draw);window.addEventListener('resize',resize,{passive:true});
+})();
 </script>
 
 <!-- FIREBASE AUTH INTEGRATION -->
