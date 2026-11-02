@@ -461,6 +461,19 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
 @media(max-width:700px){.scroll-reveal{transform:translate3d(0,28px,0) scale(.985);filter:none}.premium-section:nth-of-type(even) .premium-head.scroll-reveal,.premium-section:nth-of-type(odd) .premium-head.scroll-reveal,.market-card.scroll-reveal:nth-child(odd),.market-card.scroll-reveal:nth-child(even),.tool-card.scroll-reveal:nth-child(odd),.tool-card.scroll-reveal:nth-child(even){--reveal-x:0px;--reveal-rotate:0deg}.market-card:hover,.tool-card:hover,.proof-card:hover{transform:translateY(-3px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.scroll-reveal{opacity:1;transform:none;filter:none;transition:none}.hero:before{transform:none}}
 
+
+/* Scroll-controlled cinematic scene */
+.cinema-scroll{height:190vh;position:relative;isolation:isolate;background:#080d15;color:#f7f9fc}
+.cinema-sticky{height:100vh;min-height:620px;position:sticky;top:0;overflow:hidden;display:grid;grid-template-columns:minmax(260px,.8fr) minmax(420px,1.2fr);align-items:center;gap:4vw;padding:clamp(28px,7vw,100px);background:radial-gradient(ellipse at 68% 50%,#13352f88,transparent 48%),linear-gradient(135deg,#080d15,#0b1522 60%,#080d15)}
+.cinema-grid{position:absolute;inset:-20%;opacity:.22;background-image:linear-gradient(#8ca3b51c 1px,transparent 1px),linear-gradient(90deg,#8ca3b51c 1px,transparent 1px);background-size:58px 58px;transform:perspective(700px) rotateX(62deg) translateY(18%);transform-origin:center bottom;mask-image:linear-gradient(transparent,#000 20%,#000 80%,transparent)}
+.cinema-glow{position:absolute;width:36vw;height:36vw;border-radius:50%;filter:blur(90px);opacity:.13;pointer-events:none}.cinema-glow-a{background:#d9a64e;left:-14%;top:5%}.cinema-glow-b{background:#35d4a0;right:-8%;bottom:-20%}
+.cinema-copy{position:relative;z-index:3;max-width:470px;transform:translate3d(0,var(--scene-copy-y,0px),0);opacity:var(--scene-copy-opacity,1)}.cinema-eyebrow{font-size:10px;font-weight:900;letter-spacing:.22em;color:#76dfb7}.cinema-copy h2{font:700 clamp(34px,5vw,64px)/1.02 'Space Grotesk',sans-serif;letter-spacing:-.055em;margin:18px 0}.cinema-copy h2 em{font-style:normal;background:linear-gradient(100deg,#f5d28b,#e8b85b 42%,#62dfb4);background-clip:text;-webkit-background-clip:text;color:transparent}.cinema-copy p{font-size:14px;line-height:1.8;color:#aab9ca;max-width:390px}.cinema-step{display:inline-block;margin-top:24px;color:#f0c979;font-size:10px;letter-spacing:.18em;font-weight:900;border-bottom:1px solid #e8b85b55;padding-bottom:9px}
+.cinema-chart{height:min(62vh,520px);min-height:330px;position:relative;z-index:2;border:1px solid #a9bac326;border-radius:24px;background:linear-gradient(145deg,#142235b8,#07101cdb);box-shadow:0 35px 100px #0008,inset 0 1px #ffffff0c;transform:perspective(1200px) rotateY(var(--scene-rotate, -13deg)) rotateX(var(--scene-tilt,5deg)) translate3d(var(--scene-x,0px),var(--scene-y,0px),0) scale(var(--scene-scale,1));transform-style:preserve-3d;transition:box-shadow .4s;overflow:hidden;will-change:transform}
+.cinema-chart:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#9db1c21a 1px,transparent 1px),linear-gradient(90deg,#9db1c21a 1px,transparent 1px);background-size:10% 20%;mask-image:linear-gradient(#000,transparent 95%)}.cinema-chart-top{position:absolute;top:18px;left:20px;right:20px;display:flex;justify-content:space-between;color:#9fb0c2;font-size:9px;letter-spacing:.13em;font-weight:800;z-index:2}.cinema-chart-top span:last-child{color:#e7bd6a}.cinema-chart-line{position:absolute;inset:15% 4% 10%;width:92%;height:75%;filter:drop-shadow(0 0 10px #58d9ae55);overflow:visible}.cinema-path{stroke-dasharray:1400;stroke-dashoffset:var(--line-draw,1400)}.cinema-area{opacity:var(--area-opacity,.35)}.cinema-candles{position:absolute;inset:18% 5% 15%;transform:translateZ(70px);transform-style:preserve-3d}.cinema-candles i{position:absolute;left:var(--x);top:var(--y);height:var(--h);width:8px;background:linear-gradient(180deg,#55d9a7,#238b71);box-shadow:0 0 18px #43d3a333;border-radius:2px;transform:translate3d(0,var(--candle-y,0px),calc(var(--d)*9px)) rotateY(-12deg);opacity:var(--candle-opacity,.88)}.cinema-candles i:before,.cinema-candles i:after{content:"";position:absolute;left:3px;width:2px;background:#79e7c0}.cinema-candles i:before{height:18px;top:-18px}.cinema-candles i:after{height:16px;bottom:-16px}.cinema-candles i:nth-child(3n){background:linear-gradient(180deg,#e9bd68,#b47b32)}.cinema-candles i:nth-child(3n):before,.cinema-candles i:nth-child(3n):after{background:#e9bd68}.cinema-axis{position:absolute;bottom:18px;left:20px;right:20px;display:flex;justify-content:space-between;color:#8296aa;font-size:8px;letter-spacing:.16em;font-weight:800}.cinema-scroll-hint{position:absolute;bottom:28px;left:clamp(28px,7vw,100px);display:flex;align-items:center;gap:10px;color:#8296aa;font-size:9px;letter-spacing:.16em}.cinema-scroll-hint span{width:28px;height:1px;background:#e8b85b;box-shadow:0 0 12px #e8b85b}
+@media(max-width:800px){.cinema-scroll{height:165vh}.cinema-sticky{min-height:600px;grid-template-columns:1fr;grid-template-rows:auto minmax(250px,38vh);gap:18px;padding:80px 20px 54px;align-content:center}.cinema-copy{max-width:600px}.cinema-copy h2{font-size:clamp(32px,8vw,48px);margin:10px 0}.cinema-copy p{font-size:12px;max-width:520px}.cinema-step{margin-top:10px}.cinema-chart{height:100%;min-height:240px;transform:perspective(900px) rotateY(var(--scene-rotate, -5deg)) rotateX(var(--scene-tilt,2deg)) translate3d(0,var(--scene-y,0px),0) scale(var(--scene-scale,1))}.cinema-scroll-hint{bottom:18px;left:20px}.cinema-chart-top{font-size:7px}}
+@media(max-width:480px){.cinema-scroll{height:145vh}.cinema-sticky{padding-top:70px;grid-template-rows:auto 240px}.cinema-copy h2{font-size:34px}.cinema-copy p{line-height:1.5}.cinema-axis{font-size:6px}.cinema-chart-top{left:12px;right:12px}.cinema-chart{border-radius:16px}}
+@media(prefers-reduced-motion:reduce){.cinema-scroll{height:auto}.cinema-sticky{height:auto;min-height:0;position:relative;display:block;padding:70px 20px}.cinema-chart{margin-top:30px;transform:none!important}.cinema-scroll-hint{display:none}.cinema-path{stroke-dashoffset:0}}
+
 </style>
 </head>
 <body>
@@ -541,6 +554,23 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
   <div class="fact"><div class="fact-n">100%</div><div class="fact-l">Free Core Course</div></div>
   <div class="fact"><div class="fact-n">FREE</div><div class="fact-l">Cost to Start</div></div>
 </div>
+
+
+<!-- IMMERSIVE SCROLL STORY: illustrative market visual, not live data -->
+<section class="cinema-scroll" id="cinema-scroll" aria-label="Interactive trading education visual">
+  <div class="cinema-sticky">
+    <div class="cinema-grid" aria-hidden="true"></div>
+    <div class="cinema-glow cinema-glow-a" aria-hidden="true"></div><div class="cinema-glow cinema-glow-b" aria-hidden="true"></div>
+    <div class="cinema-copy"><span class="cinema-eyebrow">THE ICTFOREX EXPERIENCE</span><h2>See the market<br/><em>from a new perspective.</em></h2><p>Scroll to explore the movement of price, structure and momentum through an illustrative 3D market scene.</p><span class="cinema-step" id="cinema-step">01 / MARKET STRUCTURE</span></div>
+    <div class="cinema-chart" aria-hidden="true">
+      <div class="cinema-chart-top"><span>XAUUSD · EDUCATIONAL VISUAL</span><span>NOT LIVE DATA</span></div>
+      <svg class="cinema-chart-line" viewBox="0 0 900 420" preserveAspectRatio="none"><defs><linearGradient id="cinemaLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d7a64c"/><stop offset="1" stop-color="#54d7a5"/></linearGradient><linearGradient id="cinemaFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54d7a5" stop-opacity=".22"/><stop offset="1" stop-color="#54d7a5" stop-opacity="0"/></linearGradient></defs><path class="cinema-area" d="M0 340 L80 310 L150 325 L220 250 L290 275 L360 180 L430 215 L500 130 L570 160 L640 95 L710 145 L780 65 L900 35 L900 420 L0 420Z" fill="url(#cinemaFill)"/><path class="cinema-path" d="M0 340 L80 310 L150 325 L220 250 L290 275 L360 180 L430 215 L500 130 L570 160 L640 95 L710 145 L780 65 L900 35" fill="none" stroke="url(#cinemaLine)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1400" stroke-dashoffset="1400"/></svg>
+      <div class="cinema-candles"><i style="--x:8%;--y:66%;--h:70px;--d:0"></i><i style="--x:18%;--y:57%;--h:92px;--d:1"></i><i style="--x:29%;--y:48%;--h:58px;--d:2"></i><i style="--x:40%;--y:39%;--h:110px;--d:3"></i><i style="--x:52%;--y:44%;--h:66px;--d:4"></i><i style="--x:63%;--y:27%;--h:100px;--d:5"></i><i style="--x:75%;--y:31%;--h:72px;--d:6"></i><i style="--x:87%;--y:14%;--h:115px;--d:7"></i></div>
+      <div class="cinema-axis"><span>STRUCTURE</span><span>LIQUIDITY</span><span>MOMENTUM</span></div>
+    </div>
+    <div class="cinema-scroll-hint"><span></span> SCROLL TO EXPLORE</div>
+  </div>
+</section>
 
 <!-- Premium market education -->
 <section class="premium-section" id="markets" aria-labelledby="markets-title"><div class="premium-head"><span class="premium-kicker">Markets we study</span><h2 id="markets-title">Focus on the markets that matter</h2><p>Explore structured chart education for our two core instruments. These are learning examples, not live prices or trade signals.</p></div><div class="market-grid"><article class="market-card"><div class="market-top"><h3 class="market-symbol">XAUUSD</h3><span class="market-tag">Gold · Education</span></div><div class="market-visual" aria-hidden="true"><svg viewBox="0 0 420 70" preserveAspectRatio="none"><path d="M0 55 L28 48 L55 53 L83 30 L110 38 L138 21 L166 34 L194 17 L222 28 L250 12 L278 25 L306 8 L334 19 L362 7 L390 14 L420 3" fill="none" stroke="#e8b85b" stroke-width="2.5"/></svg></div><p>Study gold price action, key levels, market structure and risk planning through annotated educational charts.</p><a class="market-link" href="free-learning.html">Explore learning path →</a></article><article class="market-card"><div class="market-top"><h3 class="market-symbol">NAS100</h3><span class="market-tag">Index · Education</span></div><div class="market-visual" aria-hidden="true"><svg viewBox="0 0 420 70" preserveAspectRatio="none"><path d="M0 48 L28 53 L55 39 L83 44 L110 22 L138 31 L166 18 L194 35 L222 24 L250 38 L278 16 L306 23 L334 9 L362 17 L390 5 L420 12" fill="none" stroke="#63d9b0" stroke-width="2.5"/></svg></div><p>Learn index chart analysis, liquidity concepts, session behaviour and disciplined trade planning with examples.</p><a class="market-link" href="vip-course.html">Explore VIP lessons →</a></article></div></section>
@@ -1022,6 +1052,27 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
       card.addEventListener('pointerleave',()=>{card.style.transform='';});
     });
   }
+})();
+</script>
+
+
+<script>
+/* Drive the immersive scene directly from scroll position. */
+(function(){
+ const scene=document.getElementById('cinema-scroll');if(!scene)return;
+ const sticky=scene.querySelector('.cinema-sticky');const path=scene.querySelector('.cinema-path');const step=document.getElementById('cinema-step');const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduce){if(path)path.style.setProperty('--line-draw','0');return;}
+ let raf=0;
+ function render(){raf=0;const rect=scene.getBoundingClientRect();const range=Math.max(1,scene.offsetHeight-sticky.offsetHeight);const progress=Math.max(0,Math.min(1,-rect.top/range));
+ const chart=scene.querySelector('.cinema-chart');const copy=scene.querySelector('.cinema-copy');
+ chart.style.setProperty('--scene-rotate',( -13+progress*21)+'deg');chart.style.setProperty('--scene-tilt',(5-progress*9)+'deg');chart.style.setProperty('--scene-x',((progress-.5)*-48)+'px');chart.style.setProperty('--scene-y',(Math.sin(progress*Math.PI*2)*18)+'px');chart.style.setProperty('--scene-scale',(1+Math.sin(progress*Math.PI)*.08));
+ copy.style.setProperty('--scene-copy-y',((progress-.5)*-42)+'px');copy.style.setProperty('--scene-copy-opacity',String(.82+Math.sin(progress*Math.PI)*.18));
+ path.style.setProperty('--line-draw',String(1400*(1-progress)));
+ chart.style.setProperty('--area-opacity',String(.18+progress*.5));chart.style.setProperty('--candle-y',((.5-progress)*20)+'px');chart.style.setProperty('--candle-opacity',String(.45+progress*.5));
+ step.textContent=progress<.34?'01 / MARKET STRUCTURE':progress<.68?'02 / PRICE MOVEMENT':'03 / MARKET MOMENTUM';
+ }
+ function requestRender(){if(!raf)raf=requestAnimationFrame(render);}
+ window.addEventListener('scroll',requestRender,{passive:true});window.addEventListener('resize',requestRender);render();
 })();
 </script>
 
