@@ -78,7 +78,7 @@ button{font-family:inherit;cursor:pointer}
 
 .nav-desktop{display:flex;align-items:center;gap:8px;position:relative;z-index:10}
 .nav-desktop a{color:#94a3b8;font-size:12px;font-weight:600;padding:8px 14px;border-radius:10px;transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1)}
-.nav-desktop a:hover{color:#fff;background:rgba(255,255,255,0.08);transform:translateY(-2px) scale(1.05)}
+.nav-desktop a:hover{color:#fff;background:rgba(255,255,255,0.1);transform:translateY(-3px) scale(1.09);box-shadow:0 10px 28px rgba(56,189,248,.18)}
 .nav-desktop a.active{color:var(--neon-green);background:rgba(16,185,129,0.15);box-shadow:var(--glow-green)}
 
 /* ==========================================
@@ -90,7 +90,8 @@ button{font-family:inherit;cursor:pointer}
   will-change: transform, box-shadow;
 }
 .btn-primary:hover, .btn-gold:hover, .btn-cc:hover, .btn-tip:hover, .btn-nav-login:hover {
-  transform: translateY(-5px) scale(1.06) !important;
+  transform: translateY(-5px) scale(1.10) !important;
+  box-shadow:0 18px 42px rgba(16,185,129,.28),0 0 34px rgba(56,189,248,.18);
 }
 .btn-primary:active, .btn-gold:active, .btn-cc:active {
   transform: translateY(-1px) scale(0.98) !important;
@@ -142,12 +143,13 @@ button{font-family:inherit;cursor:pointer}
 
 .trust-strip{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 .trust-pill{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:999px;padding:8px 16px;font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:8px;backdrop-filter:blur(12px);box-shadow:0 8px 20px rgba(0,0,0,0.6);transition:all 0.3s ease}
-.trust-pill:hover{color:#fff;border-color:var(--neon-cyan);transform:translateY(-3px)}
+.trust-pill:hover{color:#fff;border-color:var(--neon-cyan);transform:translateY(-5px) scale(1.07);box-shadow:0 14px 32px rgba(56,189,248,.2)}
 
 /* FACTS BAR */
 .facts{display:grid;grid-template-columns:repeat(4,1fr);max-width:1100px;margin:0 auto 60px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:24px;overflow:hidden;backdrop-filter:blur(25px);box-shadow:0 25px 60px rgba(0,0,0,0.8);position:relative;z-index:10}
 .fact{padding:28px 20px;text-align:center;border-right:1px solid rgba(255,255,255,0.08);transition:background 0.3s ease}
-.fact:hover{background:rgba(56,189,248,0.04)}
+.fact{transition:transform .55s cubic-bezier(.16,1,.3,1),background .4s ease,box-shadow .4s ease;transform:translateZ(0)}
+.fact:hover{background:rgba(56,189,248,0.09);transform:scale(1.055);box-shadow:0 0 28px rgba(56,189,248,.12);z-index:2}
 .fact:last-child{border-right:none}
 .fact-n{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:900;color:var(--neon-green);line-height:1;text-shadow:var(--glow-green)}
 .fact-l{font-size:10px;color:#cbd5e1;margin-top:6px;font-weight:700;text-transform:uppercase;letter-spacing:.1em}
@@ -161,7 +163,7 @@ button{font-family:inherit;cursor:pointer}
 
 .course-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));gap:24px}
 .course-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:all 0.4s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(25px);box-shadow:0 20px 50px rgba(0,0,0,0.7)}
-.course-card:hover{border-color:var(--neon-green);transform:translateY(-10px) scale(1.02);box-shadow:0 35px 80px rgba(0,0,0,0.9), var(--glow-green)}
+.course-card:hover{border-color:var(--neon-green);transform:translateY(-12px) scale(1.075);box-shadow:0 38px 90px rgba(0,0,0,0.92),0 0 42px rgba(16,185,129,0.28)}
 .cc-img{height:140px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;border-bottom:1px solid rgba(255,255,255,0.08)}
 .cc-badge{position:absolute;top:14px;right:14px;font-size:9px;font-weight:900;text-transform:uppercase;padding:4px 12px;border-radius:999px}
 .cc-body{padding:24px;flex:1;display:flex;flex-direction:column}
@@ -231,6 +233,18 @@ button{font-family:inherit;cursor:pointer}
   .mobile-sticky{display:flex}
   body{padding-bottom:76px}
   .course-grid{grid-template-columns:1fr}
+  .course-card:hover{transform:translateY(-4px) scale(1.015)}
+  .fact:hover{transform:scale(1.02)}
+}
+
+/* Smooth, accessible motion and crisp high-DPI rendering */
+:focus-visible{outline:2px solid var(--neon-cyan);outline-offset:4px}
+.course-card,.trust-pill,.fact,.nav-desktop a,.btn-primary,.btn-gold,.btn-cc,.btn-tip{will-change:transform}
+.reveal-ready .reveal-on-scroll{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.reveal-ready .reveal-on-scroll.is-visible{opacity:1;transform:translateY(0) scale(1)}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal-ready .reveal-on-scroll{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -313,7 +327,7 @@ button{font-family:inherit;cursor:pointer}
 
 <!-- FACTS BAR -->
 <div class="facts">
-  <div class="fact"><div class="fact-n">47+</div><div class="fact-l">Candlestick Patterns</div></div>
+  <div class="fact"><div class="fact-n">42</div><div class="fact-l">Candlestick Patterns Listed</div></div>
   <div class="fact"><div class="fact-n">4</div><div class="fact-l">Free Modules</div></div>
   <div class="fact"><div class="fact-n">100%</div><div class="fact-l">Free Core Course</div></div>
   <div class="fact"><div class="fact-n">FREE</div><div class="fact-l">Cost to Start</div></div>
@@ -352,7 +366,7 @@ button{font-family:inherit;cursor:pointer}
       <div class="cc-body">
         <span class="cc-tag" style="background:rgba(56,189,248,0.15);color:var(--neon-cyan)">Chapter 2</span>
         <h3 class="cc-title">Candlestick Patterns A-Z</h3>
-        <p class="cc-desc">Study 47 candlestick patterns with professional chart illustrations, single/double/triple formations and setups.</p>
+        <p class="cc-desc">Study 42 listed candlestick patterns with professional chart illustrations, single, double and triple candle formations.</p>
         <div class="cc-meta">
           <span><i class="fa-regular fa-clock"></i> ~90 min</span>
           <span><i class="fa-solid fa-signal"></i> All Levels</span>
@@ -487,10 +501,13 @@ function openMobileNav(){ mnav.classList.add('open'); mnav.setAttribute('aria-hi
 function closeMobileNav(){ mnav.classList.remove('open'); mnav.setAttribute('aria-hidden','true'); hbtn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
 if(hbtn) hbtn.addEventListener('click', openMobileNav);
 if(mclose) mclose.addEventListener('click', closeMobileNav);
+if(mnav) mnav.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMobileNav));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mnav&&mnav.classList.contains('open'))closeMobileNav();});
 
 function toggleFaq(btn){
   const ans = btn.nextElementSibling;
   const open = ans.classList.toggle('open');
+  btn.setAttribute('aria-expanded',String(open));
   btn.classList.toggle('open', open);
   const icon = btn.querySelector('.fa');
   if(icon){ icon.className = open ? 'fa fa-minus' : 'fa fa-plus'; }
@@ -501,12 +518,13 @@ function toggleFaq(btn){
 <script>
 (function(){
  const canvas=document.getElementById('market-cinema-bg');if(!canvas)return;
- const ctx=canvas.getContext('2d');if(!ctx)return;
- let w=0,h=0,dpr=window.devicePixelRatio||1,last=0,raf=0,phase=0,candles=[];
+ const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});if(!ctx)return;
+ let w=0,h=0,dpr=1,last=0,raf=0,phase=0,candles=[],paused=false;
+ const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  let seed=1947;function rand(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646;}
  function build(){seed=1947;candles=[];let close=.52;const count=Math.max(40,Math.ceil(window.innerWidth/15));for(let i=0;i<count;i++){const open=close;close=Math.max(.12,Math.min(.88,open+(rand()-.48)*.14));candles.push({open,close,high:Math.max(open,close)+rand()*.1,low:Math.min(open,close)-rand()*.1,up:close>=open});}}
- function resize(){w=window.innerWidth;h=window.innerHeight;dpr=window.devicePixelRatio||1;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.scale(dpr,dpr);build();}
- function draw(now){raf=0;const dt=Math.min(40,now-(last||now));last=now;phase+=dt*.00022;ctx.clearRect(0,0,w,h);
+ function resize(){w=window.innerWidth;h=window.innerHeight;dpr=Math.min(window.devicePixelRatio||1,2.5);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);build();}
+ function draw(now){raf=0;if(paused)return;const dt=Math.min(40,now-(last||now));last=now;if(!reducedMotion)phase+=dt*.00022;ctx.clearRect(0,0,w,h);
  
  /* Professional TradingView Grid Lines */
  ctx.strokeStyle='rgba(56,189,248,0.08)';ctx.lineWidth=1;
@@ -524,7 +542,22 @@ function toggleFaq(btn){
  ctx.shadowColor=col;ctx.shadowBlur=16;ctx.fillRect(x-5,top,10,bh);ctx.shadowBlur=0;
  });
  raf=requestAnimationFrame(draw);}
- resize();raf=requestAnimationFrame(draw);window.addEventListener('resize',resize,{passive:true});
+ function start(){if(!paused&&!raf&&!reducedMotion)raf=requestAnimationFrame(draw);}
+ function stop(){if(raf){cancelAnimationFrame(raf);raf=0;}}
+ document.addEventListener('visibilitychange',()=>{paused=document.hidden;if(paused)stop();else{last=0;start();}});
+ resize();if(reducedMotion){draw(0);}else start();window.addEventListener('resize',()=>{resize();if(!reducedMotion){stop();start();}},{passive:true});
+})();
+</script>
+
+<!-- ACCESSIBLE SCROLL REVEALS -->
+<script>
+(function(){
+ const targets=document.querySelectorAll('.hero,.facts,.section,.footer-grid,.footer-bottom');
+ if(!('IntersectionObserver'in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ targets.forEach(el=>el.classList.add('reveal-on-scroll'));
+ document.documentElement.classList.add('reveal-ready');
+ const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}}),{threshold:.12,rootMargin:'0px 0px -35px 0px'});
+ targets.forEach(el=>observer.observe(el));
 })();
 </script>
 
