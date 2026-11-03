@@ -1,0 +1,51 @@
+/* ICT Forex Academy — cinematic scroll system v1
+   Progressive enhancement: content remains visible unless JS initializes successfully. */
+:root{--ifa-motion-ease:cubic-bezier(.19,1,.22,1);--ifa-scroll-progress:0}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+#ifa-scroll-progress{position:fixed;z-index:9999;top:0;left:0;width:100%;height:2px;pointer-events:none;background:rgba(255,255,255,.07)}
+#ifa-scroll-progress span{display:block;width:100%;height:100%;background:linear-gradient(90deg,#31c48d 0%,#d8b36a 55%,#e36b72 100%);transform:scaleX(var(--ifa-scroll-progress));transform-origin:left center;will-change:transform;box-shadow:0 0 12px rgba(216,179,106,.45)}
+html.ifa-motion-ready [data-ifa-reveal]{opacity:0;transform:translate3d(0,42px,0) scale(.985);transition:opacity .9s var(--ifa-motion-ease),transform 1s var(--ifa-motion-ease);transition-delay:var(--ifa-reveal-delay,0ms);will-change:opacity,transform}
+html.ifa-motion-ready [data-ifa-reveal].ifa-in-view{opacity:1;transform:translate3d(0,0,0) scale(1)}
+html.ifa-motion-ready .hero [data-ifa-reveal]{transform:translate3d(0,34px,0) scale(.99)}
+html.ifa-motion-ready .hero [data-ifa-reveal].ifa-in-view{transform:translate3d(0,0,0) scale(1)}
+.hero{transform-style:preserve-3d}
+.hero-badge,.hero h1,.hero-sub,.hero-btns,.trust-strip{transform-style:preserve-3d}
+.hero h1{animation:none}
+.facts{position:relative;isolation:isolate}
+.facts::before{content:"";position:absolute;inset:-1px;z-index:-1;border-radius:inherit;background:linear-gradient(115deg,rgba(49,196,141,.13),transparent 38%,rgba(216,179,106,.13));filter:blur(20px);opacity:.7;pointer-events:none}
+.fact{transform:translateZ(0);transition:transform .7s var(--ifa-motion-ease),background .35s ease}
+html.ifa-motion-ready .facts .fact{opacity:0;transform:translate3d(0,24px,0)}
+html.ifa-motion-ready .facts.ifa-in-view .fact{opacity:1;transform:translate3d(0,0,0)}
+html.ifa-motion-ready .facts .fact:nth-child(1){transition-delay:80ms}
+html.ifa-motion-ready .facts .fact:nth-child(2){transition-delay:160ms}
+html.ifa-motion-ready .facts .fact:nth-child(3){transition-delay:240ms}
+html.ifa-motion-ready .facts .fact:nth-child(4){transition-delay:320ms}
+.course-card{transform-style:preserve-3d;will-change:transform;transition:transform .65s var(--ifa-motion-ease),border-color .4s ease,box-shadow .4s ease}
+.course-card .cc-img{transform:translateZ(16px)}
+.course-card .cc-body{transform:translateZ(8px)}
+html.ifa-motion-ready .course-card{opacity:0;transform:perspective(1100px) translate3d(0,56px,-24px) rotateX(5deg) scale(.97);transition:opacity .9s var(--ifa-motion-ease),transform 1s var(--ifa-motion-ease),border-color .4s ease,box-shadow .4s ease}
+html.ifa-motion-ready .course-card.ifa-in-view{opacity:1;transform:perspective(1100px) translate3d(0,0,0) rotateX(0) scale(1)}
+html.ifa-motion-ready .course-card:nth-child(2){transition-delay:100ms}
+html.ifa-motion-ready .course-card:nth-child(3){transition-delay:200ms}
+.sec-hd h2{text-wrap:balance}
+.daily-tip-section{position:relative;overflow:hidden;isolation:isolate}
+.daily-tip-section::after{content:"";position:absolute;z-index:-1;width:340px;height:340px;right:-150px;top:-190px;border-radius:50%;background:radial-gradient(circle,rgba(216,179,106,.17),transparent 68%);pointer-events:none}
+.faq-item{transition:transform .45s var(--ifa-motion-ease),border-color .3s ease,background .3s ease}
+.faq-item:hover{transform:translate3d(0,-3px,0)}
+@media(hover:hover) and (pointer:fine){
+ .course-card.ifa-tilt-active{transition:transform .12s ease-out,border-color .4s ease,box-shadow .4s ease}
+}
+@media(max-width:760px){
+ html{scroll-padding-top:72px}
+ html.ifa-motion-ready [data-ifa-reveal]{transform:translate3d(0,24px,0);transition-duration:.65s;will-change:opacity}
+ html.ifa-motion-ready .course-card{transform:translate3d(0,28px,0) scale(.99)}
+ html.ifa-motion-ready .course-card.ifa-in-view{transform:translate3d(0,0,0) scale(1)}
+ .course-card .cc-img,.course-card .cc-body{transform:none}
+ #ifa-scroll-progress{height:2px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ #ifa-scroll-progress{display:none}
+ html.ifa-motion-ready [data-ifa-reveal],html.ifa-motion-ready .facts .fact,html.ifa-motion-ready .course-card{opacity:1!important;transform:none!important;transition:none!important;will-change:auto}
+ .faq-item:hover{transform:none}
+}
