@@ -1,0 +1,52 @@
+/* ICT Forex Academy — premium inner-page layer (scoped to Free Learning) */
+.ifa-premium-page{
+  background:
+    radial-gradient(ellipse at 12% 8%,rgba(49,196,141,.12),transparent 34rem),
+    radial-gradient(ellipse at 88% 24%,rgba(216,179,106,.10),transparent 32rem),
+    #070a10!important;
+  color:#f7f5ef;
+}
+.ifa-premium-page>div:first-child{
+  background:linear-gradient(100deg,#9a7134,#d8b36a 42%,#8eaa91)!important;
+  color:#101116!important;
+  letter-spacing:.045em;
+}
+.ifa-premium-page header{
+  background:rgba(5,8,13,.86)!important;
+  border-bottom:1px solid rgba(216,179,106,.2)!important;
+  box-shadow:0 14px 42px rgba(0,0,0,.28)!important;
+}
+.ifa-premium-page main{position:relative;isolation:isolate}
+.ifa-premium-page main>div:first-child{padding:clamp(26px,5vw,54px) 18px;border:1px solid rgba(216,179,106,.18);border-radius:26px;background:linear-gradient(135deg,rgba(15,21,28,.86),rgba(8,12,18,.62));box-shadow:0 24px 70px rgba(0,0,0,.24)}
+.ifa-premium-page main>div:first-child h2{font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.055em;line-height:1.04}
+.ifa-premium-page main>div:first-child p{font-size:clamp(.82rem,1.5vw,.98rem);line-height:1.8}
+.ifa-premium-page main>.grid>div{
+  border-color:rgba(216,179,106,.2)!important;
+  background:linear-gradient(145deg,rgba(17,23,31,.94),rgba(8,12,18,.9))!important;
+  box-shadow:0 20px 55px rgba(0,0,0,.28);
+  transition:transform .45s cubic-bezier(.2,.75,.25,1),border-color .35s ease,box-shadow .35s ease;
+}
+.ifa-premium-page main>.grid>div:hover{
+  transform:translateY(-7px);
+  border-color:rgba(216,179,106,.55)!important;
+  box-shadow:0 28px 68px rgba(0,0,0,.4),0 0 28px rgba(216,179,106,.07);
+}
+.ifa-premium-page main>div:last-child{
+  border-color:rgba(216,179,106,.28)!important;
+  background:linear-gradient(110deg,rgba(216,179,106,.13),rgba(13,18,25,.94) 58%,rgba(49,196,141,.08))!important;
+  box-shadow:0 24px 65px rgba(0,0,0,.3);
+}
+.ifa-premium-page a:focus-visible,.ifa-premium-page button:focus-visible{outline:2px solid #e7c987;outline-offset:3px}
+.ifa-premium-page footer{background:rgba(3,6,10,.9)!important;border-color:rgba(216,179,106,.16)!important}
+.ifa-premium-page .ifa-reveal{opacity:1;transform:none}
+.ifa-premium-page.ifa-reveal-ready .ifa-reveal{opacity:0;transform:translate3d(0,28px,0) scale(.99);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.ifa-premium-page.ifa-reveal-ready .ifa-reveal.ifa-visible{opacity:1;transform:translate3d(0,0,0) scale(1)}
+@media(max-width:640px){
+  .ifa-premium-page main{padding-left:16px;padding-right:16px}
+  .ifa-premium-page main>div:first-child{border-radius:19px}
+  .ifa-premium-page main>.grid>div:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-premium-page *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+  .ifa-premium-page.ifa-reveal-ready .ifa-reveal{opacity:1;transform:none}
+}
