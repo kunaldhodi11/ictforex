@@ -151,3 +151,131 @@
  .ifa-premium-vip main>div:first-child,.ifa-premium-vip #vip-content-section{animation:none!important}
  .ifa-premium-vip *{scroll-behavior:auto!important;transition:none!important}
 }
+
+
+/* VIP Academy — premium visual refinement v3 */
+.ifa-premium-vip{
+ --vip-gold:#d8b36a;--vip-gold-bright:#f3dca8;--vip-muted:#9aa5b3;
+ background:
+  radial-gradient(ellipse at 50% -12%,rgba(216,179,106,.13),transparent 42rem),
+  radial-gradient(ellipse at 4% 42%,rgba(35,164,125,.07),transparent 30rem),
+  #070a10!important;
+}
+.ifa-premium-vip header{
+ padding:13px clamp(16px,4vw,48px)!important;
+ background:rgba(7,10,16,.92)!important;
+ border-bottom:1px solid rgba(216,179,106,.16)!important;
+ box-shadow:0 10px 35px rgba(0,0,0,.25)!important;
+}
+.ifa-premium-vip header>a>div:first-child{
+ box-shadow:0 0 0 1px rgba(216,179,106,.28),0 0 24px rgba(216,179,106,.13)!important;
+}
+.ifa-premium-vip header nav a{
+ border-radius:999px!important;
+ border-color:rgba(216,179,106,.25)!important;
+ background:rgba(216,179,106,.07)!important;
+ color:#e8d5ad!important;
+ padding:9px 16px!important;
+}
+.ifa-premium-vip main{
+ max-width:1120px!important;
+ padding-top:clamp(26px,5vw,58px)!important;
+ padding-bottom:32px!important;
+ gap:clamp(22px,3vw,34px)!important;
+}
+.ifa-premium-vip main>div:first-child{
+ border-color:rgba(216,179,106,.3)!important;
+ border-radius:30px!important;
+ background:
+  radial-gradient(ellipse at 50% 0%,rgba(216,179,106,.16),transparent 56%),
+  linear-gradient(145deg,#151a20 0%,#0c1118 55%,#090d13 100%)!important;
+ box-shadow:0 35px 90px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.055)!important;
+}
+.ifa-premium-vip main>div:first-child>span{
+ color:#f3dca8!important;
+ background:rgba(216,179,106,.09)!important;
+ border:1px solid rgba(216,179,106,.32)!important;
+ box-shadow:0 8px 30px rgba(0,0,0,.22)!important;
+}
+.ifa-premium-vip main>div:first-child h2{
+ margin-top:22px!important;
+ margin-bottom:16px!important;
+ text-shadow:0 8px 35px rgba(0,0,0,.45);
+}
+.ifa-premium-vip #vip-status-banner{
+ margin-top:30px!important;
+ border:1px solid rgba(216,179,106,.25)!important;
+ background:linear-gradient(145deg,rgba(5,9,14,.96),rgba(12,17,24,.96))!important;
+ box-shadow:0 22px 55px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.035)!important;
+}
+.ifa-premium-vip #vip-status-banner>div:first-child>p:first-child{
+ color:#e9cb8c!important;
+ font-size:12px!important;
+ letter-spacing:.025em;
+}
+.ifa-premium-vip #vip-status-banner .rounded-xl.border{
+ border-radius:14px!important;
+}
+.ifa-premium-vip #vip-status-banner select,
+.ifa-premium-vip #vip-status-banner input{
+ min-height:44px;
+ border:1px solid rgba(148,163,184,.22)!important;
+ background:#0b1119!important;
+ color:#f4f1e9!important;
+ border-radius:11px!important;
+}
+.ifa-premium-vip #vip-status-banner select:focus,
+.ifa-premium-vip #vip-status-banner input:focus{
+ border-color:rgba(216,179,106,.75)!important;
+ box-shadow:0 0 0 3px rgba(216,179,106,.10);
+}
+.ifa-premium-vip #vip-submit-button{
+ min-height:48px;
+ border:1px solid rgba(255,231,183,.42)!important;
+ border-radius:12px!important;
+ background:linear-gradient(105deg,#c59a50,#f0d69d 52%,#c39a57)!important;
+ color:#15130f!important;
+ box-shadow:0 12px 28px rgba(190,145,65,.17);
+ letter-spacing:.035em;
+}
+.ifa-premium-vip #vip-submit-button:hover:not(:disabled){
+ filter:brightness(1.08);
+ transform:translateY(-2px);
+ box-shadow:0 16px 34px rgba(190,145,65,.23);
+}
+.ifa-premium-vip #vip-content-section{
+ border:1px solid rgba(216,179,106,.27)!important;
+ background:
+  radial-gradient(ellipse at 100% 0%,rgba(216,179,106,.08),transparent 38%),
+  linear-gradient(145deg,#121922,#090e15)!important;
+ box-shadow:0 26px 70px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.035)!important;
+}
+.ifa-premium-vip #vip-content-section>div:first-child>div:first-child>p:first-child{
+ color:#d8b36a!important;
+}
+.ifa-premium-vip #vip-content-section>span{
+ background:rgba(216,179,106,.08);
+ border-color:rgba(216,179,106,.3)!important;
+ color:#efd49d!important;
+}
+.ifa-premium-vip #vip-content-section>a{
+ border:1px solid rgba(255,231,183,.35);
+ border-radius:12px!important;
+ background:linear-gradient(105deg,#c59a50,#f0d69d 55%,#c39a57)!important;
+ color:#17130c!important;
+ box-shadow:0 14px 34px rgba(190,145,65,.17)!important;
+}
+.ifa-premium-vip footer{
+ padding:26px 16px!important;
+ color:#7f8997!important;
+ background:#06090e!important;
+ border-top:1px solid rgba(216,179,106,.14)!important;
+}
+.ifa-premium-vip footer a{color:#d8b36a!important}
+@media(max-width:640px){
+ .ifa-premium-vip main{padding-top:22px!important;gap:18px!important}
+ .ifa-premium-vip main>div:first-child{border-radius:22px!important}
+ .ifa-premium-vip #vip-status-banner{margin-top:22px!important}
+ .ifa-premium-vip #vip-content-section{border-radius:19px!important}
+ .ifa-premium-vip header nav a{padding:8px 12px!important}
+}
