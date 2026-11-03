@@ -208,3 +208,76 @@ body{color:var(--ifa-text);text-rendering:optimizeLegibility}
   .hero-market-visual{translate:none!important;transform:none!important}
   .course-card::before{display:none}
 }
+
+
+/* PHASE 3 — cinematic bull/bear hero lighting and refined scroll rhythm.
+   The approved background image itself is intentionally unchanged. */
+#bull-bear-background{
+  isolation:isolate;
+  background-attachment:fixed;
+}
+#bull-bear-background::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 16% 38%,rgba(39,190,132,.13),transparent 34%),
+    radial-gradient(ellipse at 84% 38%,rgba(215,76,91,.13),transparent 34%),
+    linear-gradient(180deg,rgba(4,7,12,.10),rgba(4,7,12,.04) 42%,rgba(4,7,12,.30));
+}
+.hero{
+  isolation:isolate;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:5% 7% 0;
+  pointer-events:none;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(5,9,14,.30),transparent 68%);
+  filter:blur(22px);
+}
+.hero-badge{
+  border-color:rgba(226,190,124,.38);
+  background:rgba(10,15,19,.58);
+  backdrop-filter:blur(8px);
+}
+.hero h1{
+  text-wrap:balance;
+}
+.hero-sub{
+  text-wrap:pretty;
+}
+.hero-btns a{
+  min-height:52px;
+}
+.facts .fact:nth-child(1){transition-delay:40ms}
+.facts .fact:nth-child(2){transition-delay:90ms}
+.facts .fact:nth-child(3){transition-delay:140ms}
+.facts .fact:nth-child(4){transition-delay:190ms}
+.course-card:nth-child(1){--ifa-card-delay:40ms}
+.course-card:nth-child(2){--ifa-card-delay:110ms}
+.course-card:nth-child(3){--ifa-card-delay:180ms}
+.language-option:focus-visible,
+.language-trigger:focus-visible,
+.mobile-close:focus-visible,
+.hamburger:focus-visible{
+  outline:2px solid var(--ifa-gold-bright);
+  outline-offset:3px;
+}
+@media(max-width:760px){
+  #bull-bear-background{background-attachment:scroll}
+  #bull-bear-background::after{
+    background:
+      radial-gradient(ellipse at 12% 34%,rgba(39,190,132,.09),transparent 38%),
+      radial-gradient(ellipse at 88% 34%,rgba(215,76,91,.09),transparent 38%),
+      linear-gradient(180deg,rgba(4,7,12,.20),rgba(4,7,12,.44));
+  }
+  .hero::before{inset:0 0 0;filter:blur(12px)}
+  .hero-btns a{width:min(100%,330px);justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+  #bull-bear-background{background-attachment:scroll}
+}
