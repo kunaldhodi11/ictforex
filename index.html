@@ -428,6 +428,63 @@ body{line-height:1.65;letter-spacing:.005em}
   .section{padding-left:22px;padding-right:22px}
 }
 
+
+/* CINEMATIC 3D MARKET MOTION — decorative and GPU-light */
+.market-3d-stage{
+  position:fixed;inset:0;z-index:1.5;pointer-events:none;overflow:hidden;
+  perspective:1100px;isolation:isolate;opacity:.23;
+}
+.market-3d-animal{
+  position:absolute;width:clamp(210px,27vw,390px);height:auto;
+  filter:drop-shadow(0 22px 28px rgba(0,0,0,.48));
+  transform-style:preserve-3d;will-change:transform,opacity;
+}
+.market-3d-animal svg{display:block;width:100%;height:auto;overflow:visible}
+.market-3d-bull{left:-3%;top:20%;animation:bullMarketFloat 12s ease-in-out infinite}
+.market-3d-bear{right:-4%;bottom:12%;animation:bearMarketFloat 14s ease-in-out infinite}
+@keyframes bullMarketFloat{
+  0%,100%{transform:translate3d(0,0,-35px) rotateY(16deg) rotateZ(-2deg)}
+  50%{transform:translate3d(20px,-17px,25px) rotateY(5deg) rotateZ(1deg)}
+}
+@keyframes bearMarketFloat{
+  0%,100%{transform:translate3d(0,0,-30px) rotateY(-16deg) rotateZ(2deg)}
+  50%{transform:translate3d(-18px,14px,20px) rotateY(-5deg) rotateZ(-1deg)}
+}
+.market-animal-label{
+  position:absolute;font:800 10px 'Inter',sans-serif;letter-spacing:.28em;
+  text-transform:uppercase;opacity:.7;text-shadow:0 2px 12px #000;
+}
+.market-bull-label{left:7%;top:calc(20% + clamp(130px,17vw,215px));color:#54e0ae}
+.market-bear-label{right:7%;bottom:calc(12% + clamp(130px,17vw,215px));color:#f1a0a0}
+.hero h1{transform-style:preserve-3d;animation:heroTitleEnter .9s cubic-bezier(.2,.75,.25,1) both}
+@keyframes heroTitleEnter{
+  from{opacity:0;transform:perspective(900px) rotateX(18deg) translateY(24px);filter:blur(5px)}
+  to{opacity:1;transform:perspective(900px) rotateX(0) translateY(0);filter:blur(0)}
+}
+.sec-hd h2{animation:sectionTitleEnter .7s ease both}
+@keyframes sectionTitleEnter{
+  from{opacity:.55;transform:perspective(700px) rotateX(10deg) translateY(10px)}
+  to{opacity:1;transform:perspective(700px) rotateX(0) translateY(0)}
+}
+.course-card{transform-style:preserve-3d}
+.course-card:hover{transform:perspective(900px) translateY(-5px) rotateX(1.2deg);box-shadow:0 22px 42px rgba(0,0,0,.36)}
+.cc-img{transform-style:preserve-3d}
+.cc-img>*{filter:drop-shadow(0 5px 12px rgba(0,0,0,.28))}
+@media(max-width:768px),(pointer:coarse){
+  .market-3d-stage{opacity:.12}
+  .market-3d-animal{width:clamp(150px,34vw,220px)}
+  .market-3d-bull{left:-12%;top:17%}
+  .market-3d-bear{right:-12%;bottom:13%}
+  .market-animal-label{display:none}
+  .hero h1{animation:none}
+  .sec-hd h2{animation:none}
+  .course-card:hover{transform:translateY(-2px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .market-3d-animal,.hero h1,.sec-hd h2{animation:none!important}
+  .market-3d-stage{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -437,6 +494,49 @@ body{line-height:1.65;letter-spacing:.005em}
 
 <!-- 8K ULTRA-HD HIGH VISIBILITY LIVE CANDLESTICK BACKGROUND CANVAS -->
 <canvas id="market-cinema-bg" aria-hidden="true"></canvas>
+
+
+<!-- DECORATIVE 3D-STYLE BULL / BEAR MARKET BACKDROP -->
+<div class="market-3d-stage" aria-hidden="true">
+  <div class="market-3d-animal market-3d-bull">
+    <svg viewBox="0 0 360 230" role="presentation">
+      <defs>
+        <linearGradient id="bullMetal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a7ffe0"/><stop offset=".42" stop-color="#20bd8d"/><stop offset="1" stop-color="#075b50"/></linearGradient>
+        <linearGradient id="bullHorn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0c5"/><stop offset="1" stop-color="#c18d43"/></linearGradient>
+        <linearGradient id="bullSide" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#40e0ad" stop-opacity=".75"/><stop offset="1" stop-color="#063d3c" stop-opacity=".95"/></linearGradient>
+      </defs>
+      <path d="M66 91 Q83 52 154 54 L235 67 Q266 77 276 111 L260 147 Q223 166 143 158 L91 145 Q64 128 66 91Z" fill="url(#bullMetal)" stroke="#b2ffe4" stroke-opacity=".7" stroke-width="3"/>
+      <path d="M90 111 Q160 132 263 111 L260 147 Q218 169 143 158 L91 145Z" fill="url(#bullSide)"/>
+      <path d="M237 75 Q268 58 293 78 L315 105 L301 139 Q279 154 255 133 L239 111Z" fill="url(#bullMetal)" stroke="#b2ffe4" stroke-width="2"/>
+      <path d="M260 77 Q244 43 222 43 Q239 66 238 83 M291 79 Q317 45 337 52 Q322 69 315 91" fill="none" stroke="url(#bullHorn)" stroke-width="10" stroke-linecap="round"/>
+      <path d="M301 117 Q323 109 332 120 Q319 137 296 133Z" fill="#073c39"/>
+      <circle cx="291" cy="94" r="4" fill="#eafff5"/>
+      <path d="M100 143 L94 196 L111 196 L128 151 M150 157 L145 198 L162 198 L177 157 M222 151 L224 195 L242 195 L246 143" fill="none" stroke="#159c78" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M69 91 Q43 79 35 57 Q54 71 76 68" fill="none" stroke="#24c997" stroke-width="8" stroke-linecap="round"/>
+      <path d="M90 75 Q150 46 220 77" fill="none" stroke="#e0fff4" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="market-animal-label market-bull-label">Bullish Momentum</div>
+  <div class="market-3d-animal market-3d-bear">
+    <svg viewBox="0 0 360 230" role="presentation">
+      <defs>
+        <linearGradient id="bearMetal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd0d0"/><stop offset=".45" stop-color="#bd5964"/><stop offset="1" stop-color="#592532"/></linearGradient>
+        <linearGradient id="bearSide" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e47d85" stop-opacity=".75"/><stop offset="1" stop-color="#421c2a" stop-opacity=".95"/></linearGradient>
+      </defs>
+      <path d="M55 94 Q72 55 145 59 L231 68 Q267 77 279 113 L260 149 Q219 167 142 160 L83 145 Q51 127 55 94Z" fill="url(#bearMetal)" stroke="#ffd2d4" stroke-opacity=".65" stroke-width="3"/>
+      <path d="M78 112 Q164 132 269 112 L260 149 Q219 167 142 160 L83 145Z" fill="url(#bearSide)"/>
+      <path d="M240 78 Q270 58 300 78 L320 108 L304 139 Q278 153 252 132 L239 110Z" fill="url(#bearMetal)" stroke="#ffd2d4" stroke-width="2"/>
+      <circle cx="267" cy="71" r="17" fill="#8e3d4b" stroke="#ffd2d4" stroke-width="3"/>
+      <circle cx="298" cy="70" r="16" fill="#8e3d4b" stroke="#ffd2d4" stroke-width="3"/>
+      <path d="M301 116 Q324 106 337 121 Q323 139 296 133Z" fill="#3b1824"/>
+      <circle cx="292" cy="95" r="4" fill="#fff0f0"/>
+      <path d="M91 143 L84 194 L105 194 L125 151 M149 157 L144 197 L164 197 L177 158 M222 153 L228 195 L248 195 L249 145" fill="none" stroke="#8d3b4a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M57 96 Q37 83 27 68" fill="none" stroke="#b9505e" stroke-width="9" stroke-linecap="round"/>
+      <path d="M83 79 Q151 49 222 80" fill="none" stroke="#ffe6e7" stroke-opacity=".48" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="market-animal-label market-bear-label">Bearish Momentum</div>
+</div>
 
 <!-- HEADER -->
 <header class="header" role="banner">
