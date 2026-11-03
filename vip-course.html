@@ -33,6 +33,13 @@
     </script>
   <link rel="stylesheet" href="/assets/css/site-polish.css">
   <link rel="stylesheet" href="/assets/css/premium-inner-pages.css">
+  <style>
+    /* Keep all VIP page information readable even if an animation script or observer fails. */
+    .ifa-premium-vip main > div:first-child,
+    .ifa-premium-vip #vip-content-section,
+    .ifa-premium-vip footer { opacity:1; visibility:visible; }
+    .ifa-premium-vip #vip-content-section { transition:opacity .3s ease; }
+  </style>
 </head>
 <body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between ifa-premium-vip">
 
@@ -151,22 +158,7 @@
         </p>
     </footer>
 
-    <!-- IFA VIP PAGE MOTION -->
-    <script>
-      (function () {
-        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduce || !("IntersectionObserver" in window)) return;
-        var items = document.querySelectorAll("main > div, main > section, footer");
-        document.body.classList.add("ifa-reveal-ready");
-        items.forEach(function (item) { item.classList.add("ifa-reveal"); });
-        var observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) { entry.target.classList.add("ifa-visible"); observer.unobserve(entry.target); }
-          });
-        }, { threshold: 0.1, rootMargin: "0px 0px -5% 0px" });
-        items.forEach(function (item) { observer.observe(item); });
-      })();
-    </script>
+    <!-- VIP content is intentionally visible without JavaScript; no hidden-on-load reveal. -->
 
     <!-- Firebase Auth Protection Script -->
     <script type="module">
@@ -261,7 +253,16 @@
         });
         onAuthStateChanged(auth, async (user) => {
             const authLink = document.getElementById('auth-nav-link');
-            if (!user) { window.location.href = "login.html"; return; }
+            if (!user) {
+                if (authLink) {
+                    authLink.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Apply';
+                    authLink.href = "login.html";
+                }
+                statusMessage.textContent = 'Please log in to submit your VIP access application. You can review the VIP course information on this page without signing in.';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Log in to Apply for VIP Access';
+                return;
+            }
             const userName = localStorage.getItem('userName') || "User";
             if (authLink) {
                 authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
