@@ -78,3 +78,42 @@
 .ifa-premium-vip.ifa-reveal-ready .ifa-reveal.ifa-visible{opacity:1;transform:translate3d(0,0,0) scale(1)}
 @media(max-width:640px){.ifa-premium-vip main{padding-left:15px;padding-right:15px}.ifa-premium-vip main>div:first-child{border-radius:20px!important;padding:22px 15px!important}}
 @media(prefers-reduced-motion:reduce){.ifa-premium-vip *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.ifa-premium-vip.ifa-reveal-ready .ifa-reveal{opacity:1;transform:none}}
+
+
+/* VIP Lessons — cinematic learning workspace */
+.ifa-premium-lessons{--ifa-gold:#d8b36a;--ifa-gold-light:#f1d49a;background:radial-gradient(ellipse at 8% 4%,rgba(37,170,125,.12),transparent 34rem),radial-gradient(ellipse at 92% 20%,rgba(216,179,106,.10),transparent 38rem),linear-gradient(180deg,#080c12 0%,#070a10 48%,#090d13 100%)!important;color:#f7f5ef}
+.ifa-premium-lessons header{position:sticky;top:0;z-index:40;background:rgba(5,8,13,.82)!important;border-bottom:1px solid rgba(216,179,106,.2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.ifa-premium-lessons header a{color:#e8ca8d!important;transition:color .25s ease,transform .25s ease}
+.ifa-premium-lessons header a:hover{color:#fff!important;transform:translateX(-3px)}
+.ifa-premium-lessons main{position:relative;isolation:isolate}
+.ifa-premium-lessons main:before{content:"";position:absolute;z-index:-1;inset:4% -8% auto;height:520px;pointer-events:none;background:radial-gradient(ellipse,rgba(216,179,106,.055),transparent 68%)}
+.ifa-premium-lessons .hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 82% 0%,rgba(216,179,106,.2),transparent 42%),radial-gradient(ellipse at 0% 100%,rgba(34,197,139,.13),transparent 48%),linear-gradient(135deg,#171b20 0%,#101720 48%,#0a1018 100%)!important;border:1px solid rgba(216,179,106,.4)!important;box-shadow:0 30px 90px rgba(0,0,0,.4),inset 0 1px rgba(255,255,255,.07)}
+.ifa-premium-lessons .hero:after{content:"";position:absolute;right:-90px;top:-160px;width:390px;height:390px;border-radius:50%;border:1px solid rgba(216,179,106,.16);box-shadow:0 0 0 28px rgba(216,179,106,.025),0 0 0 58px rgba(216,179,106,.018);pointer-events:none}
+.ifa-premium-lessons .hero h1{max-width:900px;line-height:1.04;letter-spacing:-.055em;text-wrap:balance}
+.ifa-premium-lessons .hero h1 span{background:linear-gradient(100deg,#f5dda8,#c69a50 55%,#f4e4bd);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ifa-premium-lessons .hero p{color:#c5cbd2;line-height:1.85;font-size:clamp(.9rem,1.4vw,1.02rem)}
+.ifa-premium-lessons .hero .flex span{background:rgba(216,179,106,.09)!important;color:#ead4a8!important;border:1px solid rgba(216,179,106,.2);letter-spacing:.025em}
+.ifa-premium-lessons .kicker{color:#d8b36a!important;letter-spacing:.17em;font-size:10px}
+.ifa-premium-lessons h2{font-size:clamp(1.45rem,3vw,2.1rem);line-height:1.15;letter-spacing:-.035em;text-wrap:balance}
+.ifa-premium-lessons h3{color:#efd39a!important;line-height:1.35}
+.ifa-premium-lessons p{color:#bdc6d1;line-height:1.78}
+.ifa-premium-lessons .card{background:linear-gradient(145deg,rgba(18,24,32,.96),rgba(10,15,22,.96))!important;border:1px solid rgba(216,179,106,.17)!important;border-radius:17px!important;box-shadow:0 14px 42px rgba(0,0,0,.2);transition:transform .35s cubic-bezier(.2,.75,.25,1),border-color .3s ease,box-shadow .3s ease}
+.ifa-premium-lessons .card:hover{border-color:rgba(216,179,106,.38)!important;box-shadow:0 22px 55px rgba(0,0,0,.3)}
+.ifa-premium-lessons nav.card{display:flex;flex-wrap:wrap;gap:5px;align-items:center;background:rgba(10,15,22,.88)!important;border-color:rgba(216,179,106,.28)!important;box-shadow:0 14px 36px rgba(0,0,0,.22)}
+.ifa-premium-lessons nav.card>b{width:100%;padding:4px 7px 7px;color:#e6c78c!important;letter-spacing:.15em}
+.ifa-premium-lessons nav.card a{display:inline-flex;align-items:center;min-height:34px;padding:7px 10px;color:#c5ccd5!important;border:1px solid transparent;border-radius:8px;transition:background .25s ease,border-color .25s ease,color .25s ease}
+.ifa-premium-lessons nav.card a:hover{background:rgba(216,179,106,.1)!important;border-color:rgba(216,179,106,.25);color:#fff!important}
+.ifa-premium-lessons .lesson{background:linear-gradient(145deg,rgba(19,26,35,.98),rgba(10,15,22,.98))!important}
+.ifa-premium-lessons .lesson h3{font-size:1rem}
+.ifa-premium-lessons .diagram,.ifa-premium-lessons .tv-panel{border-color:rgba(216,179,106,.22)!important;box-shadow:0 16px 42px rgba(0,0,0,.25)}
+.ifa-premium-lessons .tv-top{background:#111821;border-bottom-color:#303b49}
+.ifa-premium-lessons .tv-live-card{box-shadow:0 18px 48px rgba(0,0,0,.28)}
+.ifa-premium-lessons .core-chart{box-shadow:0 12px 32px rgba(0,0,0,.22)}
+.ifa-premium-lessons #checklist input{accent-color:#d8b36a}
+.ifa-premium-lessons a:focus-visible,.ifa-premium-lessons button:focus-visible,.ifa-premium-lessons input:focus-visible{outline:2px solid #f1d49a;outline-offset:3px}
+.ifa-premium-lessons footer{background:rgba(3,6,10,.9);border-top:1px solid rgba(216,179,106,.17);color:#929ba7!important}
+.ifa-premium-lessons.ifa-reveal-ready .ifa-reveal{opacity:0;transform:translate3d(0,26px,0);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.ifa-premium-lessons.ifa-reveal-ready .ifa-reveal.ifa-visible{opacity:1;transform:translate3d(0,0,0)}
+@media(max-width:760px){.ifa-premium-lessons main{padding-left:14px;padding-right:14px}.ifa-premium-lessons .hero{padding:25px 19px!important;border-radius:21px!important}.ifa-premium-lessons .hero:after{right:-220px;opacity:.55}.ifa-premium-lessons nav.card{position:relative;top:auto;max-height:none;overflow:visible}.ifa-premium-lessons nav.card a{font-size:11px;padding:6px 8px}.ifa-premium-lessons .card{border-radius:14px!important}.ifa-premium-lessons .tv-live-mount{height:390px}.ifa-premium-lessons .tv-live-grid{grid-template-columns:1fr}}
+@media(hover:hover) and (pointer:fine){.ifa-premium-lessons .lesson:hover{transform:translateY(-4px)}}
+@media(prefers-reduced-motion:reduce){.ifa-premium-lessons *{scroll-behavior:auto!important;animation:none!important;transition:none!important}.ifa-premium-lessons.ifa-reveal-ready .ifa-reveal{opacity:1;transform:none}}
