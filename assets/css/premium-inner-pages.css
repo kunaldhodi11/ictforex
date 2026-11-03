@@ -117,3 +117,37 @@
 @media(max-width:760px){.ifa-premium-lessons main{padding-left:14px;padding-right:14px}.ifa-premium-lessons .hero{padding:25px 19px!important;border-radius:21px!important}.ifa-premium-lessons .hero:after{right:-220px;opacity:.55}.ifa-premium-lessons nav.card{position:relative;top:auto;max-height:none;overflow:visible}.ifa-premium-lessons nav.card a{font-size:11px;padding:6px 8px}.ifa-premium-lessons .card{border-radius:14px!important}.ifa-premium-lessons .tv-live-mount{height:390px}.ifa-premium-lessons .tv-live-grid{grid-template-columns:1fr}}
 @media(hover:hover) and (pointer:fine){.ifa-premium-lessons .lesson:hover{transform:translateY(-4px)}}
 @media(prefers-reduced-motion:reduce){.ifa-premium-lessons *{scroll-behavior:auto!important;animation:none!important;transition:none!important}.ifa-premium-lessons.ifa-reveal-ready .ifa-reveal{opacity:1;transform:none}}
+
+
+/* VIP polish v2 — restrained motion, clear hierarchy, low-cost effects */
+.ifa-premium-vip{overflow-x:hidden;scroll-behavior:smooth}
+.ifa-premium-vip header{position:sticky;top:0;z-index:50;backdrop-filter:saturate(125%) blur(10px);-webkit-backdrop-filter:saturate(125%) blur(10px)}
+.ifa-premium-vip main{isolation:isolate}
+.ifa-premium-vip main>div:first-child{position:relative;overflow:hidden;padding:clamp(24px,4.5vw,48px)!important;animation:ifa-vip-enter .75s cubic-bezier(.19,1,.22,1) both}
+.ifa-premium-vip main>div:first-child:before{content:"";position:absolute;inset:-45% auto auto 50%;width:min(75vw,650px);height:min(75vw,650px);border:1px solid rgba(216,179,106,.12);border-radius:50%;transform:translateX(-50%);box-shadow:0 0 0 32px rgba(216,179,106,.025),0 0 0 70px rgba(216,179,106,.018);pointer-events:none}
+.ifa-premium-vip main>div:first-child>*{position:relative}
+.ifa-premium-vip main>div:first-child>span{display:inline-flex;align-items:center;gap:8px;padding:8px 14px!important;font-size:10px!important;letter-spacing:.16em}
+.ifa-premium-vip main>div:first-child h2{max-width:850px;margin-left:auto;margin-right:auto;font-size:clamp(1.85rem,4.2vw,3.25rem)!important}
+.ifa-premium-vip main>div:first-child>p{max-width:680px;color:#c5cbd2!important}
+.ifa-premium-vip #vip-status-banner{padding:clamp(16px,3vw,28px)!important;border-radius:20px!important}
+.ifa-premium-vip #vip-status-banner .grid>div{border-color:rgba(216,179,106,.18)!important;background:linear-gradient(145deg,rgba(23,29,37,.94),rgba(10,15,22,.96))!important;transition:transform .3s ease,border-color .3s ease}
+.ifa-premium-vip #vip-status-banner .grid>div:hover{transform:translateY(-3px);border-color:rgba(216,179,106,.42)!important}
+.ifa-premium-vip #vip-status-banner a[class*="bg-green"]{background:linear-gradient(100deg,#d8b36a,#f0d69d)!important;color:#15130f!important;letter-spacing:.035em}
+.ifa-premium-vip #vip-content-section{position:relative;overflow:hidden;border-radius:24px!important;padding:clamp(20px,3vw,32px)!important;animation:ifa-vip-enter .9s .12s cubic-bezier(.19,1,.22,1) both}
+.ifa-premium-vip #vip-content-section:before{content:"";position:absolute;right:-100px;top:-140px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(216,179,106,.10),transparent 68%);pointer-events:none}
+.ifa-premium-vip #vip-content-section>*{position:relative}
+.ifa-premium-vip #vip-content-section h3{font-size:clamp(1.25rem,2.5vw,1.8rem)!important}
+.ifa-premium-vip button,.ifa-premium-vip a{transition:transform .25s ease,filter .25s ease,background-color .25s ease}
+.ifa-premium-vip button:active,.ifa-premium-vip #vip-content-section>a:active{transform:scale(.985)}
+.ifa-premium-vip footer{margin-top:3rem!important}
+@keyframes ifa-vip-enter{from{opacity:0;transform:translate3d(0,20px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@media(max-width:640px){
+ .ifa-premium-vip header{backdrop-filter:none;-webkit-backdrop-filter:none}
+ .ifa-premium-vip main>div:first-child{padding:24px 15px!important}
+ .ifa-premium-vip #vip-status-banner .grid>div:hover{transform:none}
+ .ifa-premium-vip main>div:first-child:before{width:420px;height:420px}
+}
+@media(prefers-reduced-motion:reduce){
+ .ifa-premium-vip main>div:first-child,.ifa-premium-vip #vip-content-section{animation:none!important}
+ .ifa-premium-vip *{scroll-behavior:auto!important;transition:none!important}
+}
