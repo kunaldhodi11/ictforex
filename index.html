@@ -82,7 +82,7 @@ button{font-family:inherit;cursor:pointer}
 
 .nav-desktop{display:flex;align-items:center;gap:8px;position:relative;z-index:10}
 .nav-desktop a{color:#94a3b8;font-size:12px;font-weight:600;padding:8px 14px;border-radius:10px;transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1)}
-.nav-desktop a:hover{color:#fff;background:rgba(255,255,255,0.1);transform:translateY(-3px) scale(1.09);box-shadow:0 10px 28px rgba(32,217,154,.18)}
+.nav-desktop a:hover{color:#fff;background:rgba(255,255,255,0.1);transform:translateY(-2px) scale(1.03);box-shadow:0 10px 28px rgba(32,217,154,.18)}
 .nav-desktop a.active{color:var(--neon-green);background:rgba(16,185,129,0.15);box-shadow:var(--glow-green)}
 
 /* ==========================================
@@ -94,7 +94,7 @@ button{font-family:inherit;cursor:pointer}
   will-change: transform, box-shadow;
 }
 .btn-primary:hover, .btn-gold:hover, .btn-cc:hover, .btn-tip:hover, .btn-nav-login:hover {
-  transform: translateY(-5px) scale(1.10) !important;
+  transform: translateY(-3px) scale(1.03) !important;
   box-shadow:0 18px 42px rgba(16,185,129,.28),0 0 34px rgba(32,217,154,.18);
 }
 .btn-primary:active, .btn-gold:active, .btn-cc:active {
@@ -147,7 +147,7 @@ button{font-family:inherit;cursor:pointer}
 
 .trust-strip{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 .trust-pill{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:999px;padding:8px 16px;font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:8px;backdrop-filter:blur(12px);box-shadow:0 8px 20px rgba(0,0,0,0.6);transition:all 0.3s ease}
-.trust-pill:hover{color:#fff;border-color:var(--neon-cyan);transform:translateY(-5px) scale(1.07);box-shadow:0 14px 32px rgba(32,217,154,.2)}
+.trust-pill:hover{color:#fff;border-color:var(--neon-cyan);transform:translateY(-3px) scale(1.02);box-shadow:0 14px 32px rgba(32,217,154,.2)}
 
 /* FACTS BAR */
 .facts{display:grid;grid-template-columns:repeat(4,1fr);max-width:1100px;margin:0 auto 60px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:24px;overflow:hidden;backdrop-filter:blur(25px);box-shadow:0 25px 60px rgba(0,0,0,0.8);position:relative;z-index:10}
@@ -167,7 +167,7 @@ button{font-family:inherit;cursor:pointer}
 
 .course-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));gap:24px}
 .course-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:all 0.4s cubic-bezier(.16,1,.3,1);backdrop-filter:blur(25px);box-shadow:0 20px 50px rgba(0,0,0,0.7)}
-.course-card:hover{border-color:var(--neon-green);transform:translateY(-12px) scale(1.075);box-shadow:0 38px 90px rgba(0,0,0,0.92),0 0 42px rgba(16,185,129,0.28)}
+.course-card:hover{border-color:var(--neon-green);transform:translateY(-6px) scale(1.025);box-shadow:0 38px 90px rgba(0,0,0,0.92),0 0 42px rgba(16,185,129,0.28)}
 .cc-img{height:140px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;border-bottom:1px solid rgba(255,255,255,0.08)}
 .cc-badge{position:absolute;top:14px;right:14px;font-size:9px;font-weight:900;text-transform:uppercase;padding:4px 12px;border-radius:999px}
 .cc-body{padding:24px;flex:1;display:flex;flex-direction:column}
@@ -243,7 +243,8 @@ button{font-family:inherit;cursor:pointer}
 
 /* Smooth, accessible motion and crisp high-DPI rendering */
 :focus-visible{outline:2px solid var(--neon-cyan);outline-offset:4px}
-.course-card,.trust-pill,.fact,.nav-desktop a,.btn-primary,.btn-gold,.btn-cc,.btn-tip{will-change:transform}
+/* Avoid persistent GPU layers on every interactive element; promote only during animation. */
+.course-card:hover,.trust-pill:hover,.fact:hover,.nav-desktop a:hover,.btn-primary:hover,.btn-gold:hover,.btn-cc:hover,.btn-tip:hover{will-change:transform}
 .reveal-ready .reveal-on-scroll{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
 .reveal-ready .reveal-on-scroll.is-visible{opacity:1;transform:translateY(0) scale(1)}
 @media(prefers-reduced-motion:reduce){
@@ -1010,7 +1011,7 @@ window.addEventListener('load',function(){
     renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:false,powerPreference:'low-power'});
   }catch(e){console.warn('3D scene unavailable; using static artwork.',e);return;}
   stage.classList.add('webgl-ready');
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.35));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.1));
   renderer.setSize(window.innerWidth,window.innerHeight,false);
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping;
@@ -1100,7 +1101,7 @@ window.addEventListener('load',function(){
   function resize(){
     const w=window.innerWidth,h=window.innerHeight;
     camera.aspect=w/h;camera.position.z=w<700?22:18;camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,w<700?1:1.35));renderer.setSize(w,h,false);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,w<700?1:1.1));renderer.setSize(w,h,false);
     const halfW=camera.position.z*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.aspect;
     bull.position.x=-Math.min(halfW*.57,6.2);bear.position.x=Math.min(halfW*.57,6.2);
     bull.scale.setScalar(w<700?.7:1.02);bear.scale.setScalar(w<700?.68:.98);
