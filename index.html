@@ -109,10 +109,18 @@ button{font-family:inherit;cursor:pointer}
 .hamburger:hover{transform:scale(1.1);background:rgba(255,255,255,0.15)}
 
 /* LANGUAGE SWITCHER */
-.language-switcher{position:relative;display:inline-flex;align-items:center;margin-right:10px;z-index:10}
-.language-switcher select{appearance:none;background:rgba(10,15,30,0.9);color:#f8fafc;border:1px solid var(--glass-border);border-radius:10px;padding:8px 30px 8px 12px;font:700 11px 'Inter',sans-serif;cursor:pointer;transition:all 0.3s ease}
-.language-switcher select:hover{border-color:var(--neon-cyan);box-shadow:var(--glow-cyan)}
-.language-switcher:after{content:'⌄';position:absolute;right:10px;color:#94a3b8;pointer-events:none}
+.language-switcher{position:relative;display:inline-flex;align-items:center;margin-right:10px;z-index:100}
+.language-trigger{display:inline-flex;align-items:center;gap:12px;min-height:38px;padding:8px 11px;background:rgba(8,17,29,.92);color:#f8fafc;border:1px solid rgba(150,185,195,.23);border-radius:10px;font:700 11px 'Inter',sans-serif;cursor:pointer;transition:border-color .2s ease,background .2s ease,box-shadow .2s ease}
+.language-trigger:hover,.language-switcher:focus-within .language-trigger{border-color:rgba(65,218,164,.55);background:rgba(12,31,38,.98);box-shadow:0 6px 22px rgba(13,185,128,.12)}
+.language-chevron{color:#9eb3bf;font-size:14px;transition:transform .22s ease}
+.language-switcher:hover .language-chevron,.language-switcher.open .language-chevron{transform:rotate(180deg)}
+.language-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:174px;padding:7px;border:1px solid rgba(123,190,174,.26);border-radius:13px;background:linear-gradient(145deg,rgba(9,24,34,.98),rgba(9,14,26,.99));box-shadow:0 18px 42px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.05);backdrop-filter:blur(16px);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px) scale(.97);transform-origin:top right;transition:opacity .2s ease,transform .24s cubic-bezier(.2,.75,.25,1),visibility .2s}
+.language-switcher:hover .language-menu,.language-switcher:focus-within .language-menu,.language-switcher.open .language-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1)}
+.language-option{width:100%;display:flex;align-items:center;gap:10px;padding:10px 11px;border:0;border-radius:8px;background:transparent;color:#dce8ed;font:600 12px 'Inter',sans-serif;text-align:left;cursor:pointer;transition:background .18s ease,color .18s ease,transform .18s ease}
+.language-option:hover,.language-option:focus-visible{outline:none;background:linear-gradient(90deg,rgba(20,163,117,.2),rgba(167,54,70,.12));color:#fff;transform:translateX(3px)}
+.language-option .language-check{margin-left:auto;color:#6ee7b7;font-size:11px;opacity:0}
+.language-option[aria-current="true"]{color:#8cf0c5;background:rgba(20,163,117,.11)}
+.language-option[aria-current="true"] .language-check{opacity:1}
 
 /* ==========================================
    8K 3D FLOATING CINEMATIC HERO SECTION
@@ -321,7 +329,7 @@ body{line-height:1.65;letter-spacing:.005em}
 .nav-desktop{gap:3px}
 .nav-desktop a{padding:9px 11px;font-size:12px;white-space:nowrap}
 .language-switcher{margin-right:8px}
-.language-switcher select{font-size:11px}
+.language-trigger{font-size:11px}
 .hero{
   max-width:1100px;
   margin:0 auto;
@@ -379,7 +387,7 @@ body{line-height:1.65;letter-spacing:.005em}
   .nav-desktop{gap:0}
   .nav-desktop a{padding:8px 8px;font-size:11px}
   .language-switcher{margin-right:5px}
-  .language-switcher select{padding:8px 25px 8px 9px}
+  .language-trigger{padding:8px 9px;gap:8px}
   .course-grid{gap:14px}
   .cc-body{padding:18px}
 }
@@ -395,7 +403,7 @@ body{line-height:1.65;letter-spacing:.005em}
   .logo-ring{width:36px;height:36px}
   .brand-title{font-size:11px}
   .brand-sub{font-size:8px}
-  .language-switcher select{padding:7px 23px 7px 8px;font-size:10px}
+  .language-trigger{padding:7px 8px;font-size:10px;gap:6px}
   .hero{padding:56px 18px 48px}
   .hero-badge{font-size:9px;padding:6px 12px;margin-bottom:18px}
   .hero h1{font-size:clamp(34px,9vw,48px);line-height:1.1;letter-spacing:-.04em}
@@ -1052,14 +1060,17 @@ body::after{
     <img class="logo-image" src="/assets/ict-forex-academy-logo.svg" alt="ICT Forex Academy">
   </a>
   <div style="display:flex;align-items:center;">
-    <div class="language-switcher" aria-label="Select website language">
-      <select id="siteLanguage" aria-label="Select language">
-        <option value="en">🇬🇧 English</option>
-        <option value="hi">🌍 हिंदी</option>
-        <option value="es">🇪🇸 Español</option>
-        <option value="ar">🇸🇦 العربية</option>
-        <option value="fr">🇫🇷 Français</option>
-      </select>
+    <div class="language-switcher" id="languageSwitcher">
+      <button class="language-trigger" id="languageTrigger" type="button" aria-label="Choose website language" aria-haspopup="true" aria-expanded="false" aria-controls="languageMenu">
+        <span class="language-trigger-label" id="languageCurrent">🇬🇧 English</span><span class="language-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <div class="language-menu" id="languageMenu" role="menu" aria-label="Website languages">
+        <button type="button" class="language-option" role="menuitem" data-lang="en">🇬🇧 <span>English</span><span class="language-check">✓</span></button>
+        <button type="button" class="language-option" role="menuitem" data-lang="hi">🌍 <span>हिंदी</span><span class="language-check">✓</span></button>
+        <button type="button" class="language-option" role="menuitem" data-lang="es">🇪🇸 <span>Español</span><span class="language-check">✓</span></button>
+        <button type="button" class="language-option" role="menuitem" data-lang="ar">🇸🇦 <span>العربية</span><span class="language-check">✓</span></button>
+        <button type="button" class="language-option" role="menuitem" data-lang="fr">🇫🇷 <span>Français</span><span class="language-check">✓</span></button>
+      </div>
     </div>
     <nav class="nav-desktop" aria-label="Main navigation">
       <a href="/" class="active">Home</a>
@@ -1352,16 +1363,36 @@ onAuthStateChanged(auth,u=>{
 <!-- MULTILINGUAL ROUTING SCRIPT -->
 <script>
 (function(){
- const selector=document.getElementById('siteLanguage');
- if(!selector)return;
+ const wrap=document.getElementById('languageSwitcher');
+ const trigger=document.getElementById('languageTrigger');
+ const menu=document.getElementById('languageMenu');
+ const currentLabel=document.getElementById('languageCurrent');
+ if(!wrap||!trigger||!menu)return;
  const paths={en:'/',hi:'/hi/',es:'/es/',ar:'/ar/',fr:'/fr/'};
- const current=location.pathname.split('/').filter(Boolean)[0];
- const known=['hi','es','ar','fr'];
- const active=known.includes(current)?current:'en';
- selector.value=active;
- selector.addEventListener('change',function(){
-   const lang=this.value;
-   location.href=paths[lang]||'/';
+ const labels={en:'🇬🇧 English',hi:'🌍 हिंदी',es:'🇪🇸 Español',ar:'🇸🇦 العربية',fr:'🇫🇷 Français'};
+ const first=location.pathname.split('/').filter(Boolean)[0];
+ const active=Object.prototype.hasOwnProperty.call(paths,first)?first:'en';
+ currentLabel.textContent=labels[active];
+ const options=[...menu.querySelectorAll('[data-lang]')];
+ options.forEach(option=>{
+   const selected=option.dataset.lang===active;
+   option.setAttribute('aria-current',selected?'true':'false');
+   option.addEventListener('click',()=>{
+     const lang=option.dataset.lang;
+     if(paths[lang])location.href=paths[lang];
+   });
+ });
+ const setOpen=open=>{
+   wrap.classList.toggle('open',open);
+   trigger.setAttribute('aria-expanded',String(open));
+ };
+ trigger.addEventListener('click',()=>setOpen(!wrap.classList.contains('open')));
+ document.addEventListener('click',event=>{if(!wrap.contains(event.target))setOpen(false)});
+ document.addEventListener('keydown',event=>{
+   if(event.key==='Escape'){setOpen(false);trigger.focus()}
+   if(event.key==='ArrowDown'&&wrap.contains(document.activeElement)){
+     event.preventDefault();setOpen(true);options[0]?.focus();
+   }
  });
 })();
 </script>
