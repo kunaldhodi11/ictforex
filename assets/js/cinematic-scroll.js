@@ -65,18 +65,28 @@
  updateProgress();
  if(fine){
    document.querySelectorAll('.course-card').forEach(function(card){
+     var frame=0,lastEvent=null;
      card.addEventListener('pointermove',function(event){
-       var r=card.getBoundingClientRect();
-       var x=(event.clientX-r.left)/r.width;
-       var y=(event.clientY-r.top)/r.height;
-       var rx=(.5-y)*5;
-       var ry=(x-.5)*7;
-       card.classList.add('ifa-tilt-active');
-       card.style.transform='perspective(1100px) translateY(-5px) rotateX('+rx+'deg) rotateY('+ry+'deg)';
-       card.style.setProperty('--card-glow-x',(x*100)+'%');
-       card.style.setProperty('--card-glow-y',(y*100)+'%');
+       lastEvent=event;
+       if(frame)return;
+       frame=window.requestAnimationFrame(function(){
+         frame=0;
+         if(!lastEvent)return;
+         var bounds=card.getBoundingClientRect();
+         var x=(lastEvent.clientX-bounds.left)/bounds.width;
+         var y=(lastEvent.clientY-bounds.top)/bounds.height;
+         var rx=(.5-y)*4;
+         var ry=(x-.5)*6;
+         card.classList.add('ifa-tilt-active');
+         card.style.transform='perspective(1100px) translate3d(0,-4px,0) rotateX('+rx+'deg) rotateY('+ry+'deg)';
+         card.style.setProperty('--card-glow-x',(x*100)+'%');
+         card.style.setProperty('--card-glow-y',(y*100)+'%');
+         lastEvent=null;
+       });
      },{passive:true});
      card.addEventListener('pointerleave',function(){
+       if(frame)window.cancelAnimationFrame(frame);
+       frame=0;lastEvent=null;
        card.classList.remove('ifa-tilt-active');
        card.style.transform='';
      },{passive:true});
