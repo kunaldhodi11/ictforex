@@ -596,6 +596,18 @@ body::after{
   #market-3d-webgl{opacity:.72}
 }
 
+/* DESKTOP VISIBILITY FIX: keep market animals visible when reduced motion is enabled.
+   Motion is disabled by the existing accessibility rules; the scene itself stays visible. */
+@media(prefers-reduced-motion:reduce){
+  .market-3d-stage{display:block!important;visibility:visible!important;opacity:1!important}
+  .market-3d-animal{animation:none!important}
+  #market-3d-webgl{display:block!important}
+}
+@media(min-width:769px){
+  .market-3d-stage{visibility:visible;opacity:1}
+  .market-3d-animal{opacity:.9}
+}
+
 </style>
 </head>
 <body>
