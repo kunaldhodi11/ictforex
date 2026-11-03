@@ -263,6 +263,46 @@ body{background:#070d18;color:#e8eef7}body::after{background:linear-gradient(180
 .course-card,.trust-pill,.fact,.nav-desktop a,.btn-primary,.btn-gold,.btn-cc,.btn-tip{will-change:auto}.reveal-ready .reveal-on-scroll{transform:translateY(18px);transition:opacity .45s ease,transform .45s ease}.reveal-ready .reveal-on-scroll.is-visible{transform:translateY(0)}
 @media(max-width:768px){.hero{padding:62px 18px 58px}.section{padding:42px 18px}.course-card:hover{transform:translateY(-2px)}.trust-pill:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){.hero-badge,.hero h1{animation:none!important}.reveal-ready .reveal-on-scroll{opacity:1!important;transform:none!important;transition:none!important}}
+
+/* PERFORMANCE PASS — lighter rendering, same premium visual direction */
+#global-map-bg{opacity:.035}
+#market-cinema-bg{opacity:.14}
+body::after{background:linear-gradient(180deg,rgba(4,9,18,.12),rgba(4,9,18,.58))}
+.header,.trust-pill,.facts,.course-card,.daily-tip-section,.faq-item,.mobile-nav,.mobile-sticky{
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+.header{background:rgba(7,13,24,.97)}
+.course-card{background:rgba(14,24,41,.96)}
+.facts{background:rgba(12,20,36,.96)}
+.trust-pill{background:rgba(12,20,36,.94)}
+.daily-tip-section{background:linear-gradient(135deg,rgba(16,185,129,.10),rgba(56,189,248,.045))}
+.faq-item{background:rgba(12,20,36,.96)}
+.mobile-nav{background:rgba(5,10,19,.99)}
+.mobile-sticky{background:rgba(7,13,24,.98)}
+.course-card,.trust-pill,.fact,.nav-desktop a,.btn-primary,.btn-gold,.btn-cc,.btn-tip,.logo-link,.footer-col a{
+  will-change:auto;
+}
+.course-card{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.course-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.28)}
+.trust-pill{transition:transform .18s ease,border-color .18s ease}
+.trust-pill:hover{transform:translateY(-1px)}
+.btn-primary,.btn-gold,.btn-cc,.btn-tip,.btn-nav-login,.btn-nav-logout{
+  transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease!important;
+}
+.hero h1{animation:none}
+.hero-badge{animation:none}
+@media(max-width:768px),(pointer:coarse){
+  #market-cinema-bg{display:none}
+  #global-map-bg{opacity:.02}
+  .course-card:hover,.trust-pill:hover,.fact:hover{transform:none}
+  .mobile-nav{backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+@media(prefers-reduced-motion:reduce){
+  #market-cinema-bg{display:none!important}
+  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -536,12 +576,12 @@ function toggleFaq(btn){
 <script>
 (function(){
 const canvas=document.getElementById('market-cinema-bg');if(!canvas)return;const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;
-const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;const coarse=window.matchMedia('(pointer: coarse)').matches;let w=0,h=0,dpr=1,raf=0,last=0,phase=0,paused=document.hidden,candles=[];let seed=1947;
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;const coarse=window.matchMedia('(pointer: coarse)').matches;if(reduce||coarse){canvas.style.display='none';return;}let w=0,h=0,dpr=1,raf=0,last=0,phase=0,paused=document.hidden,candles=[];let seed=1947;
 function rand(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646;}
 function build(){seed=1947;candles=[];let close=.52;const count=Math.max(24,Math.min(58,Math.ceil(w/24)));for(let i=0;i<count;i++){const open=close;close=Math.max(.16,Math.min(.84,open+(rand()-.48)*.12));candles.push({open,close,high:Math.max(open,close)+rand()*.075,low:Math.min(open,close)-rand()*.075,up:close>=open});}}
 function paint(){ctx.clearRect(0,0,w,h);ctx.strokeStyle='rgba(103,200,238,.045)';ctx.lineWidth=1;for(let y=55;y<h;y+=70){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}const spacing=w/candles.length,drift=(phase*16)%spacing,base=h*.52,chartH=h*.42;candles.forEach((c,i)=>{const x=i*spacing-drift+spacing;const y=v=>base-(v-.5)*chartH;const top=Math.min(y(c.open),y(c.close)),bottom=Math.max(y(c.open),y(c.close)),color=c.up?'rgba(52,211,153,.45)':'rgba(248,113,113,.38)';ctx.strokeStyle=color;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y(c.high));ctx.lineTo(x,y(c.low));ctx.stroke();ctx.fillStyle=color;ctx.fillRect(x-2.5,top,5,Math.max(2,bottom-top));});}
-function resize(){w=window.innerWidth;h=window.innerHeight;dpr=Math.min(window.devicePixelRatio||1,coarse?1:1.5);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);build();paint();}
-function frame(now){raf=0;if(paused)return;if(now-last<40){raf=requestAnimationFrame(frame);return;}const dt=Math.min(80,now-(last||now));last=now;phase+=dt*.00012;paint();raf=requestAnimationFrame(frame);}
+function resize(){w=window.innerWidth;h=window.innerHeight;dpr=Math.min(window.devicePixelRatio||1,1.25);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);build();paint();}
+function frame(now){raf=0;if(paused)return;if(now-last<66){raf=requestAnimationFrame(frame);return;}const dt=Math.min(80,now-(last||now));last=now;phase+=dt*.00012;paint();raf=requestAnimationFrame(frame);}
 function start(){if(!reduce&&!paused&&!raf)raf=requestAnimationFrame(frame);}function stop(){if(raf){cancelAnimationFrame(raf);raf=0;}}
 document.addEventListener('visibilitychange',()=>{paused=document.hidden;if(paused)stop();else{last=0;start();}});window.addEventListener('resize',resize,{passive:true});resize();start();
 })();
