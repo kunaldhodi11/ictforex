@@ -303,6 +303,131 @@ body::after{background:linear-gradient(180deg,rgba(4,9,18,.12),rgba(4,9,18,.58))
   *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
 }
 
+
+/* HOMEPAGE VISUAL REFINEMENT — hierarchy, spacing and responsive balance */
+:root{
+  --page-width:1180px;
+  --surface:rgba(15,25,42,.96);
+  --line:rgba(148,163,184,.17);
+}
+body{line-height:1.65;letter-spacing:.005em}
+.header{min-height:72px;padding:12px clamp(16px,3.5vw,44px);gap:18px}
+.logo-link{flex-shrink:0}
+.brand-title{letter-spacing:.065em}
+.brand-sub{margin-top:2px}
+.nav-desktop{gap:3px}
+.nav-desktop a{padding:9px 11px;font-size:12px;white-space:nowrap}
+.language-switcher{margin-right:8px}
+.language-switcher select{font-size:11px}
+.hero{
+  max-width:1100px;
+  margin:0 auto;
+  padding:clamp(68px,8vw,104px) 24px 70px;
+}
+.hero-badge{margin-bottom:22px;letter-spacing:.1em}
+.hero h1{
+  max-width:900px;
+  font-size:clamp(40px,6.4vw,72px);
+  line-height:1.08;
+  letter-spacing:-.045em;
+}
+.hero-sub{max-width:660px;font-size:clamp(14px,1.35vw,16px);line-height:1.85;color:#b9c6d8}
+.hero-btns{gap:12px;margin:30px 0 34px}
+.btn-primary,.btn-gold{min-height:50px;padding:14px 25px;font-size:13px}
+.trust-strip{gap:10px}
+.trust-pill{padding:8px 14px;font-size:11px}
+.facts{
+  width:min(calc(100% - 40px),1080px);
+  margin:0 auto 46px;
+  border-radius:18px;
+}
+.fact{padding:25px 16px}
+.fact-n{font-size:clamp(25px,3vw,31px)}
+.fact-l{font-size:10px;letter-spacing:.075em}
+.section{max-width:var(--page-width);padding:58px 24px}
+.sec-hd{margin-bottom:34px}
+.sec-tag{margin-bottom:12px}
+.sec-hd h2{font-size:clamp(27px,3.5vw,39px);letter-spacing:-.025em}
+.sec-sub{max-width:620px;color:#aebbd0;font-size:13px}
+.course-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.course-card{border-radius:18px;min-width:0}
+.cc-img{height:132px;font-size:48px}
+.cc-body{padding:22px}
+.cc-title{font-size:17px;line-height:1.35}
+.cc-desc{font-size:12.5px;line-height:1.75;color:#b9c6d8}
+.cc-meta{gap:10px;font-size:10px}
+.cc-chapters{padding:10px 12px}
+.cc-chapters li{font-size:11px;line-height:1.5}
+.btn-cc{min-height:44px;padding:12px 14px;font-size:12px}
+.daily-tip-section{border-radius:18px;padding:clamp(22px,3vw,30px)}
+.tip-body{font-size:13px}
+.faq-wrap{gap:10px}
+.faq-item{border-radius:12px}
+.faq-q{font-size:13px;padding:17px 19px}
+.faq-a{font-size:12.5px}
+.footer{padding:52px 24px 26px}
+.footer-grid{max-width:var(--page-width);gap:30px}
+.disclaimer{max-width:var(--page-width)}
+@media(max-width:1050px){
+  .header{gap:10px}
+  .nav-desktop{gap:0}
+  .nav-desktop a{padding:8px 8px;font-size:11px}
+  .language-switcher{margin-right:5px}
+  .language-switcher select{padding:8px 25px 8px 9px}
+  .course-grid{gap:14px}
+  .cc-body{padding:18px}
+}
+@media(max-width:860px){
+  .nav-desktop{display:none}
+  .hamburger{display:flex}
+  .header>div:last-child{margin-left:auto}
+  .course-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .course-card:last-child{grid-column:1/-1;max-width:calc(50% - 7px);width:100%;justify-self:center}
+}
+@media(max-width:600px){
+  .header{min-height:64px;padding:10px 15px}
+  .logo-ring{width:36px;height:36px}
+  .brand-title{font-size:11px}
+  .brand-sub{font-size:8px}
+  .language-switcher select{padding:7px 23px 7px 8px;font-size:10px}
+  .hero{padding:56px 18px 48px}
+  .hero-badge{font-size:9px;padding:6px 12px;margin-bottom:18px}
+  .hero h1{font-size:clamp(34px,9vw,48px);line-height:1.1;letter-spacing:-.04em}
+  .hero-sub{font-size:13px;line-height:1.75;margin-top:15px}
+  .hero-btns{flex-direction:column;align-items:stretch;max-width:340px;margin:24px auto 26px}
+  .btn-primary,.btn-gold{justify-content:center;width:100%;min-height:48px}
+  .trust-strip{gap:8px}
+  .trust-pill{font-size:10px;padding:7px 10px}
+  .facts{width:calc(100% - 28px);margin-bottom:30px;border-radius:14px}
+  .fact{padding:19px 8px}
+  .fact-l{font-size:8px;line-height:1.45}
+  .section{padding:42px 16px}
+  .sec-hd{margin-bottom:26px}
+  .sec-hd h2{font-size:27px}
+  .sec-sub{font-size:12px}
+  .course-grid{grid-template-columns:1fr;gap:14px}
+  .course-card:last-child{grid-column:auto;max-width:none}
+  .cc-img{height:116px}
+  .cc-body{padding:20px}
+  .daily-tip-section{padding:20px}
+  .tip-header{gap:12px}
+  .tip-header .tip-icon{font-size:29px}
+  .tip-header h3{font-size:17px}
+  .tip-header span{font-size:11px}
+  .tip-body{padding:16px;font-size:12px}
+  .faq-q{padding:16px;font-size:12px}
+  .faq-a{padding:0 16px 16px}
+  .footer{padding:42px 18px 24px}
+  .footer-grid{gap:25px}
+  .footer-brand-desc{max-width:100%}
+}
+@media(min-width:601px) and (max-width:860px){
+  .section{padding-left:22px;padding-right:22px}
+}
+
 </style>
 </head>
 <body>
