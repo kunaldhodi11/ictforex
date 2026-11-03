@@ -137,3 +137,74 @@ body{color:var(--ifa-text);text-rendering:optimizeLegibility}
   .candle,.reveal-on-scroll{animation:none!important;transition:none!important}
   .reveal-on-scroll:not(.is-visible){opacity:1;transform:none}
 }
+
+
+/* PHASE 2 — layered depth, scroll scenes and lightweight 3D interactions */
+.hero-market-visual{
+  position:relative;
+  isolation:isolate;
+  perspective:1100px;
+  transform-style:preserve-3d;
+  /* Use translate rather than transform so scroll-reveal can animate independently. */
+  transform:none;
+  translate:0 var(--hero-scroll-shift,0px);
+  transition:border-color .45s ease,box-shadow .45s ease;
+}
+.hero-market-visual::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  z-index:-1;
+  border-radius:inherit;
+  background:linear-gradient(115deg,rgba(241,212,154,.20),transparent 28%,rgba(49,196,141,.12) 72%,transparent);
+  opacity:.55;
+  filter:blur(18px);
+  pointer-events:none;
+}
+.hero-market-visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.075),transparent 24%,transparent 72%,rgba(216,179,106,.045));
+  mix-blend-mode:screen;
+}
+.market-visual-top,.market-candles,.market-visual-bottom{position:relative;z-index:1}
+.market-visual-top{transform:translateZ(24px)}
+.market-candles{transform:translateZ(36px);transform-style:preserve-3d}
+.market-visual-bottom{transform:translateZ(18px)}
+.candle{will-change:transform}
+.facts,.course-card,.daily-tip-section,.faq-item{
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+}
+.course-card{position:relative;isolation:isolate}
+.course-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(420px circle at var(--card-glow-x,50%) var(--card-glow-y,0%),rgba(216,179,106,.13),transparent 54%);
+  transition:opacity .35s ease;
+}
+.course-card:hover::before{opacity:1}
+.course-card .cc-img,.course-card .cc-body{position:relative;z-index:1}
+.section .sec-hd{transform:translateZ(18px)}
+@media(hover:hover) and (pointer:fine){
+  .hero-market-visual:hover{
+    border-color:rgba(241,212,154,.5);
+    box-shadow:0 34px 100px rgba(0,0,0,.48),0 0 46px rgba(216,179,106,.12);
+  }
+}
+@media(max-width:760px){
+  .hero-market-visual{translate:0 0;perspective:none}
+  .market-visual-top,.market-candles,.market-visual-bottom{transform:none}
+  .course-card::before{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-market-visual{translate:none!important;transform:none!important}
+  .course-card::before{display:none}
+}
