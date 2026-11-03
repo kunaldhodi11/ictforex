@@ -485,6 +485,105 @@ body{line-height:1.65;letter-spacing:.005em}
   .market-3d-stage{display:none}
 }
 
+
+/* PREMIUM RED + GREEN CINEMATIC MARKET GRADE — visibility and depth fix */
+:root{
+  --neon-green:#20d99a;
+  --neon-gold:#e8bd70;
+  --neon-cyan:#8aa7c8;
+  --glow-green:0 0 28px rgba(32,217,154,.24);
+  --glow-cyan:0 0 24px rgba(138,167,200,.16);
+  --market-red:#e45c68;
+  --market-green:#20d99a;
+}
+body{
+  background:
+    radial-gradient(ellipse at 8% 24%,rgba(20,185,129,.12),transparent 34%),
+    radial-gradient(ellipse at 92% 68%,rgba(220,65,82,.12),transparent 36%),
+    linear-gradient(145deg,#050a12 0%,#08111d 48%,#100b13 100%);
+}
+#global-map-bg{opacity:.055}
+#market-cinema-bg{z-index:1;opacity:.42}
+body::after{
+  z-index:2;
+  background:
+    radial-gradient(ellipse at 8% 24%,rgba(16,185,129,.09),transparent 37%),
+    radial-gradient(ellipse at 92% 68%,rgba(220,65,82,.09),transparent 38%),
+    linear-gradient(180deg,rgba(3,5,12,.16),rgba(3,5,12,.56));
+}
+.market-3d-stage{
+  z-index:3;opacity:1;isolation:isolate;
+  background:
+    radial-gradient(ellipse at 8% 34%,rgba(20,210,145,.10),transparent 34%),
+    radial-gradient(ellipse at 92% 69%,rgba(225,70,88,.11),transparent 35%);
+}
+.market-3d-stage::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(7,18,24,.12),transparent 32%,transparent 68%,rgba(25,8,17,.12));
+}
+.market-3d-animal{
+  width:clamp(250px,32vw,470px);
+  opacity:.76;
+  filter:drop-shadow(0 18px 16px rgba(0,0,0,.58))
+         drop-shadow(0 0 26px rgba(31,210,151,.20));
+  transform-style:preserve-3d;
+}
+.market-3d-bull{
+  left:-2%;top:19%;
+  animation:bullMarketFloat 8.5s cubic-bezier(.45,0,.55,1) infinite;
+}
+.market-3d-bear{
+  right:-3%;bottom:10%;
+  filter:drop-shadow(0 18px 16px rgba(0,0,0,.58))
+         drop-shadow(0 0 28px rgba(225,74,91,.24));
+  animation:bearMarketFloat 9.5s cubic-bezier(.45,0,.55,1) infinite;
+}
+.market-3d-bull svg,.market-3d-bear svg{
+  transform:rotateX(7deg);
+}
+@keyframes bullMarketFloat{
+  0%,100%{transform:translate3d(-4px,7px,0) rotateY(19deg) rotateZ(-3deg) scale(.98)}
+  25%{transform:translate3d(12px,-10px,35px) rotateY(7deg) rotateZ(0deg) scale(1.015)}
+  50%{transform:translate3d(23px,-18px,55px) rotateY(-5deg) rotateZ(2deg) scale(1.035)}
+  75%{transform:translate3d(8px,-4px,20px) rotateY(8deg) rotateZ(-1deg) scale(1.01)}
+}
+@keyframes bearMarketFloat{
+  0%,100%{transform:translate3d(5px,-5px,0) rotateY(-19deg) rotateZ(3deg) scale(.98)}
+  25%{transform:translate3d(-12px,9px,28px) rotateY(-7deg) rotateZ(0deg) scale(1.01)}
+  50%{transform:translate3d(-24px,17px,48px) rotateY(5deg) rotateZ(-2deg) scale(1.03)}
+  75%{transform:translate3d(-8px,4px,18px) rotateY(-8deg) rotateZ(1deg) scale(1.005)}
+}
+.market-3d-bull svg defs linearGradient stop:first-child{stop-color:#c5ffe9}
+.market-3d-bear svg defs linearGradient stop:first-child{stop-color:#ffe0e2}
+.market-bull-label{color:#65f0bd;opacity:.92}
+.market-bear-label{color:#ff9da6;opacity:.92}
+.header,.facts,.section,.footer,.mobile-sticky,.mobile-nav{
+  position:relative;z-index:4;
+}
+.header{z-index:100;background:rgba(5,10,18,.91);border-bottom-color:rgba(130,180,165,.16)}
+.hero{z-index:5}
+.facts{background:rgba(9,19,29,.84);border:1px solid rgba(110,180,155,.15);box-shadow:0 18px 55px rgba(0,0,0,.2)}
+.course-card{
+  background:linear-gradient(145deg,rgba(17,30,43,.94),rgba(15,20,31,.97));
+  border-color:rgba(110,150,145,.2);
+}
+.course-card:nth-child(3){border-color:rgba(220,90,105,.38)}
+.course-card:hover{border-color:rgba(32,217,154,.55)}
+.btn-primary{background:linear-gradient(115deg,#13a879,#20d99a)!important;box-shadow:0 9px 26px rgba(18,180,125,.22)}
+.btn-gold{background:linear-gradient(115deg,#a63c4d,#e45c68)!important;color:#fff!important;box-shadow:0 9px 26px rgba(215,70,88,.2)}
+.hero-badge{background:rgba(23,160,120,.13);border-color:rgba(54,220,165,.3);color:#79edc4;box-shadow:0 0 24px rgba(20,185,129,.12)}
+.trust-pill{border-color:rgba(110,160,145,.2)}
+@media(max-width:768px),(pointer:coarse){
+  .market-3d-stage{opacity:.62}
+  .market-3d-animal{width:clamp(170px,38vw,250px);opacity:.55}
+  .market-3d-bull{left:-15%;top:17%}
+  .market-3d-bear{right:-15%;bottom:12%}
+  #market-cinema-bg{opacity:.23}
+}
+@media(prefers-reduced-motion:reduce){
+  .market-3d-stage{display:none}
+}
+
 </style>
 </head>
 <body>
