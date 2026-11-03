@@ -50,3 +50,31 @@
   .ifa-premium-page *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
   .ifa-premium-page.ifa-reveal-ready .ifa-reveal{opacity:1;transform:none}
 }
+
+/* VIP Academy — premium private-learning experience */
+.ifa-premium-vip{
+ background:radial-gradient(ellipse at 12% 7%,rgba(49,196,141,.11),transparent 34rem),radial-gradient(ellipse at 90% 22%,rgba(216,179,106,.12),transparent 34rem),#070a10!important;
+ color:#f7f5ef;
+}
+.ifa-premium-vip header{background:rgba(5,8,13,.88)!important;border-bottom:1px solid rgba(216,179,106,.2)!important;box-shadow:0 14px 42px rgba(0,0,0,.3)!important}
+.ifa-premium-vip main>div:first-child{
+ background:radial-gradient(ellipse at 50% 0%,rgba(216,179,106,.18),transparent 60%),linear-gradient(145deg,rgba(19,23,29,.98),rgba(8,12,18,.96))!important;
+ border:1px solid rgba(216,179,106,.42)!important;border-radius:28px!important;
+ box-shadow:0 28px 85px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.06)!important;
+}
+.ifa-premium-vip main>div:first-child>span{background:rgba(216,179,106,.14)!important;color:#f1d49a!important;border:1px solid rgba(216,179,106,.36);box-shadow:0 8px 28px rgba(0,0,0,.24)}
+.ifa-premium-vip main>div:first-child h2{font-size:clamp(1.8rem,4.8vw,3.3rem);line-height:1.08;letter-spacing:-.045em}
+.ifa-premium-vip #vip-status-banner{background:rgba(4,8,13,.82)!important;border-color:rgba(216,179,106,.3)!important;box-shadow:0 18px 50px rgba(0,0,0,.32)!important}
+.ifa-premium-vip #vip-status-banner>div:first-child{color:#f1d49a}
+.ifa-premium-vip #vip-status-banner a{transition:filter .25s ease,transform .25s ease}
+.ifa-premium-vip #vip-status-banner a:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.ifa-premium-vip #vip-content-section{background:linear-gradient(145deg,rgba(17,23,31,.96),rgba(8,12,18,.94))!important;border-color:rgba(216,179,106,.34)!important;box-shadow:0 24px 70px rgba(0,0,0,.32)!important}
+.ifa-premium-vip #vip-content-section h3{letter-spacing:-.035em}
+.ifa-premium-vip #vip-content-section>a{box-shadow:0 12px 32px rgba(216,179,106,.16);transition:transform .25s ease,filter .25s ease}
+.ifa-premium-vip #vip-content-section>a:hover{transform:translateY(-2px);filter:brightness(1.07)}
+.ifa-premium-vip input:focus,.ifa-premium-vip select:focus,.ifa-premium-vip button:focus-visible,.ifa-premium-vip a:focus-visible{outline:2px solid #e7c987;outline-offset:3px}
+.ifa-premium-vip footer{background:rgba(3,6,10,.92)!important;border-color:rgba(216,179,106,.16)!important}
+.ifa-premium-vip.ifa-reveal-ready .ifa-reveal{opacity:0;transform:translate3d(0,28px,0) scale(.99);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.ifa-premium-vip.ifa-reveal-ready .ifa-reveal.ifa-visible{opacity:1;transform:translate3d(0,0,0) scale(1)}
+@media(max-width:640px){.ifa-premium-vip main{padding-left:15px;padding-right:15px}.ifa-premium-vip main>div:first-child{border-radius:20px!important;padding:22px 15px!important}}
+@media(prefers-reduced-motion:reduce){.ifa-premium-vip *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.ifa-premium-vip.ifa-reveal-ready .ifa-reveal{opacity:1;transform:none}}
