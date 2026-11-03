@@ -1048,44 +1048,6 @@ body::after{
 }
 
 
-/* CINEMATIC HOMEPAGE EXPERIENCE — lightweight 3D depth and scroll storytelling */
-.hero-market-visual{
-  position:relative;
-  width:min(100%,690px);
-  margin:34px auto 30px;
-  padding:17px 20px 13px;
-  overflow:hidden;
-  border:1px solid rgba(142,205,188,.25);
-  border-radius:18px;
-  background:linear-gradient(135deg,rgba(7,23,31,.88),rgba(12,19,31,.91) 58%,rgba(49,17,29,.78));
-  box-shadow:0 22px 54px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.08);
-  transform:perspective(1100px) rotateX(4deg) translate3d(0,var(--hero-scroll-shift,0px),0);
-  transform-style:preserve-3d;
-  transition:border-color .35s ease,box-shadow .35s ease;
-  animation:marketPanelEnter .95s .12s cubic-bezier(.2,.75,.25,1) both;
-}
-.hero-market-visual::before{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
-  background:repeating-linear-gradient(to bottom,transparent 0,transparent 31px,rgba(160,200,210,.08) 32px),
-    repeating-linear-gradient(to right,transparent 0,transparent 59px,rgba(160,200,210,.06) 60px);
-  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
-}
-.market-visual-top,.market-visual-bottom{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.market-visual-symbol{font:800 12px 'Space Grotesk',sans-serif;color:#f4f8fa;letter-spacing:.08em}
-.market-visual-symbol i{color:#6de4b5;margin-right:7px}
-.market-visual-symbol small{margin-left:7px;color:#9eafbd;font:700 9px 'Inter',sans-serif;letter-spacing:.14em}
-.market-visual-status{font:700 8px 'Inter',sans-serif;letter-spacing:.11em;color:#9db5bf}
-.market-candles{height:104px;display:flex;align-items:center;justify-content:space-around;gap:clamp(7px,2vw,16px);padding:8px 4px;position:relative;z-index:1}
-.candle{position:relative;display:block;width:clamp(7px,1.2vw,11px);height:var(--wick);border-radius:2px;opacity:.92;transform:translateY(var(--offset));filter:drop-shadow(0 0 7px currentColor)}
-.candle::before{content:"";position:absolute;left:50%;top:50%;width:2px;height:100%;transform:translate(-50%,-50%);background:currentColor;border-radius:2px}
-.candle::after{content:"";position:absolute;left:0;right:0;top:50%;height:var(--body);transform:translateY(-50%);border-radius:2px;background:currentColor;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
-.candle.up{color:#46d7a2}.candle.down{color:#e87986}
-.candle:nth-child(3n){animation:candlePulse 3.8s ease-in-out infinite}
-.candle:nth-child(3n + 1){animation:candlePulse 4.5s .6s ease-in-out infinite}
-.market-visual-bottom{justify-content:center;gap:clamp(14px,4vw,34px);padding-top:10px;border-top:1px solid rgba(180,210,220,.1);font:700 8px 'Inter',sans-serif;letter-spacing:.16em;color:#a9bbc6}
-.market-visual-bottom span:first-child{color:#79e6bd}.market-visual-bottom span:last-child{color:#e9a0a7}
-@keyframes marketPanelEnter{from{opacity:0;transform:perspective(1100px) rotateX(13deg) translateY(28px) scale(.96);filter:blur(5px)}to{opacity:1;transform:perspective(1100px) rotateX(4deg) translateY(0) scale(1);filter:blur(0)}}
-@keyframes candlePulse{0%,100%{opacity:.78}50%{opacity:1}}
 /* Scroll reveals now use a deeper cinematic entrance; content remains readable without JS. */
 .reveal-ready .reveal-on-scroll{opacity:0;transform:perspective(1200px) translate3d(0,54px,0) rotateX(5deg) scale(.975);filter:blur(4px);transform-origin:center top;transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1),filter .75s ease}
 .reveal-ready .reveal-on-scroll.is-visible{opacity:1;transform:perspective(1200px) translate3d(0,0,0) rotateX(0) scale(1);filter:blur(0)}
@@ -1096,18 +1058,6 @@ body::after{
 .facts.is-visible .fact{animation:factRise .55s both ease-out}
 .facts.is-visible .fact:nth-child(2){animation-delay:.08s}.facts.is-visible .fact:nth-child(3){animation-delay:.16s}.facts.is-visible .fact:nth-child(4){animation-delay:.24s}
 @keyframes factRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:768px){
- .hero-market-visual{margin:27px auto 25px;padding:14px 13px 11px;border-radius:14px;transform:none;animation:marketPanelEnter .75s both}
- .market-candles{height:82px;gap:7px}
- .market-visual-status{font-size:7px;letter-spacing:.04em}
- .market-visual-bottom{font-size:7px;gap:12px;letter-spacing:.1em}
-}
-@media(prefers-reduced-motion:reduce){
- .hero-market-visual,.candle,.reveal-ready .section.is-visible .course-card,.facts.is-visible .fact{animation:none!important}
- .hero-market-visual{transform:none}
- .reveal-ready .reveal-on-scroll{opacity:1;transform:none;filter:none;transition:none}
-}
-
 </style>
 <link rel="stylesheet" href="/assets/css/cinematic-experience.css">
 </head>
@@ -1171,27 +1121,6 @@ body::after{
 <section class="hero" aria-labelledby="hero-h1">
   <div class="hero-badge"><span class="badge-dot"></span> Global Forex Trading Education</div>
   <h1 id="hero-h1">Trade Smarter.<br><span class="hl">Master the Markets. Build Your Edge.</span></h1>
-  <div class="hero-market-visual" aria-label="Illustrative educational market chart preview">
-    <div class="market-visual-top">
-      <span class="market-visual-symbol"><i class="fa-solid fa-chart-line"></i> XAUUSD <small>GOLD</small></span>
-      <span class="market-visual-status">EDUCATIONAL CHART PREVIEW · NOT LIVE DATA</span>
-    </div>
-    <div class="market-candles" aria-hidden="true">
-      <span class="candle up" style="--wick:34px;--body:24px;--offset:8px"></span>
-      <span class="candle down" style="--wick:48px;--body:28px;--offset:4px"></span>
-      <span class="candle up" style="--wick:58px;--body:35px;--offset:0px"></span>
-      <span class="candle up" style="--wick:43px;--body:22px;--offset:9px"></span>
-      <span class="candle down" style="--wick:62px;--body:32px;--offset:2px"></span>
-      <span class="candle up" style="--wick:70px;--body:40px;--offset:0px"></span>
-      <span class="candle up" style="--wick:52px;--body:29px;--offset:6px"></span>
-      <span class="candle down" style="--wick:46px;--body:25px;--offset:10px"></span>
-      <span class="candle up" style="--wick:74px;--body:42px;--offset:0px"></span>
-      <span class="candle up" style="--wick:60px;--body:34px;--offset:5px"></span>
-      <span class="candle down" style="--wick:50px;--body:26px;--offset:8px"></span>
-      <span class="candle up" style="--wick:78px;--body:44px;--offset:0px"></span>
-    </div>
-    <div class="market-visual-bottom"><span>MARKET STRUCTURE</span><span>LIQUIDITY</span><span>PRICE ACTION</span></div>
-  </div>
   <p class="hero-sub">
     Explore candlestick patterns, support &amp; resistance, price action and advanced ICT concepts — <strong>through structured lessons, practical chart examples and professional trading education.</strong>
   </p>
@@ -1416,20 +1345,6 @@ function toggleFaq(btn){
      });
    },{threshold:.12,rootMargin:'0px 0px -7% 0px'});
    targets.forEach(el=>observer.observe(el));
- }
-
- const visual=document.querySelector('.hero-market-visual');
- if(visual && !reduce && finePointer){
-   let ticking=false;
-   const updateScrollDepth=()=>{
-     const shift=Math.max(-22,Math.min(0,-window.scrollY*.045));
-     visual.style.setProperty('--hero-scroll-shift',shift.toFixed(1)+'px');
-     ticking=false;
-   };
-   window.addEventListener('scroll',()=>{
-     if(!ticking){window.requestAnimationFrame(updateScrollDepth);ticking=true;}
-   },{passive:true});
-   updateScrollDepth();
  }
 
  if(!reduce && finePointer){
