@@ -1,0 +1,139 @@
+/* ICT Forex Academy — premium cinematic homepage layer
+   Keeps the approved bull/bear background and all existing content intact. */
+:root{
+  --ifa-ink:#05070b;
+  --ifa-panel:rgba(10,14,20,.76);
+  --ifa-line:rgba(222,190,122,.22);
+  --ifa-gold:#d8b36a;
+  --ifa-gold-bright:#f1d49a;
+  --ifa-green:#31c48d;
+  --ifa-red:#e36b72;
+  --ifa-text:#f7f5ef;
+  --ifa-muted:#b7bec7;
+}
+body{color:var(--ifa-text);text-rendering:optimizeLegibility}
+.header{
+  background:rgba(5,8,13,.78);
+  border-bottom-color:rgba(216,179,106,.18);
+  box-shadow:0 12px 42px rgba(0,0,0,.32);
+}
+.logo-link,.nav-desktop a,.language-trigger{ -webkit-tap-highlight-color:transparent }
+.nav-desktop a{letter-spacing:.015em}
+.nav-desktop a.active{color:var(--ifa-gold-bright);background:rgba(216,179,106,.1);box-shadow:inset 0 0 0 1px rgba(216,179,106,.18)}
+.nav-desktop a:hover{background:rgba(216,179,106,.09);box-shadow:0 10px 28px rgba(0,0,0,.22)}
+.btn-nav-login,.btn-primary{
+  background:linear-gradient(115deg,#d9b66f,#a9823f)!important;
+  color:#101116!important;
+  box-shadow:0 10px 30px rgba(190,151,83,.2)!important;
+}
+.btn-gold{
+  color:#f0d59f;
+  border-color:rgba(216,179,106,.42);
+  background:rgba(216,179,106,.09);
+  box-shadow:0 10px 28px rgba(0,0,0,.2);
+}
+.hero{padding-top:clamp(76px,9vw,124px);padding-bottom:clamp(78px,9vw,116px)}
+.hero-badge,.sec-tag{
+  color:var(--ifa-gold-bright);
+  background:rgba(216,179,106,.09);
+  border-color:rgba(216,179,106,.3);
+  box-shadow:0 8px 28px rgba(0,0,0,.2);
+}
+.hero h1{
+  max-width:1000px;
+  font-size:clamp(42px,7.3vw,88px);
+  line-height:1.015;
+  letter-spacing:-.055em;
+  text-shadow:0 12px 42px rgba(0,0,0,.58);
+}
+.hero h1 .hl{
+  background:linear-gradient(100deg,#fff1d0 0%,#d8b36a 35%,#f0d9a6 62%,#8dd9b7 100%);
+  -webkit-background-clip:text;background-clip:text;
+}
+.hero-sub{max-width:720px;color:#d0d4d9}
+.hero-market-visual{
+  width:min(760px,92vw);
+  margin:34px auto 30px;
+  padding:20px 24px 16px;
+  border:1px solid rgba(216,179,106,.28);
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(9,14,20,.86),rgba(15,22,29,.66));
+  box-shadow:0 28px 90px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.06);
+  backdrop-filter:blur(14px);
+  transform:translate3d(0,var(--hero-scroll-shift,0px),0);
+}
+.market-visual-top,.market-visual-bottom{color:#b9c0c8}
+.market-visual-symbol{color:#f0d8a6}
+.market-visual-status{color:#9eaaad;font-size:9px;letter-spacing:.11em}
+.market-candles{min-height:150px;align-items:center;gap:clamp(10px,2.2vw,22px);padding:15px 5px}
+.candle{filter:drop-shadow(0 0 8px rgba(49,196,141,.18));animation:ifa-candle-float 5s ease-in-out infinite}
+.candle:nth-child(3n){animation-delay:-1.4s}
+.candle:nth-child(3n + 1){animation-delay:-2.6s}
+.candle.down{filter:drop-shadow(0 0 8px rgba(227,107,114,.18))}
+@keyframes ifa-candle-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.facts{
+  border-color:var(--ifa-line);
+  background:linear-gradient(120deg,rgba(10,14,20,.86),rgba(17,21,26,.72));
+  box-shadow:0 24px 70px rgba(0,0,0,.32);
+}
+.fact{border-right-color:rgba(216,179,106,.13)}
+.fact-n{color:var(--ifa-gold-bright);text-shadow:0 0 24px rgba(216,179,106,.18)}
+.fact:hover{background:rgba(216,179,106,.07);box-shadow:0 0 28px rgba(216,179,106,.08)}
+.sec-hd h2{letter-spacing:-.035em;text-shadow:0 8px 28px rgba(0,0,0,.5)}
+.sec-sub{color:#c1c7ce}
+.course-grid{gap:clamp(16px,2.2vw,26px)}
+.course-card{
+  border-color:rgba(216,179,106,.18);
+  background:linear-gradient(145deg,rgba(13,18,25,.86),rgba(7,10,15,.78));
+  box-shadow:0 22px 60px rgba(0,0,0,.34);
+}
+.course-card:hover{
+  border-color:rgba(216,179,106,.48);
+  box-shadow:0 30px 76px rgba(0,0,0,.46),0 0 32px rgba(216,179,106,.08);
+}
+.cc-title{letter-spacing:-.02em}
+.cc-desc,.cc-meta{color:#c0c6ce}
+.cc-chapters{background:rgba(0,0,0,.22);border-color:rgba(216,179,106,.1)}
+.cc-chapters li{color:#d9dde1;border-bottom-color:rgba(255,255,255,.055)}
+.cc-chapters li i{color:var(--ifa-gold)}
+.cc-tag,.cc-badge{letter-spacing:.08em}
+.daily-tip-section{
+  border-color:rgba(216,179,106,.24);
+  background:linear-gradient(120deg,rgba(216,179,106,.09),rgba(10,17,22,.78) 55%,rgba(49,196,141,.06));
+}
+.tip-body{border-left-color:var(--ifa-gold);background:rgba(0,0,0,.28)}
+.tip-body strong{color:var(--ifa-gold-bright)}
+.btn-tip{color:var(--ifa-gold-bright);border-color:rgba(216,179,106,.34);background:rgba(216,179,106,.08)}
+.faq-item{border-color:rgba(216,179,106,.16);background:rgba(10,14,20,.74)}
+.faq-item:hover{border-color:rgba(216,179,106,.4)}
+.faq-q.open,.faq-q.open .fa{color:var(--ifa-gold-bright)}
+.footer{background:rgba(2,4,7,.94);border-top-color:rgba(216,179,106,.16)}
+.footer-col a:hover{color:var(--ifa-gold-bright)}
+/* Gentle entrance motion; existing IntersectionObserver controls visibility. */
+.reveal-on-scroll{transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal-on-scroll:not(.is-visible){opacity:0;transform:translate3d(0,26px,0)}
+.reveal-on-scroll.is-visible{opacity:1;transform:translate3d(0,0,0)}
+.course-card.reveal-on-scroll{transition-delay:var(--ifa-card-delay,0ms)}
+.course-card:nth-child(2){--ifa-card-delay:100ms}
+.course-card:nth-child(3){--ifa-card-delay:200ms}
+@media(hover:hover) and (pointer:fine){
+  .course-card:hover{transform:translateY(-8px) scale(1.012)}
+  .btn-primary:hover,.btn-gold:hover,.btn-nav-login:hover{filter:brightness(1.08)}
+}
+@media(max-width:760px){
+  .hero{padding:72px 16px 76px}
+  .hero h1{font-size:clamp(38px,10vw,58px);line-height:1.06}
+  .hero-market-visual{padding:15px 14px 12px;border-radius:17px;margin:26px auto 24px}
+  .market-candles{min-height:112px;gap:8px}
+  .market-visual-status{max-width:125px;text-align:right;line-height:1.4}
+  .facts{margin-left:14px;margin-right:14px;border-radius:17px}
+  .fact{padding:20px 10px}
+  .fact-n{font-size:26px}
+  .fact-l{font-size:9px}
+  .course-grid{grid-template-columns:1fr}
+  .course-card:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .candle,.reveal-on-scroll{animation:none!important;transition:none!important}
+  .reveal-on-scroll:not(.is-visible){opacity:1;transform:none}
+}
