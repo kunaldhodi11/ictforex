@@ -608,6 +608,20 @@ body::after{
   .market-3d-animal{opacity:.9}
 }
 
+
+/* Classic market-symbol artwork: keep crisp vector animals; disable heavy WebGL models */
+.market-symbol-stage{opacity:.78!important;z-index:3}
+.market-symbol-stage #market-3d-webgl{display:none!important}
+.market-symbol-stage .market-3d-animal{display:block!important;width:clamp(230px,31vw,470px);opacity:.88;filter:drop-shadow(0 14px 22px rgba(0,0,0,.55));will-change:transform}
+.market-symbol-stage .market-3d-bull{left:-4%;top:17%;animation:classicBullDrift 10s ease-in-out infinite}
+.market-symbol-stage .market-3d-bear{right:-5%;bottom:9%;animation:classicBearDrift 12s ease-in-out infinite}
+.market-symbol-stage .market-3d-animal svg{width:100%;height:auto;overflow:visible}
+.market-symbol-stage .market-bull-label{left:7%;top:calc(17% + clamp(155px,20vw,275px));color:#5df0a8;text-shadow:0 0 18px rgba(32,217,137,.55)}
+.market-symbol-stage .market-bear-label{right:7%;bottom:calc(9% + clamp(155px,20vw,275px));color:#ff8795;text-shadow:0 0 18px rgba(226,64,88,.55)}
+@keyframes classicBullDrift{0%,100%{transform:translate3d(0,0,0) rotate(-1deg)}50%{transform:translate3d(13px,-12px,0) rotate(1deg)}}
+@keyframes classicBearDrift{0%,100%{transform:translate3d(0,0,0) rotate(1deg)}50%{transform:translate3d(-13px,10px,0) rotate(-1deg)}}
+@media(max-width:768px),(pointer:coarse){.market-symbol-stage{opacity:.58!important}.market-symbol-stage .market-3d-animal{width:clamp(155px,39vw,260px);opacity:.68}.market-symbol-stage .market-3d-bull{left:-13%;top:18%}.market-symbol-stage .market-3d-bear{right:-14%;bottom:13%}.market-symbol-stage .market-bull-label{left:4%;top:calc(18% + 100px)}.market-symbol-stage .market-bear-label{right:4%;bottom:calc(13% + 100px)}}
+@media(prefers-reduced-motion:reduce){.market-symbol-stage .market-3d-animal{animation:none!important}}
 </style>
 </head>
 <body>
@@ -619,47 +633,77 @@ body::after{
 <canvas id="market-cinema-bg" aria-hidden="true"></canvas>
 
 
-<!-- DECORATIVE 3D-STYLE BULL / BEAR MARKET BACKDROP -->
-<div class="market-3d-stage" aria-hidden="true">
-  <canvas id="market-3d-webgl"></canvas>
+<!-- CLASSIC TRADING-MARKET BULL & BEAR BACKDROP -->
+<div class="market-3d-stage market-symbol-stage" aria-hidden="true">
   <div class="market-3d-animal market-3d-bull">
-    <svg viewBox="0 0 360 230" role="presentation">
+    <svg viewBox="0 0 520 330" role="presentation">
       <defs>
-        <linearGradient id="bullMetal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a7ffe0"/><stop offset=".42" stop-color="#20bd8d"/><stop offset="1" stop-color="#075b50"/></linearGradient>
-        <linearGradient id="bullHorn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0c5"/><stop offset="1" stop-color="#c18d43"/></linearGradient>
-        <linearGradient id="bullSide" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#40e0ad" stop-opacity=".75"/><stop offset="1" stop-color="#063d3c" stop-opacity=".95"/></linearGradient>
+        <linearGradient id="classicBullFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a6ffd9"/><stop offset=".38" stop-color="#20c982"/><stop offset="1" stop-color="#087348"/></linearGradient>
+        <linearGradient id="classicBullShade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#38e69b"/><stop offset="1" stop-color="#07583f"/></linearGradient>
+        <filter id="bullGlow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
-      <path d="M66 91 Q83 52 154 54 L235 67 Q266 77 276 111 L260 147 Q223 166 143 158 L91 145 Q64 128 66 91Z" fill="url(#bullMetal)" stroke="#b2ffe4" stroke-opacity=".7" stroke-width="3"/>
-      <path d="M90 111 Q160 132 263 111 L260 147 Q218 169 143 158 L91 145Z" fill="url(#bullSide)"/>
-      <path d="M237 75 Q268 58 293 78 L315 105 L301 139 Q279 154 255 133 L239 111Z" fill="url(#bullMetal)" stroke="#b2ffe4" stroke-width="2"/>
-      <path d="M260 77 Q244 43 222 43 Q239 66 238 83 M291 79 Q317 45 337 52 Q322 69 315 91" fill="none" stroke="url(#bullHorn)" stroke-width="10" stroke-linecap="round"/>
-      <path d="M301 117 Q323 109 332 120 Q319 137 296 133Z" fill="#073c39"/>
-      <circle cx="291" cy="94" r="4" fill="#eafff5"/>
-      <path d="M100 143 L94 196 L111 196 L128 151 M150 157 L145 198 L162 198 L177 157 M222 151 L224 195 L242 195 L246 143" fill="none" stroke="#159c78" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M69 91 Q43 79 35 57 Q54 71 76 68" fill="none" stroke="#24c997" stroke-width="8" stroke-linecap="round"/>
-      <path d="M90 75 Q150 46 220 77" fill="none" stroke="#e0fff4" stroke-opacity=".55" stroke-width="4" stroke-linecap="round"/>
+      <g filter="url(#bullGlow)" stroke="#8effc5" stroke-width="3" stroke-linejoin="round">
+        <!-- tail -->
+        <path d="M102 157 Q57 137 43 98 Q71 123 112 119" fill="none" stroke="#22c982" stroke-width="12" stroke-linecap="round"/>
+        <!-- rear legs -->
+        <path d="M147 211 L126 282 L151 286 L183 224 M206 221 L198 286 L226 286 L242 218" fill="url(#classicBullShade)" stroke-width="2"/>
+        <!-- charging body -->
+        <path d="M105 125 Q130 81 206 83 L315 95 Q366 103 394 139 L379 202 Q341 232 252 233 L156 219 Q105 197 105 125Z" fill="url(#classicBullFill)"/>
+        <path d="M126 174 Q225 211 382 166 L379 202 Q338 234 252 233 L156 219Z" fill="#075b43" opacity=".65" stroke="none"/>
+        <!-- shoulder and powerful neck -->
+        <path d="M319 103 Q371 74 407 111 L429 163 L404 216 Q364 231 337 196 L313 151Z" fill="url(#classicBullFill)"/>
+        <!-- front legs -->
+        <path d="M324 207 L315 281 L345 285 L367 214 M372 202 L388 271 L416 265 L414 184" fill="url(#classicBullShade)" stroke-width="2"/>
+        <!-- head -->
+        <path d="M375 106 Q400 78 438 94 L474 130 L462 179 Q443 198 405 184 L378 157Z" fill="url(#classicBullFill)"/>
+        <path d="M433 153 Q465 143 489 164 Q478 190 444 188 L418 176Z" fill="#08734d"/>
+        <!-- horns -->
+        <path d="M405 103 Q377 67 388 34 Q404 62 427 80 M448 103 Q473 65 502 66 Q484 87 472 119" fill="none" stroke="#e7fff1" stroke-width="12" stroke-linecap="round"/>
+        <!-- ear and eye -->
+        <path d="M393 113 Q365 95 351 111 Q373 131 400 130Z" fill="#0b8757"/>
+        <ellipse cx="446" cy="126" rx="6" ry="8" fill="#061d17" stroke="#d7ffe9" stroke-width="2"/>
+        <!-- nostril -->
+        <ellipse cx="478" cy="167" rx="5" ry="4" fill="#062d20" stroke="none"/>
+        <!-- muscle accents -->
+        <path d="M165 111 Q235 91 302 116 M151 191 Q216 218 280 210 M348 121 Q365 151 353 184" fill="none" stroke="#d2ffe7" stroke-width="5" opacity=".55"/>
+      </g>
     </svg>
   </div>
-  <div class="market-animal-label market-bull-label">Bullish Momentum</div>
+  <div class="market-animal-label market-bull-label">BULLISH MARKET</div>
   <div class="market-3d-animal market-3d-bear">
-    <svg viewBox="0 0 360 230" role="presentation">
+    <svg viewBox="0 0 520 330" role="presentation">
       <defs>
-        <linearGradient id="bearMetal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd0d0"/><stop offset=".45" stop-color="#bd5964"/><stop offset="1" stop-color="#592532"/></linearGradient>
-        <linearGradient id="bearSide" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e47d85" stop-opacity=".75"/><stop offset="1" stop-color="#421c2a" stop-opacity=".95"/></linearGradient>
+        <linearGradient id="classicBearFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffc2c7"/><stop offset=".4" stop-color="#df465b"/><stop offset="1" stop-color="#761d32"/></linearGradient>
+        <linearGradient id="classicBearShade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#c83b50"/><stop offset="1" stop-color="#501525"/></linearGradient>
+        <filter id="bearGlow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
-      <path d="M55 94 Q72 55 145 59 L231 68 Q267 77 279 113 L260 149 Q219 167 142 160 L83 145 Q51 127 55 94Z" fill="url(#bearMetal)" stroke="#ffd2d4" stroke-opacity=".65" stroke-width="3"/>
-      <path d="M78 112 Q164 132 269 112 L260 149 Q219 167 142 160 L83 145Z" fill="url(#bearSide)"/>
-      <path d="M240 78 Q270 58 300 78 L320 108 L304 139 Q278 153 252 132 L239 110Z" fill="url(#bearMetal)" stroke="#ffd2d4" stroke-width="2"/>
-      <circle cx="267" cy="71" r="17" fill="#8e3d4b" stroke="#ffd2d4" stroke-width="3"/>
-      <circle cx="298" cy="70" r="16" fill="#8e3d4b" stroke="#ffd2d4" stroke-width="3"/>
-      <path d="M301 116 Q324 106 337 121 Q323 139 296 133Z" fill="#3b1824"/>
-      <circle cx="292" cy="95" r="4" fill="#fff0f0"/>
-      <path d="M91 143 L84 194 L105 194 L125 151 M149 157 L144 197 L164 197 L177 158 M222 153 L228 195 L248 195 L249 145" fill="none" stroke="#8d3b4a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M57 96 Q37 83 27 68" fill="none" stroke="#b9505e" stroke-width="9" stroke-linecap="round"/>
-      <path d="M83 79 Q151 49 222 80" fill="none" stroke="#ffe6e7" stroke-opacity=".48" stroke-width="4" stroke-linecap="round"/>
+      <g filter="url(#bearGlow)" stroke="#ffadb7" stroke-width="3" stroke-linejoin="round">
+        <!-- rear legs -->
+        <path d="M141 213 L126 281 L156 286 L184 221 M205 222 L200 286 L229 286 L245 218" fill="url(#classicBearShade)" stroke-width="2"/>
+        <!-- heavy bear body -->
+        <path d="M92 139 Q103 88 175 79 Q250 57 329 93 Q379 114 393 167 L376 218 Q330 251 238 240 L150 224 Q96 201 92 139Z" fill="url(#classicBearFill)"/>
+        <path d="M112 176 Q234 218 381 170 L376 218 Q330 251 238 240 L150 224Z" fill="#511728" opacity=".55" stroke="none"/>
+        <!-- hump -->
+        <path d="M160 101 Q198 48 266 78 Q305 90 323 130 Q277 146 226 130Z" fill="#f07886"/>
+        <!-- front legs -->
+        <path d="M309 214 L310 282 L342 285 L358 216 M365 199 L386 270 L415 265 L410 180" fill="url(#classicBearShade)" stroke-width="2"/>
+        <!-- head and muzzle -->
+        <path d="M347 108 Q374 76 421 91 Q462 104 474 145 L455 187 Q426 207 389 185 L354 157Z" fill="url(#classicBearFill)"/>
+        <path d="M430 151 Q473 143 493 171 Q483 197 447 192 L416 177Z" fill="#742035"/>
+        <!-- ears -->
+        <circle cx="377" cy="91" r="20" fill="#a92c43"/>
+        <circle cx="432" cy="91" r="19" fill="#a92c43"/>
+        <circle cx="377" cy="91" r="9" fill="#f69aa4" stroke="none"/>
+        <circle cx="432" cy="91" r="8" fill="#f69aa4" stroke="none"/>
+        <!-- eye and nose -->
+        <ellipse cx="442" cy="131" rx="6" ry="8" fill="#1c1015" stroke="#ffe1e4" stroke-width="2"/>
+        <ellipse cx="483" cy="171" rx="8" ry="6" fill="#170d12" stroke="none"/>
+        <!-- fur / muscle accents -->
+        <path d="M134 122 Q165 94 196 99 M139 151 Q167 132 191 139 M218 103 Q257 91 291 113 M345 127 Q360 153 350 178" fill="none" stroke="#ffd2d6" stroke-width="5" opacity=".45"/>
+      </g>
     </svg>
   </div>
-  <div class="market-animal-label market-bear-label">Bearish Momentum</div>
+  <div class="market-animal-label market-bear-label">BEARISH MARKET</div>
 </div>
 
 <!-- HEADER -->
