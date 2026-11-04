@@ -57,7 +57,20 @@
   }
 
   /* Homepage video path. Other page-specific paths will be configured as those pages are integrated. */
-  var videoPath='/assets/videos/home-journey.mp4';
+  var pageVideos={
+    '/':'/assets/videos/home-journey.mp4',
+    '/index.html':'/assets/videos/home-journey.mp4',
+    '/free-learning.html':'/assets/videos/free-course.mp4',
+    '/vip-course.html':'/assets/videos/vip-academy.mp4',
+    '/candlestick-patterns.html':'/assets/videos/candlesticks.mp4',
+    '/support-resistance.html':'/assets/videos/support-resistance.mp4',
+    '/price-action.html':'/assets/videos/price-action.mp4',
+    '/trading-books.html':'/assets/videos/books.mp4',
+    '/community.html':'/assets/videos/community.mp4',
+    '/rules.html':'/assets/videos/trading-rules.mp4',
+    '/about.html':'/assets/videos/about-journey.mp4'
+  };
+  var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey.mp4';
   var scene=document.createElement('div');
   scene.className='ifa-scroll-scene';
   scene.setAttribute('aria-hidden','true');
@@ -79,16 +92,30 @@
   scene.appendChild(canvas);
   scene.appendChild(video);
   document.body.appendChild(scene);
+  /* Keep all existing page content and controls above the fixed video layer. */
+  Array.prototype.forEach.call(document.body.children,function(child){
+    if(child===scene)return;
+    if(child.id==='bull-bear-background'){child.style.zIndex='0';return;}
+    var computed=window.getComputedStyle(child);
+    if(computed.position==='static')child.style.position='relative';
+    if(computed.zIndex==='auto')child.style.zIndex='2';
+  });
 
   /* A slim chapter rail lets visitors pause, orient themselves and jump to a section. */
   var chapterTargets=[];
-  var chapterNames=['INTRO','OVERVIEW','LEARNING','DAILY INSIGHT','QUESTIONS','EXPLORE'];
   if(hero)chapterTargets.push(hero);
   if(document.querySelector('.facts'))chapterTargets.push(document.querySelector('.facts'));
-  document.querySelectorAll('main .section').forEach(function(el){chapterTargets.push(el);});
-  var footer=document.querySelector('.footer');
+  document.querySelectorAll('main > section,main section[id],main > div.section').forEach(function(el){chapterTargets.push(el);});
+  var footer=document.querySelector('.footer')||document.querySelector('footer');
   if(footer)chapterTargets.push(footer);
   chapterTargets=chapterTargets.filter(function(el,i,arr){return el&&arr.indexOf(el)===i;});
+  function chapterName(el,index){
+    var heading=el.querySelector('h1,h2,h3,[aria-label]');
+    var raw=heading?(heading.textContent||heading.getAttribute('aria-label')||''):'';
+    raw=raw.replace(/\\s+/g,' ').trim();
+    return raw?raw.slice(0,28).toUpperCase():('CHAPTER '+(index+1));
+  }
+  var chapterNames=chapterTargets.map(chapterName);
   chapterTargets.forEach(function(el,i){el.setAttribute('data-ifa-chapter',String(i));});
   var rail=document.createElement('nav');
   rail.className='ifa-scroll-progress';
