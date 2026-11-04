@@ -112,7 +112,7 @@
   function chapterName(el,index){
     var heading=el.querySelector('h1,h2,h3,[aria-label]');
     var raw=heading?(heading.textContent||heading.getAttribute('aria-label')||''):'';
-    raw=raw.replace(/\\s+/g,' ').trim();
+    raw=raw.replace(/\s+/g,' ').trim();
     return raw?raw.slice(0,28).toUpperCase():('CHAPTER '+(index+1));
   }
   var chapterNames=chapterTargets.map(chapterName);
