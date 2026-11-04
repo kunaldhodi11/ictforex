@@ -16,6 +16,7 @@
     add(hero.querySelector('.hero-badge'));
     add(hero.querySelector('h1'));
     add(hero.querySelector('.hero-sub'));
+    add(hero.querySelector('.hero-market-visual'));
     add(hero.querySelector('.hero-btns'));
     add(hero.querySelector('.trust-strip'));
   }
