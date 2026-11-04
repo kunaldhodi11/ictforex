@@ -59,3 +59,54 @@ html.ifa-motion-ready .course-card.ifa-in-view{transform:translate3d(0,0,0)!impo
 @media(prefers-reduced-motion:reduce){
   html.ifa-motion-ready [data-ifa-reveal],html.ifa-motion-ready .course-card{opacity:1!important;transform:none!important;transition:none!important}
 }
+
+
+/* FINAL PERFORMANCE PASS — prioritize responsive input and fast first paint. */
+/* Remove expensive 3D layers, blur and hover-tilt effects that can cause frame drops. */
+.header,.trust-pill,.facts,.course-card,.daily-tip-section,.faq-item,
+.hero-market-visual,.language-menu,.mobile-nav,.mobile-sticky{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+.facts,.course-card,.daily-tip-section,.faq-item,
+.hero,.hero-market-visual,.market-candles,.market-visual-top,.market-visual-bottom{
+  transform-style:flat!important;
+  backface-visibility:visible!important;
+}
+.course-card::before,.hero-market-visual::before,.facts::before{
+  filter:none!important;
+}
+.course-card .cc-img,.course-card .cc-body,
+.market-visual-top,.market-candles,.market-visual-bottom{
+  transform:none!important;
+}
+.course-card{will-change:auto!important}
+@media(hover:hover) and (pointer:fine){
+  .course-card:hover{transform:translateY(-3px)!important}
+  .course-card.ifa-tilt-active{transform:translateY(-3px)!important}
+}
+@media(max-width:760px),(pointer:coarse){
+  /* Keep the approved bull/bear art, but avoid a fixed GPU layer while scrolling. */
+  #bull-bear-background{position:absolute!important;inset:0 0 auto!important;height:100vh!important;transform:none!important}
+  html{scroll-behavior:auto!important}
+  html.ifa-motion-ready [data-ifa-reveal],
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready .course-card,
+  html.ifa-motion-ready .course-card.ifa-in-view{
+    opacity:1!important;transform:none!important;transition:none!important;transition-delay:0ms!important
+  }
+  .hero-badge,.badge-dot,.candle{animation:none!important}
+  .course-card,.faq-item,.fact,.trust-pill{transition:none!important}
+  .course-card:hover,.faq-item:hover,.fact:hover,.trust-pill:hover{transform:none!important}
+}
+@media(min-width:761px) and (hover:hover) and (pointer:fine){
+  html.ifa-motion-ready [data-ifa-reveal],
+  html.ifa-motion-ready .course-card{
+    transform:translate3d(0,10px,0)!important;
+    transition:opacity .42s ease,transform .42s ease!important;
+    transition-delay:0ms!important;
+    will-change:auto!important;
+  }
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready .course-card.ifa-in-view{transform:none!important}
+}
