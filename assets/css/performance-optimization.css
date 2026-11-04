@@ -26,3 +26,36 @@
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* Smooth-motion refinement: shorter, lighter transitions with no forced scaling. */
+html.ifa-motion-ready [data-ifa-reveal]{
+  transform:translate3d(0,22px,0)!important;
+  transition:opacity .62s cubic-bezier(.22,.61,.36,1),transform .68s cubic-bezier(.22,.61,.36,1)!important;
+  will-change:auto!important;
+}
+html.ifa-motion-ready [data-ifa-reveal].ifa-in-view{
+  transform:translate3d(0,0,0)!important;
+}
+html.ifa-motion-ready .course-card{
+  transform:translate3d(0,24px,0)!important;
+  transition:opacity .62s cubic-bezier(.22,.61,.36,1),transform .68s cubic-bezier(.22,.61,.36,1),border-color .3s ease,box-shadow .3s ease!important;
+  will-change:auto!important;
+}
+html.ifa-motion-ready .course-card.ifa-in-view{transform:translate3d(0,0,0)!important}
+#ifa-scroll-progress span{box-shadow:0 0 7px rgba(216,179,106,.25)}
+@media(max-width:760px){
+  html.ifa-motion-ready [data-ifa-reveal]{
+    transform:translate3d(0,14px,0)!important;
+    transition-duration:.48s!important;
+  }
+  html.ifa-motion-ready .course-card{
+    transform:translate3d(0,16px,0)!important;
+    transition-duration:.5s!important;
+  }
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready .course-card.ifa-in-view{transform:translate3d(0,0,0)!important}
+  .candle{animation:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html.ifa-motion-ready [data-ifa-reveal],html.ifa-motion-ready .course-card{opacity:1!important;transform:none!important;transition:none!important}
+}
