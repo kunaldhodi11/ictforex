@@ -13,5 +13,7 @@ Planned page-specific files (to be wired in as each page is updated):
 - `price-action.mp4`
 - `books.mp4`
 - `community.mp4`
+- `trading-rules.mp4`
+- `about-journey.mp4`
 
 Keep video files reasonably sized and use H.264 MP4 with no audio for scroll scrubbing. The site has a visual fallback when the homepage video is absent, so missing video files do not block page content.
