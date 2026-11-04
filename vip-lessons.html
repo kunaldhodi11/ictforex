@@ -42,6 +42,20 @@ nav a{display:block;padding:7px;color:#a9b8cc;font-size:12px;border-radius:8px}n
   }
 }
 .ifa-premium-lessons #lessons .lesson { min-width: 0; }
+
+/* Mobile-first fail-safe: course content never depends on scroll animation JS. */
+.ifa-premium-lessons .ifa-reveal,
+.ifa-premium-lessons .ifa-lesson-reveal,
+.ifa-premium-lessons #lessons,
+.ifa-premium-lessons #lessons > section,
+.ifa-premium-lessons #lessons .lesson {
+  display:block;
+  visibility:visible!important;
+  opacity:1!important;
+  transform:none!important;
+  content-visibility:visible!important;
+}
+.ifa-premium-lessons .ifa-course-progress{display:none!important}
 </style>
 
 </head>
@@ -332,48 +346,6 @@ onAuthStateChanged(auth,async user=>{
 })();
 </script>
 
-<script>
-(function(){
-  'use strict';
-  var page=document.body,root=document.documentElement;
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var chapters=Array.prototype.slice.call(document.querySelectorAll('main>section,main>.layout,main>#lessons>section,main>#checklist'));
-  var cards=Array.prototype.slice.call(document.querySelectorAll('.ifa-premium-lessons .lesson,.ifa-premium-lessons .core-lesson'));
-  var links=Array.prototype.slice.call(document.querySelectorAll('.ifa-premium-lessons .layout>nav a[href^="#"]'));
-  var bar=document.createElement('div');
-  bar.className='ifa-course-progress';bar.setAttribute('aria-hidden','true');
-  bar.innerHTML='<span></span>';page.insertBefore(bar,page.firstChild);
-  if(reduce||!('IntersectionObserver' in window)){return;}
-  chapters.forEach(function(el){el.classList.add('ifa-reveal');});
-  cards.forEach(function(el,i){el.classList.add('ifa-lesson-reveal');el.style.setProperty('--lesson-delay',(i%4)*65+'ms');});
-  page.classList.add('ifa-reveal-ready');
-  var observer=new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(entry.isIntersecting){entry.target.classList.add('ifa-visible');observer.unobserve(entry.target);}
-    });
-  },{threshold:0.06,rootMargin:'0px 0px -35px 0px'});
-  chapters.concat(cards).forEach(function(el){observer.observe(el);});
-  var ticking=false;
-  function update(){
-    var max=root.scrollHeight-window.innerHeight;
-    var pct=max>0?Math.max(0,Math.min(1,window.scrollY/max)):0;
-    bar.firstElementChild.style.transform='scaleX('+pct+')';
-    ticking=false;
-  }
-  window.addEventListener('scroll',function(){if(!ticking){ticking=true;window.requestAnimationFrame(update);}}, {passive:true});
-  window.addEventListener('resize',function(){if(!ticking){ticking=true;window.requestAnimationFrame(update);}}, {passive:true});
-  update();
-  if(links.length){
-    var sections=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
-    var activeObserver=new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(!entry.isIntersecting)return;
-        links.forEach(function(a){a.classList.toggle('ifa-active',a.getAttribute('href')==='#'+entry.target.id);});
-      });
-    },{rootMargin:'-18% 0px -70% 0px',threshold:0});
-    sections.forEach(function(section){activeObserver.observe(section);});
-  }
-})();
-</script>
+
 
 </body></html>
