@@ -1,0 +1,80 @@
+/* ICT Forex Academy — premium homepage experience
+   Lightweight, responsive 3D-inspired market visual. No external image or animation library. */
+:root{
+  --ifa-lux-gold:#d9b875;
+  --ifa-lux-gold-light:#f3dfb2;
+  --ifa-lux-green:#55d6a2;
+}
+.hero{isolation:isolate}
+.hero-market-visual{
+  width:min(820px,94vw);
+  margin:clamp(26px,4vw,42px) auto 34px;
+  padding:clamp(16px,2.6vw,24px);
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border:1px solid rgba(217,184,117,.3);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(13,19,27,.96),rgba(5,9,15,.94));
+  box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.07);
+}
+.hero-market-visual::before{
+  content:"";
+  position:absolute;inset:-35%;
+  z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 22% 15%,rgba(217,184,117,.16),transparent 38%),radial-gradient(ellipse at 82% 80%,rgba(49,196,141,.11),transparent 42%);
+}
+.market-visual-top,.market-visual-bottom{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  color:#aab4bf;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+}
+.market-visual-symbol{color:var(--ifa-lux-gold-light);font-weight:800;font-size:12px;letter-spacing:.12em}
+.market-visual-status{font-size:9px;color:#8c9aa7;text-align:right}
+.market-candles{
+  height:clamp(138px,22vw,190px);display:flex;align-items:center;justify-content:center;
+  gap:clamp(10px,2.4vw,24px);padding:12px 4px;position:relative;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 37px,rgba(255,255,255,.045) 38px,transparent 39px);
+}
+.market-candles::after{
+  content:"";position:absolute;left:0;right:0;top:54%;border-top:1px dashed rgba(217,184,117,.32);
+}
+.candle{position:relative;width:clamp(7px,1.1vw,11px);height:var(--candle-height,76px);flex:0 0 auto;border-radius:2px;background:linear-gradient(90deg,#269d76,#63e0b1);box-shadow:0 0 14px rgba(49,196,141,.18);z-index:1}
+.candle::before{content:"";position:absolute;left:50%;top:-25%;bottom:-25%;width:1px;background:currentColor;transform:translateX(-50%);opacity:.95}
+.candle.down{background:linear-gradient(90deg,#b85b63,#ed9292);box-shadow:0 0 14px rgba(227,107,114,.15)}
+.candle:nth-child(2n){transform:translateY(9px)}
+.candle:nth-child(3n){transform:translateY(-8px)}
+.candle:nth-child(5n){transform:translateY(13px)}
+.market-visual-bottom{padding-top:10px;border-top:1px solid rgba(255,255,255,.07);font-size:9px;letter-spacing:.08em}
+.market-visual-bottom strong{color:#d9e3e8;font-weight:700}
+.hero-badge{animation:ifaBadgePulse 5s ease-in-out infinite}
+@keyframes ifaBadgePulse{0%,100%{box-shadow:0 0 0 rgba(217,184,117,0)}50%{box-shadow:0 0 24px rgba(217,184,117,.12)}}
+@media(hover:hover) and (pointer:fine){
+ .hero-market-visual{transition:transform .45s ease,border-color .45s ease,box-shadow .45s ease}
+ .hero-market-visual:hover{transform:translateY(-4px);border-color:rgba(243,223,178,.52);box-shadow:0 30px 80px rgba(0,0,0,.48),0 0 34px rgba(217,184,117,.1)}
+}
+@media(max-width:760px){
+ .hero-market-visual{width:100%;margin:24px auto 28px;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,.34)}
+ .market-candles{height:120px;gap:clamp(7px,2.4vw,13px)}
+ .market-visual-top,.market-visual-bottom{font-size:8px;letter-spacing:.07em}
+ .market-visual-symbol{font-size:10px}
+ .market-visual-status{font-size:8px}
+ .hero-badge{animation:none}
+}
+@media(prefers-reduced-motion:reduce){.hero-badge{animation:none!important}.hero-market-visual{transition:none!important}}
+/* Subtle IntersectionObserver reveals remain enabled on touch devices. */
+@media(max-width:760px),(pointer:coarse){
+ html.ifa-motion-ready [data-ifa-reveal]{
+  opacity:0;transform:translate3d(0,12px,0);
+  transition:opacity .48s ease,transform .5s ease;
+  will-change:auto;
+ }
+ html.ifa-motion-ready [data-ifa-reveal].ifa-in-view{opacity:1;transform:none}
+ html.ifa-motion-ready .course-card{opacity:0;transform:translate3d(0,14px,0);transition:opacity .5s ease,transform .5s ease}
+ html.ifa-motion-ready .course-card.ifa-in-view{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ html.ifa-motion-ready [data-ifa-reveal],html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+ html.ifa-motion-ready .course-card,html.ifa-motion-ready .course-card.ifa-in-view{
+  opacity:1!important;transform:none!important;transition:none!important
+ }
+}
