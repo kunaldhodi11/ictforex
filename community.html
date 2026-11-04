@@ -84,5 +84,6 @@ document.getElementById('feed-sort').addEventListener('change',renderFeed);
 onAuthStateChanged(auth,user=>{currentUser=user;if(!user){window.location.replace('login.html?returnUrl=community.html');return;}document.body.classList.remove('auth-pending');document.getElementById('auth-guard')?.remove();renderComposer();if(user){myProfileLink.style.display='inline-flex';myProfileLink.href='profile.html?uid='+encodeURIComponent(user.uid);const name=safeText(user.displayName||localStorage.getItem('userName')||'Account');authLink.innerHTML='<i class="fa-solid fa-circle-check"></i> '+name+' · Sign out';authLink.href='#';authLink.onclick=async event=>{event.preventDefault();try{await signOut(auth);localStorage.removeItem('userName');localStorage.removeItem('userAccess');window.location.href='login.html';}catch(error){console.error(error);alert('Could not sign out. Please try again.');}};}else{authLink.innerHTML='<i class="fa-regular fa-user"></i> Sign in';authLink.href='login.html';authLink.onclick=null;}renderFeed();subscribeFeed();});
 window.addEventListener('beforeunload',()=>{if(stopFeed)stopFeed();commentsListeners.forEach(unsubscribe=>unsubscribe());});
 </script>
+<script src="/assets/js/cinematic-scroll.js" defer></script>
 </body>
 </html>
