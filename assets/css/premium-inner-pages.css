@@ -340,7 +340,7 @@
  .ifa-premium-vip main>div:first-child h2{font-size:clamp(23px,7vw,31px)!important;line-height:1.15!important;overflow-wrap:anywhere}
  .ifa-premium-vip main>div:first-child>p{font-size:13px!important}
  .ifa-premium-vip #vip-status-banner{display:block!important;width:100%!important;min-width:0!important;margin-top:18px!important;padding:14px 11px!important;border-radius:15px!important}
- .ifa-premium-vip #locked-view{display:block}
+ .ifa-premium-vip #locked-view:not(.hidden){display:block}
  .ifa-premium-vip #vip-status-banner .grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
  .ifa-premium-vip #vip-status-banner .grid>div{min-width:0!important}
  .ifa-premium-vip #vip-status-banner p,.ifa-premium-vip #vip-status-banner label{overflow-wrap:anywhere}
