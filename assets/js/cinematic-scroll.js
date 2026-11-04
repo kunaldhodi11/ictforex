@@ -82,7 +82,7 @@
   video.playsInline=true;
   video.setAttribute('playsinline','');
   video.setAttribute('muted','');
-  video.preload=isWide&&!((navigator.connection||{}).saveData)?'auto':'metadata';
+  video.preload='metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
   var source=document.createElement('source');
@@ -180,8 +180,10 @@
       hue:Math.random()>.55?155:8
     });
   }
+  var particleRaf=0;
   function drawParticles(){
-    if(!ctx||scene.classList.contains('is-video-ready'))return;
+    particleRaf=0;
+    if(!ctx||scene.classList.contains('is-video-ready')||document.hidden)return;
     ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
     particles.forEach(function(p){
       p.y-=p.v;
@@ -191,10 +193,12 @@
       ctx.fillStyle='hsla('+p.hue+',72%,68%,'+p.a+')';ctx.fill();
     });
     particleFrame++;
-    requestAnimationFrame(drawParticles);
+    particleRaf=requestAnimationFrame(drawParticles);
   }
+  function startParticles(){if(!particleRaf&&!document.hidden&&!scene.classList.contains('is-video-ready'))particleRaf=requestAnimationFrame(drawParticles);}
   resizeCanvas();
-  drawParticles();
+  startParticles();
+  document.addEventListener('visibilitychange',function(){if(document.hidden){if(particleRaf)cancelAnimationFrame(particleRaf);particleRaf=0;}else startParticles();});
   window.addEventListener('resize',resizeCanvas,{passive:true});
 
   var duration=0,videoReady=false,lastTime=-1,scrollProgress=0,rafPending=false;
@@ -230,6 +234,8 @@
     videoReady=true;
     video.pause();
     scene.classList.add('is-video-ready');
+    if(particleRaf)cancelAnimationFrame(particleRaf);
+    particleRaf=0;
     sceneLabel.textContent='SCROLL TO EXPLORE';
     seekVideo(getProgress());
     if(window.ScrollTrigger)window.ScrollTrigger.refresh();
@@ -244,41 +250,21 @@
   });
   video.load();
 
-  /* Load animation libraries progressively. Native scroll + direct seeking remain the fallback. */
-  function loadScript(src){
-    return new Promise(function(resolve,reject){
-      var s=document.createElement('script');s.src=src;s.async=true;
-      s.onload=resolve;s.onerror=reject;document.head.appendChild(s);
-    });
-  }
-  function initGsap(){
-    if(!window.gsap||!window.ScrollTrigger)return;
-    window.gsap.registerPlugin(window.ScrollTrigger);
-    window.ScrollTrigger.create({
-      trigger:document.documentElement,start:'top top',end:'bottom bottom',
-      onUpdate:function(self){seekVideo(self.progress);}
-    });
-    window.ScrollTrigger.refresh();
-    /* Lenis is enabled on desktop only; touch scrolling stays native for reliability. */
-    if(isWide&&!reduce&&window.Lenis){
-      try{
-        var lenis=new window.Lenis({duration:1.05,smoothWheel:true,gestureOrientation:'vertical',wheelMultiplier:.9});
-        window.ifaLenis=lenis;
-        lenis.on('scroll',window.ScrollTrigger.update);
-        window.gsap.ticker.add(function(time){lenis.raf(time*1000);});
-        window.gsap.ticker.lagSmoothing(0);
-      }catch(e){window.ifaLenis=null;}
-    }
-  }
-  if(!reduce){
-    loadScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js')
-      .then(function(){return loadScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js');})
-      .then(function(){return loadScript('https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js').catch(function(){});})
-      .then(initGsap).catch(function(){onNativeScroll();});
-  }else{
+  /* Native scroll keeps input responsive without downloading three animation libraries. */
+  if(reduce){
     scene.style.display='none';
+  }
+  /* Delay video metadata/network work until the page has had time to paint. */
+  function loadCinematicVideo(){
+    if(reduce||!document.body.contains(video))return;
+    video.load();
     onNativeScroll();
   }
-  /* Ensure the first visible frame matches the initial scroll position. */
+  if('requestIdleCallback'in window){
+    window.requestIdleCallback(loadCinematicVideo,{timeout:2200});
+  }else{
+    window.setTimeout(loadCinematicVideo,1200);
+  }
+  /* Keep scroll work in one animation frame and avoid forced library refreshes. */
   requestAnimationFrame(onNativeScroll);
 })();
