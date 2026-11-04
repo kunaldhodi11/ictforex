@@ -1,0 +1,28 @@
+/* ICT Forex Academy — performance layer
+   Preserve the cinematic look while reducing paint/compositing cost on phones. */
+:root{--ifa-perf-motion:1}
+@media(max-width:760px){
+  /* Fixed full-screen layers and large blur surfaces are expensive on mobile GPUs. */
+  #global-map-bg{opacity:.07}
+  #market-cinema-bg{opacity:.28}
+  body::after{background:linear-gradient(180deg,rgba(3,5,12,.42),rgba(3,5,12,.86))}
+  .header{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(5,8,13,.96)}
+  .mobile-nav,.mobile-nav-panel,.language-menu,.hero-market-visual,.trust-pill,.facts,.course-card,.faq-item{
+    -webkit-backdrop-filter:none;backdrop-filter:none
+  }
+  .hero-market-visual{box-shadow:0 14px 38px rgba(0,0,0,.34)}
+  .hero-market-visual::before,.facts::before,.hero::before{filter:none}
+  .course-card,.facts,.daily-tip-section,.faq-item{backface-visibility:visible;transform-style:flat}
+  .course-card{will-change:auto}
+  .course-card .cc-img,.course-card .cc-body{transform:none}
+  .candle{will-change:auto;filter:none!important;animation-duration:8s}
+  .trust-pill{box-shadow:0 5px 14px rgba(0,0,0,.28)}
+  .course-card,.faq-item{box-shadow:0 12px 30px rgba(0,0,0,.3)}
+  #ifa-scroll-progress span{box-shadow:none}
+}
+@media(min-width:761px){
+  .btn-primary,.btn-gold,.btn-cc,.btn-tip,.btn-nav-login,.btn-nav-logout{will-change:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
