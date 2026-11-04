@@ -4,8 +4,7 @@
   'use strict';
   var root=document.documentElement;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var coarse=window.matchMedia&&window.matchMedia('(hover: none), (pointer: coarse)').matches;
-  if(reduce||coarse){return;}
+  if(reduce){return;}
   var reveal=[];
   function add(el){
     if(!el||el.dataset.ifaReveal==='true')return;
