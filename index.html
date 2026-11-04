@@ -21,8 +21,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
 <style>
 /* ============================================
@@ -1071,7 +1073,7 @@ body::after{
 <!-- HEADER -->
 <header class="header" role="banner">
   <a href="/" class="logo-link" aria-label="ICT Forex Academy Home">
-    <img class="logo-image" src="/assets/ict-forex-academy-logo.svg" alt="ICT Forex Academy">
+    <img class="logo-image" src="/assets/ict-forex-academy-logo.svg" alt="ICT Forex Academy" fetchpriority="high" decoding="async">
   </a>
   <div style="display:flex;align-items:center;">
     <div class="language-switcher" id="languageSwitcher">
@@ -1257,7 +1259,7 @@ body::after{
   <div class="footer-grid">
     <div>
       <a href="/" class="logo-link" style="margin-bottom:12px" aria-label="ICT Forex Academy Home">
-        <img class="footer-logo-image" src="/assets/ict-forex-academy-logo.svg" alt="ICT Forex Academy">
+        <img class="footer-logo-image" src="/assets/ict-forex-academy-logo.svg" alt="ICT Forex Academy" loading="lazy" decoding="async">
       </a>
       <p class="footer-brand-desc">A global forex education platform covering ICT concepts, candlestick patterns, price action and trading psychology.</p>
     </div>
