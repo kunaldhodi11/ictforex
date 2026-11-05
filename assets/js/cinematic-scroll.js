@@ -24,6 +24,7 @@
   }
   addReveal(document.querySelector('.facts'));
   document.querySelectorAll('.section').forEach(function(section){
+    addReveal(section);
     addReveal(section.querySelector('.sec-hd'));
     addReveal(section.querySelector('.daily-tip-section'));
     section.querySelectorAll('.faq-item').forEach(addReveal);
@@ -35,12 +36,9 @@
   if(!reduce&&'IntersectionObserver'in window){
     var revealObserver=new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.add('ifa-in-view');
-          revealObserver.unobserve(entry.target);
-        }
+        entry.target.classList.toggle('ifa-in-view',entry.isIntersecting);
       });
-    },{threshold:0.08,rootMargin:'0px 0px -3% 0px'});
+    },{threshold:0.06,rootMargin:'-10% 0px -10% 0px'});
     root.classList.add('ifa-motion-ready');
     reveal.forEach(function(el){revealObserver.observe(el);});
   }else{
