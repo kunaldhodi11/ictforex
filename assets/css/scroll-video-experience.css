@@ -91,8 +91,8 @@ body::after{z-index:0!important;}
 /* Scroll-driven cinematic center emergence — homepage and content rhythm */
 .ifa-motion-ready [data-ifa-reveal="true"]{
   opacity:0;
-  transform:perspective(1200px) translate3d(0,76px,0) scale(.94) rotateX(5deg);
-  filter:blur(7px);
+  transform:perspective(1200px) translate3d(0,48px,0) scale(.97) rotateX(3deg);
+  filter:blur(4px);
   transform-origin:50% 55%;
   transition:
     opacity .82s cubic-bezier(.16,1,.3,1),
@@ -105,19 +105,19 @@ body::after{z-index:0!important;}
   transform:perspective(1200px) translate3d(0,0,0) scale(1) rotateX(0);
   filter:blur(0);
 }
-.ifa-motion-ready .hero [data-ifa-reveal="true"]{transform:translate3d(0,40px,0) scale(.97);filter:blur(4px)}
+.ifa-motion-ready .hero [data-ifa-reveal="true"]{transform:translate3d(0,28px,0) scale(.985);filter:blur(2px)}
 .ifa-motion-ready .hero [data-ifa-reveal="true"].ifa-in-view{transform:translate3d(0,0,0) scale(1);filter:blur(0)}
-.ifa-motion-ready .facts[data-ifa-reveal="true"]{transform:perspective(1200px) translate3d(0,84px,0) scale(.91);border-color:rgba(93,226,182,.32)}
+.ifa-motion-ready .facts[data-ifa-reveal="true"]{transform:perspective(1200px) translate3d(0,60px,0) scale(.95);border-color:rgba(93,226,182,.32)}
 .ifa-motion-ready .fact[data-ifa-reveal="true"]{transition-delay:var(--ifa-stagger,0ms)}
 .ifa-motion-ready .course-card[data-ifa-reveal="true"]{
   transition-delay:var(--ifa-stagger,0ms);
-  transform:perspective(1100px) translate3d(0,88px,0) scale(.92) rotateX(6deg);
+  transform:perspective(1100px) translate3d(0,52px,0) scale(.96) rotateX(3deg);
 }
 .ifa-motion-ready .course-card[data-ifa-reveal="true"].ifa-in-view{
   transform:perspective(1100px) translate3d(0,0,0) scale(1) rotateX(0);
 }
 .ifa-motion-ready .ifa-live-market[data-ifa-reveal="true"]{
-  transform:perspective(1400px) translate3d(0,96px,0) scale(.93);
+  transform:perspective(1400px) translate3d(0,64px,0) scale(.96);
   transform-origin:50% 40%;
 }
 .ifa-motion-ready .ifa-live-market-heading[data-ifa-reveal="true"]{transition-delay:90ms}
@@ -129,7 +129,7 @@ body::after{z-index:0!important;}
 /* Desktop transitions feel like each panel rises through the center of the screen. */
 @media(min-width:761px) and (hover:hover) and (pointer:fine){
   .ifa-motion-ready main>.section[data-ifa-reveal="true"]{
-    transform:perspective(1400px) translate3d(0,104px,0) scale(.92) rotateX(7deg);
+    transform:perspective(1400px) translate3d(0,66px,0) scale(.955) rotateX(4deg);
   }
   .ifa-motion-ready main>.section[data-ifa-reveal="true"].ifa-in-view{
     transform:perspective(1400px) translate3d(0,0,0) scale(1) rotateX(0);
