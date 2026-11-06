@@ -56,3 +56,33 @@ body::after{z-index:0!important;}
   .ifa-scroll-scene canvas{opacity:.18}
   .ifa-scroll-progress,.ifa-scroll-scene-label{display:none!important}
 }
+
+
+/* Homepage live XAUUSD chart reveal */
+.ifa-live-market{
+  position:relative;z-index:10;width:min(1160px,calc(100% - 40px));
+  margin:26px auto 62px;padding:clamp(22px,4vw,42px);
+  border:1px solid rgba(91,211,174,.24);border-radius:26px;
+  background:linear-gradient(145deg,rgba(5,15,23,.94),rgba(8,12,22,.96));
+  box-shadow:0 28px 80px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.04);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+.ifa-live-market-inner{max-width:1080px;margin:0 auto}
+.ifa-live-market-heading{text-align:center;max-width:760px;margin:0 auto 24px}
+.ifa-live-market-kicker{display:inline-flex;align-items:center;gap:9px;color:#9ce8cb;font:700 10px/1.4 Inter,Arial,sans-serif;letter-spacing:.17em}
+.ifa-live-dot{width:7px;height:7px;border-radius:50%;background:#32d49b;box-shadow:0 0 13px rgba(50,212,155,.8)}
+.ifa-live-market-heading h2{margin:12px 0;color:#f8fafc;font:800 clamp(26px,4vw,42px)/1.12 'Space Grotesk',Inter,sans-serif;letter-spacing:-.035em}
+.ifa-live-market-heading h2 span{color:#65ddb1}
+.ifa-live-market-heading p{color:#aebdca;font-size:13px;line-height:1.75}
+.ifa-tv-shell{height:560px;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:#0b1119}
+.ifa-tv-shell .tradingview-widget-container{height:100%;width:100%}
+.ifa-tv-shell .tradingview-widget-copyright{height:32px;padding:5px 10px;color:#94a3b8;font:10px Inter,Arial,sans-serif}
+.ifa-tv-shell .tradingview-widget-copyright a{color:#8bb8dc}
+.ifa-market-note{margin:12px 2px 0;color:#8192a3;font-size:10px;text-align:center;line-height:1.6}
+@media(max-width:760px){
+ .ifa-live-market{width:calc(100% - 24px);margin:18px auto 42px;padding:20px 12px;border-radius:19px}
+ .ifa-live-market-heading{margin-bottom:18px}
+ .ifa-live-market-heading p{font-size:12px}
+ .ifa-tv-shell{height:440px;border-radius:12px}
+}
+@media(prefers-reduced-motion:reduce){.ifa-live-market{scroll-behavior:auto}}
