@@ -49,15 +49,15 @@
   if(!document.querySelector('link[data-ifa-scroll-video-css]')){
     var css=document.createElement('link');
     css.rel='stylesheet';
-    css.href='/assets/css/scroll-video-experience.css?v=20261105-2';
+    css.href='/assets/css/scroll-video-experience.css?v=20261106-1';
     css.setAttribute('data-ifa-scroll-video-css','');
     document.head.appendChild(css);
   }
 
   /* Homepage video path. Other page-specific paths will be configured as those pages are integrated. */
   var pageVideos={
-    '/':'/assets/videos/home-journey-test.mp4',
-    '/index.html':'/assets/videos/home-journey-test.mp4',
+    '/':'/assets/videos/home-journey.mp4',
+    '/index.html':'/assets/videos/home-journey.mp4',
     '/free-learning.html':'/assets/videos/free-course.mp4',
     '/vip-course.html':'/assets/videos/vip-academy.mp4',
     '/candlestick-patterns.html':'/assets/videos/candlesticks.mp4',
@@ -68,7 +68,7 @@
     '/rules.html':'/assets/videos/trading-rules.mp4',
     '/about.html':'/assets/videos/about-journey.mp4'
   };
-  var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey-test.mp4';
+  var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey.mp4';
   var scene=document.createElement('div');
   scene.className='ifa-scroll-scene';
   scene.setAttribute('aria-hidden','true');
@@ -200,8 +200,15 @@
   window.addEventListener('resize',resizeCanvas,{passive:true});
 
   var duration=0,videoReady=false,lastTime=-1,scrollProgress=0,rafPending=false;
+  var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
+  var chartSection=document.getElementById('live-xauusd');
   function getProgress(){
-    var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+    var max;
+    if(isHomePage&&chartSection){
+      max=Math.max(1,chartSection.offsetTop+chartSection.offsetHeight-window.innerHeight);
+    }else{
+      max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+    }
     return Math.max(0,Math.min(1,window.scrollY/max));
   }
   function updateProgress(progress){
