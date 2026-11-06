@@ -6,6 +6,7 @@
   var finePointer=window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   var isWide=window.innerWidth>760&&finePointer;
   var reveal=[];
+  var chartSection=document.getElementById('live-xauusd');
 
   /* Keep the existing low-cost IntersectionObserver content reveals. */
   function addReveal(el){
@@ -22,7 +23,9 @@
     addReveal(hero.querySelector('.hero-btns'));
     addReveal(hero.querySelector('.trust-strip'));
   }
-  addReveal(document.querySelector('.facts'));
+  var factsBar=document.querySelector('.facts');
+  addReveal(factsBar);
+  if(factsBar)factsBar.querySelectorAll('.fact').forEach(addReveal);
   document.querySelectorAll('.section').forEach(function(section){
     addReveal(section);
     addReveal(section.querySelector('.sec-hd'));
@@ -30,8 +33,28 @@
     section.querySelectorAll('.faq-item').forEach(addReveal);
   });
   document.querySelectorAll('.course-card').forEach(addReveal);
+  if(chartSection){
+    addReveal(chartSection);
+    addReveal(chartSection.querySelector('.ifa-live-market-heading'));
+    addReveal(chartSection.querySelector('.ifa-tv-shell'));
+    addReveal(chartSection.querySelector('.ifa-market-note'));
+  }
+  addReveal(document.querySelector('.footer'));
   addReveal(document.querySelector('.footer-grid'));
   addReveal(document.querySelector('.footer-bottom'));
+
+
+  /* Small stagger between sibling cards/facts, without a per-frame animation loop. */
+  document.querySelectorAll('.course-grid').forEach(function(grid){
+    Array.prototype.forEach.call(grid.querySelectorAll('.course-card'),function(card,index){
+      card.style.setProperty('--ifa-stagger',Math.min(index,5)*85+'ms');
+    });
+  });
+  if(factsBar){
+    Array.prototype.forEach.call(factsBar.querySelectorAll('.fact'),function(fact,index){
+      fact.style.setProperty('--ifa-stagger',index*90+'ms');
+    });
+  }
 
   if(!reduce&&'IntersectionObserver'in window){
     var revealObserver=new IntersectionObserver(function(entries){
@@ -49,7 +72,7 @@
   if(!document.querySelector('link[data-ifa-scroll-video-css]')){
     var css=document.createElement('link');
     css.rel='stylesheet';
-    css.href='/assets/css/scroll-video-experience.css?v=20261106-1';
+    css.href='/assets/css/scroll-video-experience.css?v=20261106-2';
     css.setAttribute('data-ifa-scroll-video-css','');
     document.head.appendChild(css);
   }
@@ -201,7 +224,6 @@
 
   var duration=0,videoReady=false,lastTime=-1,scrollProgress=0,rafPending=false;
   var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
-  var chartSection=document.getElementById('live-xauusd');
   function getProgress(){
     var max;
     if(isHomePage&&chartSection){
