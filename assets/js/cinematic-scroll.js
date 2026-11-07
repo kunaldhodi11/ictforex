@@ -223,7 +223,9 @@
 
   var duration=0,videoReady=false,lastTime=-1,scrollProgress=0,rafPending=false;
   var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
-  var seekPending=false,pendingTime=0;
+  var seekPending=false,pendingTime=0,lastSeekAt=0,seekRaf=0;
+  /* Limit decoder seeks and never queue a pile of stale timestamps while scrolling. */
+  var minSeekInterval=42;
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
@@ -237,12 +239,19 @@
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
   }
   function applyPendingSeek(){
-    if(!videoReady||!duration||video.seeking||!document.body.contains(video))return;
+    if(!videoReady||!duration||!seekPending||video.seeking||!document.body.contains(video))return;
+    var now=performance.now();
+    var wait=minSeekInterval-(now-lastSeekAt);
+    if(wait>0){
+      if(!seekRaf)seekRaf=requestAnimationFrame(function(){seekRaf=0;applyPendingSeek();});
+      return;
+    }
     var target=Math.max(0,Math.min(duration-.05,pendingTime));
-    if(lastTime>=0&&Math.abs(target-lastTime)<.025)return;
+    if(lastTime>=0&&Math.abs(target-lastTime)<.04){seekPending=false;return;}
     try{
       video.currentTime=target;
       lastTime=target;
+      lastSeekAt=now;
       seekPending=false;
     }catch(e){seekPending=true;}
   }
