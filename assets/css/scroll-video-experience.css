@@ -18,6 +18,7 @@ body::after{z-index:0!important;}
   transition:opacity .65s ease;
 }
 .ifa-scroll-scene.is-video-ready video{opacity:.66}
+.ifa-home-journey-scene.is-video-ready video{opacity:.84;filter:saturate(.9) contrast(1.08) brightness(.86)}
 .ifa-scroll-scene canvas{opacity:.72}
 .ifa-scroll-scene::after{
   content:"";position:absolute;inset:0;pointer-events:none;
@@ -49,6 +50,7 @@ body::after{z-index:0!important;}
   .ifa-scroll-progress,.ifa-scroll-scene-label{display:none}
   .ifa-scroll-scene video{object-position:center}
   .ifa-scroll-scene.is-video-ready video{opacity:.42}
+  .ifa-home-journey-scene.is-video-ready video{opacity:.62;filter:saturate(.88) contrast(1.06) brightness(.82)}
   .ifa-scroll-scene canvas{opacity:.52}
 }
 @media(prefers-reduced-motion:reduce){
