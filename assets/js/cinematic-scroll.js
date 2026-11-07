@@ -14,18 +14,26 @@
   }
   var hero=document.querySelector('.hero');
   if(hero){
-    addReveal(hero.querySelector('.hero-badge'));
-    addReveal(hero.querySelector('h1'));
-    addReveal(hero.querySelector('.hero-sub'));
-    addReveal(hero.querySelector('.hero-market-visual'));
-    addReveal(hero.querySelector('.hero-btns'));
-    addReveal(hero.querySelector('.trust-strip'));
+    var heroChapterHeading=hero.querySelector('.ifa-chapter-heading');
+    if(heroChapterHeading){
+      addReveal(heroChapterHeading);
+      addReveal(hero.querySelector('.hero-market-visual'));
+    }else{
+      addReveal(hero.querySelector('.hero-badge'));
+      addReveal(hero.querySelector('h1'));
+      addReveal(hero.querySelector('.hero-sub'));
+      addReveal(hero.querySelector('.hero-market-visual'));
+      addReveal(hero.querySelector('.hero-btns'));
+      addReveal(hero.querySelector('.trust-strip'));
+    }
   }
   var factsBar=document.querySelector('.facts');
   addReveal(factsBar);
   if(factsBar)factsBar.querySelectorAll('.fact').forEach(addReveal);
   document.querySelectorAll('.section').forEach(function(section){
-    addReveal(section);
+    var chapterHeading=section.querySelector('.ifa-chapter-heading');
+    if(chapterHeading)addReveal(chapterHeading);
+    else addReveal(section);
     addReveal(section.querySelector('.sec-hd'));
     addReveal(section.querySelector('.daily-tip-section'));
     section.querySelectorAll('.faq-item').forEach(addReveal);
