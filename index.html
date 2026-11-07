@@ -636,30 +636,6 @@ body::after{
 @media(max-width:768px),(pointer:coarse){.market-symbol-stage{opacity:.58!important}.market-symbol-stage .market-3d-animal{width:clamp(155px,39vw,260px);opacity:.68}.market-symbol-stage .market-3d-bull{left:-13%;top:18%}.market-symbol-stage .market-3d-bear{right:-14%;bottom:13%}.market-symbol-stage .market-bull-label{left:4%;top:calc(18% + 100px)}.market-symbol-stage .market-bear-label{right:4%;bottom:calc(13% + 100px)}}
 @media(prefers-reduced-motion:reduce){.market-symbol-stage .market-3d-animal{animation:none!important}}
 
-/* APPROVED BULL & BEAR IMAGE BACKGROUND */
-#global-map-bg,#market-cinema-bg{display:none!important}
-#bull-bear-background{
-  position:fixed;inset:0;z-index:1;pointer-events:none;
-  background-image:
-    linear-gradient(180deg,rgba(3,5,12,.10) 0%,rgba(3,5,12,.20) 55%,rgba(3,5,12,.58) 100%),
-    url('/assets/images/ictforex-bull-bear-hero.jpg');
-  background-size:cover;
-  background-position:center center;
-  background-repeat:no-repeat;
-  transform:translateZ(0);
-}
-body::after{
-  z-index:2;
-  background:linear-gradient(180deg,rgba(3,5,12,.08),rgba(3,5,12,.28) 65%,rgba(3,5,12,.62));
-}
-@media(max-width:768px){
-  #bull-bear-background{background-position:center center}
-}
-@media(prefers-reduced-motion:reduce){
-  #bull-bear-background{transform:none}
-}
-
-
 /* PREMIUM HOMEPAGE HERO REFINEMENT */
 .hero{
   width:min(100%,1180px);
@@ -1067,74 +1043,8 @@ body::after{
 <link rel="stylesheet" href="/assets/css/performance-optimization.css">
 <link rel="stylesheet" href="/assets/css/premium-home-experience.css">
 <link rel="stylesheet" href="/assets/css/cinematic-home-redesign.css?v=20261105-1">
-<style>
-/* LIGHTWEIGHT 3D MARKET HERO — desktop + mobile */
-#bull-bear-background{display:none!important}
-#ict-3d-market-scene{
-  position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;
-  perspective:1200px;isolation:isolate;opacity:.9;
-}
-#ict-3d-market-scene .scene-image{
-  position:absolute;inset:-3%;
-  background:
-    linear-gradient(180deg,rgba(3,5,12,.08),rgba(3,5,12,.20) 55%,rgba(3,5,12,.62)),
-    url('/assets/images/ictforex-bull-bear-hero.jpg') center 44%/cover no-repeat;
-  transform:translate3d(0,0,-35px) scale(1.045) rotateX(1deg);
-  transform-origin:center;
-  animation:ictSceneFloat 18s ease-in-out infinite alternate;
-  will-change:transform;
-}
-#ict-3d-market-scene .scene-grid{
-  position:absolute;inset:0;opacity:.16;
-  background-image:linear-gradient(rgba(120,180,190,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(120,180,190,.15) 1px,transparent 1px);
-  background-size:64px 64px;
-  mask-image:linear-gradient(transparent 5%,#000 35%,#000 75%,transparent);
-}
-#ict-3d-market-scene .scene-candles{
-  position:absolute;left:50%;top:53%;width:min(520px,64vw);height:150px;
-  display:flex;align-items:flex-end;justify-content:space-around;gap:10px;
-  transform:translate(-50%,-50%) perspective(700px) rotateX(48deg) rotateZ(-9deg);
-  opacity:.34;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55));
-}
-#ict-3d-market-scene .scene-candles i{
-  position:relative;display:block;width:clamp(5px,1vw,10px);height:var(--h);
-  background:linear-gradient(90deg,#087e58,#45f0ad,#087e58);
-  border-radius:2px;box-shadow:0 0 15px rgba(43,232,157,.24);
-}
-#ict-3d-market-scene .scene-candles i:nth-child(3n){background:linear-gradient(90deg,#922d43,#ff7888,#922d43)}
-#ict-3d-market-scene .scene-candles i:before{content:"";position:absolute;left:40%;top:-18px;width:2px;height:calc(100% + 36px);background:inherit;opacity:.8}
-@keyframes ictSceneFloat{
-  from{transform:translate3d(-.5%,.2%, -35px) scale(1.045) rotateX(1deg) rotateY(-.35deg)}
-  to{transform:translate3d(.5%,-.4%, -5px) scale(1.075) rotateX(0) rotateY(.35deg)}
-}
-@media(max-width:768px){
-  #ict-3d-market-scene{opacity:.76}
-  #ict-3d-market-scene .scene-image{background-position:54% center;animation-duration:24s}
-  #ict-3d-market-scene .scene-candles{width:78vw;top:55%;height:105px;opacity:.24;transform:translate(-50%,-50%) perspective(600px) rotateX(48deg) rotateZ(-8deg)}
-  #ict-3d-market-scene .scene-grid{background-size:44px 44px;opacity:.12}
-}
-@media(prefers-reduced-motion:reduce){
-  #ict-3d-market-scene .scene-image{animation:none}
-}
-</style>
 </head>
 <body>
-
-<!-- Lightweight 3D market scene; decorative only, no live prices -->
-<div id="ict-3d-market-scene" aria-hidden="true">
-  <div class="scene-image"></div>
-  <div class="scene-grid"></div>
-  <div class="scene-candles">
-    <i style="--h:42px"></i><i style="--h:66px"></i><i style="--h:48px"></i><i style="--h:83px"></i>
-    <i style="--h:58px"></i><i style="--h:96px"></i><i style="--h:72px"></i><i style="--h:112px"></i>
-    <i style="--h:78px"></i><i style="--h:124px"></i><i style="--h:90px"></i><i style="--h:138px"></i>
-    <i style="--h:104px"></i><i style="--h:118px"></i><i style="--h:86px"></i><i style="--h:130px"></i>
-  </div>
-</div>
-
-
-<!-- APPROVED BULL & BEAR HOMEPAGE BACKGROUND -->
-<div id="bull-bear-background" aria-hidden="true"></div>
 
 <!-- HEADER -->
 <header class="header" role="banner">
@@ -1529,10 +1439,6 @@ onAuthStateChanged(auth,u=>{
  });
 })();
 </script>
-
-
-<!-- REAL 3D WEBGL BULL / BEAR + FLOATING CANDLESTICKS -->
-
 
 </body>
 </html>
