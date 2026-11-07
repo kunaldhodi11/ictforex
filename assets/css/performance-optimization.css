@@ -86,8 +86,6 @@ html.ifa-motion-ready .course-card.ifa-in-view{transform:translate3d(0,0,0)!impo
   .course-card.ifa-tilt-active{transform:translateY(-3px)!important}
 }
 @media(max-width:760px),(pointer:coarse){
-  /* Keep the approved bull/bear art, but avoid a fixed GPU layer while scrolling. */
-  #bull-bear-background{position:absolute!important;inset:0 0 auto!important;height:100vh!important;transform:none!important}
   html{scroll-behavior:auto!important}
   html.ifa-motion-ready [data-ifa-reveal]{
     opacity:0!important;transform:translate3d(0,14px,0)!important;
