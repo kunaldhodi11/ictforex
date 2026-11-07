@@ -17,8 +17,8 @@ body::after{z-index:0!important;}
   filter:saturate(.82) contrast(1.08) brightness(.72);
   transition:opacity .65s ease;
 }
-.ifa-scroll-scene.is-video-ready video{opacity:.66}
-.ifa-home-journey-scene.is-video-ready video{opacity:.84;filter:saturate(.9) contrast(1.08) brightness(.86)}
+.ifa-scroll-scene.is-video-ready video{opacity:.78}
+.ifa-home-journey-scene.is-video-ready video{opacity:.94;filter:saturate(.94) contrast(1.06) brightness(.94)}
 .ifa-scroll-scene canvas{opacity:.72}
 .ifa-scroll-scene::after{
   content:"";position:absolute;inset:0;pointer-events:none;
@@ -54,13 +54,12 @@ body::after{z-index:0!important;}
   .ifa-scroll-scene canvas{opacity:.52}
 }
 @media(prefers-reduced-motion:reduce){
-  .ifa-scroll-scene video{display:none!important}
-  .ifa-scroll-scene canvas{opacity:.18}
+  .ifa-scroll-scene video{display:block!important;opacity:.72!important}
+  .ifa-scroll-scene canvas{opacity:.08}
   .ifa-scroll-progress,.ifa-scroll-scene-label{display:none!important}
 }
 
 
-/* Homepage live XAUUSD chart reveal */
 .ifa-live-market{
   position:relative;z-index:10;width:min(1160px,calc(100% - 40px));
   margin:26px auto 62px;padding:clamp(22px,4vw,42px);
