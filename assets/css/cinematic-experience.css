@@ -1,5 +1,4 @@
-/* ICT Forex Academy — premium cinematic homepage layer
-   Keeps the approved bull/bear background and all existing content intact. */
+/* ICT Forex Academy — premium cinematic homepage layer. The moving background is the scroll-controlled homepage video. */
 :root{
   --ifa-ink:#05070b;
   --ifa-panel:rgba(10,14,20,.76);
@@ -210,22 +209,6 @@ body{color:var(--ifa-text);text-rendering:optimizeLegibility}
 }
 
 
-/* PHASE 3 — cinematic bull/bear hero lighting and refined scroll rhythm.
-   The approved background image itself is intentionally unchanged. */
-#bull-bear-background{
-  isolation:isolate;
-  background-attachment:fixed;
-}
-#bull-bear-background::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(ellipse at 16% 38%,rgba(39,190,132,.13),transparent 34%),
-    radial-gradient(ellipse at 84% 38%,rgba(215,76,91,.13),transparent 34%),
-    linear-gradient(180deg,rgba(4,7,12,.10),rgba(4,7,12,.04) 42%,rgba(4,7,12,.30));
-}
 .hero{
   isolation:isolate;
 }
@@ -268,16 +251,8 @@ body{color:var(--ifa-text);text-rendering:optimizeLegibility}
   outline-offset:3px;
 }
 @media(max-width:760px){
-  #bull-bear-background{background-attachment:scroll}
-  #bull-bear-background::after{
-    background:
-      radial-gradient(ellipse at 12% 34%,rgba(39,190,132,.09),transparent 38%),
-      radial-gradient(ellipse at 88% 34%,rgba(215,76,91,.09),transparent 38%),
-      linear-gradient(180deg,rgba(4,7,12,.20),rgba(4,7,12,.44));
-  }
   .hero::before{inset:0 0 0;filter:blur(12px)}
   .hero-btns a{width:min(100%,330px);justify-content:center}
 }
 @media(prefers-reduced-motion:reduce){
-  #bull-bear-background{background-attachment:scroll}
 }
