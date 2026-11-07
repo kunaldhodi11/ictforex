@@ -6,7 +6,6 @@
   var finePointer=window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   var isWide=window.innerWidth>760&&finePointer;
   var reveal=[];
-  var chartSection=document.getElementById('live-xauusd');
 
   /* Keep the existing low-cost IntersectionObserver content reveals. */
   function addReveal(el){
@@ -33,12 +32,6 @@
     section.querySelectorAll('.faq-item').forEach(addReveal);
   });
   document.querySelectorAll('.course-card').forEach(addReveal);
-  if(chartSection){
-    addReveal(chartSection);
-    addReveal(chartSection.querySelector('.ifa-live-market-heading'));
-    addReveal(chartSection.querySelector('.ifa-tv-shell'));
-    addReveal(chartSection.querySelector('.ifa-market-note'));
-  }
   addReveal(document.querySelector('.footer'));
   addReveal(document.querySelector('.footer-grid'));
   addReveal(document.querySelector('.footer-bottom'));
@@ -114,6 +107,13 @@
   scene.appendChild(canvas);
   scene.appendChild(video);
   document.body.appendChild(scene);
+  /* The cinematic MP4 is the homepage background; disable legacy canvas/map layers there. */
+  if(isHomeRoute){
+    ['global-map-bg','market-cinema-bg'].forEach(function(id){
+      var legacy=document.getElementById(id);
+      if(legacy)legacy.style.display='none';
+    });
+  }
   /* Keep all existing page content and controls above the fixed video layer. */
   Array.prototype.forEach.call(document.body.children,function(child){
     if(child===scene)return;
@@ -226,11 +226,7 @@
   var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
   function getProgress(){
     var max;
-    if(isHomePage&&chartSection){
-      max=Math.max(1,chartSection.offsetTop+chartSection.offsetHeight-window.innerHeight);
-    }else{
-      max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
-    }
+    max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
   }
   function updateProgress(progress){
@@ -279,12 +275,10 @@
   video.load();
 
   /* Native scroll keeps input responsive without downloading three animation libraries. */
-  if(reduce){
-    scene.style.display='none';
-  }
+  /* Reduced-motion users still get a static video background; scroll scrubbing stays disabled. */
   /* Delay video metadata/network work until the page has had time to paint. */
   function loadCinematicVideo(){
-    if(reduce||!document.body.contains(video))return;
+    if(!document.body.contains(video))return;
     video.load();
     onNativeScroll();
   }
