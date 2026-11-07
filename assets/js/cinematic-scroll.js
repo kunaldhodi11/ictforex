@@ -91,9 +91,10 @@
     '/rules.html':'/assets/videos/trading-rules.mp4',
     '/about.html':'/assets/videos/about-journey.mp4'
   };
+  var isHomeRoute=window.location.pathname==='/'||window.location.pathname==='/index.html';
   var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey.mp4';
   var scene=document.createElement('div');
-  scene.className='ifa-scroll-scene';
+  scene.className='ifa-scroll-scene'+(isHomeRoute?' ifa-home-journey-scene':'');
   scene.setAttribute('aria-hidden','true');
   var canvas=document.createElement('canvas');
   canvas.className='ifa-scroll-particles';
@@ -103,7 +104,7 @@
   video.playsInline=true;
   video.setAttribute('playsinline','');
   video.setAttribute('muted','');
-  video.preload='metadata';
+  video.preload=(isHomeRoute&&window.innerWidth>760)?'auto':'metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
   var source=document.createElement('source');
@@ -235,6 +236,8 @@
   }
   function updateProgress(progress){
     scrollProgress=Math.max(0,Math.min(1,progress));
+    scene.style.setProperty('--ifa-scroll-progress',scrollProgress.toFixed(4));
+    if(isHomeRoute)video.style.transform='scale('+(1.015+scrollProgress*.075).toFixed(3)+')';
     var maxHeight=Math.max(0,rail.clientHeight-44);
     fill.style.height=(maxHeight*scrollProgress)+'px';
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
@@ -267,11 +270,10 @@
     seekVideo(getProgress());
     if(window.ScrollTrigger)window.ScrollTrigger.refresh();
   });
-  video.addEventListener('loadeddata',function(){if(videoReady)scene.classList.add('is-video-ready');});
+  video.addEventListener('loadeddata',function(){if(videoReady){scene.classList.add('is-video-ready');seekVideo(getProgress());}});
   video.addEventListener('error',function(){
     videoReady=false;
     scene.classList.remove('is-video-ready');
-    scene.style.background='transparent';
     video.remove();
     sceneLabel.textContent='EXPLORE ICTFOREX';
   });
