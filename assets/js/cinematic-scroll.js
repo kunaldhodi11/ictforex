@@ -117,7 +117,6 @@
   /* Keep all existing page content and controls above the fixed video layer. */
   Array.prototype.forEach.call(document.body.children,function(child){
     if(child===scene)return;
-    if(child.id==='bull-bear-background'){child.style.zIndex='0';return;}
     var computed=window.getComputedStyle(child);
     if(computed.position==='static')child.style.position='relative';
     if(computed.zIndex==='auto')child.style.zIndex='2';
@@ -182,7 +181,7 @@
     chapterTargets.forEach(function(el){chapterObserver.observe(el);});
   }
 
-  /* Missing MP4 never blocks the site: reveal the existing bull/bear artwork plus a subtle particle field. */
+  /* Missing MP4 never blocks the site: show only a subtle particle-field fallback. */
   var ctx=canvas.getContext('2d');
   var particles=[];
   var particleFrame=0;
