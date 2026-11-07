@@ -4,7 +4,6 @@
   var root=document.documentElement;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer=window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-  var isWide=window.innerWidth>760&&finePointer;
   var reveal=[];
 
   /* Keep the existing low-cost IntersectionObserver content reveals. */
@@ -224,9 +223,9 @@
 
   var duration=0,videoReady=false,lastTime=-1,scrollProgress=0,rafPending=false;
   var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
+  var seekPending=false,pendingTime=0;
   function getProgress(){
-    var max;
-    max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+    var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
   }
   function updateProgress(progress){
@@ -237,19 +236,31 @@
     fill.style.height=(maxHeight*scrollProgress)+'px';
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
   }
+  function applyPendingSeek(){
+    if(!videoReady||!duration||video.seeking||!document.body.contains(video))return;
+    var target=Math.max(0,Math.min(duration-.05,pendingTime));
+    if(lastTime>=0&&Math.abs(target-lastTime)<.025)return;
+    try{
+      video.currentTime=target;
+      lastTime=target;
+      seekPending=false;
+    }catch(e){seekPending=true;}
+  }
   function seekVideo(progress){
     updateProgress(progress);
-    if(!videoReady||!duration||reduce)return;
-    var target=Math.max(0,Math.min(duration-.04,progress*duration));
-    if(lastTime<0||Math.abs(target-lastTime)>.045){
-      try{video.currentTime=target;lastTime=target;}catch(e){}
-    }
+    if(!videoReady||!duration)return;
+    pendingTime=progress*duration;
+    seekPending=true;
+    applyPendingSeek();
   }
   function onNativeScroll(){
     if(rafPending)return;
     rafPending=true;
     requestAnimationFrame(function(){rafPending=false;seekVideo(getProgress());});
   }
+  video.addEventListener('seeked',function(){
+    if(seekPending)applyPendingSeek();
+  });
   window.addEventListener('scroll',onNativeScroll,{passive:true});
   window.addEventListener('resize',function(){onNativeScroll();if(window.ScrollTrigger)window.ScrollTrigger.refresh();},{passive:true});
 
@@ -265,28 +276,18 @@
     seekVideo(getProgress());
     if(window.ScrollTrigger)window.ScrollTrigger.refresh();
   });
-  video.addEventListener('loadeddata',function(){if(videoReady){scene.classList.add('is-video-ready');seekVideo(getProgress());}});
+  video.addEventListener('loadeddata',function(){
+    if(videoReady){scene.classList.add('is-video-ready');seekVideo(getProgress());}
+  });
   video.addEventListener('error',function(){
     videoReady=false;
     scene.classList.remove('is-video-ready');
-    video.remove();
-    sceneLabel.textContent='EXPLORE ICTFOREX';
+    sceneLabel.textContent='VIDEO LOAD ERROR';
   });
-  video.load();
 
-  /* Native scroll keeps input responsive without downloading three animation libraries. */
-  /* Reduced-motion users still get a static video background; scroll scrubbing stays disabled. */
-  /* Delay video metadata/network work until the page has had time to paint. */
-  function loadCinematicVideo(){
-    if(!document.body.contains(video))return;
-    video.load();
-    onNativeScroll();
-  }
-  if('requestIdleCallback'in window){
-    window.requestIdleCallback(loadCinematicVideo,{timeout:2200});
-  }else{
-    window.setTimeout(loadCinematicVideo,1200);
-  }
+  /* Start loading once. Calling load() a second time can reset metadata and interrupt seeking. */
+  video.load();
+  requestAnimationFrame(onNativeScroll);
   /* Keep scroll work in one animation frame and avoid forced library refreshes. */
   requestAnimationFrame(onNativeScroll);
 })();
