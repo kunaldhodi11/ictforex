@@ -20,20 +20,25 @@
     gsap.set(copies[0],{autoAlpha:1,y:0});
     gsap.set(backgrounds[0],{autoAlpha:1});
 
+    var activeScene=-1;
+    var setProgress=progressFill?gsap.quickSetter(progressFill,'scaleX'):null;
     var timeline=gsap.timeline({
       defaults:{ease:'none'},
       scrollTrigger:{
         trigger:story,
         start:'top top',
         end:'bottom bottom',
-        scrub:0.65,
+        scrub:0.14,
         invalidateOnRefresh:true,
         onUpdate:function(self){
           var active=Math.min(scenes.length-1,Math.round(self.progress*(scenes.length-1)));
-          scenes.forEach(function(scene,index){
-            scene.setAttribute('aria-hidden',index===active?'false':'true');
-          });
-          if(progressFill)gsap.set(progressFill,{scaleX:Math.max(.08,self.progress)});
+          if(active!==activeScene){
+            activeScene=active;
+            scenes.forEach(function(scene,index){
+              scene.setAttribute('aria-hidden',index===active?'false':'true');
+            });
+          }
+          if(setProgress)setProgress(Math.max(.08,self.progress));
         }
       }
     });
