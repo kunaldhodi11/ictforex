@@ -16,6 +16,8 @@ body::after{z-index:0!important;}
   object-fit:cover;opacity:0;transform:scale(1.015);
   filter:saturate(.82) contrast(1.08) brightness(.72);
   transition:opacity .65s ease;
+  will-change:transform;
+  backface-visibility:hidden;
 }
 .ifa-scroll-scene.is-video-ready video{opacity:.78}
 .ifa-home-journey-scene.is-video-ready video{opacity:.94;filter:saturate(.94) contrast(1.06) brightness(.94)}
