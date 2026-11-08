@@ -192,3 +192,39 @@
   background:none!important;
   box-shadow:none!important;
 }
+
+
+/* Low-cost chapter transitions: switch only at chapter boundaries instead
+   of scrubbing multiple opacity/transform timelines on every scroll frame. */
+.ifa-scroll-story .ifa-story-scene{
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .22s ease,visibility .22s linear;
+}
+.ifa-scroll-story .ifa-story-scene.is-active{
+  opacity:1;
+  visibility:visible;
+}
+.ifa-scroll-story .ifa-story-copy{
+  opacity:0;
+  transform:translate3d(0,14px,0);
+  transition:opacity .22s ease,transform .22s ease;
+  pointer-events:none;
+}
+.ifa-scroll-story .ifa-story-scene.is-active .ifa-story-copy{
+  opacity:1;
+  transform:translate3d(0,0,0);
+  pointer-events:auto;
+}
+.ifa-scroll-story .ifa-story-backdrop{
+  opacity:0;
+  transition:opacity .22s ease;
+}
+.ifa-scroll-story .ifa-story-scene.is-active .ifa-story-backdrop{
+  opacity:1;
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-scroll-story .ifa-story-scene,
+  .ifa-scroll-story .ifa-story-copy,
+  .ifa-scroll-story .ifa-story-backdrop{transition:none!important}
+}
