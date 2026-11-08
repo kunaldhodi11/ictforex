@@ -225,3 +225,15 @@
 @media(prefers-reduced-motion:reduce){
   .ifa-scroll-story .ifa-story-copy{transition:none!important}
 }
+
+
+/* Desktop/reduced-motion fallback: never leave the story copy hidden if
+   ScrollTrigger is unavailable or the visitor requests reduced motion. */
+.ifa-scroll-story:not(.ifa-story-js-ready) .ifa-story-scene:first-child{
+  visibility:visible;
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-scroll-story .ifa-story-scene{
+    visibility:visible!important;
+  }
+}
