@@ -72,7 +72,7 @@
   if(!document.querySelector('link[data-ifa-scroll-video-css]')){
     var css=document.createElement('link');
     css.rel='stylesheet';
-    css.href='/assets/css/scroll-video-experience.css?v=20261106-2';
+    css.href='/assets/css/scroll-video-experience.css?v=20261109-1';
     css.setAttribute('data-ifa-scroll-video-css','');
     document.head.appendChild(css);
   }
@@ -113,7 +113,9 @@
   /* Scroll-scrubbing on every device. Preload the cinematic file on normal
      connections so scrolling does not trigger late network buffering. */
   var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
-  video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
+  /* Let the page's critical HTML/CSS/fonts render first. The video download
+     starts after load/idle, or immediately on the visitor's first scroll. */
+  video.preload='metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
   var source=document.createElement('source');
@@ -201,13 +203,20 @@
   var ctx=canvas.getContext('2d');
   var particles=[];
   var particleFrame=0;
+  var canvasWidth=0,canvasHeight=0;
   function resizeCanvas(){
     if(!ctx)return;
+    var nextWidth=window.innerWidth,nextHeight=window.innerHeight;
+    /* Mobile browser chrome can change innerHeight repeatedly during scroll.
+       Ignore those small height-only changes; resize on width/orientation
+       changes or a substantial viewport change instead. */
+    if(canvasWidth===nextWidth&&Math.abs(canvasHeight-nextHeight)<180)return;
+    canvasWidth=nextWidth;canvasHeight=nextHeight;
     var dpr=Math.min(window.devicePixelRatio||1,1.5);
-    canvas.width=Math.round(window.innerWidth*dpr);
-    canvas.height=Math.round(window.innerHeight*dpr);
-    canvas.style.width=window.innerWidth+'px';
-    canvas.style.height=window.innerHeight+'px';
+    canvas.width=Math.round(canvasWidth*dpr);
+    canvas.height=Math.round(canvasHeight*dpr);
+    canvas.style.width=canvasWidth+'px';
+    canvas.style.height=canvasHeight+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
     var count=window.innerWidth<600?22:42;
     particles=[];
@@ -242,15 +251,16 @@
   /* Keep only the newest requested frame. Never queue another seek while the
      decoder is still seeking; this prevents a backlog on mobile devices. */
   var seekPending=false,pendingTime=0,lastSeekAt=0,seekTimer=0;
-  var minSeekInterval=mobileVideoMode?65:45;
+  var minSeekInterval=mobileVideoMode?85:45;
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
   }
   function updateProgress(progress){
     scrollProgress=Math.max(0,Math.min(1,progress));
-    scene.style.setProperty('--ifa-scroll-progress',scrollProgress.toFixed(4));
-    if(isHomeRoute)video.style.transform='scale('+(1.015+scrollProgress*.075).toFixed(3)+')';
+    /* The chapter rail and label are hidden on touch/mobile layouts. Avoid
+       needless style/layout writes there while the video decoder is seeking. */
+    if(mobileVideoMode)return;
     var maxHeight=Math.max(0,rail.clientHeight-44);
     fill.style.height=(maxHeight*scrollProgress)+'px';
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
@@ -304,7 +314,7 @@
     if(seekPending)applyPendingSeek();
   });
   window.addEventListener('scroll',onNativeScroll,{passive:true});
-  window.addEventListener('resize',function(){onNativeScroll();if(window.ScrollTrigger)window.ScrollTrigger.refresh();},{passive:true});
+  window.addEventListener('resize',function(){onNativeScroll();},{passive:true});
 
   video.addEventListener('loadedmetadata',function(){
     if(!isFinite(video.duration)||video.duration<=0)return;
@@ -336,8 +346,26 @@
     });
   }
 
-  /* Start loading once. Calling load() a second time can reset metadata and interrupt seeking. */
-  video.load();
+  /* Start the MP4 after the page's critical resources have loaded. This improves
+     first paint while still giving the video time to buffer before most scrolling.
+     The first user scroll bypasses the idle wait so the video starts immediately. */
+  var videoLoadStarted=false;
+  function startVideoLoad(){
+    if(videoLoadStarted)return;
+    videoLoadStarted=true;
+    video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
+    video.load();
+  }
+  window.addEventListener('scroll',startVideoLoad,{once:true,passive:true});
+  function scheduleVideoLoad(){
+    if('requestIdleCallback'in window){
+      window.requestIdleCallback(startVideoLoad,{timeout:1800});
+    }else{
+      window.setTimeout(startVideoLoad,900);
+    }
+  }
+  if(document.readyState==='complete')scheduleVideoLoad();
+  else window.addEventListener('load',scheduleVideoLoad,{once:true});
   /* One initial sync is enough; duplicate RAFs only repeat the same seek. */
   requestAnimationFrame(onNativeScroll);
 })();

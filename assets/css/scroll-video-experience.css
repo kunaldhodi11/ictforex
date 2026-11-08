@@ -14,11 +14,11 @@ body::after{z-index:0!important;}
 }
 .ifa-scroll-scene video{
   object-fit:cover;opacity:0;transform:scale(1.015);
-  filter:saturate(.82) contrast(1.08) brightness(.72);
+  filter:none;
   transition:opacity .65s ease;
 }
 .ifa-scroll-scene.is-video-ready video{opacity:.78}
-.ifa-home-journey-scene.is-video-ready video{opacity:.94;filter:saturate(.94) contrast(1.06) brightness(.94)}
+.ifa-home-journey-scene.is-video-ready video{opacity:.94}
 .ifa-scroll-scene canvas{opacity:.72}
 .ifa-scroll-scene::after{
   content:"";position:absolute;inset:0;pointer-events:none;
@@ -50,7 +50,7 @@ body::after{z-index:0!important;}
   .ifa-scroll-progress,.ifa-scroll-scene-label{display:none}
   .ifa-scroll-scene video{object-position:center}
   .ifa-scroll-scene.is-video-ready video{opacity:.42}
-  .ifa-home-journey-scene.is-video-ready video{opacity:.62;filter:saturate(.88) contrast(1.06) brightness(.82)}
+  .ifa-home-journey-scene.is-video-ready video{opacity:.62;filter:none}
   .ifa-scroll-scene canvas{opacity:.52}
 }
 @media(prefers-reduced-motion:reduce){
@@ -139,16 +139,16 @@ body::after{z-index:0!important;}
 /* Small screens use shorter distances and no heavy blur to keep scrolling responsive. */
 @media(max-width:760px),(pointer:coarse){
   .ifa-motion-ready [data-ifa-reveal="true"]{
-    transform:translate3d(0,38px,0) scale(.975);
-    filter:blur(1.5px);
-    transition:opacity .55s ease,transform .62s cubic-bezier(.2,.75,.25,1),filter .55s ease;
+    transform:translate3d(0,22px,0);
+    filter:none;
+    transition:opacity .32s ease,transform .38s cubic-bezier(.2,.75,.25,1);
   }
   .ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view{
     transform:translate3d(0,0,0) scale(1);
     filter:blur(0);
   }
-  .ifa-motion-ready .course-card[data-ifa-reveal="true"]{transform:translate3d(0,44px,0) scale(.97)}
-  .ifa-motion-ready .course-card[data-ifa-reveal="true"].ifa-in-view{transform:translate3d(0,0,0) scale(1)}
+  .ifa-motion-ready .course-card[data-ifa-reveal="true"]{transform:translate3d(0,22px,0)}
+  .ifa-motion-ready .course-card[data-ifa-reveal="true"].ifa-in-view{transform:translate3d(0,0,0)}
 }
 @media(prefers-reduced-motion:reduce){
   .ifa-motion-ready [data-ifa-reveal="true"],
@@ -175,4 +175,16 @@ body::after{z-index:0!important;}
     filter: none !important;
     transition-property: opacity, transform !important;
   }
+}
+
+
+/* Mobile rendering budget: keep the glass look without large live backdrop blurs. */
+@media(max-width:760px),(pointer:coarse){
+  .header,.facts,.course-card,.daily-tip-section,.faq-item,.trust-pill,.ifa-live-market{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+  .header{background:rgba(3,5,12,.96)}
+  .facts,.course-card,.faq-item,.trust-pill{background:rgba(7,14,25,.94)}
+  .daily-tip-section,.ifa-live-market{background:rgba(6,15,24,.96)}
 }

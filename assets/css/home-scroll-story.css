@@ -27,7 +27,7 @@
   inset:0;
   opacity:0;
   pointer-events:none;
-  mix-blend-mode:screen;
+  mix-blend-mode:normal;
 }
 .ifa-story-bg-global{background:radial-gradient(ellipse at 78% 25%,rgba(36,153,190,.26),transparent 48%),linear-gradient(110deg,rgba(3,12,24,.10),rgba(5,18,28,.42))}
 .ifa-story-bg-candles{background:radial-gradient(ellipse at 76% 48%,rgba(16,185,129,.23),transparent 48%),linear-gradient(110deg,rgba(3,14,19,.20),rgba(4,12,20,.45))}
@@ -41,7 +41,7 @@
   opacity:0;
   transform:translate3d(0,30px,0);
   pointer-events:auto;
-  will-change:opacity,transform;
+  will-change:auto;
   text-shadow:0 3px 28px rgba(0,0,0,.55);
 }
 .ifa-story-scene:first-child .ifa-story-copy{opacity:1;transform:none}
@@ -191,4 +191,49 @@
   display:none!important;
   background:none!important;
   box-shadow:none!important;
+}
+
+
+/* Keep chapter switching cheap: scenes are stacked and only the text layer
+   fades/moves. Do not animate full-viewport scene/backdrop opacity together. */
+.ifa-scroll-story .ifa-story-scene{
+  opacity:1;
+  visibility:hidden;
+  transition:none!important;
+}
+.ifa-scroll-story .ifa-story-scene.is-active{
+  visibility:visible;
+}
+.ifa-scroll-story .ifa-story-copy{
+  opacity:0;
+  transform:translate3d(0,8px,0);
+  transition:opacity .16s ease,transform .16s ease;
+  pointer-events:none;
+}
+.ifa-scroll-story .ifa-story-scene.is-active .ifa-story-copy{
+  opacity:1;
+  transform:translate3d(0,0,0);
+  pointer-events:auto;
+}
+.ifa-scroll-story .ifa-story-backdrop{
+  opacity:0;
+  transition:none!important;
+}
+.ifa-scroll-story .ifa-story-scene.is-active .ifa-story-backdrop{
+  opacity:1;
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-scroll-story .ifa-story-copy{transition:none!important}
+}
+
+
+/* Desktop/reduced-motion fallback: never leave the story copy hidden if
+   ScrollTrigger is unavailable or the visitor requests reduced motion. */
+.ifa-scroll-story:not(.ifa-story-js-ready) .ifa-story-scene:first-child{
+  visibility:visible;
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-scroll-story .ifa-story-scene{
+    visibility:visible!important;
+  }
 }

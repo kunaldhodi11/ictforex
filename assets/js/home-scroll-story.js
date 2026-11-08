@@ -1,4 +1,3 @@
-/* ICT Forex Academy — scroll-scrubbed editorial text storytelling */
 (function(){
   'use strict';
   var story=document.querySelector('.ifa-scroll-story');
@@ -13,39 +12,41 @@
     if(!window.gsap||!window.ScrollTrigger)return;
     var gsap=window.gsap;
     gsap.registerPlugin(window.ScrollTrigger);
-    var copies=scenes.map(function(scene){return scene.querySelector('.ifa-story-copy')});
-    var backgrounds=scenes.map(function(scene){return scene.querySelector('.ifa-story-backdrop')});
-    gsap.set(copies,{autoAlpha:0,y:30});
-    gsap.set(backgrounds,{autoAlpha:0});
-    gsap.set(copies[0],{autoAlpha:1,y:0});
-    gsap.set(backgrounds[0],{autoAlpha:1});
+    story.classList.add('ifa-story-js-ready');
+    var activeScene=-1;
 
-    var timeline=gsap.timeline({
-      defaults:{ease:'none'},
-      scrollTrigger:{
-        trigger:story,
-        start:'top top',
-        end:'bottom bottom',
-        scrub:0.65,
-        invalidateOnRefresh:true,
-        onUpdate:function(self){
-          var active=Math.min(scenes.length-1,Math.round(self.progress*(scenes.length-1)));
-          scenes.forEach(function(scene,index){
-            scene.setAttribute('aria-hidden',index===active?'false':'true');
-          });
-          if(progressFill)gsap.set(progressFill,{scaleX:Math.max(.08,self.progress)});
-        }
+    /* No per-frame DOM writes in the story text controller. The video has
+       its own scroll-linked renderer; this controller only swaps copy when
+       the reader crosses a chapter boundary. */
+    function setActiveScene(index){
+      index=Math.max(0,Math.min(scenes.length-1,index));
+      if(index===activeScene)return;
+      activeScene=index;
+      scenes.forEach(function(scene,i){
+        var active=i===index;
+        scene.classList.toggle('is-active',active);
+        scene.setAttribute('aria-hidden',active?'false':'true');
+      });
+      if(progressFill){
+        progressFill.style.transform='scaleX('+Math.max(.08,(index+1)/scenes.length)+')';
+      }
+    }
+
+    setActiveScene(0);
+    window.ScrollTrigger.create({
+      trigger:story,
+      start:'top top',
+      end:'bottom bottom',
+      invalidateOnRefresh:true,
+      onUpdate:function(self){
+        var index=Math.min(scenes.length-1,Math.floor(self.progress*scenes.length));
+        setActiveScene(index);
+      },
+      onRefresh:function(self){
+        var index=Math.min(scenes.length-1,Math.floor(self.progress*scenes.length));
+        setActiveScene(index);
       }
     });
-    for(var i=1;i<scenes.length;i++){
-      var at=i-1;
-      timeline.to(copies[i-1],{autoAlpha:0,y:-30,duration:.28},at);
-      timeline.to(backgrounds[i-1],{autoAlpha:0,duration:.46},at);
-      timeline.fromTo(backgrounds[i],{autoAlpha:0},{autoAlpha:1,duration:.46},at);
-      timeline.fromTo(copies[i],{autoAlpha:0,y:30},{autoAlpha:1,y:0,duration:.28},at+.12);
-    }
-    window.addEventListener('load',function(){window.ScrollTrigger.refresh()},{once:true});
-    window.addEventListener('resize',function(){window.ScrollTrigger.refresh()},{passive:true});
   }
   if(window.gsap&&window.ScrollTrigger)init();
   else window.addEventListener('load',init,{once:true});
