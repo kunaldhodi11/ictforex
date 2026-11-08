@@ -79,8 +79,8 @@
 
   /* Homepage video path. Other page-specific paths will be configured as those pages are integrated. */
   var pageVideos={
-    '/':'/assets/videos/home-journey.mp4?v=20261108-1',
-    '/index.html':'/assets/videos/home-journey.mp4?v=20261108-1',
+    '/':'/assets/videos/home-journey.mp4?v=20261108-2',
+    '/index.html':'/assets/videos/home-journey.mp4?v=20261108-2',
     '/free-learning.html':'/assets/videos/free-course.mp4',
     '/vip-course.html':'/assets/videos/vip-academy.mp4',
     '/candlestick-patterns.html':'/assets/videos/candlesticks.mp4',
@@ -92,7 +92,7 @@
     '/about.html':'/assets/videos/about-journey.mp4'
   };
   var isHomeRoute=window.location.pathname==='/'||window.location.pathname==='/index.html';
-  var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey.mp4?v=20261108-1';
+  var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey.mp4?v=20261108-2';
   var scene=document.createElement('div');
   scene.className='ifa-scroll-scene'+(isHomeRoute?' ifa-home-journey-scene':'');
   scene.setAttribute('aria-hidden','true');
