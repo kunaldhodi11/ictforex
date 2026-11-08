@@ -201,13 +201,20 @@
   var ctx=canvas.getContext('2d');
   var particles=[];
   var particleFrame=0;
+  var canvasWidth=0,canvasHeight=0;
   function resizeCanvas(){
     if(!ctx)return;
+    var nextWidth=window.innerWidth,nextHeight=window.innerHeight;
+    /* Mobile browser chrome can change innerHeight repeatedly during scroll.
+       Ignore those small height-only changes; resize on width/orientation
+       changes or a substantial viewport change instead. */
+    if(canvasWidth===nextWidth&&Math.abs(canvasHeight-nextHeight)<180)return;
+    canvasWidth=nextWidth;canvasHeight=nextHeight;
     var dpr=Math.min(window.devicePixelRatio||1,1.5);
-    canvas.width=Math.round(window.innerWidth*dpr);
-    canvas.height=Math.round(window.innerHeight*dpr);
-    canvas.style.width=window.innerWidth+'px';
-    canvas.style.height=window.innerHeight+'px';
+    canvas.width=Math.round(canvasWidth*dpr);
+    canvas.height=Math.round(canvasHeight*dpr);
+    canvas.style.width=canvasWidth+'px';
+    canvas.style.height=canvasHeight+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
     var count=window.innerWidth<600?22:42;
     particles=[];
