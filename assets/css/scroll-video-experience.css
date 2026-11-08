@@ -156,3 +156,23 @@ body::after{z-index:0!important;}
     opacity:1!important;filter:none!important;transform:none!important;transition:none!important;
   }
 }
+
+
+/* Performance pass: avoid animating CSS blur filters while scrolling.
+   Opacity + transform remain compositor-friendly and preserve the reveal style. */
+.ifa-motion-ready [data-ifa-reveal="true"],
+.ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view {
+  filter: none !important;
+  transition-property: opacity, transform !important;
+}
+.ifa-motion-ready .hero [data-ifa-reveal="true"],
+.ifa-motion-ready .hero [data-ifa-reveal="true"].ifa-in-view {
+  filter: none !important;
+}
+@media(max-width:760px),(pointer:coarse) {
+  .ifa-motion-ready [data-ifa-reveal="true"],
+  .ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view {
+    filter: none !important;
+    transition-property: opacity, transform !important;
+  }
+}
