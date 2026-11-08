@@ -136,3 +136,12 @@ html.ifa-motion-ready .facts.ifa-in-view .fact {
       linear-gradient(180deg, rgba(3,7,13,.04), rgba(3,7,13,.16)) !important;
   }
 }
+
+
+/* Hero copy now spans the available width after removing the decorative market chart. */
+.ifa-editorial-layout {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.ifa-editorial-hero .ifa-chapter-heading {
+  max-width: 780px;
+}
