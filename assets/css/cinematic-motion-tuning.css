@@ -113,3 +113,26 @@ html.ifa-motion-ready .facts.ifa-in-view .fact {
   }
   .ifa-scroll-scene video { transform: none !important; }
 }
+
+
+/* Brighter homepage journey video: lift the footage without washing out text. */
+.ifa-home-journey-scene.is-video-ready video {
+  opacity: 1 !important;
+  filter: saturate(1.02) contrast(1.04) brightness(1.16) !important;
+}
+.ifa-home-journey-scene::after {
+  background:
+    radial-gradient(ellipse at 50% 38%, transparent 10%, rgba(3,7,13,.10) 76%),
+    linear-gradient(180deg, rgba(3,7,13,.05), rgba(3,7,13,.20)) !important;
+}
+@media (max-width: 760px), (pointer: coarse) {
+  .ifa-home-journey-scene.is-video-ready video {
+    opacity: 1 !important;
+    filter: saturate(1.02) contrast(1.03) brightness(1.22) !important;
+  }
+  .ifa-home-journey-scene::after {
+    background:
+      radial-gradient(ellipse at 50% 38%, transparent 8%, rgba(3,7,13,.08) 78%),
+      linear-gradient(180deg, rgba(3,7,13,.04), rgba(3,7,13,.16)) !important;
+  }
+}
