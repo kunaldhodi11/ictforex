@@ -104,7 +104,13 @@
   video.playsInline=true;
   video.setAttribute('playsinline','');
   video.setAttribute('muted','');
-  video.preload=(isHomeRoute&&window.innerWidth>760)?'auto':'metadata';
+  /* The homepage MP4 is only ~8.8 MB. Preload it on capable connections so
+     the first scroll does not compete with a late video download. Respect
+     Save-Data and very slow mobile connections. */
+  var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  var saveData=!!(connection&&connection.saveData);
+  var slowConnection=!!(connection&&/^(slow-2g|2g)$/.test(connection.effectiveType||''));
+  video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
   var source=document.createElement('source');
@@ -233,7 +239,7 @@
   var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
   var seekPending=false,pendingTime=0,lastSeekAt=0,seekRaf=0;
   /* Limit decoder seeks and never queue a pile of stale timestamps while scrolling. */
-  var minSeekInterval=42;
+  var minSeekInterval=40; // cap seek requests near 25 fps; newer requests replace stale ones
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
@@ -286,7 +292,8 @@
     duration=video.duration;
     videoReady=true;
     video.pause();
-    scene.classList.add('is-video-ready');
+    /* Metadata enables seeking, but wait for an actual decoded frame before
+       fading the video in; this avoids revealing a black/empty video layer. */
     if(particleRaf)cancelAnimationFrame(particleRaf);
     particleRaf=0;
     sceneLabel.textContent='SCROLL TO EXPLORE';
@@ -294,7 +301,10 @@
     if(window.ScrollTrigger)window.ScrollTrigger.refresh();
   });
   video.addEventListener('loadeddata',function(){
-    if(videoReady){scene.classList.add('is-video-ready');seekVideo(getProgress());}
+    if(videoReady){
+      scene.classList.add('is-video-ready');
+      seekVideo(getProgress());
+    }
   });
   video.addEventListener('error',function(){
     videoReady=false;
@@ -304,7 +314,6 @@
 
   /* Start loading once. Calling load() a second time can reset metadata and interrupt seeking. */
   video.load();
-  requestAnimationFrame(onNativeScroll);
-  /* Keep scroll work in one animation frame and avoid forced library refreshes. */
+  /* One initial sync is enough; duplicate RAFs only repeat the same seek. */
   requestAnimationFrame(onNativeScroll);
 })();
