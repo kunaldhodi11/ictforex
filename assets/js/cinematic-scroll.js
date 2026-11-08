@@ -249,16 +249,16 @@
   /* Keep only the newest requested frame. Never queue another seek while the
      decoder is still seeking; this prevents a backlog on mobile devices. */
   var seekPending=false,pendingTime=0,lastSeekAt=0,seekTimer=0;
-  var minSeekInterval=mobileVideoMode?65:45;
+  var minSeekInterval=mobileVideoMode?85:45;
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
   }
   function updateProgress(progress){
     scrollProgress=Math.max(0,Math.min(1,progress));
-    scene.style.setProperty('--ifa-scroll-progress',scrollProgress.toFixed(4));
-    /* Keep the video transform static; changing its scale on every scroll
-       forces another full-screen compositing update while the decoder seeks. */
+    /* The chapter rail and label are hidden on touch/mobile layouts. Avoid
+       needless style/layout writes there while the video decoder is seeking. */
+    if(mobileVideoMode)return;
     var maxHeight=Math.max(0,rail.clientHeight-44);
     fill.style.height=(maxHeight*scrollProgress)+'px';
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
