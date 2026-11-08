@@ -250,7 +250,8 @@
   function updateProgress(progress){
     scrollProgress=Math.max(0,Math.min(1,progress));
     scene.style.setProperty('--ifa-scroll-progress',scrollProgress.toFixed(4));
-    if(isHomeRoute)video.style.transform='scale('+(1.015+scrollProgress*.075).toFixed(3)+')';
+    /* Keep the video transform static; changing its scale on every scroll
+       forces another full-screen compositing update while the decoder seeks. */
     var maxHeight=Math.max(0,rail.clientHeight-44);
     fill.style.height=(maxHeight*scrollProgress)+'px';
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
