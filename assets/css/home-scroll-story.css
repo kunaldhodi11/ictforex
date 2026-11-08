@@ -165,3 +165,30 @@
   .ifa-story-copy:hover .ifa-story-kicker,
   .ifa-story-copy:hover>p:not(.ifa-story-kicker){transform:none;text-shadow:inherit}
 }
+
+
+/* Hard reset any inherited card/article styling inside the pinned story.
+   The story text must sit directly on the cinematic footage. */
+.ifa-scroll-story .ifa-scroll-story-stage,
+.ifa-scroll-story .ifa-story-scene,
+.ifa-scroll-story article.ifa-story-scene,
+.ifa-scroll-story .ifa-story-copy{
+  background:transparent!important;
+  background-color:transparent!important;
+  border:0!important;
+  border-color:transparent!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  outline:0!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+.ifa-scroll-story .ifa-story-copy::before,
+.ifa-scroll-story .ifa-story-copy::after,
+.ifa-scroll-story .ifa-story-scene::before,
+.ifa-scroll-story .ifa-story-scene::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
