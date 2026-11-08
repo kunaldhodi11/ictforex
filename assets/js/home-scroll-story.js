@@ -12,6 +12,7 @@
     if(!window.gsap||!window.ScrollTrigger)return;
     var gsap=window.gsap;
     gsap.registerPlugin(window.ScrollTrigger);
+    story.classList.add('ifa-story-js-ready');
     var activeScene=-1;
 
     /* No per-frame DOM writes in the story text controller. The video has
