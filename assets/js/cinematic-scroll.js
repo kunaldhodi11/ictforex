@@ -239,11 +239,10 @@
   window.addEventListener('resize',resizeCanvas,{passive:true});
 
   var duration=0,videoReady=false,lastTime=-1,scrollProgress=0,rafPending=false;
-  var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
-  var seekPending=false,pendingTime=0,lastSeekAt=0,seekRaf=0;
-  /* Throttle seeks, but let the latest scroll position replace a stale
-     in-flight seek instead of waiting on a slow mobile decoder. */
-  var minSeekInterval=mobileVideoMode?55:40;
+  /* Keep only the newest requested frame. Never queue another seek while the
+     decoder is still seeking; this prevents a backlog on mobile devices. */
+  var seekPending=false,pendingTime=0,lastSeekAt=0,seekTimer=0;
+  var minSeekInterval=mobileVideoMode?65:45;
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
@@ -258,21 +257,32 @@
   }
   function applyPendingSeek(){
     if(!videoReady||!duration||!seekPending||!document.body.contains(video))return;
+    /* A seek already in progress owns the decoder. Scroll events only replace
+       pendingTime; the seeked event below applies the newest position. */
+    if(video.seeking)return;
     var now=performance.now();
     var wait=minSeekInterval-(now-lastSeekAt);
     if(wait>0){
-      if(!seekRaf)seekRaf=requestAnimationFrame(function(){seekRaf=0;applyPendingSeek();});
+      if(!seekTimer)seekTimer=window.setTimeout(function(){
+        seekTimer=0;
+        applyPendingSeek();
+      },wait);
       return;
     }
     var target=Math.max(0,Math.min(duration-.05,pendingTime));
     if(lastTime>=0&&Math.abs(target-lastTime)<.04){seekPending=false;return;}
     try{
-      /* The newest target supersedes an older in-flight seek. */
       video.currentTime=target;
       lastTime=target;
       lastSeekAt=now;
       seekPending=false;
-    }catch(e){seekPending=true;}
+    }catch(e){
+      /* Retry only after the current decoder operation has had a chance to end. */
+      if(!seekTimer)seekTimer=window.setTimeout(function(){
+        seekTimer=0;
+        applyPendingSeek();
+      },minSeekInterval);
+    }
   }
   function seekVideo(progress){
     updateProgress(progress);
