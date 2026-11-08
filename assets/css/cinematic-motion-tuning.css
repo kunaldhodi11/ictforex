@@ -1,0 +1,115 @@
+/* ICT Forex Academy — unified motion tuning
+   Loaded last so older homepage animation layers cannot fight each other. */
+
+/* One lightweight reveal system for desktop and laptop. */
+html.ifa-motion-ready [data-ifa-reveal],
+html.ifa-motion-ready [data-ifa-reveal="true"] {
+  opacity: 0 !important;
+  transform: translate3d(0, 14px, 0) !important;
+  filter: none !important;
+  transition:
+    opacity .52s cubic-bezier(.22,.61,.36,1),
+    transform .58s cubic-bezier(.22,.61,.36,1) !important;
+  transition-delay: var(--ifa-reveal-delay, 0ms) !important;
+  will-change: auto !important;
+}
+html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+html.ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+html.ifa-motion-ready .course-card {
+  opacity: 0 !important;
+  transform: translate3d(0, 14px, 0) !important;
+  transition:
+    opacity .52s cubic-bezier(.22,.61,.36,1),
+    transform .58s cubic-bezier(.22,.61,.36,1),
+    border-color .28s ease,
+    box-shadow .28s ease !important;
+  transition-delay: var(--ifa-stagger, 0ms) !important;
+  will-change: auto !important;
+}
+html.ifa-motion-ready .course-card.ifa-in-view {
+  opacity: 1 !important;
+  transform: none !important;
+}
+html.ifa-motion-ready .facts .fact {
+  opacity: 0 !important;
+  transform: translate3d(0, 10px, 0) !important;
+  transition: opacity .42s ease, transform .48s ease !important;
+}
+html.ifa-motion-ready .facts.ifa-in-view .fact {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Avoid an unnecessary scale/filter layer on the full-screen video. */
+.ifa-scroll-scene video {
+  transform: none !important;
+  backface-visibility: visible !important;
+}
+
+/* Hover depth only on devices that genuinely support precise hover. */
+@media (hover: hover) and (pointer: fine) {
+  .course-card:hover {
+    transform: translate3d(0, -3px, 0) !important;
+  }
+}
+
+/* Touch devices: shorter movement, no decorative hover/tilt work. */
+@media (max-width: 760px), (pointer: coarse) {
+  html.ifa-motion-ready [data-ifa-reveal],
+  html.ifa-motion-ready [data-ifa-reveal="true"] {
+    transform: translate3d(0, 9px, 0) !important;
+    transition-duration: .4s !important;
+    transition-delay: 0ms !important;
+  }
+  html.ifa-motion-ready .course-card {
+    transform: translate3d(0, 10px, 0) !important;
+    transition-duration: .42s !important;
+    transition-delay: 0ms !important;
+  }
+  html.ifa-motion-ready .facts .fact {
+    transform: translate3d(0, 7px, 0) !important;
+    transition-duration: .34s !important;
+  }
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view,
+  html.ifa-motion-ready .course-card.ifa-in-view,
+  html.ifa-motion-ready .facts.ifa-in-view .fact {
+    transform: none !important;
+  }
+  .course-card:hover,
+  .course-card.ifa-tilt-active,
+  .faq-item:hover,
+  .fact:hover,
+  .trust-pill:hover {
+    transform: none !important;
+  }
+  .hero-badge,
+  .badge-dot,
+  .candle {
+    animation: none !important;
+  }
+}
+
+/* Accessibility: never hide content or animate when reduced motion is requested. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  html.ifa-motion-ready [data-ifa-reveal],
+  html.ifa-motion-ready [data-ifa-reveal="true"],
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view,
+  html.ifa-motion-ready .course-card,
+  html.ifa-motion-ready .course-card.ifa-in-view,
+  html.ifa-motion-ready .facts .fact,
+  html.ifa-motion-ready .facts.ifa-in-view .fact {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+  .ifa-scroll-scene video { transform: none !important; }
+}
