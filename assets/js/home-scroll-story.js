@@ -50,7 +50,6 @@
       timeline.fromTo(copies[i],{autoAlpha:0,y:30},{autoAlpha:1,y:0,duration:.28},at+.12);
     }
     window.addEventListener('load',function(){window.ScrollTrigger.refresh()},{once:true});
-    window.addEventListener('resize',function(){window.ScrollTrigger.refresh()},{passive:true});
   }
   if(window.gsap&&window.ScrollTrigger)init();
   else window.addEventListener('load',init,{once:true});
