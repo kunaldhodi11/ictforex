@@ -110,14 +110,9 @@
   var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   var saveData=!!(connection&&connection.saveData);
   var slowConnection=!!(connection&&/^(slow-2g|2g)$/.test(connection.effectiveType||''));
-  /* Touch/mobile devices play the background video normally instead of seeking
-     the decoder on every scroll frame. Desktop keeps the original scroll-scrub. */
+  /* All devices use scroll-scrubbing: the video never autoplays.
+     Mobile keeps metadata preload to reduce initial network and memory pressure. */
   var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
-  if(isHomeRoute&&mobileVideoMode){
-    video.loop=true;
-    video.autoplay=true;
-    video.setAttribute('autoplay','');
-  }
   video.preload=(isHomeRoute&&!saveData&&!slowConnection&&!mobileVideoMode)?'auto':'metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
@@ -247,7 +242,7 @@
   var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
   var seekPending=false,pendingTime=0,lastSeekAt=0,seekRaf=0;
   /* Limit decoder seeks and never queue a pile of stale timestamps while scrolling. */
-  var minSeekInterval=40; // cap seek requests near 25 fps; newer requests replace stale ones
+  var minSeekInterval=mobileVideoMode?65:40; // mobile: limit decoder seeks; always keep only the newest scroll target
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
@@ -290,8 +285,7 @@
     requestAnimationFrame(function(){
       rafPending=false;
       var progress=getProgress();
-      if(mobileVideoMode)updateProgress(progress);
-      else seekVideo(progress);
+      seekVideo(progress);
     });
   }
   video.addEventListener('seeked',function(){
@@ -304,24 +298,18 @@
     if(!isFinite(video.duration)||video.duration<=0)return;
     duration=video.duration;
     videoReady=true;
-    if(!mobileVideoMode)video.pause();
-    /* Metadata enables seeking on desktop. Mobile playback avoids repeated
-       currentTime writes, which can overload phone video decoders while scrolling. */
+    video.pause();
+    /* Metadata enables scroll-to-time mapping on every device. */
     if(particleRaf)cancelAnimationFrame(particleRaf);
     particleRaf=0;
     sceneLabel.textContent='SCROLL TO EXPLORE';
-    if(!mobileVideoMode)seekVideo(getProgress());
+    seekVideo(getProgress());
     if(window.ScrollTrigger)window.ScrollTrigger.refresh();
   });
   video.addEventListener('loadeddata',function(){
     if(videoReady){
       scene.classList.add('is-video-ready');
-      if(mobileVideoMode){
-        var playAttempt=video.play();
-        if(playAttempt&&typeof playAttempt.catch==='function')playAttempt.catch(function(){});
-      }else{
-        seekVideo(getProgress());
-      }
+      seekVideo(getProgress());
     }
   });
   video.addEventListener('error',function(){
@@ -331,11 +319,8 @@
   });
   if(mobileVideoMode){
     document.addEventListener('visibilitychange',function(){
-      if(document.hidden){video.pause();}
-      else if(videoReady){
-        var resumeAttempt=video.play();
-        if(resumeAttempt&&typeof resumeAttempt.catch==='function')resumeAttempt.catch(function(){});
-      }
+      if(document.hidden)video.pause();
+      else if(videoReady)seekVideo(getProgress());
     });
   }
 
