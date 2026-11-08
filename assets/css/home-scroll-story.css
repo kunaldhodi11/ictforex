@@ -128,3 +128,40 @@
   .ifa-story-copy{opacity:1!important;transform:none!important}
   .ifa-story-progress,.ifa-story-scroll-hint{display:none}
 }
+
+
+/* Text-only interaction: keep the editorial copy free of any visible card/panel. */
+.ifa-story-copy{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  padding:0!important;
+}
+.ifa-story-copy h2,
+.ifa-story-kicker,
+.ifa-story-copy>p:not(.ifa-story-kicker){
+  transition:transform .38s cubic-bezier(.2,.75,.25,1),text-shadow .38s ease,color .38s ease;
+}
+.ifa-story-copy:hover h2,
+.ifa-story-copy:focus-within h2{
+  transform:translate3d(0,-4px,0);
+  text-shadow:0 8px 34px rgba(0,0,0,.62),0 0 24px rgba(140,232,197,.16);
+}
+.ifa-story-copy:hover .ifa-story-kicker,
+.ifa-story-copy:focus-within .ifa-story-kicker{
+  color:#b7ffe0;
+  transform:translate3d(3px,0,0);
+}
+.ifa-story-copy:hover>p:not(.ifa-story-kicker),
+.ifa-story-copy:focus-within>p:not(.ifa-story-kicker){
+  transform:translate3d(0,-2px,0);
+  text-shadow:0 4px 22px rgba(0,0,0,.62);
+}
+@media(hover:none){
+  .ifa-story-copy:hover h2,
+  .ifa-story-copy:hover .ifa-story-kicker,
+  .ifa-story-copy:hover>p:not(.ifa-story-kicker){transform:none;text-shadow:inherit}
+}
