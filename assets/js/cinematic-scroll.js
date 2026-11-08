@@ -128,16 +128,15 @@
   video.playsInline=true;
   video.setAttribute('playsinline','');
   video.setAttribute('muted','');
-  /* The homepage MP4 is only ~8.8 MB. Preload it on capable connections so
-     the first scroll does not compete with a late video download. Respect
-     Save-Data and very slow mobile connections. */
-  var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-  var saveData=!!(connection&&connection.saveData);
-  var slowConnection=!!(connection&&/^(slow-2g|2g)$/.test(connection.effectiveType||''));
-  /* Scroll-scrubbing on every device. Preload the cinematic file on normal
-     connections so scrolling does not trigger late network buffering. */
+  /* Never eagerly pull the whole MP4 on page load — that competes with
+     the page's own CSS/JS/fonts for bandwidth and slows first paint.
+     'metadata' fetches only duration/dimensions up front; the frequent
+     keyframes baked into the video (re-encoded for smooth scrubbing)
+     mean the browser can fetch just the small byte ranges it needs as
+     the visitor actually scrolls, instead of downloading it all at once. */
   var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
-  video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
+  video.preload='metadata';
+  video.setAttribute('fetchpriority','low');
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
   var source=document.createElement('source');

@@ -1,0 +1,1259 @@
+/* Bundled homepage cinematic CSS — combines 8 files into one request for faster first paint.
+   Source files kept individually in this folder for reference/maintenance; this bundle is what
+   index.html actually loads. Order below matches the original <link> order (cascade-sensitive). */
+
+/* ===== cinematic-experience.css ===== */
+/* ICT Forex Academy — premium cinematic homepage layer. The moving background is the scroll-controlled homepage video. */
+:root{
+  --ifa-ink:#05070b;
+  --ifa-panel:rgba(10,14,20,.76);
+  --ifa-line:rgba(222,190,122,.22);
+  --ifa-gold:#d8b36a;
+  --ifa-gold-bright:#f1d49a;
+  --ifa-green:#31c48d;
+  --ifa-red:#e36b72;
+  --ifa-text:#f7f5ef;
+  --ifa-muted:#b7bec7;
+}
+body{color:var(--ifa-text);text-rendering:optimizeLegibility}
+.header{
+  background:rgba(5,8,13,.78);
+  border-bottom-color:rgba(216,179,106,.18);
+  box-shadow:0 12px 42px rgba(0,0,0,.32);
+}
+.logo-link,.nav-desktop a,.language-trigger{ -webkit-tap-highlight-color:transparent }
+.nav-desktop a{letter-spacing:.015em}
+.nav-desktop a.active{color:var(--ifa-gold-bright);background:rgba(216,179,106,.1);box-shadow:inset 0 0 0 1px rgba(216,179,106,.18)}
+.nav-desktop a:hover{background:rgba(216,179,106,.09);box-shadow:0 10px 28px rgba(0,0,0,.22)}
+.btn-nav-login,.btn-primary{
+  background:linear-gradient(115deg,#d9b66f,#a9823f)!important;
+  color:#101116!important;
+  box-shadow:0 10px 30px rgba(190,151,83,.2)!important;
+}
+.btn-gold{
+  color:#f0d59f;
+  border-color:rgba(216,179,106,.42);
+  background:rgba(216,179,106,.09);
+  box-shadow:0 10px 28px rgba(0,0,0,.2);
+}
+.hero{padding-top:clamp(76px,9vw,124px);padding-bottom:clamp(78px,9vw,116px)}
+.hero-badge,.sec-tag{
+  color:var(--ifa-gold-bright);
+  background:rgba(216,179,106,.09);
+  border-color:rgba(216,179,106,.3);
+  box-shadow:0 8px 28px rgba(0,0,0,.2);
+}
+.hero h1{
+  max-width:1000px;
+  font-size:clamp(42px,7.3vw,88px);
+  line-height:1.015;
+  letter-spacing:-.055em;
+  text-shadow:0 12px 42px rgba(0,0,0,.58);
+}
+.hero h1 .hl{
+  background:linear-gradient(100deg,#fff1d0 0%,#d8b36a 35%,#f0d9a6 62%,#8dd9b7 100%);
+  -webkit-background-clip:text;background-clip:text;
+}
+.hero-sub{max-width:720px;color:#d0d4d9}
+.hero-market-visual{
+  width:min(760px,92vw);
+  margin:34px auto 30px;
+  padding:20px 24px 16px;
+  border:1px solid rgba(216,179,106,.28);
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(9,14,20,.86),rgba(15,22,29,.66));
+  box-shadow:0 28px 90px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.06);
+  backdrop-filter:blur(14px);
+  transform:translate3d(0,var(--hero-scroll-shift,0px),0);
+}
+.market-visual-top,.market-visual-bottom{color:#b9c0c8}
+.market-visual-symbol{color:#f0d8a6}
+.market-visual-status{color:#9eaaad;font-size:9px;letter-spacing:.11em}
+.market-candles{min-height:150px;align-items:center;gap:clamp(10px,2.2vw,22px);padding:15px 5px}
+.candle{filter:drop-shadow(0 0 8px rgba(49,196,141,.18));animation:ifa-candle-float 5s ease-in-out infinite}
+.candle:nth-child(3n){animation-delay:-1.4s}
+.candle:nth-child(3n + 1){animation-delay:-2.6s}
+.candle.down{filter:drop-shadow(0 0 8px rgba(227,107,114,.18))}
+@keyframes ifa-candle-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.facts{
+  border-color:var(--ifa-line);
+  background:linear-gradient(120deg,rgba(10,14,20,.86),rgba(17,21,26,.72));
+  box-shadow:0 24px 70px rgba(0,0,0,.32);
+}
+.fact{border-right-color:rgba(216,179,106,.13)}
+.fact-n{color:var(--ifa-gold-bright);text-shadow:0 0 24px rgba(216,179,106,.18)}
+.fact:hover{background:rgba(216,179,106,.07);box-shadow:0 0 28px rgba(216,179,106,.08)}
+.sec-hd h2{letter-spacing:-.035em;text-shadow:0 8px 28px rgba(0,0,0,.5)}
+.sec-sub{color:#c1c7ce}
+.course-grid{gap:clamp(16px,2.2vw,26px)}
+.course-card{
+  border-color:rgba(216,179,106,.18);
+  background:linear-gradient(145deg,rgba(13,18,25,.86),rgba(7,10,15,.78));
+  box-shadow:0 22px 60px rgba(0,0,0,.34);
+}
+.course-card:hover{
+  border-color:rgba(216,179,106,.48);
+  box-shadow:0 30px 76px rgba(0,0,0,.46),0 0 32px rgba(216,179,106,.08);
+}
+.cc-title{letter-spacing:-.02em}
+.cc-desc,.cc-meta{color:#c0c6ce}
+.cc-chapters{background:rgba(0,0,0,.22);border-color:rgba(216,179,106,.1)}
+.cc-chapters li{color:#d9dde1;border-bottom-color:rgba(255,255,255,.055)}
+.cc-chapters li i{color:var(--ifa-gold)}
+.cc-tag,.cc-badge{letter-spacing:.08em}
+.daily-tip-section{
+  border-color:rgba(216,179,106,.24);
+  background:linear-gradient(120deg,rgba(216,179,106,.09),rgba(10,17,22,.78) 55%,rgba(49,196,141,.06));
+}
+.tip-body{border-left-color:var(--ifa-gold);background:rgba(0,0,0,.28)}
+.tip-body strong{color:var(--ifa-gold-bright)}
+.btn-tip{color:var(--ifa-gold-bright);border-color:rgba(216,179,106,.34);background:rgba(216,179,106,.08)}
+.faq-item{border-color:rgba(216,179,106,.16);background:rgba(10,14,20,.74)}
+.faq-item:hover{border-color:rgba(216,179,106,.4)}
+.faq-q.open,.faq-q.open .fa{color:var(--ifa-gold-bright)}
+.footer{background:rgba(2,4,7,.94);border-top-color:rgba(216,179,106,.16)}
+.footer-col a:hover{color:var(--ifa-gold-bright)}
+/* Gentle entrance motion; existing IntersectionObserver controls visibility. */
+.reveal-on-scroll{transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal-on-scroll:not(.is-visible){opacity:0;transform:translate3d(0,26px,0)}
+.reveal-on-scroll.is-visible{opacity:1;transform:translate3d(0,0,0)}
+.course-card.reveal-on-scroll{transition-delay:var(--ifa-card-delay,0ms)}
+.course-card:nth-child(2){--ifa-card-delay:100ms}
+.course-card:nth-child(3){--ifa-card-delay:200ms}
+@media(hover:hover) and (pointer:fine){
+  .course-card:hover{transform:translateY(-8px) scale(1.012)}
+  .btn-primary:hover,.btn-gold:hover,.btn-nav-login:hover{filter:brightness(1.08)}
+}
+@media(max-width:760px){
+  .hero{padding:72px 16px 76px}
+  .hero h1{font-size:clamp(38px,10vw,58px);line-height:1.06}
+  .hero-market-visual{padding:15px 14px 12px;border-radius:17px;margin:26px auto 24px}
+  .market-candles{min-height:112px;gap:8px}
+  .market-visual-status{max-width:125px;text-align:right;line-height:1.4}
+  .facts{margin-left:14px;margin-right:14px;border-radius:17px}
+  .fact{padding:20px 10px}
+  .fact-n{font-size:26px}
+  .fact-l{font-size:9px}
+  .course-grid{grid-template-columns:1fr}
+  .course-card:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .candle,.reveal-on-scroll{animation:none!important;transition:none!important}
+  .reveal-on-scroll:not(.is-visible){opacity:1;transform:none}
+}
+
+
+/* PHASE 2 — layered depth, scroll scenes and lightweight 3D interactions */
+.hero-market-visual{
+  position:relative;
+  isolation:isolate;
+  perspective:1100px;
+  transform-style:preserve-3d;
+  /* Use translate rather than transform so scroll-reveal can animate independently. */
+  transform:none;
+  translate:0 var(--hero-scroll-shift,0px);
+  transition:border-color .45s ease,box-shadow .45s ease;
+}
+.hero-market-visual::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  z-index:-1;
+  border-radius:inherit;
+  background:linear-gradient(115deg,rgba(241,212,154,.20),transparent 28%,rgba(49,196,141,.12) 72%,transparent);
+  opacity:.55;
+  filter:blur(18px);
+  pointer-events:none;
+}
+.hero-market-visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.075),transparent 24%,transparent 72%,rgba(216,179,106,.045));
+  mix-blend-mode:screen;
+}
+.market-visual-top,.market-candles,.market-visual-bottom{position:relative;z-index:1}
+.market-visual-top{transform:translateZ(24px)}
+.market-candles{transform:translateZ(36px);transform-style:preserve-3d}
+.market-visual-bottom{transform:translateZ(18px)}
+.candle{will-change:transform}
+.facts,.course-card,.daily-tip-section,.faq-item{
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+}
+.course-card{position:relative;isolation:isolate}
+.course-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(420px circle at var(--card-glow-x,50%) var(--card-glow-y,0%),rgba(216,179,106,.13),transparent 54%);
+  transition:opacity .35s ease;
+}
+.course-card:hover::before{opacity:1}
+.course-card .cc-img,.course-card .cc-body{position:relative;z-index:1}
+.section .sec-hd{transform:translateZ(18px)}
+@media(hover:hover) and (pointer:fine){
+  .hero-market-visual:hover{
+    border-color:rgba(241,212,154,.5);
+    box-shadow:0 34px 100px rgba(0,0,0,.48),0 0 46px rgba(216,179,106,.12);
+  }
+}
+@media(max-width:760px){
+  .hero-market-visual{translate:0 0;perspective:none}
+  .market-visual-top,.market-candles,.market-visual-bottom{transform:none}
+  .course-card::before{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-market-visual{translate:none!important;transform:none!important}
+  .course-card::before{display:none}
+}
+
+
+.hero{
+  isolation:isolate;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:5% 7% 0;
+  pointer-events:none;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(5,9,14,.30),transparent 68%);
+  filter:blur(22px);
+}
+.hero-badge{
+  border-color:rgba(226,190,124,.38);
+  background:rgba(10,15,19,.58);
+  backdrop-filter:blur(8px);
+}
+.hero h1{
+  text-wrap:balance;
+}
+.hero-sub{
+  text-wrap:pretty;
+}
+.hero-btns a{
+  min-height:52px;
+}
+.facts .fact:nth-child(1){transition-delay:40ms}
+.facts .fact:nth-child(2){transition-delay:90ms}
+.facts .fact:nth-child(3){transition-delay:140ms}
+.facts .fact:nth-child(4){transition-delay:190ms}
+.course-card:nth-child(1){--ifa-card-delay:40ms}
+.course-card:nth-child(2){--ifa-card-delay:110ms}
+.course-card:nth-child(3){--ifa-card-delay:180ms}
+.language-option:focus-visible,
+.language-trigger:focus-visible,
+.mobile-close:focus-visible,
+.hamburger:focus-visible{
+  outline:2px solid var(--ifa-gold-bright);
+  outline-offset:3px;
+}
+@media(max-width:760px){
+  .hero::before{inset:0 0 0;filter:blur(12px)}
+  .hero-btns a{width:min(100%,330px);justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+}
+
+/* ===== cinematic-scroll.css ===== */
+/* ICT Forex Academy — cinematic scroll system v1
+   Progressive enhancement: content remains visible unless JS initializes successfully. */
+:root{--ifa-motion-ease:cubic-bezier(.19,1,.22,1);--ifa-scroll-progress:0}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+#ifa-scroll-progress{position:fixed;z-index:9999;top:0;left:0;width:100%;height:2px;pointer-events:none;background:rgba(255,255,255,.07)}
+#ifa-scroll-progress span{display:block;width:100%;height:100%;background:linear-gradient(90deg,#31c48d 0%,#d8b36a 55%,#e36b72 100%);transform:scaleX(var(--ifa-scroll-progress));transform-origin:left center;will-change:transform;box-shadow:0 0 12px rgba(216,179,106,.45)}
+html.ifa-motion-ready [data-ifa-reveal]{opacity:0;transform:translate3d(0,42px,0) scale(.985);transition:opacity .9s var(--ifa-motion-ease),transform 1s var(--ifa-motion-ease);transition-delay:var(--ifa-reveal-delay,0ms);will-change:opacity,transform}
+html.ifa-motion-ready [data-ifa-reveal].ifa-in-view{opacity:1;transform:translate3d(0,0,0) scale(1)}
+html.ifa-motion-ready .hero [data-ifa-reveal]{transform:translate3d(0,34px,0) scale(.99)}
+html.ifa-motion-ready .hero [data-ifa-reveal].ifa-in-view{transform:translate3d(0,0,0) scale(1)}
+.hero{transform-style:preserve-3d}
+.hero-badge,.hero h1,.hero-sub,.hero-btns,.trust-strip{transform-style:preserve-3d}
+.hero h1{animation:none}
+.facts{position:relative;isolation:isolate}
+.facts::before{content:"";position:absolute;inset:-1px;z-index:-1;border-radius:inherit;background:linear-gradient(115deg,rgba(49,196,141,.13),transparent 38%,rgba(216,179,106,.13));filter:blur(20px);opacity:.7;pointer-events:none}
+.fact{transform:translateZ(0);transition:transform .7s var(--ifa-motion-ease),background .35s ease}
+html.ifa-motion-ready .facts .fact{opacity:0;transform:translate3d(0,24px,0)}
+html.ifa-motion-ready .facts.ifa-in-view .fact{opacity:1;transform:translate3d(0,0,0)}
+html.ifa-motion-ready .facts .fact:nth-child(1){transition-delay:80ms}
+html.ifa-motion-ready .facts .fact:nth-child(2){transition-delay:160ms}
+html.ifa-motion-ready .facts .fact:nth-child(3){transition-delay:240ms}
+html.ifa-motion-ready .facts .fact:nth-child(4){transition-delay:320ms}
+.course-card{transform-style:preserve-3d;will-change:transform;transition:transform .65s var(--ifa-motion-ease),border-color .4s ease,box-shadow .4s ease}
+.course-card .cc-img{transform:translateZ(16px)}
+.course-card .cc-body{transform:translateZ(8px)}
+html.ifa-motion-ready .course-card{opacity:0;transform:perspective(1100px) translate3d(0,56px,-24px) rotateX(5deg) scale(.97);transition:opacity .9s var(--ifa-motion-ease),transform 1s var(--ifa-motion-ease),border-color .4s ease,box-shadow .4s ease}
+html.ifa-motion-ready .course-card.ifa-in-view{opacity:1;transform:perspective(1100px) translate3d(0,0,0) rotateX(0) scale(1)}
+html.ifa-motion-ready .course-card:nth-child(2){transition-delay:100ms}
+html.ifa-motion-ready .course-card:nth-child(3){transition-delay:200ms}
+.sec-hd h2{text-wrap:balance}
+.daily-tip-section{position:relative;overflow:hidden;isolation:isolate}
+.daily-tip-section::after{content:"";position:absolute;z-index:-1;width:340px;height:340px;right:-150px;top:-190px;border-radius:50%;background:radial-gradient(circle,rgba(216,179,106,.17),transparent 68%);pointer-events:none}
+.faq-item{transition:transform .45s var(--ifa-motion-ease),border-color .3s ease,background .3s ease}
+.faq-item:hover{transform:translate3d(0,-3px,0)}
+@media(hover:hover) and (pointer:fine){
+ .course-card.ifa-tilt-active{transition:transform .12s ease-out,border-color .4s ease,box-shadow .4s ease}
+}
+@media(max-width:760px){
+ html{scroll-padding-top:72px}
+ html.ifa-motion-ready [data-ifa-reveal]{transform:translate3d(0,24px,0);transition-duration:.65s;will-change:opacity}
+ html.ifa-motion-ready .course-card{transform:translate3d(0,28px,0) scale(.99)}
+ html.ifa-motion-ready .course-card.ifa-in-view{transform:translate3d(0,0,0) scale(1)}
+ .course-card .cc-img,.course-card .cc-body{transform:none}
+ #ifa-scroll-progress{height:2px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ #ifa-scroll-progress{display:none}
+ html.ifa-motion-ready [data-ifa-reveal],html.ifa-motion-ready .facts .fact,html.ifa-motion-ready .course-card{opacity:1!important;transform:none!important;transition:none!important;will-change:auto}
+ .faq-item:hover{transform:none}
+}
+
+/* ===== scroll-video-experience.css ===== */
+/* ICTForex scroll-controlled background video — lightweight presentation layer */
+/* Keep the dark page vignette below the video; content itself is layered above both. */
+body::after{z-index:0!important;}
+.ifa-scroll-scene{
+  position:fixed;inset:0;z-index:1;overflow:hidden;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 18% 24%,rgba(17,145,105,.18),transparent 42%),
+    radial-gradient(ellipse at 82% 76%,rgba(180,58,72,.16),transparent 44%),
+    linear-gradient(135deg,#050b13 0%,#091522 52%,#100b12 100%);
+  isolation:isolate;
+}
+.ifa-scroll-scene video,.ifa-scroll-scene canvas{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
+}
+.ifa-scroll-scene video{
+  object-fit:cover;opacity:0;transform:scale(1.015);
+  filter:saturate(.82) contrast(1.08) brightness(.72);
+  transition:opacity .65s ease;
+  will-change:transform;
+  backface-visibility:hidden;
+}
+.ifa-scroll-scene.is-video-ready video{opacity:.78}
+.ifa-home-journey-scene.is-video-ready video{opacity:.94;filter:saturate(.94) contrast(1.06) brightness(.94)}
+.ifa-scroll-scene canvas{opacity:.72}
+.ifa-scroll-scene::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 38%,transparent 12%,rgba(3,7,13,.18) 72%),
+    linear-gradient(180deg,rgba(3,7,13,.12),rgba(3,7,13,.34));
+}
+.ifa-scroll-progress{
+  position:fixed;z-index:120;right:20px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  width:34px;padding:12px 7px;border:1px solid rgba(224,236,239,.15);
+  border-radius:22px;background:rgba(5,12,20,.58);color:#eaf2f5;
+  pointer-events:auto;
+}
+.ifa-scroll-progress-track{position:absolute;top:22px;bottom:22px;left:50%;width:1px;background:rgba(220,230,235,.24);transform:translateX(-50%)}
+.ifa-scroll-progress-fill{position:absolute;top:22px;left:50%;width:2px;height:0;background:linear-gradient(#56e0b0,#e8bd70);transform:translateX(-50%);transform-origin:top}
+.ifa-scroll-dot{
+  position:relative;z-index:1;width:8px;height:8px;padding:0;border:1px solid rgba(230,240,240,.55);
+  border-radius:50%;background:#101a22;cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease;
+}
+.ifa-scroll-dot[aria-current="step"]{background:#e8bd70;border-color:#e8bd70;transform:scale(1.35);box-shadow:0 0 12px rgba(232,189,112,.5)}
+.ifa-scroll-dot:focus-visible{outline:2px solid #e8bd70;outline-offset:4px}
+.ifa-scroll-scene-label{
+  position:fixed;z-index:120;right:65px;top:50%;transform:translateY(-50%);
+  color:#dce6e8;font:600 9px/1.4 Inter,Arial,sans-serif;letter-spacing:.18em;
+  text-transform:uppercase;writing-mode:vertical-rl;opacity:.66;pointer-events:none;
+}
+@media(max-width:760px),(pointer:coarse){
+  .ifa-scroll-progress,.ifa-scroll-scene-label{display:none}
+  .ifa-scroll-scene video{object-position:center}
+  .ifa-scroll-scene.is-video-ready video{opacity:.42}
+  .ifa-home-journey-scene.is-video-ready video{opacity:.62;filter:saturate(.88) contrast(1.06) brightness(.82)}
+  .ifa-scroll-scene canvas{opacity:.52}
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-scroll-scene video{display:block!important;opacity:.72!important}
+  .ifa-scroll-scene canvas{opacity:.08}
+  .ifa-scroll-progress,.ifa-scroll-scene-label{display:none!important}
+}
+
+
+.ifa-live-market{
+  position:relative;z-index:10;width:min(1160px,calc(100% - 40px));
+  margin:26px auto 62px;padding:clamp(22px,4vw,42px);
+  border:1px solid rgba(91,211,174,.24);border-radius:26px;
+  background:linear-gradient(145deg,rgba(5,15,23,.94),rgba(8,12,22,.96));
+  box-shadow:0 28px 80px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.04);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+.ifa-live-market-inner{max-width:1080px;margin:0 auto}
+.ifa-live-market-heading{text-align:center;max-width:760px;margin:0 auto 24px}
+.ifa-live-market-kicker{display:inline-flex;align-items:center;gap:9px;color:#9ce8cb;font:700 10px/1.4 Inter,Arial,sans-serif;letter-spacing:.17em}
+.ifa-live-dot{width:7px;height:7px;border-radius:50%;background:#32d49b;box-shadow:0 0 13px rgba(50,212,155,.8)}
+.ifa-live-market-heading h2{margin:12px 0;color:#f8fafc;font:800 clamp(26px,4vw,42px)/1.12 'Space Grotesk',Inter,sans-serif;letter-spacing:-.035em}
+.ifa-live-market-heading h2 span{color:#65ddb1}
+.ifa-live-market-heading p{color:#aebdca;font-size:13px;line-height:1.75}
+.ifa-tv-shell{height:560px;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:#0b1119}
+.ifa-tv-shell .tradingview-widget-container{height:100%;width:100%}
+.ifa-tv-shell .tradingview-widget-copyright{height:32px;padding:5px 10px;color:#94a3b8;font:10px Inter,Arial,sans-serif}
+.ifa-tv-shell .tradingview-widget-copyright a{color:#8bb8dc}
+.ifa-market-note{margin:12px 2px 0;color:#8192a3;font-size:10px;text-align:center;line-height:1.6}
+@media(max-width:760px){
+ .ifa-live-market{width:calc(100% - 24px);margin:18px auto 42px;padding:20px 12px;border-radius:19px}
+ .ifa-live-market-heading{margin-bottom:18px}
+ .ifa-live-market-heading p{font-size:12px}
+ .ifa-tv-shell{height:440px;border-radius:12px}
+}
+@media(prefers-reduced-motion:reduce){.ifa-live-market{scroll-behavior:auto}}
+
+
+/* Scroll-driven cinematic center emergence — homepage and content rhythm */
+.ifa-motion-ready [data-ifa-reveal="true"]{
+  opacity:0;
+  transform:perspective(1200px) translate3d(0,48px,0) scale(.97) rotateX(3deg);
+  filter:blur(4px);
+  transform-origin:50% 55%;
+  transition:
+    opacity .82s cubic-bezier(.16,1,.3,1),
+    transform .95s cubic-bezier(.16,1,.3,1),
+    filter .82s ease;
+  backface-visibility:hidden;
+}
+.ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view{
+  opacity:1;
+  transform:perspective(1200px) translate3d(0,0,0) scale(1) rotateX(0);
+  filter:blur(0);
+}
+.ifa-motion-ready .hero [data-ifa-reveal="true"]{transform:translate3d(0,28px,0) scale(.985);filter:blur(2px)}
+.ifa-motion-ready .hero [data-ifa-reveal="true"].ifa-in-view{transform:translate3d(0,0,0) scale(1);filter:blur(0)}
+.ifa-motion-ready .facts[data-ifa-reveal="true"]{transform:perspective(1200px) translate3d(0,60px,0) scale(.95);border-color:rgba(93,226,182,.32)}
+.ifa-motion-ready .fact[data-ifa-reveal="true"]{transition-delay:var(--ifa-stagger,0ms)}
+.ifa-motion-ready .course-card[data-ifa-reveal="true"]{
+  transition-delay:var(--ifa-stagger,0ms);
+  transform:perspective(1100px) translate3d(0,52px,0) scale(.96) rotateX(3deg);
+}
+.ifa-motion-ready .course-card[data-ifa-reveal="true"].ifa-in-view{
+  transform:perspective(1100px) translate3d(0,0,0) scale(1) rotateX(0);
+}
+.ifa-motion-ready .ifa-live-market[data-ifa-reveal="true"]{
+  transform:perspective(1400px) translate3d(0,64px,0) scale(.96);
+  transform-origin:50% 40%;
+}
+.ifa-motion-ready .ifa-live-market-heading[data-ifa-reveal="true"]{transition-delay:90ms}
+.ifa-motion-ready .ifa-tv-shell[data-ifa-reveal="true"]{transition-delay:180ms}
+.ifa-motion-ready .ifa-market-note[data-ifa-reveal="true"]{transition-delay:260ms}
+.ifa-motion-ready .footer-grid[data-ifa-reveal="true"]{transition-delay:100ms}
+.ifa-motion-ready .footer-bottom[data-ifa-reveal="true"]{transition-delay:180ms}
+
+/* Desktop transitions feel like each panel rises through the center of the screen. */
+@media(min-width:761px) and (hover:hover) and (pointer:fine){
+  .ifa-motion-ready main>.section[data-ifa-reveal="true"]{
+    transform:perspective(1400px) translate3d(0,66px,0) scale(.955) rotateX(4deg);
+  }
+  .ifa-motion-ready main>.section[data-ifa-reveal="true"].ifa-in-view{
+    transform:perspective(1400px) translate3d(0,0,0) scale(1) rotateX(0);
+  }
+}
+/* Small screens use shorter distances and no heavy blur to keep scrolling responsive. */
+@media(max-width:760px),(pointer:coarse){
+  .ifa-motion-ready [data-ifa-reveal="true"]{
+    transform:translate3d(0,38px,0) scale(.975);
+    filter:blur(1.5px);
+    transition:opacity .55s ease,transform .62s cubic-bezier(.2,.75,.25,1),filter .55s ease;
+  }
+  .ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view{
+    transform:translate3d(0,0,0) scale(1);
+    filter:blur(0);
+  }
+  .ifa-motion-ready .course-card[data-ifa-reveal="true"]{transform:translate3d(0,44px,0) scale(.97)}
+  .ifa-motion-ready .course-card[data-ifa-reveal="true"].ifa-in-view{transform:translate3d(0,0,0) scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-motion-ready [data-ifa-reveal="true"],
+  .ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view{
+    opacity:1!important;filter:none!important;transform:none!important;transition:none!important;
+  }
+}
+
+/* ===== performance-optimization.css ===== */
+/* ICT Forex Academy — performance layer
+   Preserve the cinematic look while reducing paint/compositing cost on phones. */
+:root{--ifa-perf-motion:1}
+@media(max-width:760px){
+  /* Fixed full-screen layers and large blur surfaces are expensive on mobile GPUs. */
+  #global-map-bg{opacity:.07}
+  #market-cinema-bg{opacity:.28}
+  body::after{background:linear-gradient(180deg,rgba(3,5,12,.42),rgba(3,5,12,.86))}
+  .header{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(5,8,13,.96)}
+  .mobile-nav,.mobile-nav-panel,.language-menu,.hero-market-visual,.trust-pill,.facts,.course-card,.faq-item{
+    -webkit-backdrop-filter:none;backdrop-filter:none
+  }
+  .hero-market-visual{box-shadow:0 14px 38px rgba(0,0,0,.34)}
+  .hero-market-visual::before,.facts::before,.hero::before{filter:none}
+  .course-card,.facts,.daily-tip-section,.faq-item{backface-visibility:visible;transform-style:flat}
+  .course-card{will-change:auto}
+  .course-card .cc-img,.course-card .cc-body{transform:none}
+  .candle{will-change:auto;filter:none!important;animation-duration:8s}
+  .trust-pill{box-shadow:0 5px 14px rgba(0,0,0,.28)}
+  .course-card,.faq-item{box-shadow:0 12px 30px rgba(0,0,0,.3)}
+  #ifa-scroll-progress span{box-shadow:none}
+}
+@media(min-width:761px){
+  .btn-primary,.btn-gold,.btn-cc,.btn-tip,.btn-nav-login,.btn-nav-logout{will-change:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+/* Smooth-motion refinement: shorter, lighter transitions with no forced scaling. */
+html.ifa-motion-ready [data-ifa-reveal]{
+  transform:translate3d(0,22px,0)!important;
+  transition:opacity .62s cubic-bezier(.22,.61,.36,1),transform .68s cubic-bezier(.22,.61,.36,1)!important;
+  will-change:auto!important;
+}
+html.ifa-motion-ready [data-ifa-reveal].ifa-in-view{
+  transform:translate3d(0,0,0)!important;
+}
+html.ifa-motion-ready .course-card{
+  transform:translate3d(0,24px,0)!important;
+  transition:opacity .62s cubic-bezier(.22,.61,.36,1),transform .68s cubic-bezier(.22,.61,.36,1),border-color .3s ease,box-shadow .3s ease!important;
+  will-change:auto!important;
+}
+html.ifa-motion-ready .course-card.ifa-in-view{transform:translate3d(0,0,0)!important}
+#ifa-scroll-progress span{box-shadow:0 0 7px rgba(216,179,106,.25)}
+@media(max-width:760px){
+  html.ifa-motion-ready [data-ifa-reveal]{
+    transform:translate3d(0,14px,0)!important;
+    transition-duration:.48s!important;
+  }
+  html.ifa-motion-ready .course-card{
+    transform:translate3d(0,16px,0)!important;
+    transition-duration:.5s!important;
+  }
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready .course-card.ifa-in-view{transform:translate3d(0,0,0)!important}
+  .candle{animation:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html.ifa-motion-ready [data-ifa-reveal],html.ifa-motion-ready .course-card{opacity:1!important;transform:none!important;transition:none!important}
+}
+
+
+/* FINAL PERFORMANCE PASS — prioritize responsive input and fast first paint. */
+/* Remove expensive 3D layers, blur and hover-tilt effects that can cause frame drops. */
+.header,.trust-pill,.facts,.course-card,.daily-tip-section,.faq-item,
+.hero-market-visual,.language-menu,.mobile-nav,.mobile-sticky{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+.facts,.course-card,.daily-tip-section,.faq-item,
+.hero,.hero-market-visual,.market-candles,.market-visual-top,.market-visual-bottom{
+  transform-style:flat!important;
+  backface-visibility:visible!important;
+}
+.course-card::before,.hero-market-visual::before,.facts::before{
+  filter:none!important;
+}
+.course-card .cc-img,.course-card .cc-body,
+.market-visual-top,.market-candles,.market-visual-bottom{
+  transform:none!important;
+}
+.course-card{will-change:auto!important}
+@media(hover:hover) and (pointer:fine){
+  .course-card:hover{transform:translateY(-3px)!important}
+  .course-card.ifa-tilt-active{transform:translateY(-3px)!important}
+}
+@media(max-width:760px),(pointer:coarse){
+  html{scroll-behavior:auto!important}
+  html.ifa-motion-ready [data-ifa-reveal]{
+    opacity:0!important;transform:translate3d(0,14px,0)!important;
+    transition:opacity .48s ease,transform .5s ease!important;transition-delay:0ms!important
+  }
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view{
+    opacity:1!important;transform:translate3d(0,0,0)!important
+  }
+  html.ifa-motion-ready .course-card{
+    opacity:0!important;transform:translate3d(0,16px,0)!important;
+    transition:opacity .5s ease,transform .52s ease!important
+  }
+  html.ifa-motion-ready .course-card.ifa-in-view{
+    opacity:1!important;transform:translate3d(0,0,0)!important
+  }
+  .hero-badge,.badge-dot,.candle{animation:none!important}
+  .course-card,.faq-item,.fact,.trust-pill{transition:none!important}
+  .course-card:hover,.faq-item:hover,.fact:hover,.trust-pill:hover{transform:none!important}
+}
+@media(min-width:761px) and (hover:hover) and (pointer:fine){
+  html.ifa-motion-ready [data-ifa-reveal],
+  html.ifa-motion-ready .course-card{
+    transform:translate3d(0,10px,0)!important;
+    transition:opacity .42s ease,transform .42s ease!important;
+    transition-delay:0ms!important;
+    will-change:auto!important;
+  }
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready .course-card.ifa-in-view{transform:none!important}
+}
+
+/* ===== premium-home-experience.css ===== */
+/* ICT Forex Academy — premium homepage experience
+   Lightweight, responsive 3D-inspired market visual. No external image or animation library. */
+:root{
+  --ifa-lux-gold:#d9b875;
+  --ifa-lux-gold-light:#f3dfb2;
+  --ifa-lux-green:#55d6a2;
+}
+.hero{isolation:isolate}
+.hero-market-visual{
+  width:min(820px,94vw);
+  margin:clamp(26px,4vw,42px) auto 34px;
+  padding:clamp(16px,2.6vw,24px);
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border:1px solid rgba(217,184,117,.3);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(13,19,27,.96),rgba(5,9,15,.94));
+  box-shadow:0 24px 70px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.07);
+}
+.hero-market-visual::before{
+  content:"";
+  position:absolute;inset:-35%;
+  z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 22% 15%,rgba(217,184,117,.16),transparent 38%),radial-gradient(ellipse at 82% 80%,rgba(49,196,141,.11),transparent 42%);
+}
+.market-visual-top,.market-visual-bottom{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  color:#aab4bf;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+}
+.market-visual-symbol{color:var(--ifa-lux-gold-light);font-weight:800;font-size:12px;letter-spacing:.12em}
+.market-visual-status{font-size:9px;color:#8c9aa7;text-align:right}
+.market-candles{
+  height:clamp(138px,22vw,190px);display:flex;align-items:center;justify-content:center;
+  gap:clamp(10px,2.4vw,24px);padding:12px 4px;position:relative;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 37px,rgba(255,255,255,.045) 38px,transparent 39px);
+}
+.market-candles::after{
+  content:"";position:absolute;left:0;right:0;top:54%;border-top:1px dashed rgba(217,184,117,.32);
+}
+.candle{position:relative;width:clamp(7px,1.1vw,11px);height:var(--candle-height,76px);flex:0 0 auto;border-radius:2px;background:linear-gradient(90deg,#269d76,#63e0b1);box-shadow:0 0 14px rgba(49,196,141,.18);z-index:1}
+.candle::before{content:"";position:absolute;left:50%;top:-25%;bottom:-25%;width:1px;background:currentColor;transform:translateX(-50%);opacity:.95}
+.candle.down{background:linear-gradient(90deg,#b85b63,#ed9292);box-shadow:0 0 14px rgba(227,107,114,.15)}
+.candle:nth-child(2n){transform:translateY(9px)}
+.candle:nth-child(3n){transform:translateY(-8px)}
+.candle:nth-child(5n){transform:translateY(13px)}
+.market-visual-bottom{padding-top:10px;border-top:1px solid rgba(255,255,255,.07);font-size:9px;letter-spacing:.08em}
+.market-visual-bottom strong{color:#d9e3e8;font-weight:700}
+.hero-badge{animation:ifaBadgePulse 5s ease-in-out infinite}
+@keyframes ifaBadgePulse{0%,100%{box-shadow:0 0 0 rgba(217,184,117,0)}50%{box-shadow:0 0 24px rgba(217,184,117,.12)}}
+@media(hover:hover) and (pointer:fine){
+ .hero-market-visual{transition:transform .45s ease,border-color .45s ease,box-shadow .45s ease}
+ .hero-market-visual:hover{transform:translateY(-4px);border-color:rgba(243,223,178,.52);box-shadow:0 30px 80px rgba(0,0,0,.48),0 0 34px rgba(217,184,117,.1)}
+}
+@media(max-width:760px){
+ .hero-market-visual{width:100%;margin:24px auto 28px;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,.34)}
+ .market-candles{height:120px;gap:clamp(7px,2.4vw,13px)}
+ .market-visual-top,.market-visual-bottom{font-size:8px;letter-spacing:.07em}
+ .market-visual-symbol{font-size:10px}
+ .market-visual-status{font-size:8px}
+ .hero-badge{animation:none}
+}
+@media(prefers-reduced-motion:reduce){.hero-badge{animation:none!important}.hero-market-visual{transition:none!important}}
+/* Subtle IntersectionObserver reveals remain enabled on touch devices. */
+@media(max-width:760px),(pointer:coarse){
+ html.ifa-motion-ready [data-ifa-reveal]{
+  opacity:0;transform:translate3d(0,12px,0);
+  transition:opacity .48s ease,transform .5s ease;
+  will-change:auto;
+ }
+ html.ifa-motion-ready [data-ifa-reveal].ifa-in-view{opacity:1;transform:none}
+ html.ifa-motion-ready .course-card{opacity:0;transform:translate3d(0,14px,0);transition:opacity .5s ease,transform .5s ease}
+ html.ifa-motion-ready .course-card.ifa-in-view{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ html.ifa-motion-ready [data-ifa-reveal],html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+ html.ifa-motion-ready .course-card,html.ifa-motion-ready .course-card.ifa-in-view{
+  opacity:1!important;transform:none!important;transition:none!important
+ }
+}
+
+/* ===== cinematic-home-redesign.css ===== */
+/* ICT Forex Academy — cinematic homepage redesign v1
+   Visual-only layer: preserves existing sections, links, course content and interactions. */
+:root{
+  --ifa-cine-ink:#05080d;
+  --ifa-cine-panel:rgba(8,15,22,.72);
+  --ifa-cine-line:rgba(224,190,126,.22);
+  --ifa-cine-gold:#e5c27f;
+  --ifa-cine-green:#59d9a7;
+  --ifa-cine-red:#e4777e;
+}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{background:#05080d!important;color:#f4f5f2}
+#global-map-bg,#market-cinema-bg,#ict-3d-market-scene{display:none!important}
+.ifa-scroll-scene{z-index:0!important}
+.ifa-scroll-scene video{object-fit:cover;object-position:center 46%;filter:saturate(.78) contrast(1.12) brightness(.58)!important;opacity:0;transition:opacity .7s ease}
+.ifa-scroll-scene.is-video-ready video{opacity:.58!important}
+.ifa-scroll-scene canvas{opacity:.24!important}
+.ifa-scroll-scene::after{background:linear-gradient(180deg,rgba(3,7,12,.22),rgba(3,7,12,.38) 48%,rgba(3,7,12,.78))!important}
+body::after{z-index:1!important;background:linear-gradient(180deg,rgba(3,7,12,.2),rgba(3,7,12,.36) 48%,rgba(3,7,12,.78))!important}
+.header{z-index:100!important;background:rgba(5,9,14,.78)!important;border-bottom:1px solid rgba(229,194,127,.2)!important;box-shadow:0 12px 44px rgba(0,0,0,.24)!important}
+main,.footer{position:relative;z-index:2;background:transparent!important}
+.hero{min-height:min(850px,calc(100svh - 70px));display:flex;flex-direction:column;justify-content:center;align-items:center;padding:clamp(76px,10vh,130px) 22px clamp(72px,9vh,116px)!important;isolation:isolate}
+.hero::before{inset:4% 8% 0!important;background:radial-gradient(ellipse,rgba(5,10,16,.58),transparent 68%)!important;filter:blur(30px)!important}
+.hero-badge{border:1px solid rgba(229,194,127,.36)!important;background:rgba(9,18,24,.66)!important;color:#f1d9a7!important;letter-spacing:.17em!important}
+.hero h1{max-width:1050px!important;font-size:clamp(43px,7.6vw,94px)!important;line-height:.99!important;letter-spacing:-.065em!important;text-shadow:0 18px 55px rgba(0,0,0,.7)!important;animation:none!important}
+.hero h1 .hl{background:linear-gradient(100deg,#fff1d1 0%,#e4c17d 42%,#8be0ba 100%)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.hero-sub{max-width:690px!important;color:#d4dbe0!important;font-size:clamp(14px,1.55vw,18px)!important;line-height:1.85!important}
+.hero-market-visual{width:min(780px,92vw)!important;border:1px solid rgba(229,194,127,.28)!important;border-radius:24px!important;background:linear-gradient(145deg,rgba(7,14,21,.82),rgba(8,13,19,.58))!important;box-shadow:0 28px 90px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.08)!important;backdrop-filter:blur(12px)}
+.market-candles{background:repeating-linear-gradient(to bottom,transparent 0,transparent 37px,rgba(255,255,255,.055) 38px,transparent 39px)!important}
+.facts{width:min(1080px,calc(100% - 40px));margin:0 auto clamp(55px,8vw,100px)!important;border:1px solid rgba(229,194,127,.3)!important;border-radius:20px!important;background:transparent!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;box-shadow:0 24px 70px rgba(0,0,0,.18)!important}
+.fact{border-color:rgba(255,255,255,.14)!important}
+.fact-n{color:#efd49c!important;text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)!important}
+.fact-l{text-shadow:0 1px 10px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)!important}
+.section{max-width:1320px!important;padding:clamp(58px,7vw,100px) clamp(18px,4vw,54px)!important;background:transparent!important}
+.section::before{content:"";position:absolute;z-index:-1;left:7%;right:7%;top:15%;height:55%;pointer-events:none;background:radial-gradient(ellipse,rgba(29,114,92,.11),transparent 70%);filter:blur(32px)}
+.sec-tag{border:1px solid rgba(229,194,127,.28)!important;background:rgba(229,194,127,.08)!important;color:#f0d49b!important;letter-spacing:.16em!important}
+.sec-hd h2{font-size:clamp(30px,4.3vw,54px)!important;letter-spacing:-.05em!important;line-height:1.08!important;text-shadow:0 10px 35px rgba(0,0,0,.45)!important}
+.sec-sub{max-width:680px;color:#c2ccd1!important}
+.course-grid{gap:clamp(14px,2vw,24px)!important}
+.course-card{overflow:hidden!important;border:1px solid rgba(229,194,127,.3)!important;border-radius:20px!important;background:transparent!important;box-shadow:0 20px 55px rgba(0,0,0,.18)!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;transition:transform .55s cubic-bezier(.2,.75,.2,1),border-color .35s ease,box-shadow .35s ease!important}
+.course-card:hover{transform:translateY(-7px)!important;border-color:rgba(229,194,127,.55)!important;box-shadow:0 30px 70px rgba(0,0,0,.32),0 0 32px rgba(229,194,127,.07)!important}
+.cc-title{letter-spacing:-.035em!important;text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)!important}
+.cc-desc{text-shadow:0 1px 10px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)!important}
+.daily-tip-section,.faq-item{border:1px solid rgba(229,194,127,.25)!important;background:transparent!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;box-shadow:0 18px 50px rgba(0,0,0,.18)!important}
+.daily-tip-section *,.faq-item *{text-shadow:0 1px 10px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.85)}
+.footer{background:linear-gradient(180deg,rgba(5,10,15,.72),rgba(2,5,8,.96))!important;border-top:1px solid rgba(229,194,127,.18)!important}
+.footer-col h5{color:#e8cb91!important}
+.footer-col a:hover{color:#8ce3bd!important}
+.ifa-scroll-progress{background:rgba(5,12,20,.48)!important;border-color:rgba(229,194,127,.2)!important}
+.ifa-scroll-dot[aria-current="step"]{background:#e5c27f!important;border-color:#e5c27f!important}
+html.ifa-motion-ready [data-ifa-reveal]{opacity:0;transform:translate3d(0,26px,0);transition:opacity .62s cubic-bezier(.2,.7,.2,1),transform .68s cubic-bezier(.2,.7,.2,1)!important}
+html.ifa-motion-ready [data-ifa-reveal].ifa-in-view{opacity:1;transform:translate3d(0,0,0)}
+html.ifa-motion-ready .course-card{opacity:0;transform:translate3d(0,30px,0)!important}
+html.ifa-motion-ready .course-card.ifa-in-view{opacity:1;transform:translate3d(0,0,0)!important}
+@media(max-width:760px){
+ .hero{min-height:auto;padding:72px 18px 60px!important}
+ .hero h1{font-size:clamp(39px,10vw,58px)!important;line-height:1.04!important}
+ .hero-market-visual{width:100%!important;border-radius:18px!important;padding:15px 13px!important}
+ .facts{width:calc(100% - 28px);margin-bottom:35px!important;border-radius:16px!important}
+ .section{padding:48px 17px!important}
+ .sec-hd h2{font-size:clamp(29px,8vw,40px)!important}
+ .course-grid{grid-template-columns:1fr!important;gap:15px!important}
+ .course-card{border-radius:17px!important}
+ .course-card:hover{transform:none!important}
+ .ifa-scroll-scene video{object-position:center!important}
+ .ifa-scroll-scene.is-video-ready video{opacity:.38!important}
+ html.ifa-motion-ready [data-ifa-reveal]{transform:translate3d(0,15px,0)}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ html.ifa-motion-ready [data-ifa-reveal],html.ifa-motion-ready .course-card{opacity:1!important;transform:none!important;transition:none!important}
+ .course-card:hover{transform:none!important}
+}
+
+/* =========================================================
+   EDITORIAL CHAPTER SYSTEM — homepage scroll documentary layout
+   ========================================================= */
+.header{position:sticky!important;top:0!important}
+.header .logo-link{flex:0 0 auto;align-self:center}
+.header .logo-image{width:clamp(132px,14vw,176px)!important;max-height:40px!important}
+.ifa-editorial-hero.hero{
+  min-height:calc(100svh - 68px)!important;
+  display:flex!important;flex-direction:row!important;align-items:stretch!important;justify-content:center!important;
+  text-align:left!important;
+  padding:clamp(54px,8vh,104px) clamp(22px,7vw,104px) clamp(48px,7vh,88px)!important;
+}
+.ifa-editorial-layout{
+  width:min(100%,1320px);margin:auto;display:grid;
+  grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
+  align-items:center;gap:clamp(30px,5.5vw,88px);
+}
+.ifa-chapter-heading{width:100%;max-width:620px;margin:0;text-align:left;position:relative;z-index:2}
+.ifa-chapter-kicker{
+  display:flex;align-items:center;gap:9px;margin:0 0 22px;
+  color:var(--neon-green);font:700 11px/1.4 Inter,Arial,sans-serif;
+  letter-spacing:.2em;text-transform:uppercase;
+}
+.ifa-chapter-kicker span{
+  color:var(--neon-gold);font-variant-numeric:tabular-nums;
+}
+.ifa-chapter-kicker::after{
+  content:"";display:block;width:42px;height:1px;margin-left:5px;
+  background:linear-gradient(90deg,currentColor,transparent);opacity:.7;
+}
+.ifa-chapter-title{
+  max-width:680px;margin:0 0 19px!important;
+  color:#f8f5ee!important;
+  font-family:'Playfair Display',Georgia,serif!important;
+  font-size:clamp(36px,5vw,64px)!important;
+  font-weight:600!important;line-height:1.04!important;
+  letter-spacing:-.035em!important;text-align:left!important;
+  text-wrap:balance;text-shadow:0 12px 38px rgba(0,0,0,.38)!important;
+}
+.ifa-editorial-hero .ifa-chapter-title{
+  max-width:720px;font-size:clamp(42px,5.6vw,76px)!important;
+  line-height:1.02!important;letter-spacing:-.045em!important;
+}
+.ifa-editorial-hero .ifa-chapter-title .hl{
+  background:linear-gradient(100deg,#fff0d2 0%,#e6c27e 48%,#8de1bb 100%)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+}
+.ifa-chapter-description{
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+  max-width:540px;margin:0 0 27px!important;
+  color:rgba(220,229,231,.82)!important;
+  font:400 clamp(14px,1.28vw,16px)/1.78 Inter,Arial,sans-serif!important;
+  letter-spacing:.005em;text-align:left!important;
+}
+.ifa-chapter-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ifa-chapter-cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:47px;
+  padding:12px 19px;border:1px solid rgba(83,220,166,.62);border-radius:5px;
+  background:transparent;color:#e8f5ef!important;
+  font:700 11px/1.3 Inter,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  transition:background .24s ease,color .24s ease,border-color .24s ease,transform .24s ease,box-shadow .24s ease;
+}
+.ifa-chapter-cta:hover,.ifa-chapter-cta:focus-visible{
+  background:var(--neon-green);border-color:var(--neon-green);color:#03130d!important;
+  transform:translateY(-2px);box-shadow:0 12px 28px rgba(16,185,129,.2);outline:none;
+}
+.ifa-chapter-cta.is-gold{border-color:rgba(228,164,100,.65);color:#f4dfbe!important}
+.ifa-chapter-cta.is-gold:hover,.ifa-chapter-cta.is-gold:focus-visible{
+  background:var(--neon-gold);border-color:var(--neon-gold);color:#1b0b0e!important;
+}
+.ifa-editorial-hero .trust-strip{justify-content:flex-start;margin-top:28px;gap:8px}
+.ifa-editorial-hero .trust-pill{padding:7px 11px;background:rgba(5,13,19,.58);font-size:10px}
+.ifa-hero-aside{width:100%;min-width:0}
+.ifa-editorial-hero .hero-market-visual{
+  width:100%!important;max-width:620px!important;margin:0!important;
+  border-radius:8px!important;background:linear-gradient(145deg,rgba(7,14,21,.58),rgba(8,13,19,.34))!important;
+  box-shadow:0 26px 80px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.07)!important;
+  backdrop-filter:blur(8px);
+}
+.ifa-editorial-section.section{
+  width:100%;max-width:none!important;min-height:min(84vh,790px);
+  margin:0;padding:clamp(62px,8vh,104px) clamp(22px,7vw,104px)!important;
+  display:flex;align-items:center;position:relative;
+}
+.ifa-editorial-section.section::before{
+  left:0;right:0;top:0;height:100%;opacity:.7;
+  background:linear-gradient(90deg,rgba(4,9,14,.5),rgba(4,9,14,.12) 55%,transparent);
+  filter:none;
+}
+.ifa-chapter-layout{
+  width:min(100%,1320px);margin:auto;display:grid;
+  grid-template-columns:minmax(0,.98fr) minmax(320px,.82fr);
+  align-items:center;gap:clamp(28px,6.5vw,100px);
+}
+.ifa-editorial-section .ifa-chapter-heading{max-width:610px}
+.ifa-editorial-section .ifa-chapter-title{max-width:590px}
+.ifa-editorial-section .ifa-chapter-description{max-width:500px}
+.ifa-editorial-section[data-chapter="01"] .ifa-chapter-kicker{color:var(--neon-cyan)}
+.ifa-editorial-section[data-chapter="02"] .ifa-chapter-kicker{color:var(--neon-green)}
+.ifa-editorial-section[data-chapter="03"] .ifa-chapter-kicker{color:var(--neon-cyan)}
+.ifa-editorial-section[data-chapter="04"] .ifa-chapter-kicker{color:var(--neon-gold)}
+.ifa-editorial-section[data-chapter="04"] .ifa-chapter-cta{border-color:rgba(228,164,100,.65);color:#f4dfbe!important}
+.ifa-editorial-section[data-chapter="04"] .ifa-chapter-cta:hover{
+  background:var(--neon-gold);border-color:var(--neon-gold);color:#1b0b0e!important;
+}
+.ifa-chapter-aside{width:100%;max-width:510px;justify-self:end;position:relative}
+.ifa-chapter-preview.course-card{
+  width:100%;max-width:510px;margin:0;
+  border:1px solid rgba(229,194,127,.3)!important;border-radius:9px!important;
+  background:transparent!important;
+  box-shadow:0 22px 66px rgba(0,0,0,.2)!important;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+}
+.ifa-chapter-aside .course-card{width:100%;margin:0}
+.ifa-chapter-aside .cc-img{height:112px;border-bottom-color:rgba(229,194,127,.13)}
+.ifa-chapter-aside .cc-body{padding:clamp(19px,2.5vw,28px)}
+.ifa-chapter-aside .cc-title{font-size:18px;font-family:'Inter',sans-serif;letter-spacing:-.02em;text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)}
+.ifa-chapter-aside .cc-desc{font-size:12.5px;color:#c4d0d5;text-shadow:0 1px 10px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)}
+.ifa-chapter-aside .cc-chapters{background:transparent;border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.ifa-chapter-aside .cc-chapters li{text-shadow:0 1px 8px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.85)}
+.ifa-chapter-aside .btn-cc{min-height:42px;border-radius:5px}
+@media(max-width:900px){
+  .ifa-editorial-layout{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:28px}
+  .ifa-chapter-layout{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:30px}
+  .ifa-chapter-title{font-size:clamp(34px,5vw,52px)!important}
+  .ifa-editorial-hero .ifa-chapter-title{font-size:clamp(40px,5.4vw,60px)!important}
+}
+@media(max-width:760px){
+  .header{padding:10px 16px!important}
+  .header .logo-image{width:clamp(128px,34vw,154px)!important;max-height:36px!important}
+  .ifa-editorial-hero.hero{
+    min-height:auto!important;display:block!important;text-align:left!important;
+    padding:66px 18px 52px!important;
+  }
+  .ifa-editorial-layout,.ifa-chapter-layout{grid-template-columns:1fr;gap:30px}
+  .ifa-chapter-heading{max-width:100%}
+  .ifa-chapter-kicker{font-size:10px;margin-bottom:17px}
+  .ifa-chapter-title{font-size:clamp(34px,9vw,48px)!important;line-height:1.06!important}
+  .ifa-editorial-hero .ifa-chapter-title{font-size:clamp(40px,10vw,56px)!important}
+  .ifa-chapter-description{font-size:13px!important;line-height:1.72!important}
+  .ifa-chapter-actions{gap:9px}
+  .ifa-chapter-cta{min-height:44px;padding:11px 14px;font-size:10px}
+  .ifa-editorial-hero .trust-strip{margin-top:22px;justify-content:flex-start}
+  .ifa-editorial-hero .trust-pill{font-size:9px;padding:6px 9px}
+  .ifa-hero-aside{margin-top:10px}
+  .ifa-editorial-hero .hero-market-visual{width:100%!important;border-radius:8px!important;padding:15px 13px!important}
+  .ifa-editorial-section.section{min-height:auto;padding:62px 18px!important}
+  .ifa-chapter-aside{max-width:100%;justify-self:stretch}
+  .ifa-chapter-aside .cc-img{height:94px}
+  .ifa-chapter-aside .cc-body{padding:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-chapter-cta{transition:none!important}
+  .ifa-editorial-hero .hero-market-visual{transition:none!important}
+}
+
+/* ===== cinematic-motion-tuning.css ===== */
+/* ICT Forex Academy — unified motion tuning
+   Loaded last so older homepage animation layers cannot fight each other. */
+
+/* One lightweight reveal system for desktop and laptop. */
+html.ifa-motion-ready [data-ifa-reveal],
+html.ifa-motion-ready [data-ifa-reveal="true"] {
+  opacity: 0 !important;
+  transform: translate3d(0, 14px, 0) !important;
+  filter: none !important;
+  transition:
+    opacity .52s cubic-bezier(.22,.61,.36,1),
+    transform .58s cubic-bezier(.22,.61,.36,1) !important;
+  transition-delay: var(--ifa-reveal-delay, 0ms) !important;
+  will-change: auto !important;
+}
+html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+html.ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+html.ifa-motion-ready .course-card {
+  opacity: 0 !important;
+  transform: translate3d(0, 14px, 0) !important;
+  transition:
+    opacity .52s cubic-bezier(.22,.61,.36,1),
+    transform .58s cubic-bezier(.22,.61,.36,1),
+    border-color .28s ease,
+    box-shadow .28s ease !important;
+  transition-delay: var(--ifa-stagger, 0ms) !important;
+  will-change: auto !important;
+}
+html.ifa-motion-ready .course-card.ifa-in-view {
+  opacity: 1 !important;
+  transform: none !important;
+}
+html.ifa-motion-ready .facts .fact {
+  opacity: 0 !important;
+  transform: translate3d(0, 10px, 0) !important;
+  transition: opacity .42s ease, transform .48s ease !important;
+}
+html.ifa-motion-ready .facts.ifa-in-view .fact {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Avoid an unnecessary scale/filter layer on the full-screen video. */
+.ifa-scroll-scene video {
+  transform: none !important;
+  backface-visibility: visible !important;
+}
+
+/* Hover depth only on devices that genuinely support precise hover. */
+@media (hover: hover) and (pointer: fine) {
+  .course-card:hover {
+    transform: translate3d(0, -3px, 0) !important;
+  }
+}
+
+/* Touch devices: shorter movement, no decorative hover/tilt work. */
+@media (max-width: 760px), (pointer: coarse) {
+  html.ifa-motion-ready [data-ifa-reveal],
+  html.ifa-motion-ready [data-ifa-reveal="true"] {
+    transform: translate3d(0, 9px, 0) !important;
+    transition-duration: .4s !important;
+    transition-delay: 0ms !important;
+  }
+  html.ifa-motion-ready .course-card {
+    transform: translate3d(0, 10px, 0) !important;
+    transition-duration: .42s !important;
+    transition-delay: 0ms !important;
+  }
+  html.ifa-motion-ready .facts .fact {
+    transform: translate3d(0, 7px, 0) !important;
+    transition-duration: .34s !important;
+  }
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view,
+  html.ifa-motion-ready .course-card.ifa-in-view,
+  html.ifa-motion-ready .facts.ifa-in-view .fact {
+    transform: none !important;
+  }
+  .course-card:hover,
+  .course-card.ifa-tilt-active,
+  .faq-item:hover,
+  .fact:hover,
+  .trust-pill:hover {
+    transform: none !important;
+  }
+  .hero-badge,
+  .badge-dot,
+  .candle {
+    animation: none !important;
+  }
+}
+
+/* Accessibility: never hide content or animate when reduced motion is requested. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  html.ifa-motion-ready [data-ifa-reveal],
+  html.ifa-motion-ready [data-ifa-reveal="true"],
+  html.ifa-motion-ready [data-ifa-reveal].ifa-in-view,
+  html.ifa-motion-ready [data-ifa-reveal="true"].ifa-in-view,
+  html.ifa-motion-ready .course-card,
+  html.ifa-motion-ready .course-card.ifa-in-view,
+  html.ifa-motion-ready .facts .fact,
+  html.ifa-motion-ready .facts.ifa-in-view .fact {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+  .ifa-scroll-scene video { transform: none !important; }
+}
+
+
+/* Brighter homepage journey video: lift the footage without washing out text. */
+.ifa-home-journey-scene.is-video-ready video {
+  opacity: 1 !important;
+  filter: saturate(1.02) contrast(1.04) brightness(1.16) !important;
+}
+.ifa-home-journey-scene::after {
+  background:
+    radial-gradient(ellipse at 50% 38%, transparent 10%, rgba(3,7,13,.10) 76%),
+    linear-gradient(180deg, rgba(3,7,13,.05), rgba(3,7,13,.20)) !important;
+}
+@media (max-width: 760px), (pointer: coarse) {
+  .ifa-home-journey-scene.is-video-ready video {
+    opacity: 1 !important;
+    filter: saturate(1.02) contrast(1.03) brightness(1.22) !important;
+  }
+  .ifa-home-journey-scene::after {
+    background:
+      radial-gradient(ellipse at 50% 38%, transparent 8%, rgba(3,7,13,.08) 78%),
+      linear-gradient(180deg, rgba(3,7,13,.04), rgba(3,7,13,.16)) !important;
+  }
+}
+
+
+/* Hero copy now spans the available width after removing the decorative market chart. */
+.ifa-editorial-layout {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.ifa-editorial-hero .ifa-chapter-heading {
+  max-width: 780px;
+}
+
+/* ===== home-scroll-story.css ===== */
+/* ICT Forex Academy — pinned editorial story text over the existing cinematic video */
+.ifa-scroll-story{
+  position:relative;
+  height:500vh;
+  isolation:isolate;
+  z-index:3;
+}
+.ifa-scroll-story-stage{
+  position:sticky;
+  top:0;
+  height:100vh;
+  height:100svh;
+  min-height:560px;
+  overflow:hidden;
+  background:linear-gradient(135deg,rgba(4,12,20,.18),rgba(7,10,18,.42));
+}
+.ifa-story-scene{
+  position:absolute;
+  inset:0;
+  display:grid;
+  align-items:end;
+  padding:clamp(36px,7.5vw,112px) clamp(24px,8vw,128px);
+  pointer-events:none;
+}
+.ifa-story-backdrop{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+.ifa-story-bg-global{background:radial-gradient(ellipse at 78% 25%,rgba(36,153,190,.26),transparent 48%),linear-gradient(110deg,rgba(3,12,24,.10),rgba(5,18,28,.42))}
+.ifa-story-bg-candles{background:radial-gradient(ellipse at 76% 48%,rgba(16,185,129,.23),transparent 48%),linear-gradient(110deg,rgba(3,14,19,.20),rgba(4,12,20,.45))}
+.ifa-story-bg-levels{background:radial-gradient(ellipse at 72% 32%,rgba(228,92,104,.22),transparent 50%),linear-gradient(110deg,rgba(18,8,16,.12),rgba(8,12,20,.45))}
+.ifa-story-bg-structure{background:radial-gradient(ellipse at 78% 42%,rgba(65,112,180,.24),transparent 48%),linear-gradient(110deg,rgba(4,10,22,.16),rgba(8,12,20,.48))}
+.ifa-story-bg-academy{background:radial-gradient(ellipse at 78% 30%,rgba(193,145,70,.24),transparent 48%),linear-gradient(110deg,rgba(12,10,16,.12),rgba(8,12,20,.5))}
+.ifa-story-copy{
+  position:relative;
+  z-index:2;
+  width:min(790px,82vw);
+  opacity:0;
+  transform:translate3d(0,30px,0);
+  pointer-events:auto;
+  will-change:opacity,transform;
+  text-shadow:0 3px 28px rgba(0,0,0,.55);
+}
+.ifa-story-scene:first-child .ifa-story-copy{opacity:1;transform:none}
+.ifa-story-kicker{
+  margin:0 0 18px;
+  color:#8ce8c5;
+  font:700 10px/1.4 Inter,Arial,sans-serif;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
+.ifa-story-copy h2{
+  max-width:780px;
+  margin:0 0 20px;
+  color:#f8fafc;
+  font:500 clamp(42px,7.1vw,96px)/.99 'Playfair Display',Georgia,serif;
+  letter-spacing:-.045em;
+  text-wrap:balance;
+}
+.ifa-story-copy h2 span{font-weight:500}
+.ifa-story-copy h2 em{font-weight:700;font-style:italic;color:#fff}
+.ifa-story-copy>p:not(.ifa-story-kicker){
+  max-width:590px;
+  margin:0;
+  color:rgba(235,243,247,.88);
+  font:400 clamp(14px,1.25vw,17px)/1.8 Inter,Arial,sans-serif;
+  letter-spacing:.005em;
+}
+.ifa-story-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  margin-top:26px;
+  padding:12px 19px;
+  border:1px solid rgba(133,232,195,.5);
+  border-radius:999px;
+  background:rgba(5,20,24,.46);
+  color:#d9fff0;
+  font:700 12px/1 Inter,Arial,sans-serif;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease;
+}
+.ifa-story-cta:hover{background:rgba(16,185,129,.2);border-color:#8ce8c5;transform:translateY(-2px)}
+.ifa-story-progress{
+  position:absolute;
+  z-index:4;
+  right:clamp(24px,5vw,72px);
+  bottom:clamp(34px,6vw,70px);
+  width:74px;
+  height:2px;
+  background:rgba(255,255,255,.25);
+  overflow:hidden;
+}
+.ifa-story-progress span{display:block;width:20%;height:100%;background:#8ce8c5;transform-origin:left center}
+.ifa-story-scroll-hint{
+  position:absolute;
+  z-index:4;
+  right:clamp(24px,5vw,72px);
+  bottom:clamp(48px,8vw,92px);
+  color:rgba(235,243,247,.72);
+  font:600 8px/1.4 Inter,Arial,sans-serif;
+  letter-spacing:.18em;
+  writing-mode:vertical-rl;
+}
+.ifa-story-scroll-hint span{display:inline-block;margin-top:9px;color:#8ce8c5;font-size:14px}
+@media(max-width:760px),(pointer:coarse){
+  .ifa-story-scene{padding:30px 24px 104px}
+  .ifa-story-copy{width:min(100%,620px)}
+  .ifa-story-kicker{font-size:9px;margin-bottom:14px;letter-spacing:.17em}
+  .ifa-story-copy h2{font-size:clamp(39px,11vw,64px);line-height:1.02;margin-bottom:15px}
+  .ifa-story-copy>p:not(.ifa-story-kicker){font-size:13px;line-height:1.7;max-width:95%}
+  .ifa-story-progress{right:24px;bottom:34px;width:58px}
+  .ifa-story-scroll-hint{right:24px;bottom:48px;font-size:7px}
+  .ifa-story-cta{margin-top:20px}
+}
+@media(max-height:620px) and (min-width:761px){
+  .ifa-story-scene{padding-top:35px;padding-bottom:48px}
+  .ifa-story-copy h2{font-size:clamp(38px,6vw,66px)}
+  .ifa-story-copy>p:not(.ifa-story-kicker){font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-scroll-story{height:auto}
+  .ifa-scroll-story-stage{position:relative;height:auto;min-height:0;overflow:visible}
+  .ifa-story-scene{position:relative;min-height:80vh;opacity:1!important;display:grid}
+  .ifa-story-backdrop{opacity:.5!important}
+  .ifa-story-copy{opacity:1!important;transform:none!important}
+  .ifa-story-progress,.ifa-story-scroll-hint{display:none}
+}
+
+
+/* Text-only interaction: keep the editorial copy free of any visible card/panel. */
+.ifa-story-copy{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  padding:0!important;
+}
+.ifa-story-copy h2,
+.ifa-story-kicker,
+.ifa-story-copy>p:not(.ifa-story-kicker){
+  transition:transform .38s cubic-bezier(.2,.75,.25,1),text-shadow .38s ease,color .38s ease;
+}
+.ifa-story-copy:hover h2,
+.ifa-story-copy:focus-within h2{
+  transform:translate3d(0,-4px,0);
+  text-shadow:0 8px 34px rgba(0,0,0,.62),0 0 24px rgba(140,232,197,.16);
+}
+.ifa-story-copy:hover .ifa-story-kicker,
+.ifa-story-copy:focus-within .ifa-story-kicker{
+  color:#b7ffe0;
+  transform:translate3d(3px,0,0);
+}
+.ifa-story-copy:hover>p:not(.ifa-story-kicker),
+.ifa-story-copy:focus-within>p:not(.ifa-story-kicker){
+  transform:translate3d(0,-2px,0);
+  text-shadow:0 4px 22px rgba(0,0,0,.62);
+}
+@media(hover:none){
+  .ifa-story-copy:hover h2,
+  .ifa-story-copy:hover .ifa-story-kicker,
+  .ifa-story-copy:hover>p:not(.ifa-story-kicker){transform:none;text-shadow:inherit}
+}
+
+
+/* Hard reset any inherited card/article styling inside the pinned story.
+   The story text must sit directly on the cinematic footage. */
+.ifa-scroll-story .ifa-scroll-story-stage,
+.ifa-scroll-story .ifa-story-scene,
+.ifa-scroll-story article.ifa-story-scene,
+.ifa-scroll-story .ifa-story-copy{
+  background:transparent!important;
+  background-color:transparent!important;
+  border:0!important;
+  border-color:transparent!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  outline:0!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+.ifa-scroll-story .ifa-story-copy::before,
+.ifa-scroll-story .ifa-story-copy::after,
+.ifa-scroll-story .ifa-story-scene::before,
+.ifa-scroll-story .ifa-story-scene::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
