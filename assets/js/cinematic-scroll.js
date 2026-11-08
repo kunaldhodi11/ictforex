@@ -113,7 +113,9 @@
   /* Scroll-scrubbing on every device. Preload the cinematic file on normal
      connections so scrolling does not trigger late network buffering. */
   var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
-  video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
+  /* Let the page's critical HTML/CSS/fonts render first. The video download
+     starts after load/idle, or immediately on the visitor's first scroll. */
+  video.preload='metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
   var source=document.createElement('source');
@@ -344,8 +346,26 @@
     });
   }
 
-  /* Start loading once. Calling load() a second time can reset metadata and interrupt seeking. */
-  video.load();
+  /* Start the MP4 after the page's critical resources have loaded. This improves
+     first paint while still giving the video time to buffer before most scrolling.
+     The first user scroll bypasses the idle wait so the video starts immediately. */
+  var videoLoadStarted=false;
+  function startVideoLoad(){
+    if(videoLoadStarted)return;
+    videoLoadStarted=true;
+    video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
+    video.load();
+  }
+  window.addEventListener('scroll',startVideoLoad,{once:true,passive:true});
+  function scheduleVideoLoad(){
+    if('requestIdleCallback'in window){
+      window.requestIdleCallback(startVideoLoad,{timeout:1800});
+    }else{
+      window.setTimeout(startVideoLoad,900);
+    }
+  }
+  if(document.readyState==='complete')scheduleVideoLoad();
+  else window.addEventListener('load',scheduleVideoLoad,{once:true});
   /* One initial sync is enough; duplicate RAFs only repeat the same seek. */
   requestAnimationFrame(onNativeScroll);
 })();
