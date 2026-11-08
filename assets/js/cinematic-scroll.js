@@ -6,6 +6,30 @@
   var finePointer=window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   var reveal=[];
 
+  /* Buttery, inertial scrolling across the whole site (desktop wheel + trackpad).
+     Falls back to plain native scrolling if the library is missing or the
+     visitor asked for reduced motion. Touch scrolling stays native for feel. */
+  var lenis=null;
+  if(!reduce&&window.Lenis){
+    try{
+      lenis=new window.Lenis({
+        duration:1.05,
+        easing:function(t){return t===1?1:1-Math.pow(2,-10*t);},
+        smoothWheel:true,
+        syncTouch:false,
+        touchMultiplier:1
+      });
+      window.ifaLenis=lenis;
+      if(window.gsap){
+        if(window.ScrollTrigger)lenis.on('scroll',window.ScrollTrigger.update);
+        window.gsap.ticker.add(function(time){lenis.raf(time*1000);});
+        window.gsap.ticker.lagSmoothing(0);
+      }else{
+        requestAnimationFrame(function raf(time){lenis.raf(time);requestAnimationFrame(raf);});
+      }
+    }catch(e){lenis=null;}
+  }
+
   /* Keep the existing low-cost IntersectionObserver content reveals. */
   function addReveal(el){
     if(!el||el.dataset.ifaReveal==='true')return;
@@ -79,8 +103,8 @@
 
   /* Homepage video path. Other page-specific paths will be configured as those pages are integrated. */
   var pageVideos={
-    '/':'/assets/videos/home-journey.mp4?v=20261108-2',
-    '/index.html':'/assets/videos/home-journey.mp4?v=20261108-2',
+    '/':'/assets/videos/home-journey.mp4?v=20261108-3',
+    '/index.html':'/assets/videos/home-journey.mp4?v=20261108-3',
     '/free-learning.html':'/assets/videos/free-course.mp4',
     '/vip-course.html':'/assets/videos/vip-academy.mp4',
     '/candlestick-patterns.html':'/assets/videos/candlesticks.mp4',
@@ -92,7 +116,7 @@
     '/about.html':'/assets/videos/about-journey.mp4'
   };
   var isHomeRoute=window.location.pathname==='/'||window.location.pathname==='/index.html';
-  var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey.mp4?v=20261108-2';
+  var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey.mp4?v=20261108-3';
   var scene=document.createElement('div');
   scene.className='ifa-scroll-scene'+(isHomeRoute?' ifa-home-journey-scene':'');
   scene.setAttribute('aria-hidden','true');
@@ -238,12 +262,15 @@
   document.addEventListener('visibilitychange',function(){if(document.hidden){if(particleRaf)cancelAnimationFrame(particleRaf);particleRaf=0;}else startParticles();});
   window.addEventListener('resize',resizeCanvas,{passive:true});
 
-  var duration=0,videoReady=false,lastTime=-1,scrollProgress=0,rafPending=false;
+  var duration=0,videoReady=false,scrollProgress=0;
   var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
-  var seekPending=false,pendingTime=0,lastSeekAt=0,seekRaf=0;
-  /* Throttle seeks, but let the latest scroll position replace a stale
-     in-flight seek instead of waiting on a slow mobile decoder. */
-  var minSeekInterval=mobileVideoMode?55:40;
+  /* Smoothed (eased) playhead time, separate from the raw scroll-mapped
+     target time. Easing the playhead toward the target every animation
+     frame — instead of jumping straight to it on each scroll tick — is
+     what turns stepped, "ruk ruk ke" seeking into a continuous glide,
+     on top of the video itself now carrying far more keyframes so every
+     seek is cheap to decode. */
+  var smoothedTime=0,videoLoopRunning=false;
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
@@ -256,45 +283,37 @@
     fill.style.height=(maxHeight*scrollProgress)+'px';
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
   }
-  function applyPendingSeek(){
-    if(!videoReady||!duration||!seekPending||!document.body.contains(video))return;
-    var now=performance.now();
-    var wait=minSeekInterval-(now-lastSeekAt);
-    if(wait>0){
-      if(!seekRaf)seekRaf=requestAnimationFrame(function(){seekRaf=0;applyPendingSeek();});
-      return;
-    }
-    var target=Math.max(0,Math.min(duration-.05,pendingTime));
-    if(lastTime>=0&&Math.abs(target-lastTime)<.04){seekPending=false;return;}
-    try{
-      /* The newest target supersedes an older in-flight seek. */
-      video.currentTime=target;
-      lastTime=target;
-      lastSeekAt=now;
-      seekPending=false;
-    }catch(e){seekPending=true;}
+  function startVideoLoop(){
+    if(videoLoopRunning)return;
+    videoLoopRunning=true;
+    requestAnimationFrame(stepVideo);
   }
-  function seekVideo(progress){
+  function stepVideo(){
+    videoLoopRunning=false;
+    if(!videoReady||!duration||!document.body.contains(video))return;
+    var progress=getProgress();
     updateProgress(progress);
-    if(!videoReady||!duration)return;
-    pendingTime=progress*duration;
-    seekPending=true;
-    applyPendingSeek();
+    var targetTime=progress*(duration-.05);
+    var distance=targetTime-smoothedTime;
+    /* A touch snappier on mobile, where decoders are slower and visitors
+       scroll in shorter, faster bursts. */
+    var ease=mobileVideoMode?0.22:0.16;
+    smoothedTime+=distance*ease;
+    if(Math.abs(targetTime-smoothedTime)<.0015)smoothedTime=targetTime;
+    try{
+      if(Math.abs(video.currentTime-smoothedTime)>=.0035){
+        video.currentTime=Math.max(0,Math.min(duration-.03,smoothedTime));
+      }
+    }catch(e){/* ignore transient seek errors (e.g. media not ready yet) */}
+    /* Keep gliding every frame while there is meaningful ground left to
+       cover; stop once settled so an idle page does not spin the loop. */
+    if(Math.abs(targetTime-smoothedTime)>.0006){
+      videoLoopRunning=true;
+      requestAnimationFrame(stepVideo);
+    }
   }
-  function onNativeScroll(){
-    if(rafPending)return;
-    rafPending=true;
-    requestAnimationFrame(function(){
-      rafPending=false;
-      var progress=getProgress();
-      seekVideo(progress);
-    });
-  }
-  video.addEventListener('seeked',function(){
-    if(seekPending)applyPendingSeek();
-  });
-  window.addEventListener('scroll',onNativeScroll,{passive:true});
-  window.addEventListener('resize',function(){onNativeScroll();if(window.ScrollTrigger)window.ScrollTrigger.refresh();},{passive:true});
+  window.addEventListener('scroll',startVideoLoop,{passive:true});
+  window.addEventListener('resize',function(){startVideoLoop();if(window.ScrollTrigger)window.ScrollTrigger.refresh();},{passive:true});
 
   video.addEventListener('loadedmetadata',function(){
     if(!isFinite(video.duration)||video.duration<=0)return;
@@ -305,13 +324,14 @@
     if(particleRaf)cancelAnimationFrame(particleRaf);
     particleRaf=0;
     sceneLabel.textContent='SCROLL TO EXPLORE';
-    seekVideo(getProgress());
+    smoothedTime=getProgress()*(duration-.05);
+    startVideoLoop();
     if(window.ScrollTrigger)window.ScrollTrigger.refresh();
   });
   video.addEventListener('loadeddata',function(){
     if(videoReady){
       scene.classList.add('is-video-ready');
-      seekVideo(getProgress());
+      startVideoLoop();
     }
   });
   video.addEventListener('error',function(){
@@ -322,12 +342,12 @@
   if(mobileVideoMode){
     document.addEventListener('visibilitychange',function(){
       if(document.hidden)video.pause();
-      else if(videoReady)seekVideo(getProgress());
+      else if(videoReady)startVideoLoop();
     });
   }
 
   /* Start loading once. Calling load() a second time can reset metadata and interrupt seeking. */
   video.load();
-  /* One initial sync is enough; duplicate RAFs only repeat the same seek. */
-  requestAnimationFrame(onNativeScroll);
+  /* One initial sync is enough; the loop re-schedules itself as needed. */
+  requestAnimationFrame(startVideoLoop);
 })();
