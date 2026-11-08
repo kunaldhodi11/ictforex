@@ -194,21 +194,20 @@
 }
 
 
-/* Low-cost chapter transitions: switch only at chapter boundaries instead
-   of scrubbing multiple opacity/transform timelines on every scroll frame. */
+/* Keep chapter switching cheap: scenes are stacked and only the text layer
+   fades/moves. Do not animate full-viewport scene/backdrop opacity together. */
 .ifa-scroll-story .ifa-story-scene{
-  opacity:0;
+  opacity:1;
   visibility:hidden;
-  transition:opacity .22s ease,visibility .22s linear;
+  transition:none!important;
 }
 .ifa-scroll-story .ifa-story-scene.is-active{
-  opacity:1;
   visibility:visible;
 }
 .ifa-scroll-story .ifa-story-copy{
   opacity:0;
-  transform:translate3d(0,14px,0);
-  transition:opacity .22s ease,transform .22s ease;
+  transform:translate3d(0,8px,0);
+  transition:opacity .16s ease,transform .16s ease;
   pointer-events:none;
 }
 .ifa-scroll-story .ifa-story-scene.is-active .ifa-story-copy{
@@ -218,13 +217,11 @@
 }
 .ifa-scroll-story .ifa-story-backdrop{
   opacity:0;
-  transition:opacity .22s ease;
+  transition:none!important;
 }
 .ifa-scroll-story .ifa-story-scene.is-active .ifa-story-backdrop{
   opacity:1;
 }
 @media(prefers-reduced-motion:reduce){
-  .ifa-scroll-story .ifa-story-scene,
-  .ifa-scroll-story .ifa-story-copy,
-  .ifa-scroll-story .ifa-story-backdrop{transition:none!important}
+  .ifa-scroll-story .ifa-story-copy{transition:none!important}
 }
