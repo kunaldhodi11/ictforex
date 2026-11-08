@@ -13,25 +13,25 @@
     var gsap=window.gsap;
     gsap.registerPlugin(window.ScrollTrigger);
     var activeScene=-1;
-    var setProgress=progressFill?gsap.quickSetter(progressFill,'scaleX'):null;
 
-    /* Change the active copy only when a chapter boundary is crossed.
-       Avoid scrubbing several text/backdrop tweens on every scroll frame;
-       the cinematic video already performs its own scroll-linked seeking. */
-    function setActiveScene(index,progress){
+    /* No per-frame DOM writes in the story text controller. The video has
+       its own scroll-linked renderer; this controller only swaps copy when
+       the reader crosses a chapter boundary. */
+    function setActiveScene(index){
       index=Math.max(0,Math.min(scenes.length-1,index));
-      if(index!==activeScene){
-        activeScene=index;
-        scenes.forEach(function(scene,i){
-          var active=i===index;
-          scene.classList.toggle('is-active',active);
-          scene.setAttribute('aria-hidden',active?'false':'true');
-        });
+      if(index===activeScene)return;
+      activeScene=index;
+      scenes.forEach(function(scene,i){
+        var active=i===index;
+        scene.classList.toggle('is-active',active);
+        scene.setAttribute('aria-hidden',active?'false':'true');
+      });
+      if(progressFill){
+        progressFill.style.transform='scaleX('+Math.max(.08,(index+1)/scenes.length)+')';
       }
-      if(setProgress)setProgress(Math.max(.08,progress));
     }
 
-    setActiveScene(0,0);
+    setActiveScene(0);
     window.ScrollTrigger.create({
       trigger:story,
       start:'top top',
@@ -39,11 +39,11 @@
       invalidateOnRefresh:true,
       onUpdate:function(self){
         var index=Math.min(scenes.length-1,Math.floor(self.progress*scenes.length));
-        setActiveScene(index,self.progress);
+        setActiveScene(index);
       },
       onRefresh:function(self){
         var index=Math.min(scenes.length-1,Math.floor(self.progress*scenes.length));
-        setActiveScene(index,self.progress);
+        setActiveScene(index);
       }
     });
   }
