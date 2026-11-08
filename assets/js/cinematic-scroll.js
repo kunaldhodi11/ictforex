@@ -110,7 +110,15 @@
   var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   var saveData=!!(connection&&connection.saveData);
   var slowConnection=!!(connection&&/^(slow-2g|2g)$/.test(connection.effectiveType||''));
-  video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
+  /* Touch/mobile devices play the background video normally instead of seeking
+     the decoder on every scroll frame. Desktop keeps the original scroll-scrub. */
+  var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
+  if(isHomeRoute&&mobileVideoMode){
+    video.loop=true;
+    video.autoplay=true;
+    video.setAttribute('autoplay','');
+  }
+  video.preload=(isHomeRoute&&!saveData&&!slowConnection&&!mobileVideoMode)?'auto':'metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
   var source=document.createElement('source');
@@ -279,7 +287,12 @@
   function onNativeScroll(){
     if(rafPending)return;
     rafPending=true;
-    requestAnimationFrame(function(){rafPending=false;seekVideo(getProgress());});
+    requestAnimationFrame(function(){
+      rafPending=false;
+      var progress=getProgress();
+      if(mobileVideoMode)updateProgress(progress);
+      else seekVideo(progress);
+    });
   }
   video.addEventListener('seeked',function(){
     if(seekPending)applyPendingSeek();
@@ -291,19 +304,24 @@
     if(!isFinite(video.duration)||video.duration<=0)return;
     duration=video.duration;
     videoReady=true;
-    video.pause();
-    /* Metadata enables seeking, but wait for an actual decoded frame before
-       fading the video in; this avoids revealing a black/empty video layer. */
+    if(!mobileVideoMode)video.pause();
+    /* Metadata enables seeking on desktop. Mobile playback avoids repeated
+       currentTime writes, which can overload phone video decoders while scrolling. */
     if(particleRaf)cancelAnimationFrame(particleRaf);
     particleRaf=0;
     sceneLabel.textContent='SCROLL TO EXPLORE';
-    seekVideo(getProgress());
+    if(!mobileVideoMode)seekVideo(getProgress());
     if(window.ScrollTrigger)window.ScrollTrigger.refresh();
   });
   video.addEventListener('loadeddata',function(){
     if(videoReady){
       scene.classList.add('is-video-ready');
-      seekVideo(getProgress());
+      if(mobileVideoMode){
+        var playAttempt=video.play();
+        if(playAttempt&&typeof playAttempt.catch==='function')playAttempt.catch(function(){});
+      }else{
+        seekVideo(getProgress());
+      }
     }
   });
   video.addEventListener('error',function(){
@@ -311,6 +329,15 @@
     scene.classList.remove('is-video-ready');
     sceneLabel.textContent='VIDEO LOAD ERROR';
   });
+  if(mobileVideoMode){
+    document.addEventListener('visibilitychange',function(){
+      if(document.hidden){video.pause();}
+      else if(videoReady){
+        var resumeAttempt=video.play();
+        if(resumeAttempt&&typeof resumeAttempt.catch==='function')resumeAttempt.catch(function(){});
+      }
+    });
+  }
 
   /* Start loading once. Calling load() a second time can reset metadata and interrupt seeking. */
   video.load();
