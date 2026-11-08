@@ -27,20 +27,20 @@ main,.footer{position:relative;z-index:2;background:transparent!important}
 .hero-sub{max-width:690px!important;color:#d4dbe0!important;font-size:clamp(14px,1.55vw,18px)!important;line-height:1.85!important}
 .hero-market-visual{width:min(780px,92vw)!important;border:1px solid rgba(229,194,127,.28)!important;border-radius:24px!important;background:linear-gradient(145deg,rgba(7,14,21,.82),rgba(8,13,19,.58))!important;box-shadow:0 28px 90px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.08)!important;backdrop-filter:blur(12px)}
 .market-candles{background:repeating-linear-gradient(to bottom,transparent 0,transparent 37px,rgba(255,255,255,.055) 38px,transparent 39px)!important}
-.facts{width:min(1080px,calc(100% - 40px));margin:0 auto clamp(55px,8vw,100px)!important;border:1px solid rgba(229,194,127,.25)!important;border-radius:20px!important;background:rgba(8,16,22,.28)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;box-shadow:0 24px 70px rgba(0,0,0,.28)!important}
-.fact{border-color:rgba(255,255,255,.1)!important}
-.fact-n{color:#efd49c!important;text-shadow:0 2px 10px rgba(0,0,0,.75)!important}
-.fact-l{text-shadow:0 1px 6px rgba(0,0,0,.8)!important}
+.facts{width:min(1080px,calc(100% - 40px));margin:0 auto clamp(55px,8vw,100px)!important;border:1px solid rgba(229,194,127,.3)!important;border-radius:20px!important;background:transparent!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;box-shadow:0 24px 70px rgba(0,0,0,.18)!important}
+.fact{border-color:rgba(255,255,255,.14)!important}
+.fact-n{color:#efd49c!important;text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)!important}
+.fact-l{text-shadow:0 1px 10px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)!important}
 .section{max-width:1320px!important;padding:clamp(58px,7vw,100px) clamp(18px,4vw,54px)!important;background:transparent!important}
 .section::before{content:"";position:absolute;z-index:-1;left:7%;right:7%;top:15%;height:55%;pointer-events:none;background:radial-gradient(ellipse,rgba(29,114,92,.11),transparent 70%);filter:blur(32px)}
 .sec-tag{border:1px solid rgba(229,194,127,.28)!important;background:rgba(229,194,127,.08)!important;color:#f0d49b!important;letter-spacing:.16em!important}
 .sec-hd h2{font-size:clamp(30px,4.3vw,54px)!important;letter-spacing:-.05em!important;line-height:1.08!important;text-shadow:0 10px 35px rgba(0,0,0,.45)!important}
 .sec-sub{max-width:680px;color:#c2ccd1!important}
 .course-grid{gap:clamp(14px,2vw,24px)!important}
-.course-card{overflow:hidden!important;border:1px solid rgba(229,194,127,.22)!important;border-radius:20px!important;background:linear-gradient(145deg,rgba(12,22,29,.32),rgba(6,12,18,.26))!important;box-shadow:0 20px 55px rgba(0,0,0,.28)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;transition:transform .55s cubic-bezier(.2,.75,.2,1),border-color .35s ease,box-shadow .35s ease!important}
-.course-card:hover{transform:translateY(-7px)!important;border-color:rgba(229,194,127,.48)!important;box-shadow:0 30px 70px rgba(0,0,0,.42),0 0 32px rgba(229,194,127,.07)!important}
-.cc-title{letter-spacing:-.035em!important;text-shadow:0 2px 10px rgba(0,0,0,.7)!important}
-.cc-desc{text-shadow:0 1px 8px rgba(0,0,0,.75)!important}
+.course-card{overflow:hidden!important;border:1px solid rgba(229,194,127,.3)!important;border-radius:20px!important;background:transparent!important;box-shadow:0 20px 55px rgba(0,0,0,.18)!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;transition:transform .55s cubic-bezier(.2,.75,.2,1),border-color .35s ease,box-shadow .35s ease!important}
+.course-card:hover{transform:translateY(-7px)!important;border-color:rgba(229,194,127,.55)!important;box-shadow:0 30px 70px rgba(0,0,0,.32),0 0 32px rgba(229,194,127,.07)!important}
+.cc-title{letter-spacing:-.035em!important;text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)!important}
+.cc-desc{text-shadow:0 1px 10px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)!important}
 .daily-tip-section,.faq-item{border:1px solid rgba(229,194,127,.18)!important;background:rgba(8,16,22,.76)!important;backdrop-filter:blur(12px)!important;box-shadow:0 18px 50px rgba(0,0,0,.25)!important}
 .footer{background:linear-gradient(180deg,rgba(5,10,15,.72),rgba(2,5,8,.96))!important;border-top:1px solid rgba(229,194,127,.18)!important}
 .footer-col h5{color:#e8cb91!important}
@@ -180,19 +180,19 @@ html.ifa-motion-ready .course-card.ifa-in-view{opacity:1;transform:translate3d(0
 .ifa-chapter-aside{width:100%;max-width:510px;justify-self:end;position:relative}
 .ifa-chapter-preview.course-card{
   width:100%;max-width:510px;margin:0;
-  border:1px solid rgba(229,194,127,.25)!important;border-radius:9px!important;
-  background:linear-gradient(145deg,rgba(8,18,25,.3),rgba(5,11,18,.26))!important;
-  box-shadow:0 22px 66px rgba(0,0,0,.3)!important;
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(229,194,127,.3)!important;border-radius:9px!important;
+  background:transparent!important;
+  box-shadow:0 22px 66px rgba(0,0,0,.2)!important;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
 }
 .ifa-chapter-aside .course-card{width:100%;margin:0}
 .ifa-chapter-aside .cc-img{height:112px;border-bottom-color:rgba(229,194,127,.13)}
 .ifa-chapter-aside .cc-body{padding:clamp(19px,2.5vw,28px)}
-.ifa-chapter-aside .cc-title{font-size:18px;font-family:'Inter',sans-serif;letter-spacing:-.02em;text-shadow:0 2px 10px rgba(0,0,0,.7)}
-.ifa-chapter-aside .cc-desc{font-size:12.5px;color:#c4d0d5;text-shadow:0 1px 8px rgba(0,0,0,.75)}
-.ifa-chapter-aside .cc-chapters{background:rgba(2,8,13,.22);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-.ifa-chapter-aside .cc-chapters li{text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.ifa-chapter-aside .cc-title{font-size:18px;font-family:'Inter',sans-serif;letter-spacing:-.02em;text-shadow:0 2px 14px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)}
+.ifa-chapter-aside .cc-desc{font-size:12.5px;color:#c4d0d5;text-shadow:0 1px 10px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.9)}
+.ifa-chapter-aside .cc-chapters{background:transparent;border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.ifa-chapter-aside .cc-chapters li{text-shadow:0 1px 8px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.85)}
 .ifa-chapter-aside .btn-cc{min-height:42px;border-radius:5px}
 @media(max-width:900px){
   .ifa-editorial-layout{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:28px}
