@@ -312,7 +312,7 @@
     if(seekPending)applyPendingSeek();
   });
   window.addEventListener('scroll',onNativeScroll,{passive:true});
-  window.addEventListener('resize',function(){onNativeScroll();if(window.ScrollTrigger)window.ScrollTrigger.refresh();},{passive:true});
+  window.addEventListener('resize',function(){onNativeScroll();},{passive:true});
 
   video.addEventListener('loadedmetadata',function(){
     if(!isFinite(video.duration)||video.duration<=0)return;
