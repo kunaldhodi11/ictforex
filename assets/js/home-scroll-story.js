@@ -7,6 +7,7 @@
   var scenes=Array.prototype.slice.call(story.querySelectorAll('.ifa-story-scene'));
   var progressFill=story.querySelector('.ifa-story-progress span');
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var touchLayout=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
   if(!stage||scenes.length<2||reduce)return;
 
   function init(){
@@ -28,7 +29,9 @@
         trigger:story,
         start:'top top',
         end:'bottom bottom',
-        scrub:0.14,
+        /* On touch screens, bind the text directly to scroll instead of running
+           a second catch-up tween alongside the full-screen video scrub. */
+        scrub:touchLayout?true:0.14,
         invalidateOnRefresh:true,
         onUpdate:function(self){
           var active=Math.min(scenes.length-1,Math.round(self.progress*(scenes.length-1)));
