@@ -176,3 +176,15 @@ body::after{z-index:0!important;}
     transition-property: opacity, transform !important;
   }
 }
+
+
+/* Mobile rendering budget: keep the glass look without large live backdrop blurs. */
+@media(max-width:760px),(pointer:coarse){
+  .header,.facts,.course-card,.daily-tip-section,.faq-item,.trust-pill,.ifa-live-market{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+  .header{background:rgba(3,5,12,.96)}
+  .facts,.course-card,.faq-item,.trust-pill{background:rgba(7,14,25,.94)}
+  .daily-tip-section,.ifa-live-market{background:rgba(6,15,24,.96)}
+}
