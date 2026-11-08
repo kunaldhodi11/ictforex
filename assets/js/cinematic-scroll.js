@@ -110,10 +110,10 @@
   var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   var saveData=!!(connection&&connection.saveData);
   var slowConnection=!!(connection&&/^(slow-2g|2g)$/.test(connection.effectiveType||''));
-  /* All devices use scroll-scrubbing: the video never autoplays.
-     Mobile keeps metadata preload to reduce initial network and memory pressure. */
+  /* Scroll-scrubbing on every device. Preload the cinematic file on normal
+     connections so scrolling does not trigger late network buffering. */
   var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
-  video.preload=(isHomeRoute&&!saveData&&!slowConnection&&!mobileVideoMode)?'auto':'metadata';
+  video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
   var source=document.createElement('source');
@@ -241,8 +241,9 @@
   var duration=0,videoReady=false,lastTime=-1,scrollProgress=0,rafPending=false;
   var isHomePage=window.location.pathname==='/'||window.location.pathname==='/index.html';
   var seekPending=false,pendingTime=0,lastSeekAt=0,seekRaf=0;
-  /* Limit decoder seeks and never queue a pile of stale timestamps while scrolling. */
-  var minSeekInterval=mobileVideoMode?65:40; // mobile: limit decoder seeks; always keep only the newest scroll target
+  /* Throttle seeks, but let the latest scroll position replace a stale
+     in-flight seek instead of waiting on a slow mobile decoder. */
+  var minSeekInterval=mobileVideoMode?55:40;
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
@@ -256,7 +257,7 @@
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
   }
   function applyPendingSeek(){
-    if(!videoReady||!duration||!seekPending||video.seeking||!document.body.contains(video))return;
+    if(!videoReady||!duration||!seekPending||!document.body.contains(video))return;
     var now=performance.now();
     var wait=minSeekInterval-(now-lastSeekAt);
     if(wait>0){
@@ -266,6 +267,7 @@
     var target=Math.max(0,Math.min(duration-.05,pendingTime));
     if(lastTime>=0&&Math.abs(target-lastTime)<.04){seekPending=false;return;}
     try{
+      /* The newest target supersedes an older in-flight seek. */
       video.currentTime=target;
       lastTime=target;
       lastSeekAt=now;
