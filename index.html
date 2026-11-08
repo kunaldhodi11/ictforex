@@ -1044,6 +1044,7 @@ body::after{
 <link rel="stylesheet" href="/assets/css/premium-home-experience.css">
 <link rel="stylesheet" href="/assets/css/cinematic-home-redesign.css?v=20261107-1">
 <link rel="stylesheet" href="/assets/css/cinematic-motion-tuning.css?v=20261108-1">
+<link rel="stylesheet" href="/assets/css/home-scroll-story.css?v=20261108-1">
 </head>
 <body>
 
@@ -1116,6 +1117,56 @@ body::after{
   </div>
     </div>
 
+  </div>
+</section>
+
+
+<!-- PINNED CINEMATIC STORY — text transitions over the existing homepage video -->
+<section class="ifa-scroll-story" aria-label="Explore the ICT Forex Academy learning journey">
+  <div class="ifa-scroll-story-stage">
+    <article class="ifa-story-scene" data-story-scene="0">
+      <div class="ifa-story-backdrop ifa-story-bg-global" aria-hidden="true"></div>
+      <div class="ifa-story-copy">
+        <p class="ifa-story-kicker">00 / THE BIG PICTURE</p>
+        <h2><span>Understand</span> <em>the global market.</em></h2>
+        <p>Discover how the forex market moves, what drives price and how to build a strong foundation before taking a trade.</p>
+      </div>
+    </article>
+    <article class="ifa-story-scene" data-story-scene="1" aria-hidden="true">
+      <div class="ifa-story-backdrop ifa-story-bg-candles" aria-hidden="true"></div>
+      <div class="ifa-story-copy">
+        <p class="ifa-story-kicker">01 / READ THE CHART</p>
+        <h2><span>Every candle</span> <em>has a story.</em></h2>
+        <p>Read candlestick behaviour, momentum and price reactions with practical examples that make chart reading clearer.</p>
+      </div>
+    </article>
+    <article class="ifa-story-scene" data-story-scene="2" aria-hidden="true">
+      <div class="ifa-story-backdrop ifa-story-bg-levels" aria-hidden="true"></div>
+      <div class="ifa-story-copy">
+        <p class="ifa-story-kicker">02 / FIND THE LEVELS</p>
+        <h2><span>Know where</span> <em>price may react.</em></h2>
+        <p>Learn to map support and resistance zones, identify key reactions and understand the context around important levels.</p>
+      </div>
+    </article>
+    <article class="ifa-story-scene" data-story-scene="3" aria-hidden="true">
+      <div class="ifa-story-backdrop ifa-story-bg-structure" aria-hidden="true"></div>
+      <div class="ifa-story-copy">
+        <p class="ifa-story-kicker">03 / FOLLOW PRICE</p>
+        <h2><span>Read the structure.</span> <em>Respect the move.</em></h2>
+        <p>Study trends, swing highs and lows, breaks of structure and shifts in momentum without relying on indicator noise.</p>
+      </div>
+    </article>
+    <article class="ifa-story-scene" data-story-scene="4" aria-hidden="true">
+      <div class="ifa-story-backdrop ifa-story-bg-academy" aria-hidden="true"></div>
+      <div class="ifa-story-copy">
+        <p class="ifa-story-kicker">04 / GO DEEPER</p>
+        <h2><span>Build your edge.</span> <em>Trade with a plan.</em></h2>
+        <p>Explore ICT and smart-money concepts, liquidity, order blocks, fair value gaps and disciplined risk management.</p>
+        <a class="ifa-story-cta" href="vip-course.html">Explore VIP Academy <span aria-hidden="true">↗</span></a>
+      </div>
+    </article>
+    <div class="ifa-story-progress" aria-hidden="true"><span></span></div>
+    <p class="ifa-story-scroll-hint" aria-hidden="true">SCROLL TO EXPLORE <span>↓</span></p>
   </div>
 </section>
 
@@ -1376,6 +1427,9 @@ function toggleFaq(btn){
 
 
 <!-- CINEMATIC SCROLL EXPERIENCE -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="/assets/js/home-scroll-story.js?v=20261108-1" defer></script>
 <script src="/assets/js/cinematic-scroll.js?v=20261107-1" defer></script>
 
 <!-- FIREBASE AUTH INTEGRATION -->
