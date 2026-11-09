@@ -44,9 +44,14 @@ html.ifa-motion-ready .facts.ifa-in-view .fact {
   transform: none !important;
 }
 
-/* Avoid an unnecessary scale/filter layer on the full-screen video. */
+/* No scale/filter layer on the full-screen video: a CSS filter forces the
+   browser to composite every video frame through a software/GPU filter pass
+   instead of the fast hardware video path, which is what made scroll-seeking
+   stutter badly on phones. The color grade is now baked into the MP4 itself
+   at encode time, so no runtime filter is needed at all. */
 .ifa-scroll-scene video {
   transform: none !important;
+  filter: none !important;
   backface-visibility: visible !important;
 }
 
@@ -115,10 +120,11 @@ html.ifa-motion-ready .facts.ifa-in-view .fact {
 }
 
 
-/* Brighter homepage journey video: lift the footage without washing out text. */
+/* Brighter homepage journey video: the footage itself is now color-graded
+   (contrast/brightness/saturation baked in at encode time), so only opacity
+   is set here — no runtime filter cost. */
 .ifa-home-journey-scene.is-video-ready video {
   opacity: 1 !important;
-  filter: saturate(1.02) contrast(1.04) brightness(1.16) !important;
 }
 .ifa-home-journey-scene::after {
   background:
@@ -128,7 +134,6 @@ html.ifa-motion-ready .facts.ifa-in-view .fact {
 @media (max-width: 760px), (pointer: coarse) {
   .ifa-home-journey-scene.is-video-ready video {
     opacity: 1 !important;
-    filter: saturate(1.02) contrast(1.03) brightness(1.22) !important;
   }
   .ifa-home-journey-scene::after {
     background:
