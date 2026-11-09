@@ -72,15 +72,18 @@
   if(!document.querySelector('link[data-ifa-scroll-video-css]')){
     var css=document.createElement('link');
     css.rel='stylesheet';
-    css.href='/assets/css/scroll-video-experience.css?v=20261106-2';
+    css.href='/assets/css/scroll-video-experience.css?v=20261109-1';
     css.setAttribute('data-ifa-scroll-video-css','');
     document.head.appendChild(css);
   }
 
   /* Homepage video path. Other page-specific paths will be configured as those pages are integrated. */
+  var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
+  var homeVideoDesktop='/assets/videos/home-journey.mp4?v=20261109-1';
+  var homeVideoMobile='/assets/videos/home-journey-mobile.mp4?v=20261109-1';
   var pageVideos={
-    '/':'/assets/videos/home-journey.mp4?v=20261108-2',
-    '/index.html':'/assets/videos/home-journey.mp4?v=20261108-2',
+    '/':mobileVideoMode?homeVideoMobile:homeVideoDesktop,
+    '/index.html':mobileVideoMode?homeVideoMobile:homeVideoDesktop,
     '/free-learning.html':'/assets/videos/free-course.mp4',
     '/vip-course.html':'/assets/videos/vip-academy.mp4',
     '/candlestick-patterns.html':'/assets/videos/candlesticks.mp4',
@@ -92,7 +95,7 @@
     '/about.html':'/assets/videos/about-journey.mp4'
   };
   var isHomeRoute=window.location.pathname==='/'||window.location.pathname==='/index.html';
-  var videoPath=pageVideos[window.location.pathname]||'/assets/videos/home-journey.mp4?v=20261108-2';
+  var videoPath=pageVideos[window.location.pathname]||homeVideoDesktop;
   var scene=document.createElement('div');
   scene.className='ifa-scroll-scene'+(isHomeRoute?' ifa-home-journey-scene':'');
   scene.setAttribute('aria-hidden','true');
@@ -104,15 +107,12 @@
   video.playsInline=true;
   video.setAttribute('playsinline','');
   video.setAttribute('muted','');
-  /* The homepage MP4 is only ~8.8 MB. Preload it on capable connections so
-     the first scroll does not compete with a late video download. Respect
+  /* Desktop file is ~19MB, mobile file ~7.5MB. Preload on capable connections
+     so the first scroll does not compete with a late video download. Respect
      Save-Data and very slow mobile connections. */
   var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   var saveData=!!(connection&&connection.saveData);
   var slowConnection=!!(connection&&/^(slow-2g|2g)$/.test(connection.effectiveType||''));
-  /* Scroll-scrubbing on every device. Preload the cinematic file on normal
-     connections so scrolling does not trigger late network buffering. */
-  var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
   video.preload=(isHomeRoute&&!saveData&&!slowConnection)?'auto':'metadata';
   video.setAttribute('aria-hidden','true');
   video.disablePictureInPicture=true;
@@ -242,7 +242,10 @@
   /* Keep only the newest requested frame. Never queue another seek while the
      decoder is still seeking; this prevents a backlog on mobile devices. */
   var seekPending=false,pendingTime=0,lastSeekAt=0,seekTimer=0;
-  var minSeekInterval=mobileVideoMode?65:45;
+  /* The homepage video now has a keyframe roughly every 0.5s (was ~7s), so a
+     seek only has to decode a handful of frames instead of a few hundred.
+     That lets mobile keep up with a shorter interval than before. */
+  var minSeekInterval=mobileVideoMode?40:24;
   function getProgress(){
     var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
     return Math.max(0,Math.min(1,window.scrollY/max));
@@ -250,7 +253,6 @@
   function updateProgress(progress){
     scrollProgress=Math.max(0,Math.min(1,progress));
     scene.style.setProperty('--ifa-scroll-progress',scrollProgress.toFixed(4));
-    if(isHomeRoute)video.style.transform='scale('+(1.015+scrollProgress*.075).toFixed(3)+')';
     var maxHeight=Math.max(0,rail.clientHeight-44);
     fill.style.height=(maxHeight*scrollProgress)+'px';
     if(!window.ScrollTrigger)sceneLabel.style.opacity=scrollProgress>.015?'.66':'0';
@@ -340,4 +342,26 @@
   video.load();
   /* One initial sync is enough; duplicate RAFs only repeat the same seek. */
   requestAnimationFrame(onNativeScroll);
+
+  /* Buttery inertia scrolling on desktop/trackpad only. Touch phones already
+     have excellent native momentum scrolling from the OS; layering a
+     JS-driven smoother on top of that would only add extra per-frame work
+     on exactly the devices most prone to jank, so it is intentionally
+     skipped there and under prefers-reduced-motion. */
+  if(finePointer&&!reduce&&window.Lenis){
+    var lenis=new window.Lenis({
+      duration:1.05,
+      easing:function(t){return 1-Math.pow(1-t,3)},
+      smoothWheel:true,
+      syncTouch:false
+    });
+    window.ifaLenis=lenis;
+    lenis.on('scroll',function(){if(window.ScrollTrigger)window.ScrollTrigger.update();});
+    if(window.gsap){
+      window.gsap.ticker.add(function(time){lenis.raf(time*1000);});
+      window.gsap.ticker.lagSmoothing(0);
+    }else{
+      requestAnimationFrame(function raf(time){lenis.raf(time);requestAnimationFrame(raf);});
+    }
+  }
 })();
