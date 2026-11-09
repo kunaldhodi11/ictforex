@@ -20,6 +20,10 @@
     gsap.set(copies[0],{autoAlpha:1,y:0});
     gsap.set(backgrounds[0],{autoAlpha:1});
 
+    /* Update accessibility only when the active scene changes. ScrollTrigger can
+       call onUpdate many times per second; walking every scene on every tick
+       creates avoidable DOM work on touch devices. */
+    var activeScene=-1;
     var timeline=gsap.timeline({
       defaults:{ease:'none'},
       scrollTrigger:{
@@ -30,10 +34,13 @@
         invalidateOnRefresh:true,
         onUpdate:function(self){
           var active=Math.min(scenes.length-1,Math.round(self.progress*(scenes.length-1)));
-          scenes.forEach(function(scene,index){
-            scene.setAttribute('aria-hidden',index===active?'false':'true');
-          });
-          if(progressFill)gsap.set(progressFill,{scaleX:Math.max(.08,self.progress)});
+          if(active!==activeScene){
+            activeScene=active;
+            scenes.forEach(function(scene,index){
+              scene.setAttribute('aria-hidden',index===active?'false':'true');
+            });
+          }
+          if(progressFill)progressFill.style.transform='scaleX('+Math.max(.08,self.progress)+')';
         }
       }
     });
@@ -45,7 +52,15 @@
       timeline.fromTo(copies[i],{autoAlpha:0,y:30},{autoAlpha:1,y:0,duration:.28},at+.12);
     }
     window.addEventListener('load',function(){window.ScrollTrigger.refresh()},{once:true});
-    window.addEventListener('resize',function(){window.ScrollTrigger.refresh()},{passive:true});
+    /* Coalesce resize bursts into one refresh per animation frame. */
+    var refreshFrame=0;
+    window.addEventListener('resize',function(){
+      if(refreshFrame)return;
+      refreshFrame=requestAnimationFrame(function(){
+        refreshFrame=0;
+        window.ScrollTrigger.refresh();
+      });
+    },{passive:true});
   }
   if(window.gsap&&window.ScrollTrigger)init();
   else window.addEventListener('load',init,{once:true});
