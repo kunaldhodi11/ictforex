@@ -24,13 +24,18 @@
        call onUpdate many times per second; walking every scene on every tick
        creates avoidable DOM work on touch devices. */
     var activeScene=-1;
+    /* Touch scrolling already has native momentum. A timed scrub adds a second
+       animation delay, which can make the first story transition feel stuck.
+       Keep direct scroll-to-animation sync on phones; retain the softer scrub
+       on desktop where wheel/trackpad input benefits from it. */
+    var touchScroll=window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
     var timeline=gsap.timeline({
       defaults:{ease:'none'},
       scrollTrigger:{
         trigger:story,
         start:'top top',
         end:'bottom bottom',
-        scrub:0.65,
+        scrub:touchScroll?true:0.65,
         invalidateOnRefresh:true,
         onUpdate:function(self){
           var active=Math.min(scenes.length-1,Math.round(self.progress*(scenes.length-1)));
