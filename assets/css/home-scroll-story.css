@@ -192,3 +192,24 @@
   background:none!important;
   box-shadow:none!important;
 }
+
+
+/* Mobile scroll recovery: shorten the pinned story runway so a normal
+   finger swipe advances the chapter instead of feeling trapped on one scene. */
+@media(max-width:760px),(pointer:coarse){
+  .ifa-scroll-story{
+    height:300vh;
+    height:300svh;
+    touch-action:pan-y;
+  }
+  .ifa-scroll-story-stage{
+    touch-action:pan-y;
+  }
+  .ifa-scroll-story .ifa-story-scene,
+  .ifa-scroll-story .ifa-story-copy{
+    pointer-events:none;
+  }
+  .ifa-scroll-story .ifa-story-cta{
+    pointer-events:auto;
+  }
+}
