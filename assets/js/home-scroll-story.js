@@ -9,6 +9,12 @@
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!stage||scenes.length<2||reduce)return;
 
+  /* On touch phones there is no Lenis layer smoothing the scroll, and the
+     long continuous scrub made a single swipe feel like it only half-moved
+     the text to the next chapter. Snapping to the nearest chapter once the
+     swipe's momentum settles makes one flick reliably land on one chapter. */
+  var isTouch=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
+
   function init(){
     if(!window.gsap||!window.ScrollTrigger)return;
     var gsap=window.gsap;
@@ -27,8 +33,14 @@
         trigger:story,
         start:'top top',
         end:'bottom bottom',
-        scrub:0.65,
+        scrub:isTouch?0.25:0.65,
         invalidateOnRefresh:true,
+        snap:isTouch?{
+          snapTo:1/(scenes.length-1),
+          duration:{min:0.2,max:0.45},
+          delay:0.05,
+          ease:'power2.out'
+        }:false,
         onUpdate:function(self){
           var active=Math.min(scenes.length-1,Math.round(self.progress*(scenes.length-1)));
           scenes.forEach(function(scene,index){
