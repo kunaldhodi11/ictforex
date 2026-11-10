@@ -1036,6 +1036,17 @@ body::after{
 .facts.is-visible .fact{animation:factRise .55s both ease-out}
 .facts.is-visible .fact:nth-child(2){animation-delay:.08s}.facts.is-visible .fact:nth-child(3){animation-delay:.16s}.facts.is-visible .fact:nth-child(4){animation-delay:.24s}
 @keyframes factRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* FOUNDER INTRO — quiet editorial profile, no social links/photo yet */
+.founder-section{padding-top:12px;padding-bottom:64px}
+.founder-card{position:relative;max-width:940px;margin:0 auto;padding:clamp(28px,5vw,52px);overflow:hidden;border:1px solid rgba(32,217,154,.24);border-radius:24px;background:linear-gradient(125deg,rgba(12,25,34,.94),rgba(5,9,18,.92));box-shadow:0 24px 60px rgba(0,0,0,.38)}
+.founder-card:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--neon-cyan),var(--neon-gold));opacity:.9}
+.founder-kicker{color:var(--neon-cyan);font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px}
+.founder-name{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,44px);font-weight:600;line-height:1.15;color:#fff;margin-bottom:8px}
+.founder-role{color:#9ee8ce;font-size:12px;font-weight:700;letter-spacing:.04em;margin-bottom:18px}
+.founder-intro{max-width:720px;color:#cbd5e1;font-size:14px;line-height:1.9}
+@media(max-width:640px){.founder-section{padding-left:16px;padding-right:16px}.founder-card{border-radius:18px}}
+
 </style>
 <link rel="stylesheet" href="/assets/css/cinematic-experience.css">
 <link rel="stylesheet" href="/assets/css/cinematic-scroll.css">
@@ -1327,6 +1338,17 @@ body::after{
       <span>📅 Updated Daily</span>
       <a href="free-learning.html" class="btn-tip">Explore More →</a>
     </div>
+  </div>
+</section>
+
+
+<!-- FOUNDER INTRO -->
+<section class="section founder-section" id="founder-section" aria-labelledby="founder-name">
+  <div class="founder-card">
+    <p class="founder-kicker">A NOTE FROM THE FOUNDER</p>
+    <h2 class="founder-name" id="founder-name">Kunal Dhodi</h2>
+    <p class="founder-role">Founder &amp; Creator — ICT Forex Academy</p>
+    <p class="founder-intro">ICT Forex Academy was created to make forex education more structured, practical, and accessible. Our goal is to help traders understand price action, market structure, liquidity, and smart money concepts through clear, step-by-step learning.</p>
   </div>
 </section>
 
