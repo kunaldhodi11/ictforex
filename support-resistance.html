@@ -9,6 +9,10 @@
     <script>tailwind.config={darkMode:'class'}</script>
     <style>
         body{background:#0b0f19;color:#f3f4f6;font-family:sans-serif}
+        .mobile-course-nav{scrollbar-width:none;-ms-overflow-style:none}
+        .mobile-course-nav::-webkit-scrollbar{display:none}
+        .chart-zoom-link{display:block;cursor:zoom-in}
+        .chart-zoom-link img{display:block;width:100%;height:auto;object-fit:contain}
         @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
         .fade{animation:fadeUp .6s ease forwards}
         .card{background:#131b2e;border:1px solid #1f2937;border-radius:1rem}
@@ -21,7 +25,7 @@
 <body class="min-h-screen flex flex-col">
 
 <!-- ANNOUNCEMENT BAR -->
-<div class="bg-gradient-to-r from-green-600 to-teal-700 text-gray-950 text-[10px] font-black py-1.5 px-2 text-center flex flex-nowrap items-center justify-center gap-1.5 overflow-hidden">
+<div class="bg-gradient-to-r from-green-600 to-teal-700 text-gray-950 text-[10px] font-black py-1.5 px-2 text-center flex flex-wrap items-center justify-center gap-1.5">
   <span>Broker links (affiliate):</span>
   <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" class="bg-gray-950 text-yellow-400 px-2.5 py-0.5 rounded-md">Octa Account →</a>
   <span>|</span>
@@ -47,6 +51,17 @@
     <button id="authLogoutBtn" style="display:none" class="bg-red-600 text-white text-xs font-black px-3 py-2 rounded-xl">Logout</button>
   </div>
 </header>
+
+<!-- MOBILE COURSE NAVIGATION -->
+<nav aria-label="Course lessons" class="mobile-course-nav md:hidden sticky top-[60px] z-40 flex gap-2 overflow-x-auto whitespace-nowrap border-b border-gray-800 bg-[#0b0f19]/95 backdrop-blur px-3 py-2">
+  <a href="#what" class="shrink-0 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-2 text-[11px] font-bold text-blue-300">01 · Basics</a>
+  <a href="#chart" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">02 · Identify</a>
+  <a href="#types" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">03 · Types</a>
+  <a href="#real-chart-examples" class="shrink-0 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-[11px] font-bold text-cyan-300">Chart Lab</a>
+  <a href="#entry" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">04 · Reactions</a>
+  <a href="#risk" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">05 · Risk</a>
+  <a href="#final-practice" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">Practice</a>
+</nav>
 
 <!-- BREADCRUMB -->
 <div class="bg-[#131b2e]/50 border-b border-gray-800 px-4 md:px-8 py-2 text-[10px] text-gray-500 flex items-center gap-2">
@@ -373,7 +388,10 @@
           <h3 class="font-black text-white text-sm">Example 1 — Horizontal Resistance Breakout</h3>
           <span class="text-[9px] font-black uppercase tracking-wider text-red-300 bg-red-500/10 border border-red-500/20 rounded-full px-3 py-1">Horizontal zone</span>
         </div>
-        <img src="images/support-resistance/chart-01.png" alt="NAS100 chart showing a horizontal resistance zone, support area, and an upside breakout" loading="lazy" decoding="async" class="w-full h-auto rounded-xl border border-gray-700">
+        <a href="images/support-resistance/chart-01.png" target="_blank" rel="noopener noreferrer" class="chart-zoom-link rounded-xl overflow-hidden border border-gray-700" aria-label="Open full-size chart example 1 in a new tab">
+          <img src="images/support-resistance/chart-01.png" alt="NAS100 chart showing a horizontal resistance zone, support area, and an upside breakout" loading="lazy" decoding="async" class="w-full h-auto rounded-xl">
+        </a>
+        <p class="text-[10px] text-gray-500 mt-2">Tap the chart to open the full-size image.</p>
         <p class="text-xs text-gray-300 leading-relaxed mt-4">The red area marks a price region where previous highs created resistance. The teal area below marks a region where price previously found support. In this example, price later moves above the resistance zone. A move above a zone is a breakout candidate, not automatic proof of a lasting trend change.</p>
         <div class="mt-3 bg-[#0b0f19] rounded-xl p-4">
           <h4 class="text-[11px] font-black text-cyan-300 mb-2">What to learn</h4>
@@ -390,7 +408,10 @@
           <h3 class="font-black text-white text-sm">Example 2 — Trading Range: Support and Resistance</h3>
           <span class="text-[9px] font-black uppercase tracking-wider text-blue-300 bg-blue-500/10 border border-blue-500/20 rounded-full px-3 py-1">Range structure</span>
         </div>
-        <img src="images/support-resistance/chart-02.png" alt="NAS100 chart showing price moving between horizontal support and resistance zones before breaking higher" loading="lazy" decoding="async" class="w-full h-auto rounded-xl border border-gray-700">
+        <a href="images/support-resistance/chart-02.png" target="_blank" rel="noopener noreferrer" class="chart-zoom-link rounded-xl overflow-hidden border border-gray-700" aria-label="Open full-size chart example 2 in a new tab">
+          <img src="images/support-resistance/chart-02.png" alt="NAS100 chart showing price moving between horizontal support and resistance zones before breaking higher" loading="lazy" decoding="async" class="w-full h-auto rounded-xl">
+        </a>
+        <p class="text-[10px] text-gray-500 mt-2">Tap the chart to open the full-size image.</p>
         <p class="text-xs text-gray-300 leading-relaxed mt-4">Price is shown moving between an upper resistance area and a lower support area. This is a trading range: neither side has established a sustained move beyond the boundaries during the earlier part of the example. The later push above resistance shows how a range can eventually resolve.</p>
         <div class="mt-3 bg-[#0b0f19] rounded-xl p-4">
           <h4 class="text-[11px] font-black text-cyan-300 mb-2">What to learn</h4>
@@ -407,7 +428,10 @@
           <h3 class="font-black text-white text-sm">Example 3 — Diagonal Support and Resistance</h3>
           <span class="text-[9px] font-black uppercase tracking-wider text-purple-300 bg-purple-500/10 border border-purple-500/20 rounded-full px-3 py-1">Trendline channel</span>
         </div>
-        <img src="images/support-resistance/chart-03.png" alt="NAS100 chart showing a descending channel bounded by diagonal resistance and support trendlines" loading="lazy" decoding="async" class="w-full h-auto rounded-xl border border-gray-700">
+        <a href="images/support-resistance/chart-03.png" target="_blank" rel="noopener noreferrer" class="chart-zoom-link rounded-xl overflow-hidden border border-gray-700" aria-label="Open full-size chart example 3 in a new tab">
+          <img src="images/support-resistance/chart-03.png" alt="NAS100 chart showing a descending channel bounded by diagonal resistance and support trendlines" loading="lazy" decoding="async" class="w-full h-auto rounded-xl">
+        </a>
+        <p class="text-[10px] text-gray-500 mt-2">Tap the chart to open the full-size image.</p>
         <p class="text-xs text-gray-300 leading-relaxed mt-4">This chart illustrates diagonal support and resistance drawn around a descending price channel. The upper trendline connects lower swing highs and acts as dynamic resistance; the lower trendline connects lower swing lows and acts as dynamic support. Price moves within the channel before breaking below the lower boundary in this example.</p>
         <div class="mt-3 bg-[#0b0f19] rounded-xl p-4">
           <h4 class="text-[11px] font-black text-cyan-300 mb-2">What to learn</h4>
@@ -424,7 +448,10 @@
           <h3 class="font-black text-white text-sm">Example 4 — Planning a Trade Around a Key Zone</h3>
           <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1">Illustrative setup</span>
         </div>
-        <img src="images/support-resistance/chart-04.png" alt="Annotated NAS100 chart illustrating a support and resistance based trade plan with entry, stop loss, and target markings" loading="lazy" decoding="async" class="w-full h-auto rounded-xl border border-gray-700">
+        <a href="images/support-resistance/chart-04.png" target="_blank" rel="noopener noreferrer" class="chart-zoom-link rounded-xl overflow-hidden border border-gray-700" aria-label="Open full-size chart example 4 in a new tab">
+          <img src="images/support-resistance/chart-04.png" alt="Annotated NAS100 chart illustrating a support and resistance based trade plan with entry, stop loss, and target markings" loading="lazy" decoding="async" class="w-full h-auto rounded-xl">
+        </a>
+        <p class="text-[10px] text-gray-500 mt-2">Tap the chart to open the full-size image.</p>
         <p class="text-xs text-gray-300 leading-relaxed mt-4">This annotated example shows how a trader can organise a plan around a marked price area, including a possible entry, an invalidation point for the stop loss, and a target. The later price movement in the screenshot is historical chart behaviour; it does not mean the same setup will produce the same result in another market condition.</p>
         <div class="mt-3 bg-[#0b0f19] rounded-xl p-4">
           <h4 class="text-[11px] font-black text-cyan-300 mb-2">What to learn</h4>
