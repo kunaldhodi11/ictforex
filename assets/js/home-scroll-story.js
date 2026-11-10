@@ -20,6 +20,7 @@
     gsap.set(copies[0],{autoAlpha:1,y:0});
     gsap.set(backgrounds[0],{autoAlpha:1});
 
+    var root=document.documentElement;
     var timeline=gsap.timeline({
       defaults:{ease:'none'},
       scrollTrigger:{
@@ -34,7 +35,14 @@
             scene.setAttribute('aria-hidden',index===active?'false':'true');
           });
           if(progressFill)gsap.set(progressFill,{scaleX:Math.max(.08,self.progress)});
-        }
+          /* Slow continuous Ken-Burns push-in on the cinematic background video
+             while this story section is in view, echoing the camera drift of
+             premium editorial scroll sites. Resets once the section is left. */
+          root.style.setProperty('--ifa-story-zoom',self.progress.toFixed(4));
+        },
+        onLeave:function(){root.style.setProperty('--ifa-story-zoom','1')},
+        onEnterBack:function(){},
+        onLeaveBack:function(){root.style.setProperty('--ifa-story-zoom','0')}
       }
     });
     for(var i=1;i<scenes.length;i++){

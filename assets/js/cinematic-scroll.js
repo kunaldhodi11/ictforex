@@ -72,7 +72,7 @@
   if(!document.querySelector('link[data-ifa-scroll-video-css]')){
     var css=document.createElement('link');
     css.rel='stylesheet';
-    css.href='/assets/css/scroll-video-experience.css?v=20261109-1';
+    css.href='/assets/css/scroll-video-experience.css?v=20261110-1';
     css.setAttribute('data-ifa-scroll-video-css','');
     document.head.appendChild(css);
   }
