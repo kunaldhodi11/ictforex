@@ -13,8 +13,12 @@ body::after{z-index:0!important;}
   position:absolute;inset:0;width:100%;height:100%;display:block;
 }
 .ifa-scroll-scene video{
-  object-fit:cover;opacity:0;transform:scale(1.015);
+  object-fit:cover;opacity:0;
+  transform:scale(calc(1.015 + var(--ifa-story-zoom,0) * 0.07));
   transition:opacity .65s ease;
+}
+@media(prefers-reduced-motion:reduce){
+  .ifa-scroll-scene video{transform:scale(1.015)!important}
 }
 .ifa-scroll-scene.is-video-ready video{opacity:.78}
 .ifa-home-journey-scene.is-video-ready video{opacity:.94}
