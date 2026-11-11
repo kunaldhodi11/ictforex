@@ -41,6 +41,23 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
 .signal-bear{color:#ef4444;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25)}
 .signal-neutral{color:#f59e0b;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25)}
 @media(max-width:768px){.pattern-grid{grid-template-columns:repeat(2,1fr)}.sidebar-nav{display:none}}
+
+/* Real-market chart lessons */
+.real-chart-section{margin:48px 0}
+.real-chart-intro{color:#aeb8c8;font-size:13px;line-height:1.8;max-width:820px;margin:0 0 22px}
+.real-chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.real-chart-card{min-width:0;overflow:hidden;background:#111a2b;border:1px solid #273449;border-radius:16px;box-shadow:0 8px 26px rgba(0,0,0,.18)}
+.real-chart-media{background:#fff;padding:8px;display:flex;align-items:center;justify-content:center;min-height:180px}
+.real-chart-media img{display:block;width:100%;height:auto;max-height:440px;object-fit:contain}
+.real-chart-copy{padding:18px}
+.real-chart-kicker{font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#6ee7b7;margin-bottom:7px}
+.real-chart-copy h3{font-size:15px;line-height:1.4;font-weight:900;color:#fff;margin:0 0 10px}
+.real-chart-copy p{font-size:12px;line-height:1.75;color:#aeb8c8;margin:0 0 10px}
+.real-chart-copy p:last-child{margin-bottom:0}
+.real-chart-label{color:#fff;font-weight:800}
+.real-chart-note{margin-top:18px;padding:14px 16px;border:1px solid rgba(245,158,11,.24);border-left:3px solid #f59e0b;border-radius:12px;background:rgba(245,158,11,.06);color:#cbd5e1;font-size:11px;line-height:1.75}
+@media(max-width:760px){.real-chart-grid{grid-template-columns:1fr}.real-chart-media{min-height:0}.real-chart-copy{padding:15px}}
+
 </style>
   <link rel="stylesheet" href="/assets/css/site-polish.css">
 </head>
@@ -89,6 +106,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
 <aside class="sidebar-nav" style="width:210px;flex-shrink:0;border-right:1px solid #1f2937;padding:16px;position:sticky;top:82px;max-height:calc(100vh - 82px);overflow-y:auto">
   <div style="font-size:9px;font-weight:900;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Chapter 2</div>
   <a href="#intro" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">📖 Introduction</a>
+  <a href="#real-chart-examples" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#93c5fd;text-decoration:none;margin-bottom:2px">📈 Real Chart Examples (15)</a>
   <a href="#anatomy" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">🕯️ Anatomy</a>
   <div style="font-size:9px;font-weight:900;color:#4b5563;text-transform:uppercase;letter-spacing:.1em;margin:12px 0 4px 10px">Single Candle</div>
   <a href="#doji" class="nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px">Doji Family (5)</a>
@@ -176,6 +194,170 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
     <p style="color:#9ca3af;font-size:12px;line-height:1.7;margin:0">🔑 <strong style="color:#fff">Key principle:</strong> A candlestick pattern is only meaningful when it appears at a <strong style="color:#22c55e">key price level</strong> (support, resistance, or a major swing point). A Hammer in the middle of nowhere means nothing. A Hammer at a key support = high-probability trade.</p>
   </div>
 </section>
+
+
+<!-- REAL MARKET CHART EXAMPLES -->
+<section id="real-chart-examples" class="real-chart-section" style="scroll-margin-top:100px">
+  <div class="section-title">
+    <span class="tag" style="background:rgba(96,165,250,.15);color:#93c5fd">Live-market examples</span>
+    <h2>Real Chart Examples — NAS100, XAUUSD &amp; US30</h2>
+  </div>
+  <p class="real-chart-intro">Study how candle behaviour appears inside actual market movement. These annotated TradingView examples cover long bullish and bearish candles, Doji candles, Hammer formations, bullish and bearish Pin Bars, and Shooting Stars. Read the surrounding price action as well as the marked candle: context is what turns a candle shape into useful information.</p>
+  <div class="real-chart-grid">
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_01_marked%20(1).png" alt="NAS100 15-minute chart showing long bearish candle, bullish pin bar, Doji, Hammer, long bullish candle and bearish pin bar" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">01 · NAS100 · 15-minute</div>
+        <h3>Reading Rejection and Momentum in One Session</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A strong bearish candle drives price lower, while a bullish Pin Bar and a Hammer later show rejection from lower prices. A Doji marks a pause, followed by a long bullish candle and a bearish Pin Bar near the later high.</p>
+        <p><span class="real-chart-label">How to read it:</span> The lower-wick rejections suggest buyers are defending an area, but the Doji alone is indecision—not a buy signal. The long bullish candle shows stronger buying participation; the later bearish Pin Bar warns that buyers may be meeting supply.</p>
+        <p><span class="real-chart-label">Confirmation:</span> Look for a close above the rejection candle high for bullish follow-through, or a break below the bearish Pin Bar low for bearish follow-through. Always check the nearby swing levels.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_02_marked.png" alt="NAS100 chart with Doji, Shooting Star, long bullish and long bearish candles" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">02 · NAS100 · 15-minute</div>
+        <h3>Doji, Shooting Star and Strong Candle Expansion</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A Doji appears during a sideways phase, a Shooting Star is marked after an upward push, and long bullish candles appear during the recovery. Long bearish candles later accompany a sharp sell-off.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The Doji reflects a temporary balance between buyers and sellers. The Shooting Star shows an attempt to trade higher that was rejected. Large candle bodies show decisive momentum, but do not by themselves prove that a trend will continue.</p>
+        <p><span class="real-chart-label">Confirmation:</span> For a Shooting Star, watch for a bearish close or a break of its low. For bullish continuation, look for price to hold above the impulse candle's base and form a higher low.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_03_marked.png" alt="NAS100 5-minute chart with Hammer, bullish Pin Bar, Doji and long candles" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">03 · NAS100 · 5-minute</div>
+        <h3>Hammer and Bullish Pin Bar During a Recovery</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A Hammer and a bullish Pin Bar are marked after downward movement, with a Doji appearing near a later intraday low. Long bullish candles then appear as price advances.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The long lower shadows show that sellers pushed price down but could not keep it there. The following bullish expansion suggests buyers gained control after the rejection.</p>
+        <p><span class="real-chart-label">Confirmation:</span> A close above the Hammer or Pin Bar high adds evidence of a reversal. A retest that holds the rejection area can offer a more controlled entry than chasing the first large green candle.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_04_marked.png" alt="NAS100 5-minute chart showing Doji, long bearish and bullish candles, bearish Pin Bar and Hammer" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">04 · NAS100 · 5-minute</div>
+        <h3>Bearish Pressure, Hammer Rejection and Recovery</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> Several long bearish candles appear during the decline. A Hammer is marked near the low, followed by a strong upward reaction. A bearish Pin Bar is also marked earlier near a local high.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The bearish candles show strong selling pressure. Near the low, the Hammer indicates that lower prices were rejected; the rebound shows buyers responding, although the pattern needs confirmation.</p>
+        <p><span class="real-chart-label">Confirmation:</span> Watch whether price closes above the Hammer high and breaks the nearest lower high. If price instead breaks the Hammer low, the bullish-reversal idea is invalidated.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_05_marked.png" alt="NAS100 chart with Doji, bearish Pin Bar, bullish Pin Bar and long bearish candles" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">05 · NAS100 · 5-minute</div>
+        <h3>Pin Bar Rejections Inside a Bearish Move</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A Doji and bearish Pin Bar appear near the early part of the chart. A bullish Pin Bar is marked during a later recovery, while long bearish candles appear near the right side before price drops sharply.</p>
+        <p><span class="real-chart-label">How to interpret it:</span> A bullish Pin Bar can create a short-term bounce without reversing the broader structure. The later bearish expansion is a reminder to distinguish a local reaction from a confirmed trend change.</p>
+        <p><span class="real-chart-label">Confirmation:</span> Compare each rejection with the latest swing high and low. A bullish idea needs a higher high or a clear bullish break; a bearish idea gains support if price breaks the rejection candle low.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_06_marked.png" alt="NAS100 15-minute chart with long bullish candles, Doji, Shooting Star and long bearish candle" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">06 · NAS100 · 15-minute</div>
+        <h3>Momentum Candles and a Shooting Star at the High</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> Long bullish candles appear during an upward leg. A Doji signals a pause, a Shooting Star is marked close to the local high, and a long bearish candle appears later as price sells off.</p>
+        <p><span class="real-chart-label">Market psychology:</span> Buyers initially move price higher with strong bodies. The Shooting Star shows rejection of higher prices, while the later bearish expansion confirms that sellers were able to push price lower in this example.</p>
+        <p><span class="real-chart-label">Confirmation:</span> Do not sell simply because a Shooting Star appears. Wait for a bearish close or a break below its low, ideally with resistance or a prior high nearby.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_07_marked.png" alt="NAS100 15-minute chart with Doji, bullish Pin Bar, bearish Pin Bar, Hammer and long bullish candle" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">07 · NAS100 · 15-minute</div>
+        <h3>Multiple Rejections Around Intraday Swing Points</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A Doji and bullish Pin Bar appear during the earlier decline. A long bullish candle marks a forceful upward move. A bearish Pin Bar near the later high is followed by a sell-off, and a bullish Pin Bar and Hammer appear near the low.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The chart demonstrates that rejection candles can appear on both sides of the market. Their meaning depends on location: the bearish rejection near a high precedes weakness, while lower-wick rejections near the low precede a recovery.</p>
+        <p><span class="real-chart-label">Confirmation:</span> Use the nearby swing structure. A bullish setup should reclaim a short-term high; a bearish setup should break a recent low. Avoid treating every wick as an automatic reversal.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_08_marked.png" alt="US30 15-minute chart with Doji and long bullish and bearish candles" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">08 · US30 · 15-minute</div>
+        <h3>Momentum Expansion and a Sharp Bearish Reversal</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> Long bullish candles appear as US30 advances through the marked level. A Doji forms near the upper part of the move, followed by long bearish candles and a sharp decline.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The bullish impulse reflects strong buying. The Doji indicates hesitation after the advance, but the subsequent bearish expansion—not the Doji alone—is what demonstrates that sellers took control in this sample.</p>
+        <p><span class="real-chart-label">Confirmation:</span> Watch for a break of the Doji's local support or a lower high after the pause. A Doji can also precede continuation, so wait for price to reveal direction.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_09_marked.png" alt="US30 15-minute chart showing bullish and bearish Pin Bars, Doji and long candles" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">09 · US30 · 15-minute</div>
+        <h3>Bearish Pin Bar, Doji and Bullish Rejection</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A bearish Pin Bar and Doji are marked after an early rise. Long bearish candles accompany the decline, while a bullish Pin Bar appears close to the low before a strong recovery and long bullish candles.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The upper-wick rejection suggests buyers could not hold the higher prices. Near the low, the bullish Pin Bar shows lower prices being rejected; the subsequent rally provides follow-through in this example.</p>
+        <p><span class="real-chart-label">Confirmation:</span> For a bullish reversal, look for price to break a nearby lower high after the Pin Bar. For bearish continuation, a fresh low and failed retest would support the sellers' case.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_10_marked.png" alt="XAUUSD 15-minute chart with bullish and bearish Pin Bars, long candles and Doji" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">10 · XAUUSD · 15-minute</div>
+        <h3>Gold: Bullish Impulse Followed by Bearish Rejection</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A long bullish candle appears during an upward push. A bearish Pin Bar is marked near the high, followed by long bearish candles and a Doji during the decline. Another long bullish candle appears near the later low.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The chart captures a shift from buying momentum to rejection at higher prices. The Doji during the decline is a pause, while the later bullish candle shows a forceful response from lower levels.</p>
+        <p><span class="real-chart-label">Confirmation:</span> At the high, look for a close below the bearish Pin Bar low. Near the low, wait for a bullish close and a structure break before assuming the decline has reversed.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_11_marked.png" alt="XAUUSD 15-minute chart with Doji, Hammer, bullish and bearish Pin Bars and long candles" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">11 · XAUUSD · 15-minute</div>
+        <h3>Gold: Hammer Rejection and Bearish Pin Bar at Resistance</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A Doji and Hammer are marked after a decline. A long bullish candle appears as price recovers, while a bearish Pin Bar and long bearish candle appear around a later high.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The Hammer shows rejection of lower prices and is followed by a recovery in this sample. At the later high, the bearish Pin Bar signals that upward movement is being rejected.</p>
+        <p><span class="real-chart-label">Confirmation:</span> A bullish close above the Hammer high supports the recovery idea. Near the later high, wait for a break below the bearish Pin Bar low before considering bearish follow-through.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_12_marked.png" alt="XAUUSD 15-minute chart with Shooting Star, Doji and long bullish and bearish candles" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">12 · XAUUSD · 15-minute</div>
+        <h3>Gold: Shooting Star Rejection and Recovery Candles</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A Shooting Star is marked after an upward push, with a Doji appearing during the earlier range. Long bullish candles are marked as price later recovers from a decline; a long bearish candle appears during a pullback.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The Shooting Star's upper wick shows rejection of higher prices. Later bullish impulse candles show buyers regaining momentum, while the bearish candle highlights that pullbacks can occur inside a recovery.</p>
+        <p><span class="real-chart-label">Confirmation:</span> A bearish close below the Shooting Star low would strengthen the rejection case. For bullish continuation, look for price to hold a higher low and break the nearest swing high.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_13_marked.png" alt="XAUUSD 15-minute chart with Doji, bullish Pin Bar, Shooting Star and bearish Pin Bar" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">13 · XAUUSD · 15-minute</div>
+        <h3>Gold: Bullish Rejection Followed by Upper-Wick Rejection</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A Doji appears near the left side, followed by long bullish candles and a bullish Pin Bar near a local low. After a strong rally, a Shooting Star and bearish Pin Bar are marked near the high, followed by a decline.</p>
+        <p><span class="real-chart-label">Market psychology:</span> Lower-wick rejection appears during the recovery, while upper-wick rejection appears after the rally. The sequence shows why the same candle family can have different implications depending on where it forms.</p>
+        <p><span class="real-chart-label">Confirmation:</span> Look for a break above a nearby high after the bullish Pin Bar, and a break below the bearish Pin Bar low after the later rejection. Avoid entering before the candle closes.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/chart_14_marked.png" alt="XAUUSD 15-minute chart with long bearish candle, bullish Pin Bar, Doji and long bullish candles" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">14 · XAUUSD · 15-minute</div>
+        <h3>Gold: Selling Pressure, Bullish Pin Bar and Trend Recovery</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A long bearish candle appears during a decline. A bullish Pin Bar is marked near the lower area, followed by a recovery. A Doji forms during consolidation before long bullish candles push price higher.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The lower-wick rejection suggests sellers could not maintain control at the low. The Doji shows a pause during the recovery, and the later bullish candles show renewed buying momentum.</p>
+        <p><span class="real-chart-label">Confirmation:</span> A higher low followed by a break above the consolidation high supports bullish continuation. If price falls below the Pin Bar low, the reversal idea is invalidated.</p>
+      </div>
+    </article>
+    <article class="real-chart-card">
+      <div class="real-chart-media"><img src="/images/candlestick-patterns/nas100_candlestick_marked.png" alt="NAS100 15-minute chart showing long bearish candle, Shooting Star, Doji, Hammer and bullish Pin Bar" loading="lazy" decoding="async"></div>
+      <div class="real-chart-copy">
+        <div class="real-chart-kicker">15 · NAS100 · 15-minute</div>
+        <h3>NAS100: From Bearish Expansion to Bullish Reversal Signals</h3>
+        <p><span class="real-chart-label">What the chart shows:</span> A long bearish candle marks a sharp drop. A Hammer appears near a later low, while a Shooting Star and Doji are marked around a consolidation area. A bullish Pin Bar appears during the subsequent recovery.</p>
+        <p><span class="real-chart-label">Market psychology:</span> The initial bearish candle shows strong selling. The Hammer and bullish Pin Bar show lower prices being rejected at separate points, while the Shooting Star warns that an upward attempt can also meet selling pressure.</p>
+        <p><span class="real-chart-label">Confirmation:</span> For a bullish reversal, wait for price to close above a nearby swing high after the lower-wick rejection. The Doji and Shooting Star need directional confirmation; neither is a standalone entry signal.</p>
+      </div>
+    </article>
+  </div>
+  <div class="real-chart-note"><strong style="color:#fbbf24">Trading note:</strong> These screenshots are educational examples, not live trade calls or guaranteed outcomes. A candle pattern is more meaningful when it forms at a clear support/resistance area or swing point and is confirmed by the next candles and market structure. Risk management and a defined stop loss remain essential.</div>
+</section>
+
 
 <!-- ANATOMY -->
 <section id="anatomy" style="scroll-margin-top:100px;margin-bottom:48px">
