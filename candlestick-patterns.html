@@ -58,6 +58,20 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
 .real-chart-note{margin-top:18px;padding:14px 16px;border:1px solid rgba(245,158,11,.24);border-left:3px solid #f59e0b;border-radius:12px;background:rgba(245,158,11,.06);color:#cbd5e1;font-size:11px;line-height:1.75}
 @media(max-width:760px){.real-chart-grid{grid-template-columns:1fr}.real-chart-media{min-height:0}.real-chart-copy{padding:15px}}
 
+
+/* Click-to-zoom chart viewer */
+.real-chart-media img{cursor:zoom-in;transition:transform .2s ease}
+#chart-image-lightbox{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:rgba(3,7,18,.96);padding:56px 18px 22px}
+#chart-image-lightbox.is-open{display:flex}
+#chart-image-lightbox .chart-lightbox-stage{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:auto;touch-action:pan-x pan-y}
+#chart-image-lightbox img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transform:scale(1);transform-origin:center center;cursor:grab;user-select:none;-webkit-user-drag:none}
+#chart-image-lightbox img.is-dragging{cursor:grabbing}
+.chart-lightbox-toolbar{position:absolute;top:12px;right:14px;display:flex;align-items:center;gap:8px}
+.chart-lightbox-btn{width:40px;height:40px;border:1px solid rgba(255,255,255,.22);border-radius:12px;background:#172033;color:#fff;font-size:20px;font-weight:800;cursor:pointer}
+.chart-lightbox-btn:hover{background:#26354e}
+.chart-lightbox-hint{position:absolute;top:20px;left:18px;color:#cbd5e1;font-size:12px}
+@media(max-width:600px){#chart-image-lightbox{padding:66px 8px 14px}.chart-lightbox-hint{top:76px;left:12px;font-size:10px}.chart-lightbox-toolbar{top:10px;right:10px}.chart-lightbox-btn{width:36px;height:36px}}
+
 </style>
   <link rel="stylesheet" href="/assets/css/site-polish.css">
 </head>
@@ -197,6 +211,53 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
 
 
 <!-- REAL MARKET CHART EXAMPLES -->
+
+<!-- Full-screen zoom viewer for real chart examples -->
+<div id="chart-image-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Zoomed chart image">
+  <div class="chart-lightbox-hint">Scroll or use + / − to zoom · Drag to move · Esc to close</div>
+  <div class="chart-lightbox-toolbar">
+    <button class="chart-lightbox-btn" type="button" data-chart-zoom="out" aria-label="Zoom out">−</button>
+    <button class="chart-lightbox-btn" type="button" data-chart-zoom="in" aria-label="Zoom in">+</button>
+    <button class="chart-lightbox-btn" type="button" data-chart-zoom="reset" aria-label="Reset zoom">↺</button>
+    <button class="chart-lightbox-btn" type="button" data-chart-zoom="close" aria-label="Close image">×</button>
+  </div>
+  <div class="chart-lightbox-stage"><img alt="" draggable="false"></div>
+</div>
+<script>
+(function(){
+  const viewer=document.getElementById('chart-image-lightbox');
+  if(!viewer || viewer.dataset.ready) return;
+  viewer.dataset.ready='1';
+  const stage=viewer.querySelector('.chart-lightbox-stage');
+  const zoomed=viewer.querySelector('img');
+  let scale=1,drag=false,startX=0,startY=0,scrollX=0,scrollY=0;
+  const apply=()=>{zoomed.style.transform='scale('+scale+')';};
+  const reset=()=>{scale=1;zoomed.style.transform='scale(1)';stage.scrollLeft=0;stage.scrollTop=0;};
+  const close=()=>{viewer.classList.remove('is-open');viewer.setAttribute('aria-hidden','true');document.body.style.overflow='';reset();};
+  const open=(img)=>{zoomed.src=img.currentSrc||img.src;zoomed.alt=img.alt||'Chart image';viewer.classList.add('is-open');viewer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';reset();};
+  document.querySelectorAll('.real-chart-media img').forEach(img=>{
+    img.setAttribute('tabindex','0');
+    img.setAttribute('role','button');
+    img.setAttribute('aria-label','Open chart image in zoom viewer');
+    img.addEventListener('click',()=>open(img));
+    img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(img);}});
+  });
+  viewer.addEventListener('click',e=>{if(e.target===viewer)close();});
+  viewer.querySelectorAll('[data-chart-zoom]').forEach(btn=>btn.addEventListener('click',()=>{
+    const action=btn.dataset.chartZoom;
+    if(action==='close')return close();
+    if(action==='reset')return reset();
+    scale=Math.min(5,Math.max(1,scale+(action==='in'?.5:-.5)));apply();
+  }));
+  stage.addEventListener('wheel',e=>{e.preventDefault();scale=Math.min(5,Math.max(1,scale+(e.deltaY<0?.2:-.2)));apply();},{passive:false});
+  zoomed.addEventListener('pointerdown',e=>{if(scale<=1)return;drag=true;startX=e.clientX;startY=e.clientY;scrollX=stage.scrollLeft;scrollY=stage.scrollTop;zoomed.classList.add('is-dragging');zoomed.setPointerCapture(e.pointerId);});
+  zoomed.addEventListener('pointermove',e=>{if(!drag)return;stage.scrollLeft=scrollX-(e.clientX-startX);stage.scrollTop=scrollY-(e.clientY-startY);});
+  const stop=()=>{drag=false;zoomed.classList.remove('is-dragging');};
+  zoomed.addEventListener('pointerup',stop);zoomed.addEventListener('pointercancel',stop);
+  document.addEventListener('keydown',e=>{if(!viewer.classList.contains('is-open'))return;if(e.key==='Escape')close();if(e.key==='+'||e.key==='='){scale=Math.min(5,scale+.5);apply();}if(e.key==='-'){scale=Math.max(1,scale-.5);apply();}});
+})();
+</script>
+
 <section id="real-chart-examples" class="real-chart-section" style="scroll-margin-top:100px">
   <div class="section-title">
     <span class="tag" style="background:rgba(96,165,250,.15);color:#93c5fd">Real chart examples</span>
