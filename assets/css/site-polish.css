@@ -80,3 +80,11 @@ button:disabled,input:disabled{cursor:not-allowed;opacity:.65}
   ::view-transition-old(root),::view-transition-new(root){animation:none!important}
   :where(.navlinks a,.nav a,.primary-btn,.btn,.quick-link,input,select,textarea){transition:none!important}
 }
+
+/* Candlestick lesson cards: show the explanation before its chart image. */
+.real-chart-card{
+  display:flex;
+  flex-direction:column;
+}
+.real-chart-card .real-chart-copy{order:1}
+.real-chart-card .real-chart-media{order:2}
