@@ -1,188 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Price Action Trading Masterclass - ICT Forex Academy</title>
-    <meta name="description" content="Learn pure price action trading, market structure, trend identification, and swing highs/lows without indicators.">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: { 500: '#22c55e', 600: '#16a34a' },
-                        secondary: { 500: '#a855f7', 600: '#9333ea' },
-                        accent: { 500: '#eab308' }
-                    }
-                }
-            }
-        }
-    </script>
-  <link rel="stylesheet" href="/assets/css/site-polish.css">
-</head>
-<body class="bg-[#0b0f19] text-gray-100 font-sans min-h-screen flex flex-col justify-between">
-
-    <!-- HEADER -->
-    <header class="bg-[#131b2e] border-b border-gray-800 px-4 md:px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-xl">
-        <a href="index.html" class="flex items-center gap-2.5 group cursor-pointer">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 shadow-[0_0_18px_rgba(34,197,94,0.5)] flex items-center justify-center flex-shrink-0">
-                <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
-                    <span class="text-xs md:text-sm font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-400">ICT</span>
-                </div>
-            </div>
-            <div>
-                <h1 class="text-xs md:text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-green-400 drop-shadow">
-                    ICT FOREX ACADEMY
-                </h1>
-                <p class="text-[9px] md:text-[10px] text-gray-400 font-medium tracking-wide">Institutional Smart Money</p>
-            </div>
-        </a>
-
-        <nav class="hidden md:flex items-center gap-5 text-xs font-bold text-gray-300">
-            <a href="index.html" class="hover:text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-house text-[10px]"></i> Home</a>
-            <a href="free-learning.html" class="text-green-400 transition flex items-center gap-1"><i class="fa-solid fa-book-open text-[10px]"></i> Free Learning</a>
-            <a href="rules.html" class="hover:text-blue-400 transition">Trading Rules</a>
-            <a href="about.html" class="hover:text-green-400 transition">About Us</a>
-            <a href="vip-course.html" class="hover:text-yellow-400 transition flex items-center gap-1"><i class="fa-solid fa-crown text-[10px]"></i> VIP Academy</a>
-        </nav>
-
-        <div class="flex items-center gap-2">
-            <a href="free-learning.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-arrow-left"></i> Back to Hub
-            </a>
-        </div>
-    </header>
-
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-10 space-y-8">
-        
-        <!-- Google AdSense Top Ad Space -->
-        <div class="w-full bg-gray-900 border border-dashed border-gray-700 rounded-2xl p-4 text-center text-gray-500 text-xs shadow-inner">
-            [ Google AdSense Top Banner Ad Space ]
-        </div>
-
-        <!-- HERO TITLE -->
-        <div class="bg-gradient-to-r from-gray-900 via-[#131b2e] to-gray-900 border border-gray-800 rounded-3xl p-6 md:p-10 shadow-2xl text-center space-y-4">
-            <span class="bg-yellow-500/15 text-yellow-400 border border-yellow-500/30 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow">
-                📈 Module 3: Pure Price Action
-            </span>
-            <h2 class="text-2xl md:text-4xl font-black text-white leading-tight">
-                Mastering <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Price Action Trading</span>
-            </h2>
-            <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto leading-relaxed">
-                Learn to analyse price action through raw chart movement, including market structure, higher highs, and higher lows, without relying on complicated indicators.
-            </p>
-        </div>
-
-        <!-- WHAT IS PRICE ACTION & ANIMATED VISUAL -->
-        <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
-            <h3 class="text-sm md:text-base font-black text-white flex items-center gap-2">
-                <i class="fa-solid fa-brain text-yellow-400"></i> What Is Price Action and How Does It Work?
-            </h3>
-            <div class="space-y-3 text-xs md:text-sm text-gray-300 leading-relaxed">
-                <p>
-                    <strong class="text-white">Definition:</strong> Price action is a trading approach in which traders study a chart's candles and price swings to assess market behaviour, rather than relying primarily on indicators such as RSI or MACD.
-                </p>
-                <p>
-                    <strong class="text-yellow-400">Market Me Role:</strong> Price rarely moves in a straight line. It typically forms waves of swing highs and swing lows. Studying these price movements is the foundation of price action analysis.
-                </p>
-            </div>
-
-            <!-- ANIMATED MARKET STRUCTURE VISUAL (Uptrend / Higher Highs) -->
-            <div class="bg-[#0b0f19] h-56 rounded-2xl border border-gray-800 relative overflow-hidden flex items-center justify-center p-6">
-                <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:2rem_2rem] opacity-30"></div>
-                
-                <div class="relative w-full flex justify-between items-center px-4 text-center">
-                    <div class="space-y-1 animate-pulse">
-                        <span class="text-[9px] font-bold text-green-400 bg-gray-900 px-2 py-0.5 rounded border border-gray-800">Higher Low (HL)</span>
-                        <div class="text-xs text-gray-500">&bull;</div>
-                    </div>
-                    <div class="space-y-1 animate-pulse">
-                        <span class="text-[9px] font-bold text-yellow-400 bg-gray-900 px-2 py-0.5 rounded border border-gray-800">Higher High (HH)</span>
-                        <div class="text-xs text-gray-500">&bull;</div>
-                    </div>
-                    <div class="space-y-1 animate-pulse">
-                        <span class="text-[9px] font-bold text-green-400 bg-gray-900 px-2 py-0.5 rounded border border-gray-800">Higher Low (HL)</span>
-                        <div class="text-xs text-gray-500">&bull;</div>
-                    </div>
-                    <div class="space-y-1 animate-pulse">
-                        <span class="text-[9px] font-bold text-yellow-400 bg-gray-900 px-2 py-0.5 rounded border border-gray-800">Higher High (HH)</span>
-                        <div class="text-xs text-gray-500">&bull;</div>
-                    </div>
-                </div>
-            </div>
-            <p class="text-[11px] text-gray-400 text-center">Uptrend Market Structure: An uptrend forms when price creates successive higher highs and higher lows.</p>
-        </div>
-
-        <!-- DETAILED CORE CONCEPTS -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            <!-- 1. MARKET STRUCTURE (BOS & CHOCH BASICS) -->
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl hover:border-yellow-500/50 transition">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
-                    <h3 class="text-sm md:text-base font-black text-yellow-400">1. How to Read Market Structure</h3>
-                </div>
-                <div class="space-y-2 text-xs text-gray-300 leading-relaxed">
-                    <p><strong class="text-white">Uptrend Structure:</strong> Price moves upward and breaks its previous high, forming a Break of Structure (BOS). This may indicate buyer strength, subject to confirmation and broader context.</p>
-                    <p><strong class="text-white">Downtrend Structure:</strong> Price moves downward and breaks its previous low, forming lower lows.</p>
-                    <p><strong class="text-yellow-400">Trading Rule:</strong> Trade in the direction of the primary trend when your strategy confirms the setup (the trend is your friend).</p>
-                </div>
-            </div>
-
-            <!-- 2. SWING HIGHS AND LOWS -->
-            <div class="bg-gray-900 border border-gray-800 rounded-3xl p-6 space-y-4 shadow-xl hover:border-green-500/50 transition">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400">
-                        <i class="fa-solid fa-wave-square"></i>
-                    </div>
-                    <h3 class="text-sm md:text-base font-black text-green-400">2. What Are Swing Highs and Swing Lows?</h3>
-                </div>
-                <div class="space-y-2 text-xs text-gray-300 leading-relaxed">
-                    <p><strong class="text-white">Swing High (Peak):</strong> A point where price rises and then turns downward, often acting as resistance.</p>
-                    <p><strong class="text-white">Swing Low (Valley):</strong> A point where price falls and then turns upward, often acting as support.</p>
-                    <p><strong class="text-green-400">Importance:</strong> These swing points can help define stop-loss placement and trade-entry plans.</p>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- UPGRADE BANNER TO VIP FOR LIQUIDITY & ADVANCED SMC -->
-        <div class="bg-gradient-to-r from-amber-950 via-gray-900 to-yellow-950 border border-yellow-500/40 rounded-3xl p-6 md:p-8 text-center space-y-4 shadow-2xl">
-            <div class="inline-block bg-yellow-500 text-gray-950 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow">
-                ⭐ VIP Academy Locked Content
-            </div>
-            <h3 class="text-lg md:text-2xl font-black text-white">Want to learn Institutional Liquidity & Smart Money Concepts?</h3>
-            <p class="text-gray-300 text-xs max-w-xl mx-auto leading-relaxed">
-                The free learning section introduces the fundamentals of price action. To study liquidity mapping, order blocks, and imbalances in greater depth, explore our VIP course. These concepts are analytical frameworks and do not reveal the actual orders of banks or institutions.
-            </p>
-            <div class="pt-2">
-                <a href="vip-course.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-amber-600 hover:opacity-90 text-gray-950 font-black text-xs px-6 py-3.5 rounded-xl transition shadow-lg">
-                    <i class="fa-solid fa-crown"></i> Unlock VIP Mentorship
-                </a>
-            </div>
-        </div>
-
-        <!-- Google AdSense Bottom Ad Space -->
-        <div class="w-full bg-gray-900 border border-dashed border-gray-700 rounded-2xl p-6 text-center text-gray-500 text-xs shadow-inner">
-            [ Google AdSense Bottom Banner Ad Space ]
-        </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#131b2e] border-t border-gray-800 mt-12 py-6 text-center text-xs text-gray-400 space-y-2">
-        <p>ICT Forex Academy © 2026. All rights reserved.</p>
-        <p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy & Terms</a></p>
-    </footer>
-
-<script src="/assets/js/cinematic-scroll.js" defer></script>
-</body>
-</html>
+<html lang="en" class="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price Action Trading Course: Structure, Trends &amp; Chart Reading | ICT Forex Academy</title>
+<meta name="description" content="Learn forex price action: market structure, trends, swing highs and lows, support and resistance, breakouts, pullbacks, trade planning and risk management.">
+<meta name="robots" content="index, follow, max-image-preview:large"><link rel="canonical" href="https://ictforex.in/price-action.html">
+<meta property="og:type" content="article"><meta property="og:url" content="https://ictforex.in/price-action.html"><meta property="og:title" content="Price Action Trading Course | ICT Forex Academy"><meta property="og:description" content="A structured beginner-to-intermediate course on reading forex charts through price action."><meta property="og:site_name" content="ICT Forex Academy">
+<script src="https://cdn.tailwindcss.com" defer></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="/assets/css/site-polish.css">
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:#0b0f19;color:#f3f4f6;font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+.pa-wrap{width:min(1120px,100%);margin:auto;padding:22px 18px 64px}.pa-card{background:linear-gradient(145deg,#131b2e,#0d1423);border:1px solid #253047;border-radius:20px}.pa-module{scroll-margin-top:100px}.pa-kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:900;color:#fbbf24}.pa-copy{font-size:14px;line-height:1.85;color:#cbd5e1}.pa-note{border-left:3px solid #eab308;background:rgba(234,179,8,.07);padding:13px 15px;border-radius:0 12px 12px 0;color:#cbd5e1;font-size:12px;line-height:1.75}.pa-toc a{display:block;padding:9px 11px;border-radius:10px;color:#cbd5e1;font-size:12px;font-weight:700}.pa-toc a:hover{background:#1e293b;color:#fbbf24}.pa-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border-radius:12px;font-size:12px;font-weight:900}@media(max-width:640px){.pa-wrap{padding:16px 12px 44px}.pa-copy{font-size:13px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body class="min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 bg-[#131b2e]/95 backdrop-blur border-b border-gray-800 shadow-xl"><div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-3"><a href="index.html" class="flex items-center gap-2.5"><span class="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5"><span class="w-full h-full rounded-full bg-[#131b2e] flex items-center justify-center text-sm font-black text-white">ICT</span></span><span><strong class="block text-[11px] md:text-sm tracking-wider text-white">ICT FOREX ACADEMY</strong><small class="block text-[9px] text-gray-400">Forex Education · Free Learning</small></span></a><nav class="hidden md:flex items-center gap-5 text-xs font-bold text-gray-300"><a href="index.html">Home</a><a href="free-learning.html" class="text-green-400">Free Learning</a><a href="rules.html">Trading Rules</a><a href="about.html">About Us</a><a href="vip-course.html">VIP Academy</a></nav><a href="free-learning.html" class="pa-btn border border-green-500/30 bg-gray-800 text-green-400"><i class="fa-solid fa-arrow-left"></i><span class="hidden sm:inline">Back to Learning</span><span class="sm:hidden">Back</span></a></div></header>
+<main class="flex-1"><div class="pa-wrap">
+<nav aria-label="Free learning chapters" class="grid grid-cols-3 gap-2 mb-6"><a href="support-resistance.html" class="rounded-xl border border-gray-700 bg-[#111a2b] p-3 text-gray-300"><small class="block text-[9px] font-black text-gray-500">CHAPTER 1</small><strong class="block text-[11px] sm:text-sm mt-1">Support &amp; Resistance</strong><small>← Previous</small></a><a href="candlestick-patterns.html" class="rounded-xl border border-gray-700 bg-[#111a2b] p-3 text-gray-300"><small class="block text-[9px] font-black text-gray-500">CHAPTER 2</small><strong class="block text-[11px] sm:text-sm mt-1">Candlestick Patterns</strong><small>← Previous</small></a><div aria-current="page" class="rounded-xl border border-yellow-500/50 bg-yellow-500/[.07] p-3 text-yellow-300"><small class="block text-[9px] font-black">CHAPTER 3 · CURRENT</small><strong class="block text-[11px] sm:text-sm mt-1">Price Action</strong><small>You are here</small></div></nav>
+<section class="pa-card relative overflow-hidden p-6 sm:p-9 md:p-12 text-center mb-7"><div class="relative"><span class="inline-block rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-2 text-[10px] font-black text-yellow-300">FREE LEARNING · CHAPTER 3</span><p class="pa-kicker mt-5">Read the chart. Understand the move.</p><h1 class="text-3xl sm:text-4xl md:text-5xl font-black mt-2">Price Action <span class="text-yellow-400">Trading</span></h1><p class="max-w-3xl mx-auto text-sm sm:text-base text-gray-300 leading-7 mt-4">Learn how price moves, how trends develop, how to read swing points, and how to plan a trade using clear chart evidence—without depending on a collection of indicators.</p><div class="flex flex-wrap justify-center gap-2 mt-6"><span class="rounded-full bg-gray-800 px-3 py-2 text-[10px]">Beginner → Intermediate</span><span class="rounded-full bg-gray-800 px-3 py-2 text-[10px]">14 Learning Modules</span><span class="rounded-full bg-gray-800 px-3 py-2 text-[10px]">Forex Chart Reading</span></div><a href="#module-01" class="pa-btn bg-yellow-400 text-gray-950 mt-7">Start Learning ↓</a></div></section>
+<section class="grid lg:grid-cols-[.85fr_1.15fr] gap-5 mb-8"><div class="pa-card p-5 sm:p-6"><p class="pa-kicker">Your learning outcome</p><h2 class="text-xl font-black text-white mt-2">What you will learn</h2><p class="pa-copy mt-3">Describe market conditions, mark meaningful swing points, distinguish pullbacks from possible reversals, and build a simple, risk-aware trade plan.</p><ul class="mt-4 space-y-3 text-xs text-gray-300"><li>✓ Read bullish, bearish and sideways structure</li><li>✓ Identify swing highs, lows and trend changes</li><li>✓ Understand breakouts, retests and failed breaks</li><li>✓ Plan entries, invalidation, stop-loss and targets</li></ul><div class="pa-note mt-5">Price action is a way to interpret market behaviour, not a prediction system. No chart pattern guarantees the next move.</div></div><div class="pa-card p-5 sm:p-6"><p class="pa-kicker">Course roadmap</p><h2 class="text-xl font-black text-white mt-2">14 focused modules</h2><div class="pa-toc grid sm:grid-cols-2 gap-1 mt-4"><a href="#module-01">01 · What Is Price Action?</a><a href="#module-02">02 · Understanding Market Structure</a><a href="#module-03">03 · How to Identify the Trend</a><a href="#module-04">04 · Swing Highs and Swing Lows</a><a href="#module-05">05 · Support and Resistance Areas</a><a href="#module-06">06 · Reading Candles in Context</a><a href="#module-07">07 · Breakouts, Retests and Failed Breakouts</a><a href="#module-08">08 · Pullbacks vs Possible Reversals</a><a href="#module-09">09 · Understanding Sideways Markets</a><a href="#module-10">10 · Using Multiple Timeframes</a><a href="#module-11">11 · Build a Simple Price Action Trade Plan</a><a href="#module-12">12 · Risk Management Basics</a><a href="#module-13">13 · Common Price Action Mistakes</a><a href="#module-14">14 · Price Action Practice Checklist</a></div></div></section>
+<section id="module-01" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 01 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">What Is Price Action?</h2><p class="pa-copy mt-4">Price action is the study of how price moves on a chart. Traders observe candle opens, highs, lows and closes, together with the sequence of price swings, to understand market behaviour. Start with the chart itself; indicators may support analysis, but should not replace reading price.</p><div class="pa-note mt-4">Look at three things: overall direction, important turning points, and how price reacts around previous areas. A candle or pattern is never a guarantee of what happens next.</div></section>
+<section id="module-02" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 02 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Understanding Market Structure</h2><p class="pa-copy mt-4">Market structure is the sequence of meaningful swing highs and swing lows. A developing uptrend commonly forms Higher Highs (HH) and Higher Lows (HL). A developing downtrend commonly forms Lower Highs (LH) and Lower Lows (LL).</p><div class="pa-note mt-4">HH = a swing high above the previous relevant high. HL = a swing low above the previous relevant low. LH = a swing high below the previous relevant high. LL = a swing low below the previous relevant low. These labels describe price; they are not automatic entry signals.</div></section>
+<section id="module-03" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 03 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">How to Identify the Trend</h2><p class="pa-copy mt-4">Compare several clear swing points rather than judging the last one or two candles. Rising highs and lows suggest an uptrend; falling highs and lows suggest a downtrend. Overlapping swings and repeated movement between similar boundaries suggest a range.</p><div class="pa-note mt-4">If the chart is unclear, call it uncertain and wait. A trend is not confirmed by one strong candle, and trends can pause or change.</div></section>
+<section id="module-04" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 04 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Swing Highs and Swing Lows</h2><p class="pa-copy mt-4">A swing high is a local peak where price rises and then moves lower. A swing low is a local trough where price falls and then moves higher. Major swings are usually more useful than every small fluctuation.</p><div class="pa-note mt-4">A turning point becomes clearer only after price moves away from it. While a candle is still forming, its final high, low and close are not yet known. Do not treat every swing as guaranteed support or resistance.</div></section>
+<section id="module-05" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 05 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Support and Resistance Areas</h2><p class="pa-copy mt-4">Support is an area where falling price has previously slowed or bounced. Resistance is an area where rising price has previously slowed or turned down. Treat them as zones rather than perfectly precise lines.</p><div class="pa-note mt-4">Mark only clear areas with visible past reactions. Price can break either zone, so wait to see how it behaves when it returns. For the full lesson, review Chapter 1: Support & Resistance.</div><a href="support-resistance.html" class="pa-btn mt-5 border border-green-500/30 bg-green-500/10 text-green-300">Review Chapter 1: Support &amp; Resistance →</a></section>
+<section id="module-06" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 06 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Reading Candles in Context</h2><p class="pa-copy mt-4">A candle's body, wick and close show what happened during that period, but its location matters. A bullish-looking candle in a downtrend may mean something different from the same candle near a well-observed support area.</p><div class="pa-note mt-4">A close near the candle high can show buyers controlled much of that candle's range; a long upper wick shows price moved to a high and then retreated before closing. Neither shape guarantees the next move. Review Chapter 2: Candlestick Patterns.</div><a href="candlestick-patterns.html" class="pa-btn mt-5 border border-yellow-500/30 bg-yellow-500/10 text-yellow-300">Review Chapter 2: Candlestick Patterns →</a></section>
+<section id="module-07" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 07 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Breakouts, Retests and Failed Breakouts</h2><p class="pa-copy mt-4">A breakout occurs when price moves beyond a watched range or level. A candle close beyond the area can provide more information than a brief wick through it, but even a close can fail. A retest is a return towards the broken area.</p><div class="pa-note mt-4">A failed breakout happens when price moves beyond a boundary but then returns inside the previous range. Avoid assuming a breakout has succeeded until your own confirmation conditions are met.</div></section>
+<section id="module-08" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 08 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Pullbacks vs Possible Reversals</h2><p class="pa-copy mt-4">A pullback is a temporary move against the broader direction. In an uptrend, price may fall before attempting to continue higher; in a downtrend, price may rise before sellers return.</p><div class="pa-note mt-4">A possible reversal is a change in the prevailing direction. Look for meaningful swing levels to fail and a new sequence of highs and lows to develop. One opposite-colour candle does not prove a reversal.</div></section>
+<section id="module-09" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 09 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Understanding Sideways Markets</h2><p class="pa-copy mt-4">In a sideways market, price repeatedly moves between an upper and lower area without a sustained sequence of rising or falling swings. Mark the visible boundaries and observe how price behaves near them.</p><div class="pa-note mt-4">The middle of a range can offer poor clarity because price is far from either boundary. A range can end suddenly, so do not assume it will continue indefinitely.</div></section>
+<section id="module-10" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 10 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Using Multiple Timeframes</h2><p class="pa-copy mt-4">A higher timeframe helps show the broader direction and important areas. A setup timeframe helps you assess the current structure. A lower timeframe can show more detail for entry and invalidation, but it also contains more noise.</p><div class="pa-note mt-4">Choose timeframes that suit your holding period and test the combination consistently. There is no single best timeframe combination for every trader.</div></section>
+<section id="module-11" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 11 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Build a Simple Price Action Trade Plan</h2><p class="pa-copy mt-4">First describe the market condition. Next mark a few meaningful swing points and support/resistance areas. Then define what price must do before you consider entering.</p><div class="pa-note mt-4">Before entry, decide where the idea becomes invalid, where the target may be, and how much you could lose. If the setup does not meet your rules, skip it. Record a screenshot and review whether you followed the plan.</div></section>
+<section id="module-12" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 12 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Risk Management Basics</h2><p class="pa-copy mt-4">Risk management defines how much you could lose if a trade fails. Set a small, predefined risk amount you can afford to lose. Calculate position size from account risk, stop distance and the instrument's contract specifications.</p><div class="pa-note mt-4">Place a stop at a logical invalidation point and do not move it farther away just to avoid a loss. Set a daily loss limit and avoid revenge trading. Stops may slip in fast markets; leveraged forex trading carries substantial risk.</div></section>
+<section id="module-13" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 13 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Common Price Action Mistakes</h2><p class="pa-copy mt-4">Common mistakes include marking every tiny swing, entering before a candle closes, treating levels as exact lines, chasing large breakout candles, ignoring the broader chart and changing rules after one loss.</p><div class="pa-note mt-4">Keep the chart readable. Follow a written process and review a meaningful sample of trades before changing a tested approach.</div></section>
+<section id="module-14" class="pa-card pa-module p-5 sm:p-7 mb-5"><p class="pa-kicker">Module 14 · Price Action</p><h2 class="text-2xl font-black text-white mt-2">Price Action Practice Checklist</h2><p class="pa-copy mt-4">Practise identifying the market condition, marking clear swing highs and lows, and noting nearby support and resistance. Then describe what price would need to do to confirm or invalidate a trade idea.</p><div class="pa-note mt-4">Use historical charts or a demo account first. Record examples of trends, ranges, pullbacks, breakouts and failed breakouts. The goal is to build a repeatable process, not to force a trade.</div></section>
+<section class="pa-card p-5 sm:p-7 mb-8"><p class="pa-kicker">Quick reference</p><h2 class="text-2xl font-black text-white mt-2">Price Action Glossary</h2><div class="overflow-x-auto mt-4"><table class="w-full text-xs text-left"><thead class="text-yellow-300"><tr><th class="p-3">Term</th><th class="p-3">Meaning</th></tr></thead><tbody class="text-gray-300"><tr><td class="p-3 font-bold">HH / HL</td><td class="p-3">Higher High / Higher Low — rising swing points.</td></tr><tr><td class="p-3 font-bold">LH / LL</td><td class="p-3">Lower High / Lower Low — falling swing points.</td></tr><tr><td class="p-3 font-bold">Pullback</td><td class="p-3">Temporary move against the broader direction.</td></tr><tr><td class="p-3 font-bold">Breakout</td><td class="p-3">Move beyond a watched range or price area.</td></tr><tr><td class="p-3 font-bold">Retest</td><td class="p-3">Return towards a level after price moves beyond it.</td></tr><tr><td class="p-3 font-bold">Invalidation</td><td class="p-3">Price condition that makes the trade idea no longer valid.</td></tr></tbody></table></div></section>
+<section id="real-chart-examples" class="pa-card p-5 sm:p-8 mb-8 border border-yellow-500/25"><p class="pa-kicker">Practical chart study</p><h2 class="text-2xl font-black text-white mt-2">Real Market Chart Examples</h2><p class="pa-copy mt-3">This section is reserved for your annotated TradingView chart examples. We will add them after the lessons so learners first understand each concept and then study it on a real market chart.</p><div class="mt-5 rounded-2xl border border-dashed border-gray-600 bg-[#0b1220] p-8 text-center"><i class="fa-solid fa-chart-area text-3xl text-yellow-400"></i><h3 class="text-white font-black mt-3">Real chart examples will be added here</h3><p class="text-xs text-gray-400 mt-2 leading-6">Trend structure, swing highs and lows, pullbacks, support and resistance reactions, breakouts, retests and range conditions.</p><span class="inline-block mt-4 text-[10px] font-black tracking-widest text-gray-500">LESSONS FIRST · REAL CHARTS BELOW</span></div></section>
+<nav aria-label="Course chapter navigation" class="flex flex-col sm:flex-row justify-between gap-3 mb-8"><a href="candlestick-patterns.html" class="pa-btn border border-gray-700 bg-[#111a2b] text-gray-300">← Chapter 2: Candlestick Patterns</a><a href="free-learning.html" class="pa-btn border border-green-500/30 bg-green-500/10 text-green-300">Back to Free Learning →</a></nav>
+<p class="text-[10px] leading-6 text-gray-500 text-center max-w-3xl mx-auto">Educational content only. It is not financial advice or a recommendation to buy or sell any instrument. Forex and leveraged trading involve substantial risk, and losses can exceed expectations.</p>
+</div></main>
+<footer class="bg-[#131b2e] border-t border-gray-800 py-6 text-center text-xs text-gray-400 space-y-2"><p>ICT Forex Academy © 2026. All rights reserved.</p><p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy &amp; Terms</a></p></footer>
+<script src="/assets/js/cinematic-scroll.js" defer></script></body></html>
