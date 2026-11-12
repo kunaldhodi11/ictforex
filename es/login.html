@@ -150,7 +150,7 @@
             <div class="label-row"><label for="login-password">Contraseña</label></div>
             <div class="input-wrap">
               <i class="fa-solid fa-lock input-icon"></i>
-              <input type="password" id="login-password" name="password" required autocomplete="current-password" class="form-control" placeholder="Enter your password">
+              <input type="password" id="login-password" name="password" required autocomplete="current-password" class="form-control" placeholder="Introduce tu contraseña">
               <button type="button" class="password-toggle" id="toggle-password" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye"></i></button>
             </div>
           </div>
@@ -224,13 +224,13 @@
       const submit = document.getElementById('login-submit');
 
       if (!email || !password) {
-        showMsg("Please enter your email address and password.", "error");
+        showMsg("Introduce tu correo electrónico y tu contraseña.", "error");
         return;
       }
 
       submit.disabled = true;
       submit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Signing you in…</span>';
-      showMsg("Checking your account…", "success");
+      showMsg("Comprobando tu cuenta…", "success");
 
       try {
         const userCredential = await signInWithEmailAndContraseña(auth, email, password);
@@ -244,11 +244,11 @@
         showMsg("Iniciar sesión successful. Redirecting…", "success");
         window.setTimeout(() => { window.location.href = "index.html"; }, 900);
       } catch (error) {
-        let message = "We couldn't sign you in. Please try again.";
+        let message = "No se pudo iniciar sesión. Inténtalo de nuevo.";
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
           message = "The email or password doesn't match. Please check and try again.";
         } else if (error.code === 'auth/invalid-email') {
-          message = "Please enter a valid email address.";
+          message = "Introduce una dirección de correo electrónico válida.";
         } else if (error.code === 'auth/too-many-requests') {
           message = "Too many attempts. Please wait a little before trying again.";
         } else if (error.code === 'auth/network-request-failed') {
