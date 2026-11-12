@@ -99,8 +99,8 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
     </div>
   </a>  <div style="display:flex;gap:8px">
     <a href="free-learning.html" style="color:#22c55e;font-size:11px;font-weight:700;padding:6px 12px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);text-decoration:none">← Cursos</a>
-    <a href="login.html" id="authIniciar sesiónBtn" style="background:#16a34a;color:#fff;font-size:11px;font-weight:900;padding:6px 12px;border-radius:10px;text-decoration:none">Iniciar sesión</a>
-    <button id="authCerrar sesiónBtn" style="display:none;background:#dc2626;color:#fff;font-size:11px;font-weight:900;padding:6px 12px;border-radius:10px;border:none;cursor:pointer">Cerrar sesión</button>
+    <a href="login.html" id="authLoginBtn" style="background:#16a34a;color:#fff;font-size:11px;font-weight:900;padding:6px 12px;border-radius:10px;text-decoration:none">Iniciar sesión</a>
+    <button id="authLogoutBtn" style="display:none;background:#dc2626;color:#fff;font-size:11px;font-weight:900;padding:6px 12px;border-radius:10px;border:none;cursor:pointer">Cerrar sesión</button>
   </div>
 </header>
 
@@ -181,7 +181,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
 <!-- INTRO -->
 <section id="intro" style="scroll-margin-top:100px;margin-bottom:48px">
   <div class="section-title"><h2>📖 Por qué importan las velas japonesas</h2></div>
-  <p style="color:#9ca3af;font-size:13px;line-height:1.8;margin-bottom:16px">Candlestick charts were invented by Japanese rice trader <strong style="color:#fff">Homma Munehisa</strong> in the 1700s. He discovered that market prices are not just driven by supply and demand — but also by <strong style="color:#22c55e">emotions of traders</strong>. Every candle tells you 4 crucial things:</p>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.8;margin-bottom:16px">Los gráficos de velas japonesas fueron desarrollados por el comerciante japonés de arroz <strong style="color:#fff">Homma Munehisa</strong> en el siglo XVIII. Observó que los precios no dependen solo de la oferta y la demanda, sino también de <strong style="color:#22c55e">emotions of traders</strong>. Cada vela muestra cuatro datos fundamentales:</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:20px">
     <div class="card" style="padding:16px;text-align:center">
       <div style="font-size:28px;font-weight:900;color:#22c55e">O</div>
@@ -280,7 +280,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
     <span class="tag" style="background:rgba(245,158,11,.15);color:#f59e0b">Neutral / Posible giro</span>
     <h2>Familia Doji</h2>
   </div>
-  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">A Doji forms when <strong style="color:#fff">Apertura ≈ Cierre</strong>. It shows temporary balance or indecision, not an automatic reversal. Its meaning depends on the preceding trend, nearby levels and what price does next.</p>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">Un Doji se forma cuando <strong style="color:#fff">Apertura ≈ Cierre</strong>. Muestra equilibrio temporal o indecisión, no un giro automático. Su significado depende de la tendencia previa, los niveles cercanos y del siguiente movimiento del precio.</p>
   <div class="pattern-grid">
 
     <!-- 1. Standard Doji -->
@@ -358,7 +358,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
     <span class="tag" style="background:rgba(34,197,94,.15);color:#22c55e">Señales de posible giro</span>
     <h2>Familia Hammer</h2>
   </div>
-  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">Hammer patterns have a <strong style="color:#fff">small body and a long wick on one side</strong>. They signal strong rejection of a price level. The SAME shape can be bullish or bearish depending on where it appears in the trend.</p>
+  <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:20px">Los patrones Hammer tienen un <strong style="color:#fff">small body and a long wick on one side</strong>. Indican un rechazo marcado de una zona de precio. La MISMA forma puede ser alcista o bajista según el lugar de la tendencia en el que aparezcan.</p>
   <div class="pattern-grid">
 
     <!-- 6. Hammer -->
@@ -699,7 +699,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
         <rect x="90" y="42" width="30" height="36" fill="#22c55e" rx="2"/>
         <line x1="105" y1="78" x2="105" y2="100" stroke="#22c55e" stroke-width="1.5"/>
       </svg>
-      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Both candles reach the same low. Precio tested that level twice and was rejected. Strong buyers at that exact price. <strong style="color:#22c55e">BUY above 2nd candle. SL below twin lows.</strong></p>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Ambas velas alcanzan prácticamente el mismo mínimo. El precio probó ese nivel dos veces y fue rechazado. Puede indicar interés comprador en esa zona. <strong style="color:#22c55e">BUY above 2nd candle. SL below twin lows.</strong></p>
     </div>
     <div class="card" style="padding:20px">
       <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:12px;text-transform:uppercase">23. Tweezer Top 📌</div>
@@ -715,7 +715,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
         <line x1="105" y1="78" x2="105" y2="95" stroke="#ef4444" stroke-width="1.5"/>
         <text x="80" y="115" fill="#ef4444" font-size="8" text-anchor="middle">Vendedores at exact same level</text>
       </svg>
-      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Both candles reach the same high. Precio tried to break higher twice but was rejected. Strong sellers defending that level. <strong style="color:#ef4444">SELL below 2nd candle. SL above twin highs.</strong></p>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Ambas velas alcanzan prácticamente el mismo máximo. El precio intentó superar el nivel dos veces, pero fue rechazado. Puede indicar presión vendedora en esa zona. <strong style="color:#ef4444">SELL below 2nd candle. SL above twin highs.</strong></p>
     </div>
   </div>
 </section>
@@ -741,7 +741,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
         <line x1="88" y1="38" x2="88" y2="30" stroke="#22c55e" stroke-width="1.5"/>
         <text x="65" y="120" fill="#22c55e" font-size="8" text-anchor="middle">Cierres above 50%</text>
       </svg>
-      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Large red candle. Then green candle opens BELOW the red's low but closes ABOVE 50% of the red body. Compradores fighting back. <strong style="color:#22c55e">BUY on confirmation.</strong></p>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Primero aparece una vela roja grande. Después, una vela verde abre por debajo del mínimo de la roja, pero cierra por encima del 50 % de su cuerpo. Los compradores intentan recuperar el control. <strong style="color:#22c55e">BUY on confirmation.</strong></p>
     </div>
     <div class="card" style="padding:20px">
       <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:12px;text-transform:uppercase">25. Dark Cloud Cover</div>
@@ -757,7 +757,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
         <line x1="88" y1="86" x2="88" y2="96" stroke="#ef4444" stroke-width="1.5"/>
         <text x="65" y="120" fill="#ef4444" font-size="8" text-anchor="middle">Cierres below 50%</text>
       </svg>
-      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Large green candle. Then red candle opens ABOVE the green's high but closes BELOW 50% of the green body. Vendedores fighting back. <strong style="color:#ef4444">SELL on confirmation.</strong></p>
+      <p style="font-size:10px;color:#9ca3af;line-height:1.6">Primero aparece una vela verde grande. Después, una vela roja abre por encima del máximo de la verde, pero cierra por debajo del 50 % de su cuerpo. Los vendedores intentan recuperar el control. <strong style="color:#ef4444">SELL on confirmation.</strong></p>
     </div>
   </div>
 </section>
@@ -1166,7 +1166,7 @@ table th{color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.
       <span class="tag" style="background:rgba(245,158,11,.2);color:#f59e0b">⚡ Módulo de entrada</span>
       <h2>Cómo operar con patrones de velas</h2>
     </div>
-    <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:24px">A pattern alone means nothing. It's the <strong style="color:#fff">location + pattern + confirmation</strong> that creates a high-probability trade. Use this 3-step system for every trade:</p>
+    <p style="color:#9ca3af;font-size:13px;line-height:1.7;margin-bottom:24px">Un patrón por sí solo no basta. La <strong style="color:#fff">location + pattern + confirmation</strong> aporta contexto para evaluar una operación. Utiliza este proceso de tres pasos:</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:28px">
       <div style="background:#131b2e;border:1px solid rgba(245,158,11,.2);border-radius:16px;padding:18px">
         <div style="font-size:36px;font-weight:900;color:#f59e0b;margin-bottom:8px">1</div>
