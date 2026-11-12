@@ -662,13 +662,32 @@
 </footer>
 
 <script>
-  const sections=document.querySelectorAll('section[id]');
-  const links=document.querySelectorAll('.nav-link[href^="#"]');
-  window.addEventListener('scroll',()=>{
-    let cur='';
-    sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-120) cur=s.id; });
-    links.forEach(a=>{ a.classList.remove('active'); if(a.getAttribute('href')==='#'+cur) a.classList.add('active'); });
-  });
+  (() => {
+    const sections = [...document.querySelectorAll('section[id]')];
+    const links = [...document.querySelectorAll('.nav-link[href^="#"]')];
+    let ticking = false;
+    let activeId = '';
+    const updateActiveSection = () => {
+      ticking = false;
+      const marker = 150;
+      let current = sections[0]?.id || '';
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= marker) current = section.id;
+        else break;
+      }
+      if (current === activeId) return;
+      activeId = current;
+      for (const link of links) {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      }
+    };
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateActiveSection);
+    }, { passive: true });
+    updateActiveSection();
+  })();
 </script>
 
 <script type="module">
