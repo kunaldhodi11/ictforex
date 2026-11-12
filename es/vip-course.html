@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masterclass VIP de ICT | ICT Forex Academy</title>
-<meta name="description" content="Explore the ICT Forex Academy VIP educational masterclass covering market structure, liquidity, fair value gaps, order blocks, trade entries and risk management.">
+<meta name="description" content="Explora la masterclass educativa VIP de ICT Forex Academy sobre estructura del mercado, liquidez, Fair Value Gaps, Order Blocks, entradas y gestión del riesgo.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://ictforex.in/es/vip-course.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ictforex.in/vip-course.html">
 <meta property="og:title" content="Masterclass VIP de ICT | ICT Forex Academy">
-<meta property="og:description" content="Study market structure, liquidity, FVGs, order blocks, trade entries and risk management in the ICT Forex Academy VIP masterclass.">
+<meta property="og:description" content="Estudia estructura del mercado, liquidez, FVG, Order Blocks, entradas y gestión del riesgo en la masterclass VIP de ICT Forex Academy.">
 <meta property="og:site_name" content="ICT Forex Academy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Masterclass VIP de ICT">
-<meta name="twitter:description" content="Explore structured ICT trading education and risk management lessons.">
+<meta name="twitter:description" content="Explora una formación estructurada sobre trading ICT y lecciones de gestión del riesgo.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -63,7 +63,7 @@
             <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
                 <i class="fa-solid fa-house"></i> Inicio
             </a>
-            <!-- Auth Link for User Name & Logout -->
+            <!-- Auth Link for User Name & Cerrar sesión -->
             <a href="login.html" id="auth-nav-link" class="hidden sm:flex bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black px-4 py-2 rounded-xl transition shadow items-center gap-1.5">
                 <i class="fa-solid fa-user"></i> Iniciar sesión
             </a>
@@ -77,7 +77,7 @@
                 👑 Masterclass VIP exclusiva
             </span>
             <h2 class="text-xl md:text-4xl font-black text-white mt-4 mb-4 leading-tight">
-                ICT Smart Money Concepts, Liquidity & <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Risk Management</span>
+                Conceptos ICT de Smart Money, liquidez y <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Risk Management</span>
             </h2>
             <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
                 Accede a metodologías institucionales profesionales. Aprende Order Blocks, modelos de Market Maker, reglas estrictas de mercado y marcos profesionales de gestión del riesgo.
@@ -203,18 +203,18 @@
             if (application.exists()) {
                 const applicationStatus = application.data().status;
                 if (applicationStatus === 'rejected') {
-                    statusMessage.textContent = 'Your application was rejected. Revisar the details and submit it again if needed.';
+                    statusMessage.textContent = 'Tu solicitud ha sido rechazada. Revisa los datos y vuelve a enviarla si es necesario.';
                     submitButton.disabled = false;
                     submitButton.textContent = 'Resubmit for Approval';
                     submitButton.classList.remove('opacity-60', 'cursor-not-allowed');
                 } else {
-                    statusMessage.textContent = 'Your application is pending. The VIP course will unlock after admin approval.';
+                    statusMessage.textContent = 'Tu solicitud está pendiente. El curso VIP se desbloqueará cuando el administrador la apruebe.';
                     submitButton.disabled = true;
                     submitButton.textContent = 'Application Submitted';
                     submitButton.classList.add('opacity-60', 'cursor-not-allowed');
                 }
             } else {
-                statusMessage.textContent = 'The VIP course will remain locked until your application is approved.';
+                statusMessage.textContent = 'El curso VIP permanecerá bloqueado hasta que se apruebe tu solicitud.';
                 submitButton.disabled = false;
             }
         }
@@ -241,12 +241,12 @@
                 }
                 document.getElementById('trading-id-input').disabled = true;
                 document.getElementById('broker-select').disabled = true;
-                statusMessage.textContent = 'Your application has been submitted. Please wait for admin approval; the course will remain locked for now.';
+                statusMessage.textContent = 'Tu solicitud se ha enviado. Espera la aprobación del administrador; por ahora, el curso seguirá bloqueado.';
                 submitButton.textContent = 'Application Submitted';
                 submitButton.classList.add('opacity-60', 'cursor-not-allowed');
             } catch (error) {
                 console.error('VIP application submission failed:', error);
-                statusMessage.textContent = 'Submission failed. Please try again after publishing the Firebase Rules.';
+                statusMessage.textContent = 'No se pudo enviar la solicitud. Inténtalo de nuevo después de publicar las reglas de Firebase.';
                 submitButton.disabled = false;
                 submitButton.textContent = 'Enviar para aprobación del administrador';
             }
@@ -258,14 +258,14 @@
                     authLink.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión to Apply';
                     authLink.href = "login.html";
                 }
-                statusMessage.textContent = 'Please log in to submit your VIP access application. You can review the VIP course information on this page without signing in.';
+                statusMessage.textContent = 'Inicia sesión para enviar tu solicitud de acceso VIP. Puedes consultar la información del curso VIP en esta página sin iniciar sesión.';
                 submitButton.disabled = false;
                 submitButton.textContent = 'Log in to Apply for VIP Access';
                 return;
             }
             const userName = localStorage.getItem('userName') || "User";
             if (authLink) {
-                authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
+                authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión`;
                 authLink.href = "#";
                 authLink.onclick = async (e) => {
                     e.preventDefault();
