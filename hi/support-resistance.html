@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support & Resistance | ICT Forex Academy</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Support &amp; Resistance | ICT Forex Academy</title>
+    <script src="https://cdn.tailwindcss.com" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>tailwind.config={darkMode:'class'}</script>
     <style>
         body{background:#0b0f19;color:#f3f4f6;font-family:sans-serif}
+        .mobile-course-nav{scrollbar-width:none;-ms-overflow-style:none}
+        .mobile-course-nav::-webkit-scrollbar{display:none}
+        .chart-zoom-link{display:block;cursor:zoom-in}
+        .chart-zoom-link img{display:block;width:100%;height:auto;object-fit:contain}
         @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
         .fade{animation:fadeUp .6s ease forwards}
         .card{background:#131b2e;border:1px solid #1f2937;border-radius:1rem}
@@ -18,11 +22,11 @@
     </style>
   <link rel="stylesheet" href="/assets/css/site-polish.css">
 </head>
-<body class="min-h-screen flex flex-col"><style>.hi-lang-switch{position:fixed;top:14px;right:16px;z-index:99999;background:#101827;color:#fff;border:1px solid #64748b;border-radius:9px;padding:8px 10px;font-weight:700}</style><select class="hi-lang-switch" aria-label="Website language" onchange="location.href=this.value"><option value="/">English</option><option value="/hi/" selected>Hinglish</option><option value="/es/">Español</option><option value="/ar/">العربية</option><option value="/fr/">Français</option></select>
+<body class="min-h-screen flex flex-col">
 
 <!-- ANNOUNCEMENT BAR -->
-<div class="bg-gradient-to-r from-green-600 to-teal-700 text-gray-950 text-[10px] font-black py-1.5 px-2 text-center flex flex-nowrap items-center justify-center gap-1.5 overflow-hidden">
-  <span>🔥 Broker Accounts:</span>
+<div class="bg-gradient-to-r from-green-600 to-teal-700 text-gray-950 text-[10px] font-black py-1.5 px-2 text-center flex flex-wrap items-center justify-center gap-1.5">
+  <span>Broker links (affiliate):</span>
   <a href="https://octasl.click/iM6jXCv0KXv" target="_blank" class="bg-gray-950 text-yellow-400 px-2.5 py-0.5 rounded-md">Octa Account →</a>
   <span>|</span>
   <a href="https://affs.click/m2rkP" target="_blank" class="bg-gray-950 text-yellow-400 px-2.5 py-0.5 rounded-md">XM Account →</a>
@@ -30,7 +34,7 @@
 
 <!-- HEADER -->
 <header class="bg-[#131b2e]/95 backdrop-blur border-b border-gray-800 px-4 md:px-8 py-3 flex justify-between items-center sticky top-0 z-50">
-  <a href="/hi/" class="flex items-center gap-2">
+  <a href="index.html" class="flex items-center gap-2">
     <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5 flex items-center justify-center">
       <div class="w-full h-full bg-[#131b2e] rounded-full flex items-center justify-center">
         <span class="text-[10px] font-black bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-green-400">ICT</span>
@@ -38,7 +42,7 @@
     </div>
     <div>
       <div class="text-xs font-black bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-orange-400 to-green-400">ICT FOREX ACADEMY</div>
-      <div class="text-[9px] text-gray-500">Institutional Smart Money Education</div>
+      <div class="text-[9px] text-gray-500">Institutional Smart Money</div>
     </div>
   </a>
   <div class="flex gap-2">
@@ -48,11 +52,22 @@
   </div>
 </header>
 
+<!-- MOBILE COURSE NAVIGATION -->
+<nav aria-label="Course lessons" class="mobile-course-nav md:hidden sticky top-[60px] z-40 flex gap-2 overflow-x-auto whitespace-nowrap border-b border-gray-800 bg-[#0b0f19]/95 backdrop-blur px-3 py-2">
+  <a href="#what" class="shrink-0 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-2 text-[11px] font-bold text-blue-300">01 · Basics</a>
+  <a href="#chart" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">02 · Identify</a>
+  <a href="#types" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">03 · Types</a>
+  <a href="#real-chart-examples" class="shrink-0 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-[11px] font-bold text-cyan-300">Chart Lab</a>
+  <a href="#entry" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">04 · Reactions</a>
+  <a href="#risk" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">05 · Risk</a>
+  <a href="#final-practice" class="shrink-0 rounded-full border border-gray-700 px-3 py-2 text-[11px] font-bold text-gray-300">Practice</a>
+</nav>
+
 <!-- BREADCRUMB -->
 <div class="bg-[#131b2e]/50 border-b border-gray-800 px-4 md:px-8 py-2 text-[10px] text-gray-500 flex items-center gap-2">
-  <a href="/hi/" class="hover:text-gray-300">Home</a> <i class="fa-solid fa-chevron-right text-[7px]"></i>
+  <a href="index.html" class="hover:text-gray-300">Home</a> <i class="fa-solid fa-chevron-right text-[7px]"></i>
   <a href="free-learning.html" class="hover:text-gray-300">Free Learning</a> <i class="fa-solid fa-chevron-right text-[7px]"></i>
-  <span class="text-blue-400 font-bold">Support & Resistance</span>
+  <span class="text-blue-400 font-bold">Support &amp; Resistance</span>
 </div>
 
 <div class="flex flex-1 max-w-6xl w-full mx-auto">
@@ -60,11 +75,12 @@
   <!-- SIDEBAR -->
   <aside class="hidden md:flex flex-col w-60 border-r border-gray-800 p-4 gap-1 sticky top-[88px] self-start h-fit">
     <div class="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-2">Chapter 1 — Lessons</div>
-    <a href="#what" class="nav-link active flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">1</span> What is S&R?</a>
-    <a href="#chart" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">2</span> Identify kaise karein?</a>
-    <a href="#types" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">3</span> Types of S&R</a>
-    <a href="#entry" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">4</span> Entry Strategies</a>
-    <a href="#risk" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">5</span> Risk Management</a>
+    <a href="#what" class="nav-link active flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">1</span> What is S&amp;R?</a>
+    <a href="#chart" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">2</span> How to Identify</a>
+    <a href="#types" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">3</span> Types of S&amp;R</a>
+    <a href="#real-chart-examples" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">↗</span> Practical Chart Lab</a>
+    <a href="#entry" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">4</span> Price Reactions</a>
+    <a href="#risk" class="nav-link flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-gray-300"><span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px]">5</span> Trade Planning &amp; Risk</a>
     <div class="mt-4 pt-4 border-t border-gray-800">
       <div class="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-2">Agale Chapters</div>
       <a href="candlestick-patterns.html" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-green-400"><i class="fa-solid fa-fire text-green-400"></i> Candlestick Patterns</a>
@@ -79,26 +95,44 @@
     <div class="border-b border-gray-800 pb-8">
       <div class="flex items-center gap-2 mb-3">
         <span class="bg-blue-500/20 text-blue-400 text-[10px] font-black px-3 py-1 rounded-full">CHAPTER 1</span>
-        <span class="text-gray-500 text-[10px]">5 Lessons · Beginner se Advanced</span>
+        <span class="text-gray-500 text-[10px]">5 Lessons + Practical Chart Lab · Beginner Level</span>
       </div>
       <h1 class="text-3xl md:text-5xl font-black text-white mb-3">Support & <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">Resistance</span></h1>
-      <p class="text-gray-400 text-sm leading-relaxed max-w-2xl">Support & Resistance trading ke basic concepts mein se ek hai. Beginners se lekar experienced traders tak, kai traders important price zones ko samajhne ke liye iska use karte hain. Is chapter mein aap Support aur Resistance ko identify karna aur unke basis par trade plan karna seekhenge.</p>
+      <p class="text-gray-400 text-sm leading-relaxed max-w-2xl">Support aur Resistance ki strong foundation banayein: important price zones identify karein, horizontal aur diagonal levels samjhein, bounce aur breakout ko read karein, aur risk ke saath trade plan banana seekhein. Yeh beginner course hai — signal service ya guaranteed trade setups nahi.</p>
+    </div>
+
+    <div class="card p-5 border-cyan-500/20">
+      <h2 class="text-sm font-black text-white mb-2">Is chapter ke end tak aap yeh sab kar paayenge:</h2>
+      <ul class="list-disc pl-5 space-y-1 text-xs text-gray-300">
+        <li>Support aur Resistance ke beech ka difference samjha paayenge.</li>
+        <li>Visible Swing Highs aur Swing Lows ki help se zones mark kar paayenge.</li>
+        <li>Horizontal levels, trendlines, channels aur possible role reversal ko pehchaan paayenge.</li>
+        <li>Bounce, breakout, retest aur false breakout ko samajh paayenge — bina next move assume kiye.</li>
+        <li>Trade lene se pehle invalidation point, target area aur position size plan kar paayenge.</li>
+      </ul>
+    </div>
+
+    <!-- COURSE SCOPE NOTE -->
+    <div class="card p-5 border-blue-500/25">
+      <div class="flex items-center gap-2 mb-2"><i class="fa-solid fa-compass text-blue-400"></i><h2 class="text-sm font-black text-white">Is chapter mein aap kya seekhenge</h2></div>
+      <p class="text-xs text-gray-300 leading-relaxed">Is chapter mein Support &amp; Resistance ki basics cover hongi: horizontal zones, Swing Highs aur Swing Lows, trendline support aur resistance, breakout ke baad role reversal, aur basic trade planning. Advanced ICT/SMC methods ko humne VIP Academy ke liye rakha hai.</p>
+      <p class="text-[10px] text-gray-500 mt-3">Yeh sirf educational examples hain. Support aur Resistance important areas hain, predictions nahi. Hamesha current chart ko analyse karein aur risk manage karein.</p>
     </div>
 
     <!-- LESSON 1: WHAT IS S&R -->
     <section id="what" class="scroll-mt-28">
       <div class="flex items-center gap-3 mb-6">
         <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-sm">1</div>
-        <h2 class="text-xl font-black text-white">Support Aur Resistance Kya Hota Hai?</h2>
+        <h2 class="text-xl font-black text-white">What is Support & Resistance?</h2>
       </div>
-      <p class="text-sm text-gray-300 leading-relaxed mb-6">Support aur Resistance aise <strong class="text-white">price zones</strong> hain jahan market baar-baar reaction de sakta hai. In zones par buyers ya sellers ki activity badh sakti hai, jisse demand (Support) ya supply (Resistance) ka area ban sakta hai.</p>
+      <p class="text-sm text-gray-300 leading-relaxed mb-6">Support and Resistance are <strong class="text-white">chart par</strong> where price has previously paused, reversed, or struggled to move through. They reflect areas of changing buying and selling interest. A reaction can happen, but no level guarantees a reversal.</p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <div class="card p-5 border-green-500/30">
           <div class="flex items-center gap-2 mb-3">
             <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center"><i class="fa-solid fa-arrow-up text-green-400"></i></div>
             <h3 class="font-black text-green-400">SUPPORT</h3>
           </div>
-          <p class="text-xs text-gray-400 leading-relaxed mb-3">Current price ke <strong class="text-white">neeche</strong> ka zone jahan buyers active ho sakte hain. Price is zone tak girne par buying pressure ke karan upar move kar sakta hai.</p>
+          <p class="text-xs text-gray-400 leading-relaxed mb-3">Current price ke neeche ya paas ka area, jahan pehle buyers ki activity itni strong rahi ho ki price ki fall slow ya reverse hui ho. Price yahan bounce, pause ya zone ko break bhi kar sakta hai.</p>
           <div class="bg-[#0b0f19] rounded-xl p-3 text-[11px] text-green-400 font-mono text-center">Market ka Floor ↑</div>
         </div>
         <div class="card p-5 border-red-500/30">
@@ -106,14 +140,14 @@
             <div class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center"><i class="fa-solid fa-arrow-down text-red-400"></i></div>
             <h3 class="font-black text-red-400">RESISTANCE</h3>
           </div>
-          <p class="text-xs text-gray-400 leading-relaxed mb-3">Current price ke <strong class="text-white">upar</strong> ka zone jahan sellers active ho sakte hain. Price is zone tak pahunchne par selling pressure ke karan neeche aa sakta hai.</p>
+          <p class="text-xs text-gray-400 leading-relaxed mb-3">Current price ke upar ya paas ka area, jahan pehle sellers ki activity ne price ki rise ko slow ya reverse kiya ho. Price yahan reject, pause ya zone ke upar break kar sakta hai.</p>
           <div class="bg-[#0b0f19] rounded-xl p-3 text-[11px] text-red-400 font-mono text-center">Market ki Ceiling ↓</div>
         </div>
       </div>
 
       <!-- CHART 1 -->
       <div class="card p-5 mb-6">
-        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">📊 Support aur Resistance Zones ka Chart</div>
+        <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">📊 Chart — Support & Resistance Zones</div>
         <svg viewBox="0 0 600 260" class="w-full rounded-xl" xmlns="http://www.w3.org/2000/svg">
           <rect width="600" height="260" fill="#0b0f19" rx="8"/>
           <line x1="50" y1="30" x2="580" y2="30" stroke="#1f2937" stroke-width="1"/>
@@ -151,12 +185,12 @@
           <text x="185" y="32" fill="#ef4444" font-size="9" font-weight="bold">Reject ↓</text>
           <text x="395" y="32" fill="#ef4444" font-size="9" font-weight="bold">Reject ↓</text>
         </svg>
-        <p class="text-[10px] text-gray-500 mt-2 text-center">Price Support zone se 3 baar bounce karta hai aur Resistance zone se 2 baar reject hota hai.</p>
+        <p class="text-[10px] text-gray-500 mt-2 text-center">Yeh sirf example hai: price dono zones par ek se zyada baar react karta hai. Kisi zone ke liye minimum touch count fixed nahi hota.</p>
       </div>
 
       <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 flex gap-3">
         <i class="fa-solid fa-lightbulb text-blue-400 flex-shrink-0 mt-0.5"></i>
-        <p class="text-xs text-gray-300"><strong class="text-blue-400">Yaad rakhein:</strong> Support aur Resistance exact lines nahi, balki <strong class="text-white">ZONES</strong> hote hain. Reverse hone se pehle price zone ke thoda aage bhi ja sakta hai. Zone ki width market aur timeframe ke hisaab se alag ho sakti hai.</p>
+        <p class="text-xs text-gray-300"><strong class="text-blue-400">Yaad Rakhein:</strong> S&R are <strong class="text-white">ZONES</strong>, exact lines nahi hote. Reverse hone se pehle price zone ke thoda aage bhi ja sakta hai. Inhe exact price ke bajaye area ki tarah dekhein. Zone ki width instrument, timeframe, volatility aur recent price structure par depend karti hai; koi universal pip width nahi hoti.</p>
       </div>
     </section>
 
@@ -164,25 +198,25 @@
     <section id="chart" class="scroll-mt-28">
       <div class="flex items-center gap-3 mb-6">
         <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-sm">2</div>
-        <h2 class="text-xl font-black text-white">Chart par S&amp;R kaise identify karein?</h2>
+        <h2 class="text-xl font-black text-white">How to Identify S&R on a Chart</h2>
       </div>
-      <p class="text-sm text-gray-300 leading-relaxed mb-6">S&amp;R zones mark karne ke liye ye 4 steps follow karein:</p>
+      <p class="text-sm text-gray-300 leading-relaxed mb-6">Consistent chart-reading process banane ke liye ye 4 steps follow karein:</p>
       <div class="space-y-4 mb-8">
         <div class="card p-4 flex items-start gap-4">
           <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xs flex-shrink-0">1</div>
-          <div><h4 class="font-black text-white text-sm mb-1">Higher Timeframe par Jayein</h4><p class="text-xs text-gray-400">Sabse pehle <strong class="text-white">Daily ya H4 chart</strong> par important zones mark karein. Higher timeframe ke levels ko trading plan mein priority di ja sakti hai.</p></div>
+          <div><h4 class="font-black text-white text-sm mb-1">Higher Timeframe par Jayein</h4><p class="text-xs text-gray-400">Apne trading horizon ke hisaab se timeframe choose karein. Daily aur H4 charts broader zones identify karne mein help karte hain. Intraday traders context ke liye H1 ya M15 bhi use kar sakte hain. Higher-timeframe zones zyada clear ho sakte hain, lekin fail bhi ho sakte hain.</p></div>
         </div>
         <div class="card p-4 flex items-start gap-4">
           <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xs flex-shrink-0">2</div>
-          <div><h4 class="font-black text-white text-sm mb-1">Swing Highs aur Swing Lows Identify Karein</h4><p class="text-xs text-gray-400">Price ke peaks (Swing Highs = possible Resistance) aur valleys (Swing Lows = possible Support) dekhein. Ye market ke possible turning points hote hain.</p></div>
+          <div><h4 class="font-black text-white text-sm mb-1">Find Swing Highs & Swing Lows</h4><p class="text-xs text-gray-400">Price ke peaks (Swing Highs = possible Resistance) aur valleys (Swing Lows = possible Support) dekhein. Yeh market ke natural turning points hote hain.</p></div>
         </div>
         <div class="card p-4 flex items-start gap-4">
           <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xs flex-shrink-0">3</div>
-          <div><h4 class="font-black text-white text-sm mb-1">Multiple Touches Wale Levels Mark Karein</h4><p class="text-xs text-gray-400">Jis zone par price <strong class="text-white">2–3 baar reaction</strong> de chuka ho, use observe karein. Sirf touches ki ginti par depend na karein; price reaction aur market context bhi check karein.</p></div>
+          <div><h4 class="font-black text-white text-sm mb-1">Multiple Reactions Wale Levels Mark Karein</h4><p class="text-xs text-gray-400">Clear swing points aur meaningful price reactions observe karein. Do ya usse zyada reactions se zone ko identify karna aasaan ho sakta hai, lekin fixed touch count ko proof na samjhein. Baar-baar test hone se level weak bhi ho sakta hai.</p></div>
         </div>
         <div class="card p-4 flex items-start gap-4">
           <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xs flex-shrink-0">4</div>
-          <div><h4 class="font-black text-white text-sm mb-1">Entry ke liye Lower Timeframe par Jayein</h4><p class="text-xs text-gray-400">H4 ya Daily par zone mark karne ke baad <strong class="text-white">H1 ya M15</strong> par jaakar entry confirmation dhoondhein.</p></div>
+          <div><h4 class="font-black text-white text-sm mb-1">Entry ke liye Lower Timeframe par Jayein</h4><p class="text-xs text-gray-400">Agar detailed view chahiye, toh lower timeframe par jaakar candle closes aur price reaction study karein. Lower timeframe extra detail deta hai, certainty nahi.</p></div>
         </div>
       </div>
 
@@ -223,7 +257,7 @@
           <text x="2" y="55" fill="#ef4444" font-size="7" font-weight="bold">RES</text>
           <text x="2" y="196" fill="#22c55e" font-size="7" font-weight="bold">SUP</text>
         </svg>
-        <p class="text-[10px] text-gray-500 mt-2 text-center">Connect Swing Highs → Resistance Line &nbsp;|&nbsp; Connect Swing Lows → Support Line</p>
+        <p class="text-[10px] text-gray-500 mt-2 text-center">Swing Highs ko connect karein → Resistance Line | Swing Lows ko connect karein → Support Line</p>
       </div>
     </section>
 
@@ -231,7 +265,7 @@
     <section id="types" class="scroll-mt-28">
       <div class="flex items-center gap-3 mb-6">
         <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-sm">3</div>
-        <h2 class="text-xl font-black text-white">S&R Levels Ke Types</h2>
+        <h2 class="text-xl font-black text-white">Types of S&R Levels</h2>
       </div>
       <div class="space-y-5">
 
@@ -241,10 +275,10 @@
             <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-minus text-blue-400"></i></div>
             <div class="flex-1">
               <div class="flex items-center gap-2 mb-2">
-                <h3 class="font-black text-white text-sm">1. Horizontal Support Aur Resistance</h3>
-                <span class="bg-blue-500/20 text-blue-400 text-[9px] font-black px-2 py-0.5 rounded-full">MOST POWERFUL</span>
+                <h3 class="font-black text-white text-sm">1. Horizontal Support &amp; Resistance</h3>
+                <span class="bg-blue-500/20 text-blue-400 text-[9px] font-black px-2 py-0.5 rounded-full">COMMON TYPE</span>
               </div>
-              <p class="text-xs text-gray-400 leading-relaxed mb-4">Flat price levels where market reversed multiple times. More touches = stronger level.</p>
+              <p class="text-xs text-gray-400 leading-relaxed mb-4">Horizontal zones previous Swing Highs ya Swing Lows ke aas-paas hote hain, jahan price ne reaction diya ho. Repeated reactions se zone notice karna aasaan hota hai, lekin har test level ko weak bhi kar sakta hai. Sirf touches ki ginti se strength decide nahi hoti.</p>
               <svg viewBox="0 0 400 160" class="w-full rounded-xl" xmlns="http://www.w3.org/2000/svg">
                 <rect width="400" height="160" fill="#0b0f19" rx="6"/>
                 <line x1="20" y1="35" x2="390" y2="35" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6,4"/>
@@ -274,22 +308,34 @@
           </div>
         </div>
 
+        <!-- Diagonal Trendlines and Channels -->
+        <div class="card p-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-chart-line text-cyan-400"></i></div>
+            <div class="flex-1">
+              <h3 class="font-black text-white text-sm mb-2">2. Diagonal Support, Resistance aur Channels</h3>
+              <p class="text-xs text-gray-400 leading-relaxed">Rising trendline meaningful higher Swing Lows ko connect karti hai aur dynamic Support ki tarah act kar sakti hai. Falling trendline lower Swing Highs ko connect karke dynamic Resistance ban sakti hai. Do lagbhag parallel trendlines ek channel show kar sakti hain. Inhe guide samjhein, exact barrier nahi — price inhe break ya cross kar sakta hai.</p>
+              <div class="mt-3 rounded-xl bg-[#0b0f19] p-3 text-[11px] text-cyan-300">Descending channel dekhne ke liye Practical Chart Lab ka Example 3 study karein.</div>
+            </div>
+          </div>
+        </div>
+
         <!-- Role Reversal -->
         <div class="card p-5">
           <div class="flex items-start gap-4">
             <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-arrows-up-down text-purple-400"></i></div>
             <div class="flex-1">
               <div class="flex items-center gap-2 mb-2">
-                <h3 class="font-black text-white text-sm">2. Role Reversal (S&R Flip)</h3>
-                <span class="bg-purple-500/20 text-purple-400 text-[9px] font-black px-2 py-0.5 rounded-full">HIGH PROBABILITY</span>
+                <h3 class="font-black text-white text-sm">3. Role Reversal (S&amp;R Flip)</h3>
+                <span class="bg-purple-500/20 text-purple-400 text-[9px] font-black px-2 py-0.5 rounded-full">POSSIBLE ROLE CHANGE</span>
               </div>
-              <p class="text-xs text-gray-400 leading-relaxed mb-4">When Resistance is broken, it becomes Support. When Support breaks, it becomes Resistance. This creates excellent entry opportunities.</p>
+              <p class="text-xs text-gray-400 leading-relaxed mb-4">Clear breakout ke baad purana Resistance, Support ki tarah act kar sakta hai — ya purana Support, Resistance ban sakta hai, agar price wapas us area par aaye. Yeh role change possible hai, automatic nahi; retest fail bhi ho sakta hai.</p>
               <svg viewBox="0 0 400 160" class="w-full rounded-xl" xmlns="http://www.w3.org/2000/svg">
                 <rect width="400" height="160" fill="#0b0f19" rx="6"/>
                 <line x1="20" y1="75" x2="390" y2="75" stroke="#9333ea" stroke-width="1.8" stroke-dasharray="6,4"/>
                 <text x="2" y="73" fill="#9333ea" font-size="7">FLIP</text>
-                <text x="25" y="15" fill="#ef4444" font-size="8">← Resistance (before breakout)</text>
-                <text x="210" y="150" fill="#22c55e" font-size="8">Support (after breakout) →</text>
+                <text x="25" y="15" fill="#ef4444" font-size="8">← Resistance (breakout se pehle)</text>
+                <text x="210" y="150" fill="#22c55e" font-size="8">Support (breakout ke baad) →</text>
                 <line x1="45" y1="95" x2="45" y2="120" stroke="#22c55e" stroke-width="1.5"/><rect x="38" y="98" width="14" height="17" fill="#22c55e" rx="1"/>
                 <line x1="75" y1="78" x2="75" y2="108" stroke="#22c55e" stroke-width="1.5"/><rect x="68" y="81" width="14" height="21" fill="#22c55e" rx="1"/>
                 <line x1="105" y1="72" x2="105" y2="108" stroke="#ef4444" stroke-width="1.5"/><rect x="98" y="75" width="14" height="27" fill="#ef4444" rx="1"/>
@@ -313,8 +359,8 @@
           <div class="flex items-start gap-4">
             <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-hashtag text-yellow-400"></i></div>
             <div>
-              <h3 class="font-black text-white text-sm mb-1">3. Round Number Levels</h3>
-              <p class="text-xs text-gray-400 mb-3">Prices like 1.2000, 150.00 act as natural S&R. Strongest when aligned with horizontal S&R.</p>
+              <h3 class="font-black text-white text-sm mb-1">4. Round Number Levels</h3>
+              <p class="text-xs text-gray-400 mb-3">1.2000 aur 150.00 jaise prices natural S&amp;R levels ki tarah act kar sakte hain. Horizontal S&amp;R ke saath align hone par inhe extra attention mil sakta hai.</p>
               <div class="grid grid-cols-3 gap-2">
                 <div class="bg-[#0b0f19] rounded-xl p-3 text-center"><div class="text-yellow-400 font-black text-sm">1.2000</div><div class="text-[10px] text-gray-500">EURUSD</div></div>
                 <div class="bg-[#0b0f19] rounded-xl p-3 text-center"><div class="text-yellow-400 font-black text-sm">150.00</div><div class="text-[10px] text-gray-500">USDJPY</div></div>
@@ -326,28 +372,123 @@
       </div>
     </section>
 
+    <!-- REAL CHART EXAMPLES -->
+    <section id="real-chart-examples" class="scroll-mt-28">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-8 rounded-full bg-cyan-600 flex items-center justify-center text-white font-black text-sm"><i class="fa-solid fa-chart-area"></i></div>
+        <div>
+          <div class="text-[10px] font-black text-cyan-400 uppercase tracking-widest">Practical Chart Study</div>
+          <h2 class="text-xl font-black text-white">Practical Support &amp; Resistance Chart Lab</h2>
+        </div>
+      </div>
+      <p class="text-sm text-gray-300 leading-relaxed mb-6">Marked areas ka actual price movement ke saath relation study karein. Ye NAS100 screenshots horizontal zones, range boundaries, diagonal trendlines aur basic trade planning ke worked examples hain. Yeh historical illustrations hain, live market calls nahi. Har area ke aas-paas price behaviour samjhein — bina soche-samjhe trade copy na karein.</p>
+
+      <div class="card p-4 md:p-5 mb-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <h3 class="font-black text-white text-sm">Example 1 — Horizontal Resistance Breakout</h3>
+          <span class="text-[9px] font-black uppercase tracking-wider text-red-300 bg-red-500/10 border border-red-500/20 rounded-full px-3 py-1">Horizontal Zone</span>
+        </div>
+        <a href="images/support-resistance/chart-01.png" target="_blank" rel="noopener noreferrer" class="chart-zoom-link rounded-xl overflow-hidden border border-gray-700" aria-label="Open full-size chart example 1 in a new tab">
+          <img src="images/support-resistance/chart-01.png" alt="NAS100 chart showing a horizontal resistance zone, support area, and an upside breakout" loading="lazy" decoding="async" class="w-full h-auto rounded-xl">
+        </a>
+        <p class="text-[10px] text-gray-500 mt-2">Full-size image open karne ke liye chart par click karein.</p>
+        <p class="text-xs text-gray-300 leading-relaxed mt-4">Red area us price zone ko show karta hai jahan previous highs par Resistance bani thi. Neeche teal area woh zone hai jahan price ko pehle Support mila tha. Is example mein price baad mein Resistance zone ke upar move karta hai. Zone ke upar move breakout ka candidate hai, permanent trend change ka proof nahi.</p>
+        <div class="mt-3 bg-[#0b0f19] rounded-xl p-4">
+          <h4 class="text-[11px] font-black text-cyan-300 mb-2">Kya Seekhna Hai</h4>
+          <ul class="list-disc pl-5 space-y-1 text-[11px] text-gray-400">
+            <li>Resistance ko previous highs ke aas-paas ek area ki tarah mark karein, overly precise line na banayein.</li>
+            <li>Observe karein ki candle zone ke bahar close hoti hai ya nahi; sirf wick ka zone ke paar jaana fail ho sakta hai.</li>
+            <li>Breakout ke baad dekhein ki price purane Resistance ke upar hold karta hai ya wapas range mein aa jata hai.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card p-4 md:p-5 mb-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <h3 class="font-black text-white text-sm">Example 2 — Trading Range: Support aur Resistance</h3>
+          <span class="text-[9px] font-black uppercase tracking-wider text-blue-300 bg-blue-500/10 border border-blue-500/20 rounded-full px-3 py-1">Range Structure</span>
+        </div>
+        <a href="images/support-resistance/chart-02.png" target="_blank" rel="noopener noreferrer" class="chart-zoom-link rounded-xl overflow-hidden border border-gray-700" aria-label="Open full-size chart example 2 in a new tab">
+          <img src="images/support-resistance/chart-02.png" alt="NAS100 chart showing price moving between horizontal support and resistance zones before breaking higher" loading="lazy" decoding="async" class="w-full h-auto rounded-xl">
+        </a>
+        <p class="text-[10px] text-gray-500 mt-2">Full-size image open karne ke liye chart par click karein.</p>
+        <p class="text-xs text-gray-300 leading-relaxed mt-4">Is chart mein price upper Resistance area aur lower Support area ke beech move karta dikh raha hai. Yeh trading range hai: example ke pehle part mein price kisi bhi boundary ke bahar sustained move establish nahi karta. Baad mein Resistance ke upar move dikhata hai ki range ka breakout kaise ho sakta hai.</p>
+        <div class="mt-3 bg-[#0b0f19] rounded-xl p-4">
+          <h4 class="text-[11px] font-black text-cyan-300 mb-2">Kya Seekhna Hai</h4>
+          <ul class="list-disc pl-5 space-y-1 text-[11px] text-gray-400">
+            <li>Repeated aur visible reactions ki help se upper aur lower boundaries identify karein.</li>
+            <li>Range ke andar price exact edge tak pahunchne se pehle bhi reverse ho sakta hai; isliye zone consider karein.</li>
+            <li>Breakout continue ho sakta hai, lekin false breakout bhi hote hain. Bina plan ke first candle ko chase na karein.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card p-4 md:p-5 mb-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <h3 class="font-black text-white text-sm">Example 3 — Diagonal Support aur Resistance</h3>
+          <span class="text-[9px] font-black uppercase tracking-wider text-purple-300 bg-purple-500/10 border border-purple-500/20 rounded-full px-3 py-1">Trendline Channel</span>
+        </div>
+        <a href="images/support-resistance/chart-03.png" target="_blank" rel="noopener noreferrer" class="chart-zoom-link rounded-xl overflow-hidden border border-gray-700" aria-label="Open full-size chart example 3 in a new tab">
+          <img src="images/support-resistance/chart-03.png" alt="NAS100 chart showing a descending channel bounded by diagonal resistance and support trendlines" loading="lazy" decoding="async" class="w-full h-auto rounded-xl">
+        </a>
+        <p class="text-[10px] text-gray-500 mt-2">Full-size image open karne ke liye chart par click karein.</p>
+        <p class="text-xs text-gray-300 leading-relaxed mt-4">Yeh chart descending price channel ke around draw ki gayi diagonal Support aur Resistance ko show karta hai. Upper trendline lower Swing Highs ko connect karke dynamic Resistance ki tarah act karti hai; lower trendline lower Swing Lows ko connect karke dynamic Support dikhati hai. Is example mein price channel ke andar move karne ke baad lower boundary ke neeche break karta hai.</p>
+        <div class="mt-3 bg-[#0b0f19] rounded-xl p-4">
+          <h4 class="text-[11px] font-black text-cyan-300 mb-2">Kya Seekhna Hai</h4>
+          <ul class="list-disc pl-5 space-y-1 text-[11px] text-gray-400">
+            <li>Trendlines meaningful swing points se draw karein; har candle ke hisaab se zabardasti line fit na karein.</li>
+            <li>Channel kisi move ki slope aur boundaries ka visual guide deta hai.</li>
+            <li>Lower trendline ke neeche break price behaviour mein change ka signal ho sakta hai, lekin confirmation ka wait karein aur wider chart bhi analyse karein.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card p-4 md:p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <h3 class="font-black text-white text-sm">Example 4 — Important Zone ke Around Trade Plan</h3>
+          <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-full px-3 py-1">Illustrative Setup</span>
+        </div>
+        <a href="images/support-resistance/chart-04.png" target="_blank" rel="noopener noreferrer" class="chart-zoom-link rounded-xl overflow-hidden border border-gray-700" aria-label="Open full-size chart example 4 in a new tab">
+          <img src="images/support-resistance/chart-04.png" alt="Annotated NAS100 chart illustrating a support and resistance based trade plan with entry, stop loss, and target markings" loading="lazy" decoding="async" class="w-full h-auto rounded-xl">
+        </a>
+        <p class="text-[10px] text-gray-500 mt-2">Full-size image open karne ke liye chart par click karein.</p>
+        <p class="text-xs text-gray-300 leading-relaxed mt-4">Yeh annotated example show karta hai ki trader marked price area ke around plan kaise bana sakta hai — possible entry, Stop Loss ka invalidation point aur target ke saath. Screenshot mein baad ka price movement historical chart behaviour hai; iska matlab nahi ki same setup har market condition mein same result dega.</p>
+        <div class="mt-3 bg-[#0b0f19] rounded-xl p-4">
+          <h4 class="text-[11px] font-black text-cyan-300 mb-2">Kya Seekhna Hai</h4>
+          <ul class="list-disc pl-5 space-y-1 text-[11px] text-gray-400">
+            <li>Entry se pehle trade idea define karein: kaunsa price behaviour aapke setup ko support karega?</li>
+            <li>Stop Loss ko us price area ke paar place karein jo trade idea ko invalidate karta hai; volatility aur spread ko bhi dhyan mein rakhein.</li>
+            <li>Next relevant chart area ko dekhkar target choose karein aur check karein ki potential reward risk ke comparison mein sahi hai ya nahi.</li>
+            <li>Agar setup clear nahi hai ya potential reward bahut kam hai, toh trade skip karna bhi sahi decision hai.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="text-[10px] text-gray-500 leading-relaxed mt-4">Yeh screenshots educational chart examples hain, live signals ya financial advice nahi. Chart conditions badalti rehti hain, aur koi bhi Support ya Resistance area bounce, breakout ya profit ki guarantee nahi deta.</p>
+    </section>
+
     <!-- LESSON 4: ENTRY STRATEGIES -->
     <section id="entry" class="scroll-mt-28">
       <div class="flex items-center gap-3 mb-6">
         <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-sm">4</div>
-        <h2 class="text-xl font-black text-white">S&R Ke Saath Entry Strategies</h2>
+        <h2 class="text-xl font-black text-white">How Price Reacts to Support & Resistance</h2>
       </div>
 
       <!-- Strategy 1 -->
       <div class="card border-green-500/30 p-5 mb-5">
         <div class="flex items-center gap-2 mb-4">
           <span class="bg-green-500 text-white text-[9px] font-black px-3 py-1 rounded-full">STRATEGY 1</span>
-          <h3 class="font-black text-green-400">Bounce Trade — Buy at Support / Sell at Resistance</h3>
+          <h3 class="font-black text-green-400">Bounce Trade — Support par Buy / Resistance par Sell</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-4">Wait for price to reach a known S&R level, look for a rejection candle (pin bar, engulfing), then enter.</p>
+            <p class="text-xs text-gray-400 leading-relaxed mb-4">Price ke marked area tak aane ka wait karein. Phir observe karein ki price zone se reject hota hai, zone ke paar close karta hai ya indecisive rehta hai. Candle pattern context de sakta hai, lekin akela guarantee nahi hota.</p>
             <div class="space-y-2">
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-green-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">1</span><p class="text-xs text-gray-400">Mark S&R level on H4 or Daily chart</p></div>
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-green-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">2</span><p class="text-xs text-gray-400">Wait for price to reach that level</p></div>
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-green-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">3</span><p class="text-xs text-gray-400">See rejection candle (pin bar / engulfing)</p></div>
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-green-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">4</span><p class="text-xs text-gray-400">Enter BUY (at support) or SELL (at resistance)</p></div>
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-red-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">SL</span><p class="text-xs text-gray-400">Stop Loss 5-10 pips BEYOND the level</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-green-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">1</span><p class="text-xs text-gray-400">Apne trading horizon ke hisaab se timeframe par area mark karein</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-green-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">2</span><p class="text-xs text-gray-400">Price ke us level tak aane ka wait karein</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-green-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">3</span><p class="text-xs text-gray-400">Rejection candle (Pin Bar / Engulfing) observe karein</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-green-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">4</span><p class="text-xs text-gray-400">Entry tabhi consider karein jab price behaviour aapke plan ko support kare</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-red-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">SL</span><p class="text-xs text-gray-400">Stop Loss wahan place karein jahan trade idea invalid ho jata hai. Instrument ki normal volatility aur spread ko consider karein. SL distance fixed pips mein nahi hoti.</p></div>
             </div>
           </div>
           <svg viewBox="0 0 250 180" class="w-full rounded-xl" xmlns="http://www.w3.org/2000/svg">
@@ -369,7 +510,7 @@
             <line x1="155" y1="80" x2="155" y2="115" stroke="#22c55e" stroke-width="1.5"/><rect x="148" y="83" width="14" height="26" fill="#22c55e" rx="1"/>
             <line x1="185" y1="52" x2="185" y2="88" stroke="#22c55e" stroke-width="1.5"/><rect x="178" y="55" width="14" height="28" fill="#22c55e" rx="1"/>
             <line x1="215" y1="32" x2="215" y2="62" stroke="#22c55e" stroke-width="1.5"/><rect x="208" y="35" width="14" height="22" fill="#22c55e" rx="1"/>
-            <text x="182" y="175" fill="#a3e635" font-size="8" font-weight="bold">RR: 1:3 ✓</text>
+            <text x="182" y="175" fill="#a3e635" font-size="8" font-weight="bold">Risk aur target chart conditions par depend karte hain</text>
           </svg>
         </div>
       </div>
@@ -382,12 +523,12 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-4">Wait for price to break through a level with strong momentum, then retest that flipped level before entering.</p>
+            <p class="text-xs text-gray-400 leading-relaxed mb-4">Price ke strong momentum ke saath level break karne ka wait karein. Entry se pehle flipped level ke retest ko observe karein.</p>
             <div class="space-y-2">
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-purple-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">1</span><p class="text-xs text-gray-400">Price breaks above resistance with big candle</p></div>
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-purple-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">2</span><p class="text-xs text-gray-400">DO NOT chase — wait for retest of old resistance</p></div>
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-purple-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">3</span><p class="text-xs text-gray-400">Old resistance now acts as support → Enter BUY</p></div>
-              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-red-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">SL</span><p class="text-xs text-gray-400">SL below the flipped level</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-purple-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">1</span><p class="text-xs text-gray-400">Price strong candle ke saath Resistance ke upar break karta hai</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-purple-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">2</span><p class="text-xs text-gray-400">Chase NA karein — purane Resistance ke retest ka wait karein</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-purple-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">3</span><p class="text-xs text-gray-400">Purana Resistance ab Support ki tarah act karta hai → BUY consider karein</p></div>
+              <div class="flex items-start gap-2"><span class="w-5 h-5 rounded-full bg-red-600 text-white text-[9px] font-black flex items-center justify-center flex-shrink-0">SL</span><p class="text-xs text-gray-400">Stop Loss ko us point ke paar rakhein jo trade idea ko invalidate karta hai</p></div>
             </div>
           </div>
           <svg viewBox="0 0 250 180" class="w-full rounded-xl" xmlns="http://www.w3.org/2000/svg">
@@ -410,7 +551,7 @@
             <line x1="165" y1="50" x2="165" y2="78" stroke="#22c55e" stroke-width="1.5"/><rect x="158" y="53" width="14" height="20" fill="#22c55e" rx="1"/>
             <line x1="192" y1="35" x2="192" y2="58" stroke="#22c55e" stroke-width="1.5"/><rect x="185" y="38" width="14" height="18" fill="#22c55e" rx="1"/>
             <line x1="219" y1="22" x2="219" y2="45" stroke="#22c55e" stroke-width="1.5"/><rect x="212" y="25" width="14" height="16" fill="#22c55e" rx="1"/>
-            <text x="180" y="175" fill="#a3e635" font-size="8" font-weight="bold">RR: 1:4 ✓</text>
+            <text x="180" y="175" fill="#a3e635" font-size="8" font-weight="bold">Risk aur target chart conditions par depend karte hain</text>
           </svg>
         </div>
       </div>
@@ -421,9 +562,9 @@
           <span class="bg-orange-500 text-white text-[9px] font-black px-3 py-1 rounded-full">STRATEGY 3</span>
           <h3 class="font-black text-orange-400">False Breakout (Trap Trade)</h3>
         </div>
-        <p class="text-xs text-gray-400 leading-relaxed">Price appears to break a level but quickly reverses back (liquidity grab). This traps weak traders and creates a strong move in the opposite direction. Enter when price closes back inside the range. Very powerful with ICT concepts.</p>
+        <p class="text-xs text-gray-400 leading-relaxed">False breakout tab hota hai jab price range boundary ke bahar move karta hai, lekin phir wapas aakar range ke andar close ho jata hai. Yeh dono directions mein ho sakta hai. Candle close ka wait karein aur wider chart analyse karein; sirf range ke andar wapas aana guaranteed reversal signal nahi hai.</p>
         <div class="mt-3 bg-[#0b0f19] rounded-xl p-3 text-[11px] text-orange-400 font-mono text-center">
-          Price breaks level → immediately reverses → Enter opposite direction with tight SL
+          Price moves beyond the zone → returns inside the range → reassess before considering a trade
         </div>
       </div>
     </section>
@@ -432,39 +573,39 @@
     <section id="risk" class="scroll-mt-28">
       <div class="flex items-center gap-3 mb-6">
         <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-sm">5</div>
-        <h2 class="text-xl font-black text-white">Risk Management Rules</h2>
+        <h2 class="text-xl font-black text-white">Risk Management ke Rules</h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div class="card border-red-500/20 p-5">
           <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-shield-halved text-red-400"></i><h3 class="font-black text-red-400 text-sm">Stop Loss ke Rules</h3></div>
           <div class="space-y-2">
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-red-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Always place SL <strong class="text-white">5-15 pips beyond</strong> the S&R level</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-red-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Never move SL to breakeven too early</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-red-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">If level breaks clearly → close trade, don't hope</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-red-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Stop Loss ko us area ya structure ke paar place karein jo setup ko invalidate karta hai. Distance chart aur instrument ke hisaab se set karein; universal pip rule follow na karein.</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-red-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Apne trading plan ke rule ke bina Stop Loss move na karein; jaldi changes karne se original risk bhi badal sakta hai.</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-red-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Agar price invalidation point tak pahunchta hai, toh Stop Loss ko aur door karne ke bajaye apne predefined exit plan ko follow karein.</p></div>
           </div>
         </div>
         <div class="card border-green-500/20 p-5">
           <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-bullseye text-green-400"></i><h3 class="font-black text-green-400 text-sm">Take Profit ke Rules</h3></div>
           <div class="space-y-2">
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-green-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Minimum <strong class="text-white">1:2 Risk:Reward</strong> ratio on every trade</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-green-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">TP at the next major S&R level opposite side</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-green-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Partial close at 1:1, rest at 1:3</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-green-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Check karein ki next meaningful price area tak Stop Loss distance ke comparison mein enough room hai ya nahi. Har setup mein 1:2 ratio suitable ya available nahi hota.</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-green-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Opposite side ke next major S&amp;R level par TP consider karein</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-green-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Partial exit optional hai; entry se pehle exit plan define karein aur chart ke basis par decision lein.</p></div>
           </div>
         </div>
         <div class="card border-yellow-500/20 p-5">
-          <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-wallet text-yellow-400"></i><h3 class="font-black text-yellow-400 text-sm">Position Size kaise set karein</h3></div>
+          <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-wallet text-yellow-400"></i><h3 class="font-black text-yellow-400 text-sm">Position Size kaise Choose Karein</h3></div>
           <div class="space-y-2">
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Risk only <strong class="text-white">1-2% of account</strong> per trade maximum</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Calculate lot size based on SL distance</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Never increase position to recover losses</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Apni situation aur trading plan ke hisaab se chhota aur predefined risk amount choose karein. Kai traders low percentage risk karte hain, lekin har kisi ke liye ek hi figure sahi nahi hota.</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">SL distance ke basis par lot size calculate karein</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Loss recover karne ke liye position size kabhi increase na karein</p></div>
           </div>
         </div>
         <div class="card border-blue-500/20 p-5">
-          <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-clock text-blue-400"></i><h3 class="font-black text-blue-400 text-sm">Trading ke liye Important Sessions</h3></div>
+          <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-clock text-blue-400"></i><h3 class="font-black text-blue-400 text-sm">Trading ke liye Best Time</h3></div>
           <div class="space-y-2">
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-blue-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400"><strong class="text-white">London Session:</strong> 8:00–12:00 GMT</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-blue-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400"><strong class="text-white">New York Session:</strong> 13:00–17:00 GMT</p></div>
-            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-blue-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Avoid 30 min before/after major news</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-blue-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Session activity instrument aur daylight-saving time ke hisaab se change hoti hai. Yeh assume na karein ki ek hi session hamesha best hota hai; apne instrument ke active hours check karein.</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-blue-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Relevant market hours aur scheduled news check karein. Sirf session open hone ki wajah se trade na lein.</p></div>
+            <div class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-blue-400 text-xs mt-0.5"></i><p class="text-xs text-gray-400">Major news announcements ke time spread, volatility aur slippage badh sakte hain. Pehle decide karein ki aapki strategy in events ko avoid karti hai ya nahi; har instrument ke liye ek hi time window suitable nahi hoti.</p></div>
           </div>
         </div>
       </div>
@@ -474,23 +615,37 @@
         <h3 class="font-black text-white text-sm mb-4 flex items-center gap-2"><i class="fa-solid fa-trophy text-yellow-400"></i> Chapter 1 — Complete Summary</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
           <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Support = Floor (Buyers), Resistance = Ceiling (Sellers)</p></div>
-          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">S&amp;R ko hamesha zones samjhein, exact lines nahi.</p></div>
-          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Multiple reactions wala zone important ho sakta hai.</p></div>
-          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Break hone ke baad S&amp;R ka role flip ho sakta hai; confirmation zaroor check karein.</p></div>
-          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">H4/Daily par zones mark karein, H1/M15 par entry setup dekhein.</p></div>
-          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Risk:Reward aur per-trade risk ko apne plan ke mutabik rakhein.</p></div>
-          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Round numbers (1.2000, 150.00) par bhi price reaction observe karein.</p></div>
-          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">London aur New York sessions ke dauran market conditions observe karein.</p></div>
+          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">S&amp;R ko hamesha zones samjhein, exact lines nahi</p></div>
+          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Repeated reactions wale level ko identify karna aasaan hota hai, lekin baar-baar test hone se level weak bhi ho sakta hai. Har reaction ki quality aur broader market context analyse karein.</p></div>
+          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Strong breakout ke baad purana Resistance Support ki tarah — ya purana Support Resistance ki tarah act kar sakta hai, agar price wapas aakar us area ko respect kare. Retest fail bhi ho sakta hai.</p></div>
+          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Apne holding period aur execution plan ke hisaab se chart timeframe choose karein.</p></div>
+          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Actual chart ke basis par Stop Loss aur Target plan karein, phir chosen risk amount ke hisaab se position size calculate karein. Agar available target risk ko justify nahi karta, toh trade skip karein.</p></div>
+          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Round numbers par traders ka attention ho sakta hai, lekin unki importance instrument aur market context ke hisaab se badalti hai.</p></div>
+          <div class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-blue-400 mt-0.5 text-xs"></i><p class="text-xs text-gray-300">Instrument-specific trading hours, spread, volatility aur scheduled events check karein. Sirf session open hona entry signal nahi hai.</p></div>
         </div>
+      </div>
+
+      <!-- FINAL PRACTICE -->
+      <div id="final-practice" class="card border-cyan-500/25 p-5 mb-8">
+        <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-graduation-cap text-cyan-400"></i><h3 class="font-black text-white text-sm">Final Practice — Chart ko Read Karein</h3></div>
+        <p class="text-xs text-gray-300 leading-relaxed mb-3">Apne charting platform par koi liquid instrument open karein aur apne plan ke hisaab se timeframe choose karein. Ek Support zone aur ek Resistance zone mark karein, phir apne notes mein in questions ke answers likhein:</p>
+        <ol class="list-decimal pl-5 space-y-2 text-xs text-gray-400">
+          <li>Kaunse visible Swing Points ne aapko har zone mark karne mein help ki?</li>
+          <li>Kya price bounce hua, pause hua, zone break kiya ya zone par wapas aaya?</li>
+          <li>Kaunsa price action aapke trade idea ko invalidate karega?</li>
+          <li>Next meaningful area kahan hai jo target ki tarah act kar sakta hai?</li>
+          <li>Kya potential reward risk ko justify karta hai — ya trade skip karna better hai?</li>
+        </ol>
+        <p class="text-[10px] text-gray-500 mt-3">Trade lena zaroori nahi hai. Goal hai clear aur evidence-based chart reading ki practice karna.</p>
       </div>
 
       <!-- NEXT/BACK -->
       <div class="flex flex-col md:flex-row gap-4">
         <a href="free-learning.html" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-black text-xs py-3.5 px-5 rounded-xl transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-arrow-left"></i> Sabhi Courses
+          <i class="fa-solid fa-arrow-left"></i> All Courses
         </a>
         <a href="candlestick-patterns.html" class="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:opacity-90 text-white font-black text-xs py-3.5 px-5 rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
-          Agla Chapter: Candlestick Patterns <i class="fa-solid fa-arrow-right"></i>
+          Next: Candlestick Patterns <i class="fa-solid fa-arrow-right"></i>
         </a>
       </div>
     </section>
@@ -502,18 +657,37 @@
 <footer class="bg-[#131b2e]/90 border-t border-gray-800 mt-12">
   <div class="max-w-6xl mx-auto px-4 md:px-10 py-6 text-center">
     <p class="text-xs text-gray-500">ICT Forex Academy © 2026. All rights reserved.</p>
-    <p class="text-[10px] text-gray-600 mt-1">Trading mein risk hota hai. Past performance future results ki guarantee nahi deti.</p>
+    <p class="text-[10px] text-gray-600 mt-1">Kuch broker links affiliate links ho sakte hain. ICT Forex Academy ko aapke liye bina extra cost ke commission mil sakta hai. Trading mein risk hota hai; past performance future results ki guarantee nahi deti.</p>
   </div>
 </footer>
 
 <script>
-  const sections=document.querySelectorAll('section[id]');
-  const links=document.querySelectorAll('.nav-link[href^="#"]');
-  window.addEventListener('scroll',()=>{
-    let cur='';
-    sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-120) cur=s.id; });
-    links.forEach(a=>{ a.classList.remove('active'); if(a.getAttribute('href')==='#'+cur) a.classList.add('active'); });
-  });
+  (() => {
+    const sections = [...document.querySelectorAll('section[id]')];
+    const links = [...document.querySelectorAll('.nav-link[href^="#"]')];
+    let ticking = false;
+    let activeId = '';
+    const updateActiveSection = () => {
+      ticking = false;
+      const marker = 150;
+      let current = sections[0]?.id || '';
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= marker) current = section.id;
+        else break;
+      }
+      if (current === activeId) return;
+      activeId = current;
+      for (const link of links) {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      }
+    };
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateActiveSection);
+    }, { passive: true });
+    updateActiveSection();
+  })();
 </script>
 
 <script type="module">
@@ -528,5 +702,6 @@
   document.getElementById('authLogoutBtn').addEventListener('click',()=>signOut(auth).then(()=>location.href='index.html'));
 </script>
 
-<script>(function(){const pages=new Set(["index.html","free-learning.html","trading-books.html","rules.html","about.html","affiliate-broker.html","candlestick-patterns.html","price-action.html","support-resistance.html","intelligent-investor.html","security-analysis.html","rich-dad-poor-dad.html","trading-volatility.html","trading-manual-tom.html","vip-course.html","vip-lessons.html","community.html","privacy-policy.html","login.html","signup.html","forgot-password.html","profile.html"]);const p=location.pathname.split('/').filter(Boolean);const lang=['hi','es','ar','fr'].includes(p[0])?p[0]:'en';const slug=lang==='en'?(p.join('/')||'index.html'):p.slice(1).join('/')||'index.html';const dest=(l,s)=>l==='en'?(s==='index.html'?'/':'/'+s):l==='hi'?'/hi/'+(pages.has(s)?(s==='index.html'?'':s):''):'/'+l+'/';const selectors=[document.getElementById('siteLanguage'),...document.querySelectorAll('.hi-lang-switch')].filter(Boolean);selectors.forEach(x=>{x.value=lang;x.addEventListener('change',()=>{try{localStorage.setItem('ictforex-language',x.value)}catch(e){}location.href=dest(x.value,slug)})});let saved='';try{saved=localStorage.getItem('ictforex-language')||''}catch(e){}if(lang==='en'&&saved&&saved!=='en'){location.replace(dest(saved,slug));return}if(lang!=='en'&&saved!==lang){try{localStorage.setItem('ictforex-language',lang)}catch(e){}}})();</script></body>
+<script src="/assets/js/cinematic-scroll.js" defer></script>
+</body>
 </html>
