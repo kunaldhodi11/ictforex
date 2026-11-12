@@ -1511,7 +1511,7 @@ onAuthStateChanged(auth,u=>{
  const currentLabel=document.getElementById('languageCurrent');
  if(!wrap||!trigger||!menu)return;
  const paths={en:'/',hi:'/hi/',es:'/es/',ar:'/ar/',fr:'/fr/'};
- const labels={en:'🇬🇧 English',hi:'🌍 Hinglish',es:'🇪🇸 Español',ar:'🇸🇦 العربية',fr:'🇫🇷 Français'};
+ const labels={en:'🇬🇧 English',hi:'🇮🇳 Hinglish',es:'🇪🇸 Español',ar:'🇸🇦 العربية',fr:'🇫🇷 Français'};
  const first=location.pathname.split('/').filter(Boolean)[0];
  const active=Object.prototype.hasOwnProperty.call(paths,first)?first:'en';
  currentLabel.textContent=labels[active];
