@@ -67,8 +67,8 @@
             <a href="login.html" id="authIniciar sesiónBtn" class="bg-green-600 hover:bg-green-700 text-white text-xs font-black px-3 py-2 rounded-xl transition shadow flex items-center gap-1.5">
                 <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
             </a>
-            <button id="authLogoutBtn" style="display:none;" class="bg-red-600 hover:bg-red-700 text-white text-xs font-black px-3 py-2 rounded-xl transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            <button id="authCerrar sesiónBtn" style="display:none;" class="bg-red-600 hover:bg-red-700 text-white text-xs font-black px-3 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
             </button>
             <button onclick="toggleMobileMenu()" class="md:hidden bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 text-xs font-black p-2.5 rounded-xl transition shadow">
                 <i class="fa-solid fa-bars text-base"></i>
@@ -86,8 +86,8 @@
         <a href="community.html" class="block py-2 hover:text-green-400"><i class="fa-solid fa-users mr-2"></i> Comunidad</a>
         <a href="vip-course.html" class="block py-2 hover:text-yellow-400"><i class="fa-solid fa-crown mr-2"></i> Academia VIP</a>
         <div class="pt-3 border-t border-gray-800">
-            <a href="login.html" id="mobileIniciar sesiónLink" class="text-green-400 font-bold"><i class="fa-solid fa-right-to-bracket mr-1"></i> Iniciar sesión / Signup</a>
-            <button id="mobileLogoutBtn" style="display:none;" class="text-red-400 font-bold"><i class="fa-solid fa-right-from-bracket mr-1"></i> Logout</button>
+            <a href="login.html" id="mobileIniciar sesiónLink" class="text-green-400 font-bold"><i class="fa-solid fa-right-to-bracket mr-1"></i> Iniciar sesión / Crear cuenta</a>
+            <button id="mobileCerrar sesiónBtn" style="display:none;" class="text-red-400 font-bold"><i class="fa-solid fa-right-from-bracket mr-1"></i> Cerrar sesión</button>
         </div>
     </div>
 
@@ -296,15 +296,15 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('authIniciar sesiónBtn').style.display = 'none';
-                document.getElementById('authLogoutBtn').style.display = 'flex';
+                document.getElementById('authCerrar sesiónBtn').style.display = 'flex';
                 if(document.getElementById('mobileIniciar sesiónLink')) document.getElementById('mobileIniciar sesiónLink').style.display = 'none';
-                if(document.getElementById('mobileLogoutBtn')) document.getElementById('mobileLogoutBtn').style.display = 'block';
+                if(document.getElementById('mobileCerrar sesiónBtn')) document.getElementById('mobileCerrar sesiónBtn').style.display = 'block';
             } else {
                 document.getElementById('authIniciar sesiónBtn').style.display = 'flex';
-                document.getElementById('authLogoutBtn').style.display = 'none';
+                document.getElementById('authCerrar sesiónBtn').style.display = 'none';
             }
         });
-        document.getElementById('authLogoutBtn').addEventListener('click', () => {
+        document.getElementById('authCerrar sesiónBtn').addEventListener('click', () => {
             signOut(auth).then(() => { window.location.href = 'index.html'; });
         });
     </script>
