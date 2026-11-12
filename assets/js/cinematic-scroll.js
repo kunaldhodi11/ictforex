@@ -1,10 +1,9 @@
 /* ICT Forex Academy — scroll-controlled cinematic background + lightweight reveals */
 (function(){
   'use strict';
-  /* The Support & Resistance lesson uses native browser scrolling.
-     Skip the global scroll-scrubbed video/canvas layer here so long chart
-     lessons stay responsive on phones and lower-powered laptops. */
-  if(window.location.pathname==='/support-resistance.html'||window.location.pathname==='/free-learning.html')return;
+  /* These learning pages use native browser scrolling and lightweight reveal motion.
+     Skip the global scroll-scrubbed video/canvas layer to keep lessons responsive. */
+  if(window.location.pathname==='/support-resistance.html'||window.location.pathname==='/free-learning.html'||window.location.pathname==='/hi/free-learning.html')return;
   var root=document.documentElement;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer=window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches;
