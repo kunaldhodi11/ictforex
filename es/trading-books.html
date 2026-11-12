@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Libros de trading Library | ICT Forex Academy</title><meta name="description" content="Five original English study-note guides for investing, trading, financial literacy and volatility.">
+<style>
+:root{color-scheme:dark;--bg:#080d18;--panel:#111b2d;--panel2:#162238;--line:#26364e;--muted:#9aa9bd;--text:#e8eef7;--green:#31d18a;--gold:#f5bd55;--blue:#73b7ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#14243b 0,transparent 42%),var(--bg);color:var(--text);font:16px/1.75 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}.wrap{width:min(960px,calc(100% - 32px));margin:auto}
+.top{border-bottom:1px solid var(--line);background:#0b1322eF;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}.brand{font-weight:900;letter-spacing:.06em;color:#fff}.brand span{color:var(--green)}.navlinks{display:flex;gap:18px;font-size:13px;font-weight:700}.navlinks a{color:#c8d4e4}
+.hero{padding:42px 0 26px}.eyebrow{color:var(--green);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:900}.hero h1{font-size:clamp(27px,5vw,44px);line-height:1.16;margin:10px 0}.author{color:var(--gold);font-weight:700;margin:0 0 16px}.intro{color:#c2cede;max-width:800px}
+.notice{border:1px solid #39506e;background:#102039;border-left:4px solid var(--blue);padding:14px 16px;border-radius:12px;color:#d5e3f5;font-size:13px;margin:22px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:24px 0}.card,.section{background:linear-gradient(145deg,var(--panel),#0f192a);border:1px solid var(--line);border-radius:16px;padding:20px}.card h2,.section h2{font-size:19px;margin:0 0 8px}.card p{margin:0;color:#b9c7d9;font-size:14px}
+.section{margin:16px 0}.section h2{color:#fff}.section p{color:#c5d1df}.section ul{padding-left:22px;color:#c5d1df}.section li{margin:8px 0}.tag{display:inline-block;color:var(--green);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;margin-bottom:8px}
+.callout{border:1px solid #55472c;background:#2a2417;border-radius:12px;padding:14px 16px;color:#f1dfb9;margin:18px 0;font-size:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;padding:10px 15px;border-radius:10px;background:#183b32;border:1px solid #28644e;color:#d9ffef;font-weight:800;font-size:13px}.btn.secondary{background:#17253b;border-color:#344b69;color:#dceaff}
+footer{border-top:1px solid var(--line);margin-top:42px;padding:22px 0;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:650px){.navlinks{gap:10px;font-size:11px}.grid{grid-template-columns:1fr}.card,.section{padding:16px}.hero{padding-top:30px}}
+
+.library-hero{padding:46px 0 22px}.count{display:inline-block;padding:6px 11px;border-radius:99px;background:#15392e;border:1px solid #28664d;color:#a8f3d0;font-size:12px;font-weight:900}
+.book{display:flex;gap:18px;align-items:flex-start}.cover{width:76px;min-width:76px;height:104px;border-radius:9px;background:linear-gradient(145deg,#1d473c,#101a2b 75%);border:1px solid #3a5d55;display:flex;align-items:center;justify-content:center;color:#b4f4d8;font-weight:900;font-size:22px;box-shadow:0 8px 20px #0005}.book h2{font-size:17px;margin:0 0 5px}.book .by{color:var(--gold);font-size:12px;font-weight:800;margin:0 0 8px}.book p{margin:0;color:#b9c7d9;font-size:13px}.read{display:inline-flex;margin-top:12px;background:#173c32;border:1px solid #2b6c52;border-radius:9px;padding:8px 12px;color:#d7ffed;font-size:12px;font-weight:900}
+@media(max-width:650px){.book{gap:12px}.cover{width:60px;min-width:60px;height:84px;font-size:18px}}
+
+.book-cover{width:104px;min-width:104px;height:144px;border-radius:10px;display:flex;flex-direction:column;justify-content:space-between;padding:11px;color:#fff;border:1px solid #ffffff35;box-shadow:0 10px 24px #0007;overflow:hidden;position:relative}
+.book-cover:after{content:"";position:absolute;width:100px;height:100px;border:1px solid #ffffff30;border-radius:50%;right:-36px;bottom:-32px;box-shadow:0 0 0 12px #ffffff0c,0 0 0 24px #ffffff08}
+.book-cover small{font-size:8px;letter-spacing:.15em;font-weight:900;opacity:.8;z-index:1}
+.book-cover strong{font:900 15px/1.1 Georgia,serif;z-index:1;max-width:90px}
+.book-cover em{font-size:9px;font-style:normal;opacity:.85;z-index:1}
+.cover-ti{background:linear-gradient(145deg,#145b49,#0a1b24 80%)}
+.cover-sa{background:linear-gradient(145deg,#76521f,#241b16 80%)}
+.cover-rd{background:linear-gradient(145deg,#963f32,#321b28 80%)}
+.cover-tv{background:linear-gradient(145deg,#234c88,#101b37 80%)}
+.cover-tm{background:linear-gradient(145deg,#4a367c,#1b1834 80%)}
+.book{align-items:flex-start}.book h2{line-height:1.3}
+@media(max-width:650px){.book-cover{width:82px;min-width:82px;height:116px;padding:9px}.book-cover strong{font-size:12px}}
+</style>  <link rel="stylesheet" href="/assets/css/site-polish.css">
+<link rel="canonical" href="https://ictforex.in/es/trading-books.html">
+</head><body>
+<div class="top"><div class="wrap nav"><a class="brand" href="index.html">ICT <span>FOREX</span> ACADEMY</a><nav class="navlinks"><a href="index.html">Inicio</a><a href="trading-books.html">Biblioteca de libros</a></nav></div></div>
+<main class="wrap"><header class="library-hero"><div class="eyebrow">Aprende · Lee · Practica</div><h1>Libros de trading Library</h1><p class="intro">Notas de estudio concisas de una selección de libros sobre inversión, trading y educación financiera. Cada guía aborda ideas clave, contexto práctico y recordatorios importantes sobre los riesgos.</p><p class="count">5 GUÍAS DE ESTUDIO</p></header>
+<div class="notice"><strong>Reading note:</strong> These are original educational notes, not complete books or official publisher summaries. Please purchase or borrow the original books separately. These notes should not be considered financial advice.</div>
+<div class="grid">
+<article class="card book"><div class="book-cover cover-ti"><small>ICTFOREX STUDY GUIDE</small><strong>THE INTELLIGENT INVESTOR</strong><em>INVERSIÓN EN VALOR</em></div><div><h2>El inversor inteligente</h2><p class="by">Benjamin Graham</p><p>Inversión en valor, Mr. Market, inversión defensiva y margen de seguridad.</p><a class="read" href="intelligent-investor.html">Leer notas de estudio →</a></div></article>
+<article class="card book"><div class="book-cover cover-sa"><small>ICTFOREX STUDY GUIDE</small><strong>SECURITY ANALYSIS</strong><em>CLÁSICO DE 1934 · NOTAS</em></div><div><h2>Security Analysis: la edición clásica de 1934</h2><p class="by">Benjamin Graham & David L. Dodd</p><p>Estados financieros, capacidad de generar beneficios, obligaciones de deuda y disciplina de valoración.</p><a class="read" href="security-analysis.html">Leer notas de estudio →</a></div></article>
+<article class="card book"><div class="book-cover cover-rd"><small>ICTFOREX STUDY GUIDE</small><strong>RICH DAD POOR DAD</strong><em>EDUCACIÓN FINANCIERA</em></div><div><h2>Padre rico, padre pobre</h2><p class="by">Robert T. Kiyosaki</p><p>Educación financiera, flujo de caja, activos, pasivos y hábitos relacionados con el dinero.</p><a class="read" href="rich-dad-poor-dad.html">Leer notas de estudio →</a></div></article>
+<article class="card book"><div class="book-cover cover-tv"><small>ICTFOREX STUDY GUIDE</small><strong>TRADING VOLATILITY</strong><em>OPCIONES · SKEW</em></div><div><h2>Trading Volatility: correlación, estructura temporal y skew</h2><p class="by">Colin Bennett</p><p>Opciones, volatilidad implícita, griegas, skew, estructura temporal y correlación.</p><a class="read" href="trading-volatility.html">Leer notas de estudio →</a></div></article>
+<article class="card book"><div class="book-cover cover-tm"><small>ICTFOREX STUDY GUIDE</small><strong>THE FIRST TRADING MANUAL</strong><em>ACCIÓN DEL PRECIO</em></div><div><h2>The First Trading Manual: curso básico y estrategias</h2><p class="by">Tom Hougaard</p><p>Estructura del mercado, acción del precio, gestión de operaciones y psicología del trading.</p><a class="read" href="trading-manual-tom.html">Leer notas de estudio →</a></div></article>
+</div>
+<div class="callout">Solo para uso educativo. El trading y la inversión implican riesgos, incluida la pérdida de capital. Las opciones y los productos apalancados pueden conllevar riesgos importantes.</div>
+<div class="actions"><a class="btn" href="index.html">← Back to Inicio</a></div></main>
+<footer><div class="wrap">© 2026 ICT Forex Academy · <a href="privacy-policy.html">Política de privacidad y términos</a></div></footer>
+<script src="/assets/js/cinematic-scroll.js" defer></script>
+</body></html>
