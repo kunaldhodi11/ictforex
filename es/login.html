@@ -138,7 +138,7 @@
 
         <div id="message-box" role="status" aria-live="polite"></div>
 
-        <form id="login-form" onsubmit="event.preventDefault(); handleIniciar sesión();">
+        <form id="login-form" onsubmit="event.preventDefault(); handleLogin();">
           <div class="form-group">
             <div class="label-row"><label for="login-email">Correo electrónico</label></div>
             <div class="input-wrap">
@@ -181,7 +181,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndContraseña, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -207,7 +207,7 @@
         authLink.onclick = async (e) => {
           e.preventDefault();
           localStorage.removeItem('userName');
-          localStorage.removeItem('userAcceso');
+          localStorage.removeItem('userAccess');
           await signOut(auth);
           window.location.reload();
         };
@@ -218,7 +218,7 @@
       }
     });
 
-    window.handleIniciar sesión = async function() {
+    window.handleLogin = async function() {
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
       const submit = document.getElementById('login-submit');
@@ -233,20 +233,20 @@
       showMsg("Comprobando tu cuenta…", "success");
 
       try {
-        const userCredential = await signInWithEmailAndContraseña(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const userData = userDoc.exists() ? userDoc.data() : {};
 
         localStorage.setItem('userName', userData.fullName || user.displayName || "User");
-        localStorage.setItem('userAcceso', userData.accessLevel || userData.courseAcceso || "Free");
+        localStorage.setItem('userAccess', userData.accessLevel || userData.courseAccess || "Free");
 
-        showMsg("Iniciar sesión successful. Redirecting…", "success");
+        showMsg("Inicio de sesión correcto. Redirigiendo…", "success");
         window.setTimeout(() => { window.location.href = "index.html"; }, 900);
       } catch (error) {
         let message = "No se pudo iniciar sesión. Inténtalo de nuevo.";
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-          message = "The email or password doesn't match. Please check and try again.";
+          message = "El correo electrónico o la contraseña no coinciden. Comprueba los datos e inténtalo de nuevo.";
         } else if (error.code === 'auth/invalid-email') {
           message = "Introduce una dirección de correo electrónico válida.";
         } else if (error.code === 'auth/too-many-requests') {
