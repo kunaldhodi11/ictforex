@@ -4,7 +4,7 @@
   /* The Support & Resistance lesson uses native browser scrolling.
      Skip the global scroll-scrubbed video/canvas layer here so long chart
      lessons stay responsive on phones and lower-powered laptops. */
-  if(window.location.pathname==='/support-resistance.html')return;
+  if(window.location.pathname==='/support-resistance.html'||window.location.pathname==='/free-learning.html')return;
   var root=document.documentElement;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer=window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches;
