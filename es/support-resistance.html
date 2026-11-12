@@ -48,8 +48,8 @@
   </a>
   <div class="flex gap-2">
     <a href="free-learning.html" class="text-blue-400 text-xs font-bold px-3 py-2 rounded-xl bg-blue-500/10 border border-blue-500/20"><i class="fa-solid fa-arrow-left mr-1"></i>Todos los cursos</a>
-    <a href="login.html" id="authIniciar sesiónBtn" class="bg-green-600 text-white text-xs font-black px-3 py-2 rounded-xl">Iniciar sesión</a>
-    <button id="authCerrar sesiónBtn" style="display:none" class="bg-red-600 text-white text-xs font-black px-3 py-2 rounded-xl">Cerrar sesión</button>
+    <a href="login.html" id="authLoginBtn" class="bg-green-600 text-white text-xs font-black px-3 py-2 rounded-xl">Iniciar sesión</a>
+    <button id="authLogoutBtn" style="display:none" class="bg-red-600 text-white text-xs font-black px-3 py-2 rounded-xl">Cerrar sesión</button>
   </div>
 </header>
 
@@ -697,10 +697,10 @@
   const app=initializeApp({apiKey:"AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",authDomain:"ict-forex.firebaseapp.com",projectId:"ict-forex",storageBucket:"ict-forex.firebasestorage.app",messagingSenderId:"10739160076",appId:"1:10739160076:web:0560474e8cf4a43254ca29"});
   const auth=getAuth(app);
   onAuthStateChanged(auth,u=>{
-    document.getElementById('authIniciar sesiónBtn').style.display=u?'none':'block';
-    document.getElementById('authCerrar sesiónBtn').style.display=u?'block':'none';
+    document.getElementById('authLoginBtn').style.display=u?'none':'block';
+    document.getElementById('authLogoutBtn').style.display=u?'block':'none';
   });
-  document.getElementById('authCerrar sesiónBtn').addEventListener('click',()=>signOut(auth).then(()=>location.href='index.html'));
+  document.getElementById('authLogoutBtn').addEventListener('click',()=>signOut(auth).then(()=>location.href='index.html'));
 </script>
 
 <script src="/assets/js/cinematic-scroll.js" defer></script>
