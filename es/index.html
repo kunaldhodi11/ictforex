@@ -1088,10 +1088,10 @@ body::after{
       <a href="/es/vip-course.html">Academia VIP</a>
       <a href="/es/rules.html">Reglas</a>
       <a href="/es/about.html">Acerca de</a>
-      <a href="/es/login.html" class="btn-nav-login" id="authIniciar sesiónBtn"><i class="fa-solid fa-arrow-right"></i> Comenzar</a>
-      <button class="btn-nav-logout" id="authCerrar sesiónBtn"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
+      <a href="/es/login.html" class="btn-nav-login" id="authLoginBtn"><i class="fa-solid fa-arrow-right"></i> Comenzar</a>
+      <button class="btn-nav-logout" id="authLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
     </nav>
-    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false">&#9776;</button>
   </div>
 </header>
 
@@ -1108,8 +1108,8 @@ body::after{
   <a href="/es/community.html"><span>👥</span> Comunidad</a>
   <a href="/es/vip-course.html"><span>👑</span> Academia VIP</a>
   <a href="/es/about.html"><span>ℹ️</span> Sobre nosotros</a>
-  <a href="/es/login.html" id="mobileIniciar sesiónLink"><span>🔐</span> Iniciar sesión / Registrarse</a>
-  <button id="mobileCerrar sesiónBtn" style="display:none;background:#dc2626;color:#fff;font-weight:900;font-size:14px;padding:16px;border-radius:14px;border:none;margin-top:8px;cursor:pointer"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
+  <a href="/es/login.html" id="mobileLoginLink"><span>🔐</span> Iniciar sesión / Registrarse</a>
+  <button id="mobileLogoutBtn" style="display:none;background:#dc2626;color:#fff;font-weight:900;font-size:14px;padding:16px;border-radius:14px;border:none;margin-top:8px;cursor:pointer"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
 </div>
 
 <main id="main-content">
@@ -1481,17 +1481,17 @@ const app=initializeApp({
   measurementId:"G-LB0VLQSH2E"
 });
 const auth=getAuth(app);
-const performCerrar sesión=()=>signOut(auth).then(()=>location.href='index.html').catch(console.error);
-['authCerrar sesiónBtn','mobileCerrar sesiónBtn'].forEach(id=>{
+const performLogout=()=>signOut(auth).then(()=>location.href='index.html').catch(console.error);
+['authLogoutBtn','mobileLogoutBtn'].forEach(id=>{
   const el=document.getElementById(id);
-  if(el)el.addEventListener('click',performCerrar sesión);
+  if(el)el.addEventListener('click',performLogout);
 });
 onAuthStateChanged(auth,u=>{
-  ['authIniciar sesiónBtn','mobileIniciar sesiónLink'].forEach(id=>{
+  ['authLoginBtn','mobileLoginLink'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.style.display=u?'none':'';
   });
-  ['authCerrar sesiónBtn','mobileCerrar sesiónBtn'].forEach(id=>{
+  ['authLogoutBtn','mobileLogoutBtn'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.style.display=u?'flex':'none';
   });
