@@ -151,7 +151,7 @@
             <div class="input-wrap">
               <i class="fa-solid fa-lock input-icon"></i>
               <input type="password" id="login-password" name="password" required autocomplete="current-password" class="form-control" placeholder="Introduce tu contraseña">
-              <button type="button" class="password-toggle" id="toggle-password" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye"></i></button>
+              <button type="button" class="password-toggle" id="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false"><i class="fa-regular fa-eye"></i></button>
             </div>
           </div>
           <div class="forgot-row"><a href="forgot-password.html">¿Olvidaste tu contraseña?</a></div>
@@ -174,7 +174,7 @@
       const visible = field.type === 'password';
       field.type = visible ? 'text' : 'password';
       passwordToggle.innerHTML = visible ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
-      passwordToggle.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+      passwordToggle.setAttribute('aria-label', visible ? 'Ocultar contraseña' : 'Mostrar contraseña');
       passwordToggle.setAttribute('aria-pressed', String(visible));
     });
   </script>
@@ -202,7 +202,7 @@
       const authLink = document.getElementById('auth-nav-link');
       if (!authLink) return;
       if (user) {
-        authLink.innerHTML = 'Sign out <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:6px"></i>';
+        authLink.innerHTML = 'Cerrar sesión <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:6px"></i>';
         authLink.href = "#";
         authLink.onclick = async (e) => {
           e.preventDefault();
@@ -250,7 +250,7 @@
         } else if (error.code === 'auth/invalid-email') {
           message = "Introduce una dirección de correo electrónico válida.";
         } else if (error.code === 'auth/too-many-requests') {
-          message = "Too many attempts. Please wait a little before trying again.";
+          message = "Demasiados intentos. Espera un momento antes de volver a intentarlo.";
         } else if (error.code === 'auth/network-request-failed') {
           message = "Network issue. Check your internet connection and try again.";
         }
