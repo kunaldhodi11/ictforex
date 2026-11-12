@@ -1072,7 +1072,7 @@ body::after{
       </button>
       <div class="language-menu" id="languageMenu" role="menu" aria-label="Website languages">
         <button type="button" class="language-option" role="menuitem" data-lang="en">🇬🇧 <span>English</span><span class="language-check">✓</span></button>
-        <button type="button" class="language-option" role="menuitem" data-lang="hi">🌍 <span>हिंदी</span><span class="language-check">✓</span></button>
+        <button type="button" class="language-option" role="menuitem" data-lang="hi">🇮🇳 <span>Hinglish</span><span class="language-check">✓</span></button>
         <button type="button" class="language-option" role="menuitem" data-lang="es">🇪🇸 <span>Español</span><span class="language-check">✓</span></button>
         <button type="button" class="language-option" role="menuitem" data-lang="ar">🇸🇦 <span>العربية</span><span class="language-check">✓</span></button>
         <button type="button" class="language-option" role="menuitem" data-lang="fr">🇫🇷 <span>Français</span><span class="language-check">✓</span></button>
@@ -1505,7 +1505,7 @@ onAuthStateChanged(auth,u=>{
  const currentLabel=document.getElementById('languageCurrent');
  if(!wrap||!trigger||!menu)return;
  const paths={en:'/',hi:'/hi/',es:'/es/',ar:'/ar/',fr:'/fr/'};
- const labels={en:'🇬🇧 English',hi:'🌍 हिंदी',es:'🇪🇸 Español',ar:'🇸🇦 العربية',fr:'🇫🇷 Français'};
+ const labels={en:'🇬🇧 English',hi:'🇮🇳 Hinglish',es:'🇪🇸 Español',ar:'🇸🇦 العربية',fr:'🇫🇷 Français'};
  const first=location.pathname.split('/').filter(Boolean)[0];
  const active=Object.prototype.hasOwnProperty.call(paths,first)?first:'en';
  currentLabel.textContent=labels[active];
