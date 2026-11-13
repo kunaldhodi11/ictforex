@@ -8,7 +8,7 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://ictforex.in/es/vip-course.html">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ictforex.in/vip-course.html">
+<meta property="og:url" content="https://ictforex.in/es/vip-course.html">
 <meta property="og:title" content="Masterclass VIP de ICT | ICT Forex Academy">
 <meta property="og:description" content="Estudia estructura del mercado, liquidez, FVG, Order Blocks, entradas y gestión del riesgo en la masterclass VIP de ICT Forex Academy.">
 <meta property="og:site_name" content="ICT Forex Academy">
@@ -77,7 +77,7 @@
                 👑 Masterclass VIP exclusiva
             </span>
             <h2 class="text-xl md:text-4xl font-black text-white mt-4 mb-4 leading-tight">
-                Conceptos ICT de Smart Money, liquidez y <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Risk Management</span>
+                Conceptos ICT de Smart Money, liquidez y <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Gestión del riesgo</span>
             </h2>
             <p class="text-gray-300 text-xs md:text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
                 Accede a metodologías institucionales profesionales. Aprende Order Blocks, modelos de Market Maker, reglas estrictas de mercado y marcos profesionales de gestión del riesgo.
@@ -210,7 +210,7 @@
                 } else {
                     statusMessage.textContent = 'Tu solicitud está pendiente. El curso VIP se desbloqueará cuando el administrador la apruebe.';
                     submitButton.disabled = true;
-                    submitButton.textContent = 'Application Submitted';
+                    submitButton.textContent = 'Solicitud enviada';
                     submitButton.classList.add('opacity-60', 'cursor-not-allowed');
                 }
             } else {
@@ -227,7 +227,7 @@
                 statusMessage.textContent = 'Enter a valid Trading ID (3–100 characters).'; return;
             }
             submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
+            submitButton.textContent = 'Enviando...';
             try {
                 const applicationRef = doc(db, 'vipApplications', user.uid);
                 const existingApplication = await getDoc(applicationRef);
@@ -242,7 +242,7 @@
                 document.getElementById('trading-id-input').disabled = true;
                 document.getElementById('broker-select').disabled = true;
                 statusMessage.textContent = 'Tu solicitud se ha enviado. Espera la aprobación del administrador; por ahora, el curso seguirá bloqueado.';
-                submitButton.textContent = 'Application Submitted';
+                submitButton.textContent = 'Solicitud enviada';
                 submitButton.classList.add('opacity-60', 'cursor-not-allowed');
             } catch (error) {
                 console.error('VIP application submission failed:', error);
@@ -255,15 +255,15 @@
             const authLink = document.getElementById('auth-nav-link');
             if (!user) {
                 if (authLink) {
-                    authLink.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión to Apply';
+                    authLink.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión para solicitar acceso';
                     authLink.href = "login.html";
                 }
                 statusMessage.textContent = 'Inicia sesión para enviar tu solicitud de acceso VIP. Puedes consultar la información del curso VIP en esta página sin iniciar sesión.';
                 submitButton.disabled = false;
-                submitButton.textContent = 'Log in to Apply for VIP Access';
+                submitButton.textContent = 'Inicia sesión para solicitar acceso VIP';
                 return;
             }
-            const userName = localStorage.getItem('userName') || "User";
+            const userName = localStorage.getItem('userName') || "Usuario";
             if (authLink) {
                 authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión`;
                 authLink.href = "#";
