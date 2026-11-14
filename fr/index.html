@@ -1089,7 +1089,7 @@ body::after{
       <a href="/fr/rules.html">Règles</a>
       <a href="/fr/about.html">À propos</a>
       <a href="/fr/login.html" class="btn-nav-login" id="authLoginBtn"><i class="fa-solid fa-arrow-right"></i> Commencer</a>
-      <button class="btn-nav-logout" id="authDéconnexionBtn"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</button>
+      <button class="btn-nav-logout" id="authLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</button>
     </nav>
     <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
   </div>
@@ -1107,9 +1107,9 @@ body::after{
   <a href="/fr/rules.html"><span>🛡️</span> Trading Règles</a>
   <a href="/fr/community.html"><span>👥</span> Communauté</a>
   <a href="/fr/vip-course.html"><span>👑</span> Académie VIP</a>
-  <a href="/fr/about.html"><span>ℹ️</span> À propos Us</a>
+  <a href="/fr/about.html"><span>ℹ️</span> À propos</a>
   <a href="/fr/login.html" id="mobileLoginLink"><span>🔐</span> Connexion / Inscription</a>
-  <button id="mobileDéconnexionBtn" style="display:none;background:#dc2626;color:#fff;font-weight:900;font-size:14px;padding:16px;border-radius:14px;border:none;margin-top:8px;cursor:pointer"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</button>
+  <button id="mobileLogoutBtn" style="display:none;background:#dc2626;color:#fff;font-weight:900;font-size:14px;padding:16px;border-radius:14px;border:none;margin-top:8px;cursor:pointer"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</button>
 </div>
 
 <main id="main-content">
@@ -1368,7 +1368,7 @@ body::after{
     </div>
     <div class="faq-item">
       <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-answer-ict" onclick="toggleFaq(this)">Que signifie ICT dans le trading Forex ? <i class="fa fa-plus"></i></button>
-      <div class="faq-a" id="faq-answer-ict">ICT (Inner Circle Trader) is a methodology focusing on Order Blocks, Déséquilibres de valeur (FVG), and institutional liquidity.</div>
+      <div class="faq-a" id="faq-answer-ict">ICT (Inner Circle Trader) est une méthodologie axée sur les blocs d’ordres, les déséquilibres de valeur (FVG) et la liquidité institutionnelle.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-answer-beginners" onclick="toggleFaq(this)">Les débutants peuvent-ils apprendre le trading Forex ici ? <i class="fa fa-plus"></i></button>
@@ -1402,7 +1402,7 @@ body::after{
       <h5>Liens rapides</h5>
       <a href="/fr/community.html">Communauté</a>
       <a href="/fr/vip-course.html">Académie VIP</a>
-      <a href="/fr/about.html">À propos Us</a>
+      <a href="/fr/about.html">À propos</a>
       <a href="/fr/login.html">Connexion / Inscription</a>
     </div>
     <div class="footer-col">
@@ -1481,17 +1481,17 @@ const app=initializeApp({
   measurementId:"G-LB0VLQSH2E"
 });
 const auth=getAuth(app);
-const performDéconnexion=()=>signOut(auth).then(()=>location.href='/fr/').catch(console.error);
-['authDéconnexionBtn','mobileDéconnexionBtn'].forEach(id=>{
+const performLogout=()=>signOut(auth).then(()=>location.href='/fr/').catch(console.error);
+['authLogoutBtn','mobileLogoutBtn'].forEach(id=>{
   const el=document.getElementById(id);
-  if(el)el.addEventListener('click',performDéconnexion);
+  if(el)el.addEventListener('click',performLogout);
 });
 onAuthStateChanged(auth,u=>{
   ['authLoginBtn','mobileLoginLink'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.style.display=u?'none':'';
   });
-  ['authDéconnexionBtn','mobileDéconnexionBtn'].forEach(id=>{
+  ['authLogoutBtn','mobileLogoutBtn'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.style.display=u?'flex':'none';
   });
