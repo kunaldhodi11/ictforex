@@ -181,7 +181,7 @@ import{getFirestore,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.8.0/fi
 const app=initializeApp({apiKey:"AIzaSyCqdOgOd2wqDjh-2AL8_zRb41zIOHYu7lU",authDomain:"ict-forex.firebaseapp.com",projectId:"ict-forex",storageBucket:"ict-forex.firebasestorage.app",messagingSenderId:"10739160076",appId:"1:10739160076:web:0560474e8cf4a43254ca29"});
 const auth=getAuth(app),db=getFirestore(app);
 onAuthStateChanged(auth,async user=>{
- if(!user){location.href="/login.html";return}
+ if(!user){location.href="/ar/login.html";return}
  try{const access=await getDoc(doc(db,"vipAccess",user.uid));document.body.style.visibility="visible";
  if(!(access.exists()&&access.data().approved===true)){document.body.innerHTML='<main style="max-width:620px;margin:12vh auto;padding:30px;text-align:center;background:#111d30;border:1px solid #34445d;border-radius:18px"><h1>يتطلب هذا المحتوى موافقة VIP</h1><p>يرجى تسجيل الدخول بحساب تمت الموافقة عليه.</p><a href="/ar/vip-course.html">العودة إلى صفحة VIP</a></main>';}
  }catch(e){document.body.style.visibility="visible";document.body.innerHTML='<main style="padding:40px;text-align:center">تعذر التحقق من صلاحية VIP. حدّث الصفحة وحاول مرة أخرى.</main>';}
