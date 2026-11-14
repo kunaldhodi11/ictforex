@@ -150,7 +150,7 @@
             <div class="input-wrap">
               <i class="fa-solid fa-lock input-icon"></i>
               <input type="password" id="login-password" name="password" required autocomplete="current-password" class="form-control" placeholder="Enter your password">
-              <button type="button" class="password-toggle" id="toggle-password" aria-label="Show password" aria-pressed="false"><i class="fa-regular fa-eye"></i></button>
+              <button type="button" class="password-toggle" id="toggle-password" aria-label="Afficher le mot de passe" aria-pressed="false"><i class="fa-regular fa-eye"></i></button>
             </div>
           </div>
           <div class="forgot-row"><a href="/fr/forgot-password.html">Mot de passe oublié ?</a></div>
@@ -173,7 +173,7 @@
       const visible = field.type === 'password';
       field.type = visible ? 'text' : 'password';
       passwordToggle.innerHTML = visible ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
-      passwordToggle.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+      passwordToggle.setAttribute('aria-label', visible ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
       passwordToggle.setAttribute('aria-pressed', String(visible));
     });
   </script>
@@ -223,13 +223,13 @@
       const submit = document.getElementById('login-submit');
 
       if (!email || !password) {
-        showMsg("Please enter your email address and password.", "error");
+        showMsg("Veuillez saisir votre adresse e-mail et votre mot de passe.", "error");
         return;
       }
 
       submit.disabled = true;
       submit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Signing you in…</span>';
-      showMsg("Checking your account…", "success");
+      showMsg("Vérification de votre compte…", "success");
 
       try {
         const userCredential = await signInWithEmailAndMot de passe(auth, email, password);
@@ -247,9 +247,9 @@
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
           message = "The email or password doesn't match. Please check and try again.";
         } else if (error.code === 'auth/invalid-email') {
-          message = "Please enter a valid email address.";
+          message = "Veuillez saisir une adresse e-mail valide.";
         } else if (error.code === 'auth/too-many-requests') {
-          message = "Too many attempts. Please wait a little before trying again.";
+          message = "Trop de tentatives. Veuillez patienter avant de réessayer.";
         } else if (error.code === 'auth/network-request-failed') {
           message = "Network issue. Check your internet connection and try again.";
         }
