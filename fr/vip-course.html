@@ -203,7 +203,7 @@
             if (application.exists()) {
                 const applicationStatus = application.data().status;
                 if (applicationStatus === 'rejected') {
-                    statusMessage.textContent = 'Your application was rejected. Review the details and submit it again if needed.';
+                    statusMessage.textContent = 'Votre demande a été refusée. Consultez les détails et soumettez-la à nouveau si nécessaire.';
                     submitButton.disabled = false;
                     submitButton.textContent = 'Resubmit for Approval';
                     submitButton.classList.remove('opacity-60', 'cursor-not-allowed');
@@ -245,8 +245,8 @@
                 submitButton.textContent = 'Application Submitted';
                 submitButton.classList.add('opacity-60', 'cursor-not-allowed');
             } catch (error) {
-                console.error('VIP application submission failed:', error);
-                statusMessage.textContent = 'Submission failed. Please try again after publishing the Firebase Rules.';
+                console.error('Échec de l’envoi de la demande VIP :', error);
+                statusMessage.textContent = 'L’envoi a échoué. Réessayez après la publication des règles Firebase.';
                 submitButton.disabled = false;
                 submitButton.textContent = 'Envoyer pour approbation par l’administrateur';
             }
@@ -260,7 +260,7 @@
                 }
                 statusMessage.textContent = 'Please log in to submit your VIP access application. You can review the VIP course information on this page without signing in.';
                 submitButton.disabled = false;
-                submitButton.textContent = 'Log in to Apply for VIP Access';
+                submitButton.textContent = 'Connectez-vous pour demander l’accès VIP';
                 return;
             }
             const userName = localStorage.getItem('userName') || "User";
@@ -278,7 +278,7 @@
             try { await refreshVipStatus(user); }
             catch (error) {
                 console.error('Could not load VIP status:', error);
-                statusMessage.textContent = 'VIP status could not be loaded. Please refresh the page.';
+                statusMessage.textContent = 'Impossible de charger le statut VIP. Veuillez actualiser la page.';
             }
         });   </script>
 <script>
