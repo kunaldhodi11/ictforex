@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bibliothèque de livres de trading | ICT Forex Academy</title><meta name="description" content="Cinq guides de notes d’étude originaux sur l’investissement, le trading, la culture financière et la volatilité.">
+<style>
+:root{color-scheme:dark;--bg:#080d18;--panel:#111b2d;--panel2:#162238;--line:#26364e;--muted:#9aa9bd;--text:#e8eef7;--green:#31d18a;--gold:#f5bd55;--blue:#73b7ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#14243b 0,transparent 42%),var(--bg);color:var(--text);font:16px/1.75 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}.wrap{width:min(960px,calc(100% - 32px));margin:auto}
+.top{border-bottom:1px solid var(--line);background:#0b1322eF;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}.brand{font-weight:900;letter-spacing:.06em;color:#fff}.brand span{color:var(--green)}.navlinks{display:flex;gap:18px;font-size:13px;font-weight:700}.navlinks a{color:#c8d4e4}
+.hero{padding:42px 0 26px}.eyebrow{color:var(--green);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:900}.hero h1{font-size:clamp(27px,5vw,44px);line-height:1.16;margin:10px 0}.author{color:var(--gold);font-weight:700;margin:0 0 16px}.intro{color:#c2cede;max-width:800px}
+.notice{border:1px solid #39506e;background:#102039;border-left:4px solid var(--blue);padding:14px 16px;border-radius:12px;color:#d5e3f5;font-size:13px;margin:22px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:24px 0}.card,.section{background:linear-gradient(145deg,var(--panel),#0f192a);border:1px solid var(--line);border-radius:16px;padding:20px}.card h2,.section h2{font-size:19px;margin:0 0 8px}.card p{margin:0;color:#b9c7d9;font-size:14px}
+.section{margin:16px 0}.section h2{color:#fff}.section p{color:#c5d1df}.section ul{padding-left:22px;color:#c5d1df}.section li{margin:8px 0}.tag{display:inline-block;color:var(--green);font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;margin-bottom:8px}
+.callout{border:1px solid #55472c;background:#2a2417;border-radius:12px;padding:14px 16px;color:#f1dfb9;margin:18px 0;font-size:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;padding:10px 15px;border-radius:10px;background:#183b32;border:1px solid #28644e;color:#d9ffef;font-weight:800;font-size:13px}.btn.secondary{background:#17253b;border-color:#344b69;color:#dceaff}
+footer{border-top:1px solid var(--line);margin-top:42px;padding:22px 0;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:650px){.navlinks{gap:10px;font-size:11px}.grid{grid-template-columns:1fr}.card,.section{padding:16px}.hero{padding-top:30px}}
+
+.library-hero{padding:46px 0 22px}.count{display:inline-block;padding:6px 11px;border-radius:99px;background:#15392e;border:1px solid #28664d;color:#a8f3d0;font-size:12px;font-weight:900}
+.book{display:flex;gap:18px;align-items:flex-start}.cover{width:76px;min-width:76px;height:104px;border-radius:9px;background:linear-gradient(145deg,#1d473c,#101a2b 75%);border:1px solid #3a5d55;display:flex;align-items:center;justify-content:center;color:#b4f4d8;font-weight:900;font-size:22px;box-shadow:0 8px 20px #0005}.book h2{font-size:17px;margin:0 0 5px}.book .by{color:var(--gold);font-size:12px;font-weight:800;margin:0 0 8px}.book p{margin:0;color:#b9c7d9;font-size:13px}.read{display:inline-flex;margin-top:12px;background:#173c32;border:1px solid #2b6c52;border-radius:9px;padding:8px 12px;color:#d7ffed;font-size:12px;font-weight:900}
+@media(max-width:650px){.book{gap:12px}.cover{width:60px;min-width:60px;height:84px;font-size:18px}}
+
+.book-cover{width:104px;min-width:104px;height:144px;border-radius:10px;display:flex;flex-direction:column;justify-content:space-between;padding:11px;color:#fff;border:1px solid #ffffff35;box-shadow:0 10px 24px #0007;overflow:hidden;position:relative}
+.book-cover:after{content:"";position:absolute;width:100px;height:100px;border:1px solid #ffffff30;border-radius:50%;right:-36px;bottom:-32px;box-shadow:0 0 0 12px #ffffff0c,0 0 0 24px #ffffff08}
+.book-cover small{font-size:8px;letter-spacing:.15em;font-weight:900;opacity:.8;z-index:1}
+.book-cover strong{font:900 15px/1.1 Georgia,serif;z-index:1;max-width:90px}
+.book-cover em{font-size:9px;font-style:normal;opacity:.85;z-index:1}
+.cover-ti{background:linear-gradient(145deg,#145b49,#0a1b24 80%)}
+.cover-sa{background:linear-gradient(145deg,#76521f,#241b16 80%)}
+.cover-rd{background:linear-gradient(145deg,#963f32,#321b28 80%)}
+.cover-tv{background:linear-gradient(145deg,#234c88,#101b37 80%)}
+.cover-tm{background:linear-gradient(145deg,#4a367c,#1b1834 80%)}
+.book{align-items:flex-start}.book h2{line-height:1.3}
+@media(max-width:650px){.book-cover{width:82px;min-width:82px;height:116px;padding:9px}.book-cover strong{font-size:12px}}
+</style>  <link rel="stylesheet" href="/assets/css/site-polish.css">
+<link rel="canonical" href="https://ictforex.in/fr/trading-books.html"><link rel="alternate" hreflang="fr" href="https://ictforex.in/fr/trading-books.html"><link rel="alternate" hreflang="en" href="https://ictforex.in/trading-books.html"><link rel="alternate" hreflang="es" href="https://ictforex.in/es/trading-books.html"><link rel="alternate" hreflang="ar" href="https://ictforex.in/ar/trading-books.html"><link rel="alternate" hreflang="hi" href="https://ictforex.in/hi/trading-books.html"><link rel="alternate" hreflang="x-default" href="https://ictforex.in/"></head><body>
+<div class="top"><div class="wrap nav"><a class="brand" href="/fr/index.html">ICT <span>FOREX</span> ACADEMY</a><nav class="navlinks"><a href="/fr/index.html">Accueil</a><a href="/fr/trading-books.html">Bibliothèque</a></nav></div></div>
+<main class="wrap"><header class="library-hero"><div class="eyebrow">Apprendre · Lire · Pratiquer</div><h1>Bibliothèque de livres de trading</h1><p class="intro">Des notes d’étude synthétiques tirées d’ouvrages sélectionnés sur l’investissement, le trading et la culture financière. Chaque guide présente les idées essentielles, leur application pratique et des rappels importants sur les risques.</p><p class="count">5 GUIDES D’ÉTUDE</p></header>
+<div class="notice"><strong>Note de lecture :</strong> Il s’agit de notes pédagogiques originales, et non des livres complets ni de résumés officiels des éditeurs. Veuillez acheter ou emprunter séparément les ouvrages originaux. Ces notes ne constituent pas un conseil financier.</div>
+<div class="grid">
+<article class="card book"><div class="book-cover cover-ti"><small>GUIDE D’ÉTUDE ICTFOREX</small><strong>THE INTELLIGENT INVESTOR</strong><em>INVESTISSEMENT VALUE</em></div><div><h2>L’Investisseur intelligent</h2><p class="by">Benjamin Graham</p><p>Investissement dans la valeur, M. Marché, approche défensive et marge de sécurité.</p><a class="read" href="/fr/intelligent-investor.html">Lire les notes d’étude →</a></div></article>
+<article class="card book"><div class="book-cover cover-sa"><small>GUIDE D’ÉTUDE ICTFOREX</small><strong>ANALYSE FINANCIÈRE</strong><em>CLASSIQUE DE 1934 · NOTES</em></div><div><h2>Security Analysis : l’édition classique de 1934</h2><p class="by">Benjamin Graham & David L. Dodd</p><p>États financiers, capacité bénéficiaire, créances obligataires et rigueur de l’évaluation.</p><a class="read" href="/fr/security-analysis.html">Lire les notes d’étude →</a></div></article>
+<article class="card book"><div class="book-cover cover-rd"><small>GUIDE D’ÉTUDE ICTFOREX</small><strong>PÈRE RICHE, PÈRE PAUVRE</strong><em>CULTURE FINANCIÈRE</em></div><div><h2>Père riche, père pauvre</h2><p class="by">Robert T. Kiyosaki</p><p>Éducation financière, flux de trésorerie, actifs, passifs et habitudes liées à l’argent.</p><a class="read" href="/fr/rich-dad-poor-dad.html">Lire les notes d’étude →</a></div></article>
+<article class="card book"><div class="book-cover cover-tv"><small>GUIDE D’ÉTUDE ICTFOREX</small><strong>TRADER LA VOLATILITÉ</strong><em>OPTIONS · ASYMÉTRIE</em></div><div><h2>Trading Volatility : corrélation, structure par terme et asymétrie</h2><p class="by">Colin Bennett</p><p>Options, volatilité implicite, lettres grecques, asymétrie, structure par terme et corrélation.</p><a class="read" href="/fr/trading-volatility.html">Lire les notes d’étude →</a></div></article>
+<article class="card book"><div class="book-cover cover-tm"><small>GUIDE D’ÉTUDE ICTFOREX</small><strong>LE PREMIER MANUEL DE TRADING</strong><em>ACTION DES PRIX</em></div><div><h2>Le premier manuel de trading : cours fondamental et stratégies</h2><p class="by">Tom Hougaard</p><p>Structure du marché, action des prix, gestion des positions et psychologie du trading.</p><a class="read" href="/fr/trading-manual-tom.html">Lire les notes d’étude →</a></div></article>
+</div>
+<div class="callout">Réservé à un usage pédagogique. Le trading et l’investissement comportent des risques, notamment la perte du capital. Les options et les produits à effet de levier peuvent présenter des risques importants.</div>
+<div class="actions"><a class="btn" href="/fr/index.html">← Retour à l’accueil</a></div></main>
+<footer><div class="wrap">© 2026 ICT Forex Academy · <a href="/fr/privacy-policy.html">Politique de confidentialité et conditions</a></div></footer>
+<script src="/assets/js/cinematic-scroll.js" defer></script>
+</body></html>
