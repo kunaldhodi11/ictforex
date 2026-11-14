@@ -201,7 +201,7 @@
       const authLink = document.getElementById('auth-nav-link');
       if (!authLink) return;
       if (user) {
-        authLink.innerHTML = 'Sign out <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:6px"></i>';
+        authLink.innerHTML = 'تسجيل الخروج <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:6px"></i>';
         authLink.href = "#";
         authLink.onclick = async (e) => {
           e.preventDefault();
@@ -240,7 +240,7 @@
         localStorage.setItem('userName', userData.fullName || user.displayName || "مستخدم");
         localStorage.setItem('userAccess', userData.accessLevel || userData.courseAccess || "Free");
 
-        showMsg("تسجيل الدخول successful. Redirecting…", "success");
+        showMsg("تم تسجيل الدخول بنجاح. جارٍ التحويل…", "success");
         window.setTimeout(() => { window.location.href = "/ar/"; }, 900);
       } catch (error) {
         let message = "تعذّر تسجيل دخولك. يرجى المحاولة مرة أخرى.";
