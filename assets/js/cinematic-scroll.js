@@ -80,6 +80,11 @@
     document.head.appendChild(css);
   }
 
+  /* Only the homepage has published cinematic MP4 assets. Avoid requesting
+     missing page-specific videos (or falling back to the 19MB homepage file)
+     on every inner page; keep the lightweight reveal effects above. */
+  if(window.location.pathname!=='/'&&window.location.pathname!=='/index.html')return;
+
   /* Homepage video path. Other page-specific paths will be configured as those pages are integrated. */
   var mobileVideoMode=!!(window.matchMedia&&window.matchMedia('(max-width: 760px), (pointer: coarse)').matches);
   var homeVideoDesktop='/assets/videos/home-journey.mp4?v=20261109-1';
