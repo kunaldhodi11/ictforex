@@ -105,7 +105,7 @@ function initChart(){
 function drawChart(bars,results){
  initChart();if(!state.candleSeries)return;
  const data=bars.map(x=>({time:Math.floor(Date.parse(x.openTime)/1000),open:x.open,high:x.high,low:x.low,close:x.close})).filter(x=>Number.isFinite(x.time)).sort((a,b)=>a.time-b.time);
- state.candleSeries.setData(data);state.liveCandle=null;state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
+ state.candleSeries.setData(data);state.chart.timeScale().fitContent();state.liveCandle=null;state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
  const best=results[0];const colors={Entry:'#70b9e8',Stop:'#f07878',Target:'#36d39a'};
  if(best){[['Entry',best.entry],['Stop',best.stop],['Target',best.target]].forEach(([title,price])=>state.lines.push(state.candleSeries.createPriceLine({price,title,color:colors[title],lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true})))}
  const lookback=bars.slice(-30,-1),buySide=Math.max(...lookback.map(x=>x.high)),sellSide=Math.min(...lookback.map(x=>x.low));
@@ -115,7 +115,7 @@ function drawChart(bars,results){
 
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
- state.chart.timeScale().fitContent();$('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase();$('chartStatus').textContent=data.length+' candles loaded';$('chartFoot').textContent=best?'Top setup levels: Entry, Stop and 2R Target. Pattern labels are heuristic candle detections.':'No qualifying ICT setup in this candle window; chart remains available.';
+ $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase();$('chartStatus').textContent=data.length+' candles loaded';$('chartFoot').textContent=best?'Top setup levels: Entry, Stop and 2R Target. Pattern labels are heuristic candle detections.':'No qualifying ICT setup in this candle window; chart remains available.';
 }
 function render(data){
  $('price').textContent=fmt(data.tick.mid);$('change').textContent=data.tick.dayDiffPercent==null?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
