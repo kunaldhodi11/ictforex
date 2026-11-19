@@ -50,3 +50,20 @@ body{background:radial-gradient(1000px 520px at 50% -18%,#20384a55,transparent 7
 .disclaimer{border-radius:0 10px 10px 0;background:#d9b76b0a}
 @media(max-width:900px){.setup-columns{grid-template-columns:1fr}.hero{padding:18px}}
 @media(max-width:520px){.wrap{padding-top:18px}.hero{padding:16px}.stats article{min-height:100px}.setup-columns{gap:10px}.direction-board{padding:10px}}
+
+/* Expanded Market X-Ray: structure, liquidity and timeframe matrix */
+.xray-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+.xray-detail-grid article{background:#0b1420;border:1px solid var(--line);border-radius:11px;padding:13px;min-width:0}
+.xray-detail-grid small,.xray-detail-grid span{display:block;color:var(--muted);font-size:9px;letter-spacing:.09em}
+.xray-detail-grid b{display:block;font-size:16px;margin:7px 0;overflow-wrap:anywhere}
+.xray-detail-grid span{font-size:10px;letter-spacing:0;line-height:1.5}
+.xray-mtf{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
+.xray-subhead{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}
+.xray-subhead b{font-size:10px;letter-spacing:.12em}.xray-subhead small{color:var(--muted);font-size:9px}
+.xray-mtf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.xray-mtf-cell{display:grid;gap:5px;padding:12px;background:#0a131f;border:1px solid var(--line);border-radius:10px;min-width:0}
+.xray-mtf-cell small{font-size:9px;color:var(--gold);letter-spacing:.12em;font-weight:800}
+.xray-mtf-cell b{font-size:12px;overflow-wrap:anywhere}
+.xray-mtf-cell span{font-size:9px;color:var(--muted)}
+@media(max-width:800px){.xray-detail-grid,.xray-mtf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.xray-detail-grid article{padding:10px}.xray-detail-grid b{font-size:14px}.xray-subhead{display:block}.xray-subhead small{display:block;margin-top:4px}}
