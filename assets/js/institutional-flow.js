@@ -2,9 +2,32 @@
 'use strict';
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
-const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[]};
+const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
+function updateLiveTick(tick){
+ if(!tick||!tick.symbol||String(tick.symbol).toUpperCase()!==String(state.symbol||'').toUpperCase())return;
+ const mid=num(tick.mid);if(mid===null)return;
+ $('price').textContent=fmt(mid);
+ if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
+ if(tick.marketState)$('marketStatus').textContent=tick.marketState;
+ $('quoteAge').textContent=tick.timestamp?age(tick.timestamp):'Live tick received';
+ $('feedState').textContent='LIVE STREAM';
+ $('updated').textContent='Tick '+new Date().toLocaleTimeString();
+}
+async function connectLive(symbol){
+ if(!window.signalR||!window.signalR.HubConnectionBuilder){$('feedState').textContent='REST SNAPSHOT';return}
+ if(!state.hub){
+  state.hub=new signalR.HubConnectionBuilder().withUrl('https://biquote.io/hubs/tick').withAutomaticReconnect().build();
+  state.hub.on('ReceiveTick',payload=>{(Array.isArray(payload)?payload:[payload]).forEach(updateLiveTick)});
+  state.hub.onreconnecting(()=>{$('feedState').textContent='STREAM RECONNECTING'});
+  state.hub.onreconnected(async()=>{state.subscribedSymbol=null;if(state.symbol)await connectLive(state.symbol)});
+ }
+ if(state.subscribedSymbol===symbol&&state.hub.state===signalR.HubConnectionState.Connected)return;
+ if(state.hub.state!==signalR.HubConnectionState.Connected)await state.hub.start();
+ if(state.subscribedSymbol!==symbol){await state.hub.invoke('Subscribe',[symbol]);state.subscribedSymbol=symbol}
+ $('feedState').textContent='LIVE STREAM CONNECTED';
+}
 function num(v){return typeof v==='number'&&Number.isFinite(v)?v:null}
 function fmt(v){return v==null?'—':v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function age(ts){if(!ts)return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-Date.parse(ts))/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
@@ -66,7 +89,7 @@ function render(data){
  $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent=state.tf.toUpperCase();
  $('feedState').textContent=data.tick.stale?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  $('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+data.analysis.bars.length+' completed '+state.tf+' candles analysed.';
- drawChart(data.analysis.bars,data.analysis.results);renderXray(data.analysis.bars);
+ drawChart(data.analysis.bars,data.analysis.results);renderXray(data.analysis.bars);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
  const list=$('setupList');list.innerHTML='';
  if(!data.analysis.results.length){list.innerHTML='<div class="empty">No qualifying setup found in the latest completed candles. The scanner will not invent a trade.</div>'}
  data.analysis.results.forEach((r,i)=>{const div=document.createElement('article');div.className='setup';const dir=document.createElement('div');dir.innerHTML='<div class="direction '+r.side+'">'+r.side.toUpperCase()+'</div><h3>'+r.type+'</h3><div class="muted">Rank #'+(i+1)+' · '+new Date(r.time).toLocaleString()+'</div>';const levels=document.createElement('div');levels.className='levels';[['ENTRY',r.entry],['STOP',r.stop],['TARGET',r.target]].forEach(([k,v])=>{const d=document.createElement('div');d.innerHTML='<small>'+k+'</small><b>'+fmt(v)+'</b>';levels.appendChild(d)});const why=document.createElement('div');why.className='muted';why.textContent=r.reason;const score=document.createElement('div');score.className='score';score.innerHTML='<b>'+r.score+'</b><small>CONFLUENCE / 100</small><small>'+r.rr+' R:R</small>';div.append(dir,levels,why,score);list.appendChild(div)});
@@ -74,7 +97,7 @@ function render(data){
 }
 async function scan(){
  $('feedState').textContent='SCANNING';$('setupList').innerHTML='<div class="loading">Fetching feed and analysing completed candles…</div>';
- try{const symbol=await resolveSymbol(state.market);state.symbol=symbol;const [tick,raw]=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+state.tf+'&limit=100')]);const bars=raw.bars||raw.data||raw.candles||[];const analysis=analyze(bars);render({symbol,tick,analysis})}
+ try{const symbol=await resolveSymbol(state.market);state.symbol=symbol;connectLive(symbol).catch(()=>{$('feedState').textContent='REST SNAPSHOT';});const [tick,raw]=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+state.tf+'&limit=100')]);const bars=raw.bars||raw.data||raw.candles||[];const analysis=analyze(bars);render({symbol,tick,analysis})}
  catch(e){$('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';$('setupList').innerHTML='';const d=document.createElement('div');d.className='empty';d.textContent=e.message+' No placeholder prices or signals are displayed. Try again later or switch market.';$('setupList').appendChild(d);$('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable'}
 }
 document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;scan()}));
