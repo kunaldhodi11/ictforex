@@ -2,7 +2,7 @@
 'use strict';
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
-const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false};
+const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
@@ -161,7 +161,7 @@ function renderRadarError(market,error){
  set('State','UNAVAILABLE');set('Price','—');set('Bias','Unavailable');set('Setups','—');set('Best',error.message);set('Time','Last scan failed');
 }
 async function scan(){
- if(state.scanning)return;state.scanning=true;
+ if(state.scanning){state.scanRequested=true;return}state.scanning=true;
  $('feedState').textContent='SCANNING BOTH MARKETS';$('radarStatus').textContent='SCANNING';
  $('setupList').innerHTML='<div class="loading">Scanning XAUUSD and NAS100 market data…</div>';
  try{
@@ -177,7 +177,7 @@ async function scan(){
   $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';$('setupList').innerHTML='';
   const d=document.createElement('div');d.className='empty';d.textContent=e.message+' No placeholder prices or signals are displayed. Try again later.';$('setupList').appendChild(d);
   $('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable';
- }finally{state.scanning=false}
+ }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
 document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;scan()}));
 $('timeframe').addEventListener('change',e=>{state.tf=e.target.value;state.liveCandle=null;scan()});
