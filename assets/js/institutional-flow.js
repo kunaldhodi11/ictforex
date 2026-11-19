@@ -69,21 +69,74 @@ function analyze(bars){
  const b=bars.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
  if(b.length<25)throw Error('Not enough completed candles for a reliable scan.');
  const last=b[b.length-1],prior=b.slice(-21,-1),hi=Math.max(...prior.map(x=>x.high)),lo=Math.min(...prior.map(x=>x.low));
- const bodyAvg=avg(b.slice(-21,-1).map(x=>Math.abs(x.close-x.open)));
+ const body=(c)=>Math.abs(c.close-c.open),range=(c)=>Math.max(c.high-c.low,Math.abs(c.high-c.close),Math.abs(c.low-c.close));
+ const bodyAvg=avg(b.slice(-21,-1).map(body)),atr=avg(b.slice(-15).map(range));
  const results=[];
- // Sweep: last completed candle trades beyond prior 20-bar extreme and closes back inside.
- if(last.low<lo&&last.close>lo){results.push({side:'bullish',type:'Sell-side liquidity sweep',zone:[lo,last.low],score:74,reason:'Wick traded below the prior 20-candle low and the completed candle reclaimed the level. Candle colour is not used as a confirmation shortcut.'})}
- if(last.high>hi&&last.close<hi&&last.close<last.open){results.push({side:'bearish',type:'Buy-side liquidity sweep',zone:[last.high,hi],score:72,reason:'Price ran above the recent range high and closed back below it.'})}
- // Three-candle fair value gap, using the latest completed triplet.
- const a=b[b.length-3],c=b[b.length-1];
- if(c.low>a.high){results.push({side:'bullish',type:'Bullish fair value gap',zone:[a.high,c.low],score:60,reason:'Three-candle imbalance detected in completed candles.'})}
- if(c.high<a.low){results.push({side:'bearish',type:'Bearish fair value gap',zone:[c.high,a.low],score:60,reason:'Three-candle imbalance detected in completed candles.'})}
- // Displacement + last opposite candle as a candidate order block.
- const p=b[b.length-2],swingHigh=Math.max(...b.slice(-8,-2).map(x=>x.high)),swingLow=Math.min(...b.slice(-8,-2).map(x=>x.low));
- if(last.close>last.open&&Math.abs(last.close-last.open)>bodyAvg*1.35&&last.close>swingHigh&&p.close<p.open){results.push({side:'bullish',type:'Bullish order block candidate',zone:[p.low,p.high],score:68,reason:'Bullish displacement broke a recent local high; prior down candle marked as candidate OB.'})}
- if(last.close<last.open&&Math.abs(last.close-last.open)>bodyAvg*1.35&&last.close<swingLow&&p.close>p.open){results.push({side:'bearish',type:'Bearish order block candidate',zone:[p.low,p.high],score:68,reason:'Bearish displacement broke a recent local low; prior up candle marked as candidate OB.'})}
- // Confluence adds modestly when several same-side patterns coexist.
- results.forEach(r=>{const same=results.filter(x=>x.side===r.side).length;r.score=Math.min(95,r.score+(same-1)*8);const mid=(r.zone[0]+r.zone[1])/2;const risk=Math.max(Math.abs(last.close-mid)*0.65,(r.zone[1]-r.zone[0])*0.6,Math.abs(last.close)*0.00015);r.entry=mid;r.stop=r.side==='bullish'?Math.min(...r.zone)-risk:Math.max(...r.zone)+risk;const rrRisk=Math.abs(r.entry-r.stop),poolCandidates=r.side==='bullish'?b.slice(-30,-1).map(x=>x.high).filter(v=>v>r.entry).sort((a,b)=>a-b):b.slice(-30,-1).map(x=>x.low).filter(v=>v<r.entry).sort((a,b)=>b-a);const liquidityTarget=poolCandidates.length?poolCandidates[0]:null;const liquidityRR=liquidityTarget===null?0:Math.abs(liquidityTarget-r.entry)/rrRisk;if(liquidityTarget!==null&&liquidityRR>=1.5){r.target=liquidityTarget;r.targetSource='Nearest opposing liquidity';r.rr='1:'+liquidityRR.toFixed(1)}else{r.target=r.side==='bullish'?r.entry+2*rrRisk:r.entry-2*rrRisk;r.targetSource='2R fallback (no nearby liquidity target with 1.5R room)';r.rr='1:2'}r.status='WAITING FOR ZONE';r.time=last.openTime});
+ // Liquidity sweep: wick through a prior range extreme followed by a completed close back inside.
+ if(last.low<lo&&last.close>lo)results.push({side:'bullish',type:'Sell-side liquidity sweep',zone:[lo,last.low],score:74,reason:'Completed candle swept below the prior 20-candle low and reclaimed it.'});
+ if(last.high>hi&&last.close<hi)results.push({side:'bearish',type:'Buy-side liquidity sweep',zone:[hi,last.high],score:74,reason:'Completed candle swept above the prior 20-candle high and reclaimed it.'});
+ // FVG lifecycle: detect historical three-candle gaps, then inspect every later closed candle.
+ const fvgCandidates=[];
+ for(let i=Math.max(2,b.length-45);i<b.length;i++){
+  const left=b[i-2],middle=b[i-1],right=b[i];
+  if(right.low>left.high){
+   const lower=left.high,upper=right.low,subsequent=b.slice(i+1),filled=subsequent.some(c=>c.low<=lower);
+   const touched=subsequent.some(c=>c.low<upper);
+   const invalid=subsequent.some(c=>c.close<lower);
+   if(!filled&&!invalid)fvgCandidates.push({side:'bullish',type:'Bullish fair value gap',zone:[lower,upper],score:62,reason:'Three-candle imbalance remains '+(touched?'partially mitigated':'fresh')+'; full fill and close invalidation have not occurred.',lifecycle:touched?'PARTIALLY MITIGATED':'FRESH',originIndex:i});
+  }
+  if(right.high<left.low){
+   const lower=right.high,upper=left.low,subsequent=b.slice(i+1),filled=subsequent.some(c=>c.high>=upper);
+   const touched=subsequent.some(c=>c.high>lower);
+   const invalid=subsequent.some(c=>c.close>upper);
+   if(!filled&&!invalid)fvgCandidates.push({side:'bearish',type:'Bearish fair value gap',zone:[lower,upper],score:62,reason:'Three-candle imbalance remains '+(touched?'partially mitigated':'fresh')+'; full fill and close invalidation have not occurred.',lifecycle:touched?'PARTIALLY MITIGATED':'FRESH',originIndex:i});
+  }
+ }
+ fvgCandidates.sort((x,y)=>y.originIndex-x.originIndex);
+ fvgCandidates.slice(0,2).forEach(x=>results.push(x));
+ // Displacement requires range expansion, meaningful body, close near candle extreme and a confirmed swing break.
+ const priorBars=b.slice(-9,-1),swingHigh=Math.max(...priorBars.map(x=>x.high)),swingLow=Math.min(...priorBars.map(x=>x.low));
+ const candleRange=Math.max(last.high-last.low,Number.EPSILON),closeLocation=(last.close-last.low)/candleRange;
+ const displacement=body(last)>=Math.max(bodyAvg*1.5,atr*0.65);
+ const bullishDisplacement=displacement&&last.close>last.open&&closeLocation>=0.75&&last.close>swingHigh;
+ const bearishDisplacement=displacement&&last.close<last.open&&closeLocation<=0.25&&last.close<swingLow;
+ if(bullishDisplacement||bearishDisplacement){
+  const side=bullishDisplacement?'bullish':'bearish';
+  // Search backward for the last opposite candle immediately preceding the impulse sequence.
+  let obIndex=-1;
+  for(let i=b.length-2;i>=Math.max(0,b.length-5);i--){
+   if(side==='bullish'&&b[i].close<b[i].open){obIndex=i;break}
+   if(side==='bearish'&&b[i].close>b[i].open){obIndex=i;break}
+  }
+  if(obIndex>=0){
+   const ob=b[obIndex],later=b.slice(obIndex+1),invalid=side==='bullish'?later.some(c=>c.close<ob.low):later.some(c=>c.close>ob.high);
+   const mitigated=side==='bullish'?later.some(c=>c.low<=ob.high):later.some(c=>c.high>=ob.low);
+   if(!invalid)results.push({side,type:(side==='bullish'?'Bullish':'Bearish')+' order block',zone:[ob.low,ob.high],score:70,reason:'Confirmed displacement broke a recent swing with an expanded body and close near the candle extreme; last opposite candle is the OB reference, not proof of institutional orders.',lifecycle:mitigated?'MITIGATED':'FRESH',displacement:{bodyRatio:bodyAvg?body(last)/bodyAvg:0,atrRatio:atr?range(last)/atr:0,closeLocation}});
+  }
+ }
+ // Build opposing liquidity from confirmed swing pivots, not arbitrary candle highs/lows.
+ const pivots=[];
+ for(let i=Math.max(2,b.length-32);i<b.length-2;i++){
+  if(b[i].high>b[i-1].high&&b[i].high>b[i-2].high&&b[i].high>=b[i+1].high&&b[i].high>=b[i+2].high)pivots.push({side:'high',price:b[i].high});
+  if(b[i].low<b[i-1].low&&b[i].low<b[i-2].low&&b[i].low<=b[i+1].low&&b[i].low<=b[i+2].low)pivots.push({side:'low',price:b[i].low});
+ }
+ const tolerance=Math.max(Math.abs(last.close)*0.00035,(hi-lo)*0.008);
+ const pools=(side)=>{const items=pivots.filter(p=>p.side===side);return items.filter((p,i)=>items.slice(0,i).some(q=>Math.abs(q.price-p.price)<=tolerance)).map(p=>p.price)};
+ const bsl=pools('high'),ssl=pools('low');
+ results.forEach(r=>{
+  const same=results.filter(x=>x.side===r.side).length;
+  r.score=Math.min(95,r.score+(same-1)*5);
+  const mid=(r.zone[0]+r.zone[1])/2;r.entry=mid;
+  const zoneRisk=Math.max(r.zone[1]-r.zone[0],Math.abs(last.close)*0.0001);
+  const risk=Math.max(Math.abs(r.entry-(r.side==='bullish'?r.zone[0]:r.zone[1]))+zoneRisk*0.25,Math.abs(last.close)*0.00015);
+  r.stop=r.side==='bullish'?Math.min(...r.zone)-risk*0.25:Math.max(...r.zone)+risk*0.25;
+  const riskSize=Math.abs(r.entry-r.stop);
+  const candidates=(r.side==='bullish'?bsl.filter(v=>v>r.entry):ssl.filter(v=>v<r.entry)).sort((a,b)=>r.side==='bullish'?a-b:b-a);
+  const target=candidates.find(v=>Math.abs(v-r.entry)/riskSize>=1.5);
+  if(target!==undefined){r.target=target;r.targetSource='Confirmed opposing swing-liquidity pool';r.rr='1:'+(Math.abs(target-r.entry)/riskSize).toFixed(1)}
+  else{r.target=r.side==='bullish'?r.entry+2*riskSize:r.entry-2*riskSize;r.targetSource='2R fallback; no confirmed opposing pool offers at least 1.5R';r.rr='1:2'}
+  r.status='WAITING FOR ZONE';r.time=last.openTime;
+ });
  return {bars:b,last,results:results.sort((x,y)=>y.score-x.score),bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':'Bearish',hi,lo};
 }
 function getMarketXray(bars){
