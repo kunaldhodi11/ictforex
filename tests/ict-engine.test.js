@@ -116,3 +116,41 @@ test('Market X-Ray confirms bullish CHOCH only after close breaks a bearish swin
   assert.equal(xray.structure, 'Bullish CHOCH');
   assert.equal(xray.brokenLevel, 108);
 });
+
+
+test('does not promote an isolated FVG to a trade setup', () => {
+  const bars = baseBars();
+  bars[20] = candle(20, { high: 101, low: 99 });
+  bars[21] = candle(21, { high: 103.5, low: 102.5, open: 102.7, close: 103.3 });
+  bars[22] = candle(22, { high: 104, low: 103, open: 103.2, close: 103.7 });
+  bars[23] = candle(23, { high: 104, low: 103.2, open: 103.5, close: 103.4 });
+  bars[24] = candle(24, { high: 104, low: 103.1, open: 103.4, close: 103.3 });
+  assert.equal(analyze(bars).results.length, 0);
+});
+
+test('requires sweep then displacement/MSS then a linked FVG before showing a setup', () => {
+  const bars = baseBars();
+  bars[18] = candle(18, { open: 100, high: 101, low: 97.5, close: 100.2 });
+  bars[19] = candle(19, { open: 100, high: 101, low: 99, close: 100.2 });
+  bars[20] = candle(20, { open: 100, high: 101, low: 99, close: 100.3 });
+  bars[21] = candle(21, { open: 100, high: 101, low: 99, close: 100.2 });
+  bars[22] = candle(22, { open: 100, high: 101, low: 99, close: 100.2 });
+  bars[23] = candle(23, { open: 100, high: 104, low: 100, close: 103.8 });
+  bars[24] = candle(24, { open: 103.5, high: 104.5, low: 103.2, close: 104 });
+  const result = analyze(bars);
+  assert.ok(result.results.some(item => item.side === 'bullish' && item.type.includes('Bullish MSS setup')));
+  assert.ok(result.results[0].reason.includes('liquidity sweep'));
+  assert.equal(result.results[0].status, 'WAITING FOR RETRACEMENT');
+});
+
+test('does not show a linked setup after its sweep extreme is invalidated', () => {
+  const bars = baseBars();
+  bars[18] = candle(18, { open: 100, high: 101, low: 97.5, close: 100.2 });
+  bars[19] = candle(19, { open: 100, high: 101, low: 99, close: 100.2 });
+  bars[20] = candle(20, { open: 100, high: 101, low: 99, close: 100.3 });
+  bars[21] = candle(21, { open: 100, high: 101, low: 99, close: 100.2 });
+  bars[22] = candle(22, { open: 100, high: 101, low: 99, close: 100.2 });
+  bars[23] = candle(23, { open: 100, high: 104, low: 100, close: 103.8 });
+  bars[24] = candle(24, { open: 98, high: 99, low: 97, close: 98 });
+  assert.equal(analyze(bars).results.length, 0);
+});
