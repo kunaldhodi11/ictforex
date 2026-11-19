@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Forex, Gold, NAS100 &amp; Bitcoin Heatmap | ICT Forex Academy</title>
+<meta name="description" content="Free live market heatmap for 28 forex pairs, XAUUSD gold, NAS100, US30 and BTCUSD with a currency strength meter. Prices are indicative and may be delayed.">
+<meta name="robots" content="index, follow, max-image-preview:large"><link rel="canonical" href="https://ictforex.in/market-heatmap.html">
+<link rel="alternate" hreflang="en" href="https://ictforex.in/market-heatmap.html">
+<link rel="alternate" hreflang="x-default" href="https://ictforex.in/market-heatmap.html">
+<link rel="preconnect" href="https://biquote.io" crossorigin>
+<script src="https://cdn.tailwindcss.com" defer></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="/assets/css/site-polish.css"><link rel="stylesheet" href="/assets/css/market-heatmap.css">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ictforex.in/market-heatmap.html">
+<meta property="og:title" content="Live Forex, Gold, NAS100 &amp; Bitcoin Heatmap | ICT Forex Academy">
+<meta property="og:description" content="Free live market heatmap for 28 forex pairs, XAUUSD gold, NAS100, US30 and BTCUSD with a currency strength meter. Prices are indicative and may be delayed.">
+<meta property="og:image" content="https://ictforex.in/images/social-preview/ict-forex-social.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="ICT Forex Academy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Live Forex, Gold, NAS100 &amp; Bitcoin Heatmap | ICT Forex Academy">
+<meta name="twitter:description" content="Free live market heatmap for 28 forex pairs, XAUUSD gold, NAS100, US30 and BTCUSD with a currency strength meter. Prices are indicative and may be delayed.">
+<meta name="twitter:image" content="https://ictforex.in/images/social-preview/ict-forex-social.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Live Forex, Gold, NAS100 & Bitcoin Heatmap | ICT Forex Academy","url":"https://ictforex.in/market-heatmap.html","description":"Free live market heatmap for 28 forex pairs, XAUUSD gold, NAS100, US30 and BTCUSD with a currency strength meter. Prices are indicative and may be delayed.","isPartOf":{"@type":"WebSite","name":"ICT Forex Academy","url":"https://ictforex.in/"},"inLanguage":"en"}</script>
+</head><body class="min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 bg-[#131b2e]/95 backdrop-blur border-b border-gray-800 shadow-xl"><div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-3"><a href="index.html" class="flex items-center gap-2.5"><span class="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 via-orange-500 to-green-500 p-0.5"><span class="w-full h-full rounded-full bg-[#131b2e] flex items-center justify-center text-sm font-black text-white">ICT</span></span><span><strong class="block text-[11px] md:text-sm tracking-wider text-white">ICT FOREX ACADEMY</strong><small class="block text-[9px] text-gray-400">Forex Education · Free Tools</small></span></a><nav class="hidden md:flex items-center gap-5 text-xs font-bold text-gray-300"><a href="index.html">Home</a><a href="free-learning.html">Free Learning</a><a href="market-heatmap.html" class="text-green-400" aria-current="page">Market Heatmap</a><a href="rules.html">Trading Rules</a><a href="about.html">About Us</a><a href="vip-course.html">VIP Academy</a></nav><a href="index.html" class="mh-back border border-green-500/30 bg-gray-800 text-green-400"><i class="fa-solid fa-arrow-left"></i><span class="hidden sm:inline">Back to Home</span><span class="sm:hidden">Home</span></a></div></header>
+
+<main class="flex-1"><div class="mh-wrap">
+
+<section class="mh-card mh-hero">
+  <span class="mh-pill"><i class="fa-solid fa-chart-simple"></i> FREE TOOL · LIVE MARKET VIEW</span>
+  <h1>Live Market Heatmap</h1>
+  <p class="mh-lead">28 forex pairs, Gold, NAS100, US30 and Bitcoin in one screen. See what is rising or falling since the daily open, and which currencies are strongest right now.</p>
+  <div class="mh-statusbar">
+    <span class="mh-state" id="mhState" role="status" aria-live="polite" data-state="connecting"><i class="mh-dot"></i><span id="mhStateText">Connecting to price feed…</span></span>
+    <span class="mh-updated" id="mhUpdated"></span>
+  </div>
+  <noscript><p class="mh-noscript">This heatmap needs JavaScript to load prices. Please enable JavaScript and reload the page.</p></noscript>
+</section>
+
+<section class="mh-summary" aria-label="Market summary">
+  <div class="mh-stat"><small>Rising</small><strong id="mhRising" class="mh-up-text">–</strong></div>
+  <div class="mh-stat"><small>Falling</small><strong id="mhFalling" class="mh-down-text">–</strong></div>
+  <div class="mh-stat"><small>Strongest currency</small><strong id="mhStrongest">–</strong></div>
+  <div class="mh-stat"><small>Weakest currency</small><strong id="mhWeakest">–</strong></div>
+</section>
+
+<section class="mh-controls" aria-label="Heatmap controls">
+  <div class="mh-chips" role="group" aria-label="Filter markets">
+    <button type="button" class="mh-chip is-active" data-filter="all" aria-pressed="true">All markets</button>
+    <button type="button" class="mh-chip" data-filter="key" aria-pressed="false">Gold · Indices · Bitcoin</button>
+    <button type="button" class="mh-chip" data-filter="majors" aria-pressed="false">Forex majors</button>
+    <button type="button" class="mh-chip" data-filter="crosses" aria-pressed="false">Forex crosses</button>
+  </div>
+  <button type="button" class="mh-chip mh-sort" id="mhSort" aria-pressed="false"><i class="fa-solid fa-arrow-down-wide-short"></i> Sort by biggest move</button>
+</section>
+
+<section class="mh-block" id="mhKeySection" aria-labelledby="mhKeyTitle">
+  <h2 id="mhKeyTitle" class="mh-h2">Gold, Indices &amp; Bitcoin</h2>
+  <div class="mh-grid mh-grid-key" id="mhKeyGrid"></div>
+</section>
+
+<section class="mh-block" id="mhFxSection" aria-labelledby="mhFxTitle">
+  <h2 id="mhFxTitle" class="mh-h2">Forex pairs</h2>
+  <div class="mh-grid" id="mhFxGrid"></div>
+</section>
+
+<section class="mh-card mh-block mh-strength" id="mhStrengthSection" aria-labelledby="mhStrTitle">
+  <p class="mh-kicker">Currency strength</p>
+  <h2 id="mhStrTitle" class="mh-h2">Which currencies are strongest today?</h2>
+  <p class="mh-copy">Each bar is the average move of that currency against the other seven, since the daily open. It is a quick snapshot, not an official index.</p>
+  <div class="mh-bars" id="mhBars"></div>
+</section>
+
+<section class="mh-card mh-block" aria-labelledby="mhHowTitle">
+  <p class="mh-kicker">How to read this page</p>
+  <h2 id="mhHowTitle" class="mh-h2">What the colours and numbers mean</h2>
+  <ul class="mh-list">
+    <li><strong>Change</strong> is the move from the daily open to the latest price, as reported by the data feed. It is not measured from yesterday's close.</li>
+    <li><strong>Green</strong> means the market is above its daily open, <strong>red</strong> means below. A stronger colour means a bigger move. Full colour is reached at about 1% for forex pairs, 2% for Gold and indices, and 5% for Bitcoin.</li>
+    <li><strong>Grey or "N/A"</strong> means the feed did not give a value for that market. We never fill gaps with made-up numbers.</li>
+    <li><strong>Currency strength</strong> averages the moves of all pairs containing that currency. It helps you see which currencies are leading and lagging, nothing more.</li>
+    <li>Forex, Gold and indices are closed at weekends, so you will see the last prices from the previous session.</li>
+  </ul>
+</section>
+
+<section class="mh-card mh-block" aria-labelledby="mhFaqTitle">
+  <p class="mh-kicker">Questions</p>
+  <h2 id="mhFaqTitle" class="mh-h2">Heatmap FAQ</h2>
+  <details class="mh-faq"><summary>Is this a trading signal?</summary><p>No. The heatmap only shows how markets have moved so far today. A green tile is not a recommendation to buy and a red tile is not a recommendation to sell.</p></details>
+  <details class="mh-faq"><summary>Why do prices differ from my broker?</summary><p>The prices come from a third-party feed and are indicative. They can be delayed, interrupted, incomplete or different from the prices on your broker platform. Always trade from your own broker's prices.</p></details>
+  <details class="mh-faq"><summary>Where does the data come from?</summary><p>Prices are loaded directly in your browser from the free <a href="https://biquote.io" rel="noopener noreferrer" target="_blank">biquote</a> market data service. This website does not store or resell the prices. Because your browser contacts biquote.io, that service can see your IP address, as with any website you visit.</p></details>
+  <details class="mh-faq"><summary>Why is a market missing or showing N/A?</summary><p>Some instruments, especially index CFDs such as NAS100 and US30, may not always be offered by the free feed. When that happens the tile shows N/A instead of a guess.</p></details>
+</section>
+
+<p class="mh-disclaimer">Educational tool only. Prices are indicative, may be delayed or wrong, and are not financial advice or a recommendation to buy or sell any instrument. Forex, CFD and crypto trading involve substantial risk and you can lose more than you deposit. Market data by <a href="https://biquote.io" rel="noopener noreferrer" target="_blank">biquote</a>.</p>
+
+</div></main>
+
+<dialog id="mhDialog" class="mh-dialog" aria-labelledby="mhDlgTitle">
+  <div class="mh-dlg-head"><div><h2 id="mhDlgTitle"></h2><p id="mhDlgSub"></p></div><button type="button" class="mh-dlg-close" id="mhDlgClose" aria-label="Close details">&times;</button></div>
+  <div class="mh-dlg-price" id="mhDlgPrice"></div>
+  <dl class="mh-dl" id="mhDlgList"></dl>
+  <p class="mh-dlg-note">Indicative price from a third-party feed. Not a trading signal.</p>
+</dialog>
+
+<footer class="bg-[#131b2e] border-t border-gray-800 py-6 text-center text-xs text-gray-400 space-y-2"><p>ICT Forex Academy © 2026. All rights reserved.</p><p><a href="privacy-policy.html" class="text-green-400 hover:underline font-bold">Privacy Policy &amp; Terms</a></p></footer>
+<script src="/assets/js/market-heatmap.js" defer></script></body></html>

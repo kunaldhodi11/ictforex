@@ -1,0 +1,146 @@
+/* ICT Forex Academy — Live Market Heatmap page
+   All classes are prefixed mh- so they cannot clash with the shared site styles. */
+:root{
+  --mh-bg:#0b0f19;--mh-card:#131b2e;--mh-card-2:#0d1423;--mh-line:#253047;
+  --mh-text:#f3f4f6;--mh-muted:#9aa5b3;--mh-gold:#fde047;
+  --mh-up:34,197,94;--mh-down:239,68,68;--mh-flat:148,163,184;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--mh-bg);color:var(--mh-text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+
+.mh-wrap{width:min(1120px,100%);margin:0 auto;padding:22px 16px 64px}
+.mh-card{background:linear-gradient(145deg,var(--mh-card),var(--mh-card-2));border:1px solid var(--mh-line);border-radius:20px}
+.mh-back{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:9px 14px;font-size:12px;font-weight:800;white-space:nowrap}
+
+/* Hero */
+.mh-hero{position:relative;overflow:hidden;text-align:center;padding:34px 18px 26px;margin-bottom:16px;
+  background:
+    radial-gradient(520px 220px at 12% 0%,rgba(var(--mh-up),.16),transparent 70%),
+    radial-gradient(520px 220px at 88% 0%,rgba(var(--mh-down),.14),transparent 70%),
+    linear-gradient(145deg,var(--mh-card),var(--mh-card-2))}
+.mh-pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;border:1px solid rgba(253,224,71,.3);background:rgba(253,224,71,.08);color:#fde047;font-size:10px;font-weight:900;letter-spacing:.12em;padding:8px 13px}
+.mh-hero h1{margin:16px 0 0;font-size:clamp(28px,6vw,46px);line-height:1.08;font-weight:900;color:#fff}
+.mh-lead{max-width:680px;margin:14px auto 0;font-size:14px;line-height:1.7;color:#cbd5e1}
+.mh-statusbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;margin-top:20px}
+.mh-state{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--mh-line);border-radius:999px;background:rgba(5,10,19,.55);padding:7px 14px;font-size:12px;font-weight:800;color:#cbd5e1}
+.mh-dot{width:9px;height:9px;border-radius:50%;background:#64748b;display:inline-block}
+.mh-state[data-state="live"] .mh-dot{background:rgb(var(--mh-up));box-shadow:0 0 0 0 rgba(var(--mh-up),.6);animation:mh-pulse 2s infinite}
+.mh-state[data-state="live"]{color:#86efac;border-color:rgba(var(--mh-up),.35)}
+.mh-state[data-state="closed"] .mh-dot{background:#f59e0b}
+.mh-state[data-state="closed"]{color:#fcd34d;border-color:rgba(245,158,11,.35)}
+.mh-state[data-state="delayed"] .mh-dot{background:#f59e0b}
+.mh-state[data-state="delayed"]{color:#fcd34d;border-color:rgba(245,158,11,.35)}
+.mh-state[data-state="error"] .mh-dot{background:rgb(var(--mh-down))}
+.mh-state[data-state="error"]{color:#fca5a5;border-color:rgba(var(--mh-down),.4)}
+.mh-state[data-state="connecting"] .mh-dot{background:#60a5fa;animation:mh-pulse 1.2s infinite}
+.mh-updated{font-size:12px;color:var(--mh-muted)}
+.mh-noscript{margin-top:16px;color:#fca5a5;font-size:13px}
+@keyframes mh-pulse{0%{box-shadow:0 0 0 0 rgba(var(--mh-up),.55)}70%{box-shadow:0 0 0 9px rgba(var(--mh-up),0)}100%{box-shadow:0 0 0 0 rgba(var(--mh-up),0)}}
+
+/* Summary */
+.mh-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.mh-stat{background:var(--mh-card);border:1px solid var(--mh-line);border-radius:16px;padding:12px 14px;min-width:0}
+.mh-stat small{display:block;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mh-muted)}
+.mh-stat strong{display:block;margin-top:4px;font-size:22px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mh-up-text{color:rgb(var(--mh-up))!important}.mh-down-text{color:rgb(var(--mh-down))!important}
+
+/* Controls */
+.mh-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.mh-chips{display:flex;flex-wrap:wrap;gap:8px}
+.mh-chip{border:1px solid var(--mh-line);background:#111a2b;color:#cbd5e1;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
+.mh-chip.is-active,.mh-chip[aria-pressed="true"]{background:rgba(var(--mh-up),.14);border-color:rgba(var(--mh-up),.5);color:#86efac}
+.mh-sort i{margin-right:6px}
+
+/* Sections */
+.mh-block{margin-bottom:22px}
+.mh-card.mh-block{padding:22px 18px}
+.mh-h2{margin:0 0 12px;font-size:19px;font-weight:900;color:#fff}
+.mh-card .mh-h2{margin-top:6px}
+.mh-kicker{margin:0;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--mh-gold)}
+.mh-copy{margin:0 0 14px;font-size:13px;line-height:1.7;color:#b6c0cf}
+
+/* Tiles */
+.mh-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(148px,1fr))}
+.mh-grid-key{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.mh-tile{--t:0;--c:var(--mh-flat);position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:8px;width:100%;min-height:96px;text-align:left;padding:12px 12px 10px;
+  border-radius:14px;border:1px solid rgba(var(--c),calc(.16 + var(--t) * .5));
+  background:linear-gradient(160deg,rgba(var(--c),calc(.05 + var(--t) * .34)),rgba(13,20,35,.94) 78%);
+  color:inherit;font:inherit;cursor:pointer;overflow:hidden;
+  transition:border-color .3s ease,background .3s ease,box-shadow .3s ease}
+.mh-tile.mh-up{--c:var(--mh-up)}.mh-tile.mh-down{--c:var(--mh-down)}.mh-tile.mh-flat{--c:var(--mh-flat)}
+.mh-tile.mh-na{--c:var(--mh-flat);opacity:.6;cursor:default}
+.mh-tile.mh-hot{box-shadow:0 0 0 1px rgba(var(--c),.5),0 0 22px rgba(var(--c),.26)}
+.mh-tile.mh-stale{opacity:.72}
+.mh-tile:focus-visible{outline:2px solid #60a5fa;outline-offset:3px}
+.mh-tile[hidden],.mh-block[hidden]{display:none!important}
+.mh-tile:disabled{cursor:default}
+.mh-tile-top{display:flex;align-items:baseline;justify-content:space-between;gap:6px}
+.mh-sym{font-size:13px;font-weight:900;color:#fff;letter-spacing:.02em}
+.mh-sub{font-size:10px;font-weight:700;color:var(--mh-muted)}
+.mh-chg{font-size:21px;font-weight:900;line-height:1;color:rgb(var(--c));font-variant-numeric:tabular-nums}
+.mh-tile.mh-flat .mh-chg,.mh-tile.mh-na .mh-chg{color:#cbd5e1}
+.mh-price{font-size:12px;font-weight:700;color:#cbd5e1;font-variant-numeric:tabular-nums}
+.mh-tile-note{font-size:10px;color:var(--mh-muted)}
+.mh-tile-key{min-height:130px;padding:15px}
+.mh-tile-key .mh-sym{font-size:16px}
+.mh-tile-key .mh-chg{font-size:30px}
+.mh-tile-key .mh-price{font-size:15px}
+.mh-badge{font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#fcd34d}
+.mh-flash-up{animation:mh-fup .7s ease-out}.mh-flash-down{animation:mh-fdown .7s ease-out}
+@keyframes mh-fup{0%{box-shadow:0 0 0 2px rgba(var(--mh-up),.8)}100%{box-shadow:0 0 0 0 rgba(var(--mh-up),0)}}
+@keyframes mh-fdown{0%{box-shadow:0 0 0 2px rgba(var(--mh-down),.8)}100%{box-shadow:0 0 0 0 rgba(var(--mh-down),0)}}
+
+/* Currency strength */
+.mh-bars{display:grid;gap:10px}
+.mh-bar-row{display:grid;grid-template-columns:44px 1fr 66px;gap:10px;align-items:center}
+.mh-bar-cur{font-size:13px;font-weight:900;color:#fff}
+.mh-track{position:relative;height:18px;border-radius:9px;background:rgba(148,163,184,.08)}
+.mh-track::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:rgba(148,163,184,.35)}
+.mh-fill{position:absolute;top:0;bottom:0;border-radius:9px;width:0;transition:width .6s cubic-bezier(.2,.75,.25,1)}
+.mh-fill.mh-pos{left:50%;background:linear-gradient(90deg,rgba(var(--mh-up),.35),rgba(var(--mh-up),.95))}
+.mh-fill.mh-neg{right:50%;background:linear-gradient(270deg,rgba(var(--mh-down),.35),rgba(var(--mh-down),.95))}
+.mh-bar-val{text-align:right;font-size:12px;font-weight:800;color:#cbd5e1;font-variant-numeric:tabular-nums}
+
+/* Text blocks */
+.mh-list{margin:12px 0 0;padding-left:18px;display:grid;gap:10px;font-size:13px;line-height:1.7;color:#b6c0cf}
+.mh-list strong{color:#fff}
+.mh-faq{border-top:1px solid var(--mh-line);padding:12px 0}
+.mh-faq:first-of-type{margin-top:8px}
+.mh-faq summary{cursor:pointer;font-size:14px;font-weight:800;color:#fff;list-style:none}
+.mh-faq summary::-webkit-details-marker{display:none}
+.mh-faq summary::before{content:"+";display:inline-block;width:20px;color:var(--mh-gold);font-weight:900}
+.mh-faq[open] summary::before{content:"–"}
+.mh-faq p{margin:8px 0 0 20px;font-size:13px;line-height:1.7;color:#b6c0cf}
+.mh-faq a,.mh-disclaimer a{color:#86efac;text-decoration:underline}
+.mh-disclaimer{max-width:760px;margin:6px auto 0;text-align:center;font-size:10px;line-height:1.8;color:#6b7686}
+
+/* Detail dialog */
+.mh-dialog{width:min(420px,calc(100% - 28px));border:1px solid var(--mh-line);border-radius:20px;background:linear-gradient(145deg,var(--mh-card),var(--mh-card-2));color:var(--mh-text);padding:18px}
+.mh-dialog::backdrop{background:rgba(3,5,12,.72);backdrop-filter:blur(4px)}
+.mh-dlg-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.mh-dlg-head h2{margin:0;font-size:20px;font-weight:900;color:#fff}
+.mh-dlg-head p{margin:2px 0 0;font-size:12px;color:var(--mh-muted)}
+.mh-dlg-close{border:1px solid var(--mh-line);background:#111a2b;color:#cbd5e1;border-radius:10px;width:34px;height:34px;font-size:20px;line-height:1;cursor:pointer}
+.mh-dlg-price{margin-top:14px;font-size:30px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums}
+.mh-dlg-price span{margin-left:10px;font-size:18px}
+.mh-dl{margin:14px 0 0;display:grid;gap:0}
+.mh-dl div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--mh-line);font-size:13px}
+.mh-dl dt{color:var(--mh-muted)}.mh-dl dd{margin:0;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;text-align:right}
+.mh-dlg-note{margin:12px 0 0;font-size:11px;color:#6b7686}
+
+@media (max-width:640px){
+  .mh-wrap{padding:16px 14px 56px}
+  .mh-hero{padding:26px 14px 20px}
+  .mh-summary{grid-template-columns:repeat(2,1fr)}
+  .mh-grid{grid-template-columns:repeat(2,1fr)}
+  .mh-grid-key{grid-template-columns:repeat(2,1fr)}
+  .mh-tile-key{min-height:112px;padding:12px}
+  .mh-tile-key .mh-chg{font-size:24px}
+  .mh-chg{font-size:19px}
+  .mh-controls{align-items:stretch}
+  .mh-sort{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  .mh-state .mh-dot,.mh-flash-up,.mh-flash-down{animation:none!important}
+  .mh-tile,.mh-fill{transition:none!important}
+}
