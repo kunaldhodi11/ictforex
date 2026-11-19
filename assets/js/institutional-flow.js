@@ -294,7 +294,7 @@ function renderRadarError(market,error){
 async function scan(){
  if(state.scanning){state.scanRequested=true;return}state.scanning=true;
  $('feedState').textContent='SCANNING BOTH MARKETS';$('radarStatus').textContent='SCANNING';
- $('setupList').innerHTML='<div class="loading">Scanning XAUUSD and NAS100 market data…</div>';
+ $('bullishList').innerHTML='<div class="loading">Scanning bullish setups…</div>';$('bearishList').innerHTML='<div class="loading">Scanning bearish setups…</div>';
  try{
   const results=await Promise.allSettled(['XAUUSD','NAS100'].map(scanMarket));
   let selected=null,success=0;
@@ -305,8 +305,9 @@ async function scan(){
   connectLive(selected.symbol).catch(()=>{$('feedState').textContent='REST SNAPSHOT';});
   render(selected);
  }catch(e){
-  $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';$('setupList').innerHTML='';
-  const d=document.createElement('div');d.className='empty';d.textContent=e.message+' No placeholder prices or signals are displayed. Try again later.';$('setupList').appendChild(d);
+  $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';
+  const message=document.createElement('div');message.className='empty';message.textContent=e.message+' No placeholder prices or signals are displayed. Try again later.';
+  $('bullishList').replaceChildren(message.cloneNode(true));$('bearishList').replaceChildren(message);
   $('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable';
  }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
