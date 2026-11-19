@@ -45,8 +45,8 @@ test('detects a fresh bullish FVG from a completed three-candle sequence', () =>
   bars[20] = candle(20, { high: 101, low: 99, open: 100, close: 100.5 });
   bars[21] = candle(21, { high: 103.5, low: 102.5, open: 102.7, close: 103.3 });
   bars[22] = candle(22, { high: 104, low: 103, open: 103.2, close: 103.7 });
-  bars[23] = candle(23, { high: 104, low: 102.5, open: 103.5, close: 103.2 });
-  bars[24] = candle(24, { high: 104, low: 102.2, open: 103.2, close: 103 });
+  bars[23] = candle(23, { high: 104, low: 103.2, open: 103.5, close: 103.4 });
+  bars[24] = candle(24, { high: 104, low: 103.1, open: 103.4, close: 103.3 });
   const found = findBullishFvg(analyze(bars));
   assert.ok(found);
   assert.equal(found.lifecycle, 'FRESH');
