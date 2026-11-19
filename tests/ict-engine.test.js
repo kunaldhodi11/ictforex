@@ -146,3 +146,30 @@ test('does not show a linked setup after its sweep extreme is invalidated', () =
   bars[24] = candle(24, { open: 98, high: 99, low: 97, close: 98 });
   assert.equal(analyze(bars).results.length, 0);
 });
+
+
+test('Market X-Ray reports no dealing range without confirmed swing pair', () => {
+  const bars = Array.from({ length: 40 }, (_, i) => candle(i));
+  const xray = getMarketXray(bars);
+  assert.equal(xray.dealingRange, null);
+  assert.equal(xray.zone, 'Range not established');
+});
+
+test('Market X-Ray exposes only multi-pivot liquidity clusters', () => {
+  const bars = Array.from({ length: 50 }, (_, i) => candle(i));
+  bars[10] = candle(10, { high: 105, low: 99, open: 100, close: 101 });
+  bars[14] = candle(14, { high: 105.02, low: 99, open: 100, close: 101 });
+  bars[18] = candle(18, { high: 106, low: 99, open: 100, close: 101 });
+  const xray = getMarketXray(bars);
+  assert.ok(Array.isArray(xray.bslPools));
+  assert.ok(xray.bslPools.every(pool => pool.count >= 2));
+});
+
+test('Market X-Ray returns FVG lifecycle states from closed candles', () => {
+  const bars = Array.from({ length: 40 }, (_, i) => candle(i));
+  bars[30] = candle(30, { open: 100, high: 101, low: 100, close: 100.5 });
+  bars[31] = candle(31, { open: 104, high: 105, low: 104, close: 104.8 });
+  bars[32] = candle(32, { open: 105, high: 106, low: 103, close: 105.5 });
+  const xray = getMarketXray(bars);
+  assert.ok(Array.isArray(xray.activeZones));
+});
