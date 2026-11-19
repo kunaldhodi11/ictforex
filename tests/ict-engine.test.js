@@ -86,7 +86,7 @@ test('detects a completed sell-side sweep and reclaim', () => {
 
 function extractXray(text) {
   const start = text.indexOf('function getMarketXray(bars){');
-  const end = text.indexOf('\\nfunction addXrayEvent', start);
+  const end = text.indexOf('\nfunction addXrayEvent', start);
   assert.notEqual(start, -1, 'Market X-Ray function exists');
   assert.notEqual(end, -1, 'Market X-Ray function boundary exists');
   return text.slice(start, end).trim();
