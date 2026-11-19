@@ -138,9 +138,9 @@ function analyze(bars){
  return {bars:b,last,results:qualified, bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':last.close<avg(b.slice(-20).map(x=>x.close))?'Bearish':'Neutral',hi,lo};
 }
 function getMarketXray(bars){
- const recent=bars.slice(-30),high=Math.max(...recent.map(x=>x.high)),low=Math.min(...recent.map(x=>x.low)),last=bars[bars.length-1],mid=(high+low)/2,range=high-low;
+ const last=bars[bars.length-1],recent=bars.slice(-30),high=Math.max(...recent.map(x=>x.high)),low=Math.min(...recent.map(x=>x.low)),mid=(high+low)/2,range=high-low;
  const pivots=[];
- for(let i=Math.max(2,bars.length-32);i<bars.length-2;i++){
+ for(let i=2;i<bars.length-2;i++){
   const p=bars[i];
   if(p.high>bars[i-1].high&&p.high>bars[i-2].high&&p.high>=bars[i+1].high&&p.high>=bars[i+2].high)pivots.push({type:'high',price:p.high,index:i,time:p.openTime});
   if(p.low<bars[i-1].low&&p.low<bars[i-2].low&&p.low<=bars[i+1].low&&p.low<=bars[i+2].low)pivots.push({type:'low',price:p.low,index:i,time:p.openTime});
@@ -154,14 +154,40 @@ function getMarketXray(bars){
  else if(brokeLow){breakSide='bearish';brokenLevel=sl.price;breakType=priorTrend==='Bullish'?'BEARISH CHOCH':'BEARISH BOS';structure=priorTrend==='Bullish'?'Bearish CHOCH':'Bearish BOS';note='Completed candle closed below confirmed swing low '+fmt(sl.price)+'.';if(priorTrend==='Bullish'){choch='Bearish CHOCH';chochNote='Bullish swing sequence invalidated by a completed close below its latest confirmed swing low.'}}
  else if(priorTrend!=='Range'){structure=priorTrend+' structure';note=priorTrend+' swing sequence: '+(priorTrend==='Bullish'?'higher highs and higher lows':'lower highs and lower lows')+'. No new break on the latest close.';breakType='STRUCTURE HOLD'}
  const tolerance=Math.max(Math.abs(last.close)*0.00035,range*0.008);
- const cluster=items=>{let best=null;for(let i=0;i<items.length;i++){const group=items.filter(p=>Math.abs(p.price-items[i].price)<=tolerance);if(group.length>=2&&(!best||group.length>best.length||group.length===best.length&&group[group.length-1].index>best[best.length-1].index))best=group}return best};
- const highCluster=cluster(highs),lowCluster=cluster(lows),bsl=highCluster?avg(highCluster.map(p=>p.price)):null,ssl=lowCluster?avg(lowCluster.map(p=>p.price)):null;
- const pos=range?Math.max(0,Math.min(100,(last.close-low)/range*100)):50,zone=pos>55?'Premium':pos<45?'Discount':'Equilibrium';
- const dt=new Date(last.openTime),hour=dt.getUTCHours();let session='Between sessions';if(hour<7)session='Asia';else if(hour<12)session='London';else if(hour<16)session='London + New York';else if(hour<21)session='New York';else session='Late New York';
+ const makeClusters=(items,side)=>{
+  const sorted=items.slice().sort((a,b)=>a.price-b.price),groups=[];
+  sorted.forEach(p=>{let g=groups.find(x=>Math.abs(p.price-avg(x.map(y=>y.price)))<=tolerance);if(!g){g=[];groups.push(g)}g.push(p)});
+  return groups.filter(g=>g.length>=2).map(g=>({side,price:avg(g.map(p=>p.price)),low:Math.min(...g.map(p=>p.price)),high:Math.max(...g.map(p=>p.price)),count:g.length,lastIndex:Math.max(...g.map(p=>p.index)),swept:side==='BSL'?last.high>Math.max(...g.map(p=>p.price))&&last.close<Math.max(...g.map(p=>p.price)):last.low<Math.min(...g.map(p=>p.price))&&last.close>Math.min(...g.map(p=>p.price))})).sort((a,b)=>a.price-b.price);
+ };
+ const bslPools=makeClusters(highs,'BSL'),sslPools=makeClusters(lows,'SSL');
+ const nearest=(arr)=>arr.slice().sort((a,b)=>Math.abs(a.price-last.close)-Math.abs(b.price-last.close))[0]||null;
+ const bslPool=nearest(bslPools),sslPool=nearest(sslPools),bsl=bslPool?bslPool.price:null,ssl=sslPool?sslPool.price:null;
+ const confirmedRange=sh&&sl?{high:sh.price,low:sl.price,from:sl.index<sh.index?'swing low → swing high':'swing high → swing low'}:null;
+ const dr=confirmedRange&&confirmedRange.high>confirmedRange.low?confirmedRange:null,drMid=dr?(dr.high+dr.low)/2:null;
+ const pos=dr?Math.max(0,Math.min(100,(last.close-dr.low)/(dr.high-dr.low)*100)):null;
+ const zone=pos===null?'Range not established':pos>50?'Premium':pos<50?'Discount':'Equilibrium';
+ const dateKey=d=>d.getUTCFullYear()+'-'+d.getUTCMonth()+'-'+d.getUTCDate(),lastDate=new Date(last.openTime),todayKey=dateKey(lastDate);
+ const dayGroups=new Map(),weekGroups=new Map();
+ bars.forEach(c=>{const d=new Date(c.openTime);if(!Number.isFinite(d.getTime()))return;const dk=dateKey(d),weekStart=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-((d.getUTCDay()+6)%7))),wk=weekStart.toISOString().slice(0,10);if(!dayGroups.has(dk))dayGroups.set(dk,{date:dk,high:-Infinity,low:Infinity});let dg=dayGroups.get(dk);dg.high=Math.max(dg.high,c.high);dg.low=Math.min(dg.low,c.low);if(!weekGroups.has(wk))weekGroups.set(wk,{date:wk,high:-Infinity,low:Infinity});let wg=weekGroups.get(wk);wg.high=Math.max(wg.high,c.high);wg.low=Math.min(wg.low,c.low)});
+ const priorDays=Array.from(dayGroups.values()).filter(x=>x.date!==todayKey).sort((a,b)=>a.date.localeCompare(b.date)),pday=priorDays[priorDays.length-1]||null;
+ const currentWeekStart=new Date(Date.UTC(lastDate.getUTCFullYear(),lastDate.getUTCMonth(),lastDate.getUTCDate()-((lastDate.getUTCDay()+6)%7))).toISOString().slice(0,10);
+ const priorWeeks=Array.from(weekGroups.values()).filter(x=>x.date<currentWeekStart).sort((a,b)=>a.date.localeCompare(b.date)),pweek=priorWeeks[priorWeeks.length-1]||null;
+ const zones=[];
+ for(let i=Math.max(2,bars.length-80);i<bars.length;i++){
+  const a=bars[i-2],c=bars[i];let side=null,z=null;
+  if(c.low>a.high){side='bullish';z=[a.high,c.low]}
+  else if(c.high<a.low){side='bearish';z=[c.high,a.low]}
+  if(!z||z[1]<=z[0])continue;
+  const after=bars.slice(i+1),farClose=side==='bullish'?after.some(x=>x.close<z[0]):after.some(x=>x.close>z[1]);
+  const touched=after.some(x=>x.low<=z[1]&&x.high>=z[0]),filled=side==='bullish'?after.some(x=>x.low<=z[0]):after.some(x=>x.high>=z[1]),ce=after.some(x=>side==='bullish'?x.low<=(z[0]+z[1])/2:x.high>=(z[0]+z[1])/2);
+  zones.push({side,low:z[0],high:z[1],mid:(z[0]+z[1])/2,index:i,time:c.openTime,state:farClose?'INVALIDATED':filled?'FULLY FILLED':ce?'CE REACHED':touched?'TOUCHED':'FRESH'});
+ }
+ const activeZones=zones.filter(z=>z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED').slice(-8);
+ const dt=new Date(last.openTime),hour=dt.getUTCHours();let session='Between sessions';if(hour<7)session='Asia (UTC proxy)';else if(hour<12)session='London (UTC proxy)';else if(hour<16)session='London + New York (UTC proxy)';else if(hour<21)session='New York (UTC proxy)';else session='Late New York (UTC proxy)';
  const windowBars=bars.slice(-21),path=windowBars.slice(1).reduce((sum,x,i)=>sum+Math.abs(x.close-windowBars[i].close),0),eff=path?Math.abs(windowBars[windowBars.length-1].close-windowBars[0].close)/path:0,strength=eff<.2?'Weak':eff<.45?'Moderate':'Strong',trendPct=Math.round(eff*100);
  const prior20=bars.slice(-21,-1),priorHigh=Math.max(...prior20.map(x=>x.high)),priorLow=Math.min(...prior20.map(x=>x.low)),sweptHigh=last.high>priorHigh&&last.close<priorHigh,sweptLow=last.low<priorLow&&last.close>priorLow,acceptedAbove=last.close>priorHigh,acceptedBelow=last.close<priorLow;
  let liquidityEvent='No recent range event';if(sweptHigh)liquidityEvent='Buy-side sweep and reclaim';else if(sweptLow)liquidityEvent='Sell-side sweep and reclaim';else if(acceptedAbove)liquidityEvent='Close accepted above prior range';else if(acceptedBelow)liquidityEvent='Close accepted below prior range';
- return {high,low,mid,pos,zone,structure,note,session,time:dt.toISOString(),choch,chochNote,strength,trendPct,bsl,ssl,highPoolCount:highCluster?highCluster.length:0,lowPoolCount:lowCluster?lowCluster.length:0,liquidityEvent,sweptHigh,sweptLow,acceptedAbove,acceptedBelow,breakType,brokenLevel,breakSide,priorTrend,higherHigh,higherLow,lowerHigh,lowerLow,confirmedSwingHigh:sh?sh.price:null,confirmedSwingLow:sl?sl.price:null};
+ return {high,low,mid,pos,zone,structure,note,session,time:dt.toISOString(),choch,chochNote,strength,trendPct,bsl,ssl,bslPools,sslPools,pdh:pday?pday.high:null,pdl:pday?pday.low:null,pwh:pweek?pweek.high:null,pwl:pweek?pweek.low:null,dealingRange:dr,dealingMid:drMid,activeZones,liquidityEvent,sweptHigh,sweptLow,acceptedAbove,acceptedBelow,breakType,brokenLevel,breakSide,priorTrend,higherHigh,higherLow,lowerHigh,lowerLow,confirmedSwingHigh:sh?sh.price:null,confirmedSwingLow:sl?sl.price:null};
 }
 function addXrayEvent(title,detail,kind='info'){
  const now=Date.now(),item={title,detail,kind,time:new Date(now).toLocaleTimeString()};
@@ -230,6 +256,13 @@ function renderXraySides(bars,mtf,results,x){
 function renderXray(bars,mtf,results){
  const x=getMarketXray(bars);state.xray=x;renderXraySides(bars,mtf,results,x);state.lastLivePrice=null;$('xrayTf').textContent=state.tf.toUpperCase();$('xrayStructure').textContent=x.structure;$('xrayStructureNote').textContent=x.note;$('xrayRange').textContent=fmt(x.low)+' – '+fmt(x.high);$('xrayRangeNote').textContent='30 completed candles · EQ '+fmt(x.mid);$('xrayZone').textContent=x.zone;$('xrayZoneNote').textContent='Price position '+x.pos.toFixed(0)+'% of recent range';$('xraySession').textContent=x.session;$('xraySessionNote').textContent='Candle UTC '+x.time.slice(11,16);$('rangeMarker').style.left=x.pos+'%';
  const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};set('xrayChoch',x.choch);set('xrayChochNote',x.chochNote);set('xrayTrend',x.strength+' · '+x.trendPct+'/100');set('xrayTrendNote','20-candle directional efficiency (not win probability)');set('xrayBsl',x.bsl===null?'No clear pool':fmt(x.bsl));set('xrayBslNote',x.bsl===null?'No equal-high cluster confirmed':'Potential BSL · '+x.highPoolCount+' confirmed swing highs');set('xraySsl',x.ssl===null?'No clear pool':fmt(x.ssl));set('xraySslNote',x.ssl===null?'No equal-low cluster confirmed':'Potential SSL · '+x.lowPoolCount+' confirmed swing lows');
+ set('xrayPdhPdl',x.pdh===null||x.pdl===null?'Unavailable':fmt(x.pdh)+' / '+fmt(x.pdl));set('xrayPdhPdlNote',x.pdh===null?'Prior UTC day not present in loaded candles':'PDH / PDL · previous UTC day');
+ set('xrayPwhPwl',x.pwh===null||x.pwl===null?'Unavailable':fmt(x.pwh)+' / '+fmt(x.pwl));set('xrayPwhPwlNote',x.pwh===null?'Prior UTC week not present in loaded candles':'PWH / PWL · previous UTC week');
+ set('xrayDealingRange',x.dealingRange?fmt(x.dealingRange.low)+' – '+fmt(x.dealingRange.high):'Not established');set('xrayDealingRangeNote',x.dealingRange?'Confirmed swing pair · EQ '+fmt(x.dealingMid)+' · '+x.zone:'No valid confirmed swing pair');
+ set('xrayFvgCount',String(x.activeZones.length));set('xrayFvgNote',x.activeZones.filter(z=>z.state==='FRESH').length+' fresh · '+x.activeZones.filter(z=>z.state==='TOUCHED'||z.state==='CE REACHED').length+' revisited');
+ const poolList=$('xrayPoolList');if(poolList){poolList.innerHTML='';const pools=[...x.bslPools,...x.sslPools].sort((a,b)=>Math.abs(a.price-bars[bars.length-1].close)-Math.abs(b.price-bars[bars.length-1].close)).slice(0,8);if(!pools.length)poolList.innerHTML='<div class="xray-direction-empty">No EQH / EQL cluster with at least two confirmed pivots.</div>';pools.forEach(p=>{const el=document.createElement('div');el.className='xray-pool-item';const label=document.createElement('small'),price=document.createElement('b'),stateEl=document.createElement('small'),detail=document.createElement('span');label.textContent=p.side+' · '+p.count+' PIVOTS';price.textContent=fmt(p.price);stateEl.className='pool-state';stateEl.textContent=p.swept?'RAIDED / RECLAIM CHECK':'POTENTIAL POOL';detail.textContent='Band '+fmt(p.low)+' – '+fmt(p.high)+' · candle-derived; not order-book data';el.append(label,price,stateEl,detail);poolList.appendChild(el)})}
+ const fvgList=$('xrayFvgList');if(fvgList){fvgList.innerHTML='';if(!x.activeZones.length)fvgList.innerHTML='<div class="xray-direction-empty">No active FVG arrays in the loaded candle window.</div>';x.activeZones.slice().reverse().forEach(z=>{const el=document.createElement('div');el.className='xray-pool-item';const label=document.createElement('small'),price=document.createElement('b'),stateEl=document.createElement('small'),detail=document.createElement('span');label.textContent=z.side.toUpperCase()+' FVG';price.textContent=fmt(z.low)+' – '+fmt(z.high);stateEl.className='pool-state';stateEl.textContent=z.state;detail.textContent='CE '+fmt(z.mid)+' · created '+new Date(z.time).toLocaleString();el.append(label,price,stateEl,detail);fvgList.appendChild(el)})}
+
  const grid=$('xrayMtfGrid');if(grid){grid.innerHTML='';['5m','15m','1h','4h'].forEach(tf=>{const m=mtf&&mtf[tf]?mtf[tf]:null,d=document.createElement('div');d.className='xray-mtf-cell';const label=document.createElement('small');label.textContent=tf.toUpperCase();const value=document.createElement('b');value.textContent=m?m.structure:'Unavailable';const sub=document.createElement('span');sub.textContent=m&&m.bars?m.bars+' candles':'No provider data';d.append(label,value,sub);grid.appendChild(d)})}
  const structureKey=[state.market,state.tf,x.structure,x.brokenLevel].join('|');if(state.lastStructureKey!==structureKey){addXrayEvent(x.breakType==='NONE'?'STRUCTURE CONTEXT':x.breakType,x.note+' · '+x.zone+' · '+x.session,x.breakType.includes('CHOCH')?'warning':'structure');state.lastStructureKey=structureKey;}set('xrayBreakType',x.breakType);set('xrayBreakLevel',x.brokenLevel===null?'—':fmt(x.brokenLevel));set('xrayBreakNote',x.priorTrend+' prior swing sequence · close-confirmed only');$('xrayFoot').textContent='Liquidity event: '+x.liquidityEvent+'. Sweep requires a wick beyond the prior 20-candle range and a completed close back inside; a close beyond the range is labelled acceptance, not a sweep. Pools and structure are candle-derived estimates, not broker order-book data. Sessions use approximate UTC windows.';
 }
