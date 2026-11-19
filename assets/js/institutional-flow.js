@@ -131,7 +131,7 @@ function analyze(bars){
   const risk=Math.max(Math.abs(r.entry-(r.side==='bullish'?r.zone[0]:r.zone[1]))+zoneRisk*0.25,Math.abs(last.close)*0.00015);
   r.stop=r.side==='bullish'?Math.min(...r.zone)-risk*0.25:Math.max(...r.zone)+risk*0.25;
   const riskSize=Math.abs(r.entry-r.stop);
-  const candidates=(r.side==='bullish'?bsl.filter(v=>v>r.entry):ssl.filter(v=>v<r.entry)).sort((a,b)=>r.side==='bullish'?a-b:b-a);
+  const opposingSide=r.side==='bullish'?'high':'low';const candidates=pivots.filter(p=>p.side===opposingSide&&(r.side==='bullish'?p.price>r.entry:p.price<r.entry)).map(p=>p.price).sort((a,b)=>r.side==='bullish'?a-b:b-a);
   const target=candidates.find(v=>Math.abs(v-r.entry)/riskSize>=1.5);
   if(target!==undefined){r.target=target;r.targetSource='Confirmed opposing swing-liquidity pool';r.rr='1:'+(Math.abs(target-r.entry)/riskSize).toFixed(1)}
   else{r.target=r.side==='bullish'?r.entry+2*riskSize:r.entry-2*riskSize;r.targetSource='2R fallback; no confirmed opposing pool offers at least 1.5R';r.rr='1:2'}
