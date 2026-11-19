@@ -2,7 +2,7 @@
 'use strict';
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
-const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set()};
+const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
@@ -99,7 +99,7 @@ function initChart(){
  if(state.chart||!window.LightweightCharts)return;
  const el=$('marketChart');if(!el)return;
  state.chart=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight,layout:{background:{color:'#0b1420'},textColor:'#91a2b8'},grid:{vertLines:{color:'#172438'},horzLines:{color:'#172438'}},rightPriceScale:{borderColor:'#25364b'},timeScale:{borderColor:'#25364b',timeVisible:true,secondsVisible:false},crosshair:{mode:LightweightCharts.CrosshairMode.Normal}});
- state.candleSeries=state.chart.addCandlestickSeries({upColor:'#36d39a',downColor:'#f07878',borderUpColor:'#36d39a',borderDownColor:'#f07878',wickUpColor:'#36d39a',wickDownColor:'#f07878'});
+ state.candleSeries=state.chart.addCandlestickSeries({upColor:'#36d39a',downColor:'#f07878',borderUpColor:'#36d39a',borderDownColor:'#f07878',wickUpColor:'#36d39a',wickDownColor:'#f07878'});state.overlay=document.createElement('div');state.overlay.className='chart-overlay';el.appendChild(state.overlay);
  new ResizeObserver(()=>{if(state.chart)state.chart.applyOptions({width:el.clientWidth,height:el.clientHeight})}).observe(el);
 }
 function drawChart(bars,results){
@@ -108,6 +108,11 @@ function drawChart(bars,results){
  state.candleSeries.setData(data);state.liveCandle=null;state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
  const best=results[0];const colors={Entry:'#70b9e8',Stop:'#f07878',Target:'#36d39a'};
  if(best){[['Entry',best.entry],['Stop',best.stop],['Target',best.target]].forEach(([title,price])=>state.lines.push(state.candleSeries.createPriceLine({price,title,color:colors[title],lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true})))}
+ const lookback=bars.slice(-30,-1),buySide=Math.max(...lookback.map(x=>x.high)),sellSide=Math.min(...lookback.map(x=>x.low));
+ state.lines.push(state.candleSeries.createPriceLine({price:buySide,title:'Buy-side liquidity',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
+ state.lines.push(state.candleSeries.createPriceLine({price:sellSide,title:'Sell-side liquidity',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
+ if(state.overlay){state.overlay.innerHTML='';results.slice(0,5).forEach((r,i)=>{const top=state.candleSeries.priceToCoordinate(Math.max(...r.zone)),bottom=state.candleSeries.priceToCoordinate(Math.min(...r.zone));if(top===null||bottom===null)return;const band=document.createElement('div');band.className='chart-zone '+r.side;band.style.top=Math.min(top,bottom)+'px';band.style.height=Math.max(3,Math.abs(bottom-top))+'px';band.style.opacity=String(Math.max(.48,.82-i*.08));const label=document.createElement('span');label.textContent=r.type.toUpperCase();band.appendChild(label);state.overlay.appendChild(band)})}
+
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
  state.chart.timeScale().fitContent();$('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase();$('chartStatus').textContent=data.length+' candles loaded';$('chartFoot').textContent=best?'Top setup levels: Entry, Stop and 2R Target. Pattern labels are heuristic candle detections.':'No qualifying ICT setup in this candle window; chart remains available.';
