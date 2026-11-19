@@ -66,78 +66,76 @@ async function resolveSymbol(market){
 }
 function avg(a){return a.reduce((s,x)=>s+x,0)/(a.length||1)}
 function analyze(bars){
- const b=bars.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
+ const b=bars.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)&&x.high>=Math.max(x.open,x.close)&&x.low<=Math.min(x.open,x.close)&&x.high>=x.low).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
  if(b.length<25)throw Error('Not enough completed candles for a reliable scan.');
  const last=b[b.length-1],prior=b.slice(-21,-1),hi=Math.max(...prior.map(x=>x.high)),lo=Math.min(...prior.map(x=>x.low));
- const body=(c)=>Math.abs(c.close-c.open),range=(c)=>Math.max(c.high-c.low,Math.abs(c.high-c.close),Math.abs(c.low-c.close));
+ const body=c=>Math.abs(c.close-c.open),range=c=>Math.max(c.high-c.low,Math.abs(c.high-c.close),Math.abs(c.low-c.close));
  const bodyAvg=avg(b.slice(-21,-1).map(body)),atr=avg(b.slice(-15).map(range));
- const results=[];
- // Liquidity sweep: wick through a prior range extreme followed by a completed close back inside.
- if(last.low<lo&&last.close>lo)results.push({side:'bullish',type:'Sell-side liquidity sweep',zone:[lo,last.low],score:74,reason:'Completed candle swept below the prior 20-candle low and reclaimed it.'});
- if(last.high>hi&&last.close<hi)results.push({side:'bearish',type:'Buy-side liquidity sweep',zone:[hi,last.high],score:74,reason:'Completed candle swept above the prior 20-candle high and reclaimed it.'});
- // FVG lifecycle: detect historical three-candle gaps, then inspect every later closed candle.
- const fvgCandidates=[];
- for(let i=Math.max(2,b.length-45);i<b.length;i++){
-  const left=b[i-2],middle=b[i-1],right=b[i];
-  if(right.low>left.high){
-   const lower=left.high,upper=right.low,subsequent=b.slice(i+1),filled=subsequent.some(c=>c.low<=lower);
-   const touched=subsequent.some(c=>c.low<upper);
-   const invalid=subsequent.some(c=>c.close<lower);
-   if(!filled&&!invalid)fvgCandidates.push({side:'bullish',type:'Bullish fair value gap',zone:[lower,upper],score:62,reason:'Three-candle imbalance remains '+(touched?'partially mitigated':'fresh')+'; full fill and close invalidation have not occurred.',lifecycle:touched?'PARTIALLY MITIGATED':'FRESH',originIndex:i});
-  }
-  if(right.high<left.low){
-   const lower=right.high,upper=left.low,subsequent=b.slice(i+1),filled=subsequent.some(c=>c.high>=upper);
-   const touched=subsequent.some(c=>c.high>lower);
-   const invalid=subsequent.some(c=>c.close>upper);
-   if(!filled&&!invalid)fvgCandidates.push({side:'bearish',type:'Bearish fair value gap',zone:[lower,upper],score:62,reason:'Three-candle imbalance remains '+(touched?'partially mitigated':'fresh')+'; full fill and close invalidation have not occurred.',lifecycle:touched?'PARTIALLY MITIGATED':'FRESH',originIndex:i});
-  }
- }
- fvgCandidates.sort((x,y)=>y.originIndex-x.originIndex);
- fvgCandidates.slice(0,2).forEach(x=>results.push(x));
- // Displacement requires range expansion, meaningful body, close near candle extreme and a confirmed swing break.
- const priorBars=b.slice(-9,-1),swingHigh=Math.max(...priorBars.map(x=>x.high)),swingLow=Math.min(...priorBars.map(x=>x.low));
- const candleRange=Math.max(last.high-last.low,Number.EPSILON),closeLocation=(last.close-last.low)/candleRange;
- const displacement=body(last)>=Math.max(bodyAvg*1.5,atr*0.65);
- const bullishDisplacement=displacement&&last.close>last.open&&closeLocation>=0.75&&last.close>swingHigh;
- const bearishDisplacement=displacement&&last.close<last.open&&closeLocation<=0.25&&last.close<swingLow;
- if(bullishDisplacement||bearishDisplacement){
-  const side=bullishDisplacement?'bullish':'bearish';
-  // Search backward for the last opposite candle immediately preceding the impulse sequence.
-  let obIndex=-1;
-  for(let i=b.length-2;i>=Math.max(0,b.length-5);i--){
-   if(side==='bullish'&&b[i].close<b[i].open){obIndex=i;break}
-   if(side==='bearish'&&b[i].close>b[i].open){obIndex=i;break}
-  }
-  if(obIndex>=0){
-   const ob=b[obIndex],later=b.slice(obIndex+1),invalid=side==='bullish'?later.some(c=>c.close<ob.low):later.some(c=>c.close>ob.high);
-   const mitigated=side==='bullish'?later.some(c=>c.low<=ob.high):later.some(c=>c.high>=ob.low);
-   if(!invalid)results.push({side,type:(side==='bullish'?'Bullish':'Bearish')+' order block',zone:[ob.low,ob.high],score:70,reason:'Confirmed displacement broke a recent swing with an expanded body and close near the candle extreme; last opposite candle is the OB reference, not proof of institutional orders.',lifecycle:mitigated?'MITIGATED':'FRESH',displacement:{bodyRatio:bodyAvg?body(last)/bodyAvg:0,atrRatio:atr?range(last)/atr:0,closeLocation}});
-  }
- }
- // Build opposing liquidity from confirmed swing pivots, not arbitrary candle highs/lows.
  const pivots=[];
- for(let i=Math.max(2,b.length-32);i<b.length-2;i++){
-  if(b[i].high>b[i-1].high&&b[i].high>b[i-2].high&&b[i].high>=b[i+1].high&&b[i].high>=b[i+2].high)pivots.push({side:'high',price:b[i].high});
-  if(b[i].low<b[i-1].low&&b[i].low<b[i-2].low&&b[i].low<=b[i+1].low&&b[i].low<=b[i+2].low)pivots.push({side:'low',price:b[i].low});
+ for(let i=2;i<b.length-2;i++){
+  if(b[i].high>b[i-1].high&&b[i].high>b[i-2].high&&b[i].high>=b[i+1].high&&b[i].high>=b[i+2].high)pivots.push({side:'high',price:b[i].high,index:i});
+  if(b[i].low<b[i-1].low&&b[i].low<b[i-2].low&&b[i].low<=b[i+1].low&&b[i].low<=b[i+2].low)pivots.push({side:'low',price:b[i].low,index:i});
  }
- const tolerance=Math.max(Math.abs(last.close)*0.00035,(hi-lo)*0.008);
- const pools=(side)=>{const items=pivots.filter(p=>p.side===side);return items.filter((p,i)=>items.slice(0,i).some(q=>Math.abs(q.price-p.price)<=tolerance)).map(p=>p.price)};
- const bsl=pools('high'),ssl=pools('low');
- results.forEach(r=>{
-  const same=results.filter(x=>x.side===r.side).length;
-  r.score=Math.min(95,r.score+(same-1)*5);
-  const mid=(r.zone[0]+r.zone[1])/2;r.entry=mid;
-  const zoneRisk=Math.max(r.zone[1]-r.zone[0],Math.abs(last.close)*0.0001);
-  const risk=Math.max(Math.abs(r.entry-(r.side==='bullish'?r.zone[0]:r.zone[1]))+zoneRisk*0.25,Math.abs(last.close)*0.00015);
-  r.stop=r.side==='bullish'?Math.min(...r.zone)-risk*0.25:Math.max(...r.zone)+risk*0.25;
-  const riskSize=Math.abs(r.entry-r.stop);
-  const opposingSide=r.side==='bullish'?'high':'low';const candidates=pivots.filter(p=>p.side===opposingSide&&(r.side==='bullish'?p.price>r.entry:p.price<r.entry)).map(p=>p.price).sort((a,b)=>r.side==='bullish'?a-b:b-a);
-  const target=candidates.find(v=>Math.abs(v-r.entry)/riskSize>=1.5);
-  if(target!==undefined){r.target=target;r.targetSource='Confirmed opposing swing-liquidity pool';r.rr='1:'+(Math.abs(target-r.entry)/riskSize).toFixed(1)}
-  else{r.target=r.side==='bullish'?r.entry+2*riskSize:r.entry-2*riskSize;r.targetSource='2R fallback; no confirmed opposing pool offers at least 1.5R';r.rr='1:2'}
-  r.status='WAITING FOR ZONE';r.time=last.openTime;
- });
- return {bars:b,last,results:results.sort((x,y)=>y.score-x.score),bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':'Bearish',hi,lo};
+ const results=[],lookbackStart=Math.max(20,b.length-30);
+ // A setup must link a prior liquidity raid to a later displacement/MSS and a zone created by that same impulse.
+ for(let si=lookbackStart;si<b.length-2;si++){
+  const sweep=b[si],poolBars=b.slice(Math.max(0,si-20),si),poolHigh=Math.max(...poolBars.map(c=>c.high)),poolLow=Math.min(...poolBars.map(c=>c.low));
+  let side=null,sweepLevel=null,sweepExtreme=null;
+  if(sweep.low<poolLow&&sweep.close>poolLow){side='bullish';sweepLevel=poolLow;sweepExtreme=sweep.low}
+  else if(sweep.high>poolHigh&&sweep.close<poolHigh){side='bearish';sweepLevel=poolHigh;sweepExtreme=sweep.high}
+  if(!side)continue;
+  const expiry=Math.min(b.length-1,si+6);
+  let confirmed=null;
+  for(let j=si+1;j<=expiry;j++){
+   const impulse=b[j],before=b.slice(Math.max(0,j-20),j),recent=b.slice(Math.max(0,j-8),j);
+   if(before.length<8||recent.length<3)continue;
+   const avgBody=avg(before.map(body)),atrNow=avg(before.slice(-14).map(range));
+   const candleRange=Math.max(impulse.high-impulse.low,Number.EPSILON),closeLocation=(impulse.close-impulse.low)/candleRange;
+   const displacement=body(impulse)>=Math.max(avgBody*1.5,atrNow*0.65);
+   const mss=side==='bullish'
+    ? displacement&&impulse.close>impulse.open&&closeLocation>=0.75&&impulse.close>Math.max(...recent.map(c=>c.high))
+    : displacement&&impulse.close<impulse.open&&closeLocation<=0.25&&impulse.close<Math.min(...recent.map(c=>c.low));
+   if(!mss)continue;
+   let zone=null,zoneType=null,zoneIndex=j;
+   if(j>=2&&side==='bullish'&&impulse.low>b[j-2].high){zone=[b[j-2].high,impulse.low];zoneType='Bullish FVG'}
+   if(j>=2&&side==='bearish'&&impulse.high<b[j-2].low){zone=[impulse.high,b[j-2].low];zoneType='Bearish FVG'}
+   if(!zone){
+    for(let k=j-1;k>=Math.max(si+1,j-3);k--){
+     const c=b[k],opposite=side==='bullish'?c.close<c.open:c.close>c.open;
+     if(opposite){zone=[c.low,c.high];zoneType=side==='bullish'?'Bullish order block':'Bearish order block';zoneIndex=k;break}
+    }
+   }
+   if(zone&&zone[1]>zone[0]){confirmed={index:j,zone,zoneType,zoneIndex,impulse,sweepLevel,sweepExtreme,side};break}
+  }
+  if(!confirmed)continue;
+  const later=b.slice(confirmed.index+1),zoneInvalid=side==='bullish'?later.some(c=>c.close<confirmed.zone[0]):later.some(c=>c.close>confirmed.zone[1]);
+  const sweepInvalid=side==='bullish'?later.some(c=>c.low<sweepExtreme):later.some(c=>c.high>sweepExtreme);
+  if(zoneInvalid||sweepInvalid)continue;
+  const touched=later.some(c=>c.low<=confirmed.zone[1]&&c.high>=confirmed.zone[0]);
+  const entry=(confirmed.zone[0]+confirmed.zone[1])/2;
+  const buffer=Math.max(atr*0.1,Math.abs(entry)*0.0001);
+  const stop=side==='bullish'?sweepExtreme-buffer:sweepExtreme+buffer;
+  const risk=Math.abs(entry-stop);if(!Number.isFinite(risk)||risk<=0)continue;
+  const opposing=side==='bullish'?'high':'low';
+  const targets=pivots.filter(p=>p.index<si-1&&p.side===opposing&&(side==='bullish'?p.price>entry:p.price<entry)).map(p=>p.price).sort((a,b)=>side==='bullish'?a-b:b-a);
+  const target=targets.find(v=>Math.abs(v-entry)/risk>=1.5);
+  const finalTarget=target===undefined?(side==='bullish'?entry+2*risk:entry-2*risk):target;
+  const status=touched?'ENTRY ZONE TOUCHED':'WAITING FOR RETRACEMENT';
+  results.push({
+   side,type:confirmed.zoneType+' · '+(side==='bullish'?'Bullish':'Bearish')+' MSS setup',
+   zone:confirmed.zone,entry,stop,target:finalTarget,
+   targetSource:target===undefined?'2R modelled fallback; no qualifying pre-sweep opposing pivot':'Pre-existing confirmed opposing swing liquidity',
+   rr:'1:'+(Math.abs(finalTarget-entry)/risk).toFixed(1),
+   score:Math.min(95,78+(touched?3:0)),status,
+   lifecycle:status,reason:'Linked sequence confirmed: '+(side==='bullish'?'sell-side':'buy-side')+' liquidity sweep → displacement with completed MSS close → '+confirmed.zoneType+'. '+(touched?'Price has revisited the zone.':'Awaiting a retracement; no fill is implied.'),
+   evidence:{sweepIndex:si,mssIndex:confirmed.index,zoneIndex:confirmed.zoneIndex,sweepLevel,sweepExtreme,displacementBodyRatio:body(confirmed.impulse)/(avg(b.slice(Math.max(0,confirmed.index-20),confirmed.index).map(body))||1)},
+   time:last.openTime
+  });
+  si=expiry;
+ }
+ const latestBySide={};results.sort((a,b)=>b.evidence.mssIndex-a.evidence.mssIndex).forEach(r=>{if(!latestBySide[r.side])latestBySide[r.side]=r});
+ const qualified=Object.values(latestBySide);
+ return {bars:b,last,results:qualified, bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':last.close<avg(b.slice(-20).map(x=>x.close))?'Bearish':'Neutral',hi,lo};
 }
 function getMarketXray(bars){
  const recent=bars.slice(-30),high=Math.max(...recent.map(x=>x.high)),low=Math.min(...recent.map(x=>x.low)),last=bars[bars.length-1],mid=(high+low)/2,range=high-low;
