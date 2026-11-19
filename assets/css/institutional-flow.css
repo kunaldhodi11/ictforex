@@ -104,3 +104,20 @@ body{background:radial-gradient(1000px 520px at 50% -18%,#20384a55,transparent 7
 .xray-event.warning .event-dot{background:#e7bd69;box-shadow:0 0 10px #e7bd69}.xray-event.structure .event-dot{background:#70b9e8;box-shadow:0 0 10px #70b9e8}
 @keyframes xrayEnter{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:700px){.xray-live{padding:12px}.xray-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.xray-live-grid b{font-size:16px}.xray-stream-head{align-items:flex-start;flex-direction:column;gap:4px}}
+
+/* Two-sided live analysis inside X-Ray */
+.xray-direction-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.xray-direction{min-width:0;border:1px solid #26394c;border-radius:12px;padding:13px;background:#091521}
+.xray-direction.bullish{border-top:2px solid #36d39a}.xray-direction.bearish{border-top:2px solid #f07878}
+.xray-direction-head{display:flex;align-items:center;gap:9px;padding-bottom:11px;border-bottom:1px solid #233449}
+.xray-direction-head>div{min-width:0;flex:1}.xray-direction-head b{display:block;font-size:10px;letter-spacing:.1em}.xray-direction-head small{display:block;color:#8ba0b6;font-size:9px;margin-top:4px}
+.xray-direction-head strong{font-size:20px;font-variant-numeric:tabular-nums}
+.xray-direction-dot{width:8px;height:8px;border-radius:50%;background:#36d39a;box-shadow:0 0 12px #36d39a;flex:none}
+.xray-direction.bearish .xray-direction-dot{background:#f07878;box-shadow:0 0 12px #f07878}
+.xray-direction-items{display:grid;gap:0}.xray-direction-item{padding:10px 2px;border-bottom:1px solid #1d2d3f;min-width:0}
+.xray-direction-item:last-child{border-bottom:0}.xray-direction-item small,.xray-direction-item b,.xray-direction-item span{display:block}
+.xray-direction-item small{font-size:9px;color:#8298af;letter-spacing:.09em;text-transform:uppercase}
+.xray-direction-item b{font-size:11px;margin:5px 0;overflow-wrap:anywhere}
+.xray-direction-item span{font-size:10px;color:#91a5ba;line-height:1.45;overflow-wrap:anywhere}
+.xray-direction-empty{padding:15px 2px;color:#8da1b7;font-size:10px}
+@media(max-width:700px){.xray-direction-panels{grid-template-columns:1fr}.xray-direction{padding:11px}}
