@@ -82,3 +82,37 @@ test('detects a completed sell-side sweep and reclaim', () => {
   const result = analyze(bars);
   assert.ok(result.results.some(item => item.type === 'Sell-side liquidity sweep'));
 });
+
+
+function extractXray(text) {
+  const start = text.indexOf('function getMarketXray(bars){');
+  const end = text.indexOf('\\nfunction addXrayEvent', start);
+  assert.notEqual(start, -1, 'Market X-Ray function exists');
+  assert.notEqual(end, -1, 'Market X-Ray function boundary exists');
+  return text.slice(start, end).trim();
+}
+const getMarketXray = new Function('avg', 'fmt', extractXray(source) + '; return getMarketXray;')(
+  values => values.reduce((sum, value) => sum + value, 0) / (values.length || 1),
+  value => value == null ? '—' : Number(value).toFixed(2)
+);
+
+test('Market X-Ray does not invent a BOS in a flat range', () => {
+  const bars = Array.from({ length: 40 }, (_, i) => candle(i));
+  const xray = getMarketXray(bars);
+  assert.equal(xray.breakType, 'NONE');
+  assert.equal(xray.structure, 'Range / unclear');
+});
+
+test('Market X-Ray confirms bullish CHOCH only after close breaks a bearish swing sequence', () => {
+  const bars = Array.from({ length: 40 }, (_, i) => candle(i));
+  bars[25] = candle(25, { high: 110, low: 99, open: 100, close: 105 });
+  bars[27] = candle(27, { high: 101, low: 95, open: 100, close: 97 });
+  bars[30] = candle(30, { high: 108, low: 99, open: 100, close: 104 });
+  bars[32] = candle(32, { high: 101, low: 93, open: 100, close: 96 });
+  bars[39] = candle(39, { high: 110, low: 107, open: 108, close: 109 });
+  const xray = getMarketXray(bars);
+  assert.equal(xray.priorTrend, 'Bearish');
+  assert.equal(xray.breakType, 'BULLISH CHOCH');
+  assert.equal(xray.structure, 'Bullish CHOCH');
+  assert.equal(xray.brokenLevel, 108);
+});
