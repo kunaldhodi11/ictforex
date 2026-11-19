@@ -5,3 +5,10 @@
 .alert-status{margin:12px 0 0;padding:10px 14px;border:1px solid rgba(112,185,232,.22);border-radius:12px;background:rgba(112,185,232,.06);color:#9db2c9;font-size:12px;line-height:1.5}
 #enableAlerts{border-color:rgba(54,211,154,.35);color:#8ce6c2}
 #enableAlerts:hover{background:rgba(54,211,154,.1)}
+
+#marketChart{position:relative}
+.chart-overlay{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.chart-zone{position:absolute;left:8px;right:56px;min-height:3px;border-top:1px solid;border-bottom:1px solid;display:flex;align-items:flex-start}
+.chart-zone.bullish{background:rgba(54,211,154,.10);border-color:rgba(54,211,154,.5)}
+.chart-zone.bearish{background:rgba(240,120,120,.10);border-color:rgba(240,120,120,.5)}
+.chart-zone span{font-size:9px;line-height:1;padding:3px 5px;border-radius:3px;background:rgba(8,13,23,.8);color:#d9e4f1;letter-spacing:.06em}
