@@ -2,7 +2,7 @@
 'use strict';
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
-const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastFlowAt:0,flowEvents:[]};
+const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
@@ -113,7 +113,7 @@ function updateLiveXray(price){
  set('xrayLiveMove',prev===null?'Live quote received':(delta>0?'+':delta<0?'−':'')+Math.abs(delta).toFixed(2)+' since last tick');
  const pct=x.high!==x.low?Math.max(0,Math.min(100,(price-x.low)/(x.high-x.low)*100)):50;
  set('xrayLivePosition',pct.toFixed(1)+'%');set('xrayLiveZone',pct>55?'Premium side':pct<45?'Discount side':'Equilibrium area');
- const direction=prev===null?'FLAT':delta>0?'UPTICK':delta<0?'DOWNTICK':'UNCHANGED';set('xrayLiveBias',direction);set('xrayLiveBiasNote','Live tick direction · not a trade signal');
+ const direction=prev===null?'FLAT':delta>0?'UPTICK':delta<0?'DOWNTICK':'UNCHANGED';state.lastTickDirection=direction;set('xrayLiveBias',direction);set('xrayLiveBiasNote','Live tick direction · not a trade signal');
  const levels=[{name:'Range high',value:x.high},{name:'Equilibrium',value:x.mid},{name:'Range low',value:x.low}].sort((a,b)=>Math.abs(a.value-price)-Math.abs(b.value-price));
  set('xrayLiveLevel',fmt(levels[0].value));set('xrayLiveLevelNote',levels[0].name+' · '+Math.abs(levels[0].value-price).toFixed(2)+' away');
  const track=$('rangeMarker');if(track)track.style.left=pct+'%';
@@ -127,8 +127,30 @@ function updateLiveXray(price){
  }
  state.lastLivePrice=price;
 }
-function renderXray(bars,mtf){
- const x=getMarketXray(bars);state.xray=x;state.lastLivePrice=null;$('xrayTf').textContent=state.tf.toUpperCase();$('xrayStructure').textContent=x.structure;$('xrayStructureNote').textContent=x.note;$('xrayRange').textContent=fmt(x.low)+' – '+fmt(x.high);$('xrayRangeNote').textContent='30 completed candles · EQ '+fmt(x.mid);$('xrayZone').textContent=x.zone;$('xrayZoneNote').textContent='Price position '+x.pos.toFixed(0)+'% of recent range';$('xraySession').textContent=x.session;$('xraySessionNote').textContent='Candle UTC '+x.time.slice(11,16);$('rangeMarker').style.left=x.pos+'%';
+function renderXraySides(bars,mtf,results,x){
+ const renderSide=(side)=>{
+  const bullish=side==='bullish',prefix=bullish?'xrayBull':'xrayBear',list=$(prefix+'Items'),status=$(prefix+'Status'),count=$(prefix+'Count');
+  if(!list)return;
+  const matches=(results||[]).filter(r=>r.side===side);
+  const structureMatch=x.structure.toLowerCase().startsWith(bullish?'bullish':'bearish');
+  const alignedMtf=['5m','15m','1h','4h'].filter(tf=>mtf&&mtf[tf]&&String(mtf[tf].structure||'').toLowerCase().startsWith(bullish?'bullish':'bearish'));
+  const evidence=[];
+  evidence.push({title:'Market structure',value:structureMatch?x.structure:'No confirmed '+(bullish?'bullish':'bearish')+' break',detail:x.note});
+  evidence.push({title:'Tick pressure',value:state.lastTickDirection||(bullish?'Monitoring upside ticks':'Monitoring downside ticks'),detail:'Short-term tick movement only; not a confirmed trend'});
+  if(bullish&&x.ssl!==null)evidence.push({title:'Sell-side liquidity',value:fmt(x.ssl),detail:'Potential SSL pool inferred from swing lows'});
+  if(!bullish&&x.bsl!==null)evidence.push({title:'Buy-side liquidity',value:fmt(x.bsl),detail:'Potential BSL pool inferred from swing highs'});
+  if(alignedMtf.length)evidence.push({title:'MTF alignment',value:alignedMtf.map(t=>t.toUpperCase()).join(' · '),detail:'Timeframes with matching candle-derived structure'});
+  matches.forEach(r=>evidence.push({title:r.type,value:'Entry '+fmt(r.entry)+' · SL '+fmt(r.stop),detail:'Target '+fmt(r.target)+' · '+r.rr+' R:R · '+r.status}));
+  count.textContent=String(matches.length);
+  status.textContent=(structureMatch?'STRUCTURE ALIGNED':'NO CONFIRMED STRUCTURE')+' · '+alignedMtf.length+'/4 MTF';
+  list.innerHTML='';
+  if(!evidence.length){list.innerHTML='<div class="xray-direction-empty">No confirmed evidence yet.</div>';return}
+  evidence.forEach(item=>{const row=document.createElement('div');row.className='xray-direction-item';const title=document.createElement('small'),value=document.createElement('b'),detail=document.createElement('span');title.textContent=item.title;value.textContent=item.value;detail.textContent=item.detail;row.append(title,value,detail);list.appendChild(row)});
+ };
+ renderSide('bullish');renderSide('bearish');
+}
+function renderXray(bars,mtf,results){
+ const x=getMarketXray(bars);state.xray=x;renderXraySides(bars,mtf,results,x);state.lastLivePrice=null;$('xrayTf').textContent=state.tf.toUpperCase();$('xrayStructure').textContent=x.structure;$('xrayStructureNote').textContent=x.note;$('xrayRange').textContent=fmt(x.low)+' – '+fmt(x.high);$('xrayRangeNote').textContent='30 completed candles · EQ '+fmt(x.mid);$('xrayZone').textContent=x.zone;$('xrayZoneNote').textContent='Price position '+x.pos.toFixed(0)+'% of recent range';$('xraySession').textContent=x.session;$('xraySessionNote').textContent='Candle UTC '+x.time.slice(11,16);$('rangeMarker').style.left=x.pos+'%';
  const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};set('xrayChoch',x.choch);set('xrayChochNote',x.chochNote);set('xrayTrend',x.strength+' · '+x.trendPct+'/100');set('xrayTrendNote','20-candle directional efficiency (not win probability)');set('xrayBsl',x.bsl===null?'No clear pool':fmt(x.bsl));set('xrayBslNote',x.bsl===null?'No clustered equal highs detected':'Potential buy-side liquidity · candle-derived');set('xraySsl',x.ssl===null?'No clear pool':fmt(x.ssl));set('xraySslNote',x.ssl===null?'No clustered equal lows detected':'Potential sell-side liquidity · candle-derived');
  const grid=$('xrayMtfGrid');if(grid){grid.innerHTML='';['5m','15m','1h','4h'].forEach(tf=>{const m=mtf&&mtf[tf]?mtf[tf]:null,d=document.createElement('div');d.className='xray-mtf-cell';const label=document.createElement('small');label.textContent=tf.toUpperCase();const value=document.createElement('b');value.textContent=m?m.structure:'Unavailable';const sub=document.createElement('span');sub.textContent=m&&m.bars?m.bars+' candles':'No provider data';d.append(label,value,sub);grid.appendChild(d)})}
  addXrayEvent('CONFIRMED STRUCTURE UPDATE',x.structure+' · '+x.zone+' · '+x.session,'structure');$('xrayFoot').textContent='BOS/CHOCH and equal-high/low liquidity pools are inferred from confirmed OHLC swing points. Trend strength measures directional efficiency, not trade probability. Session labels use approximate UTC windows.';
@@ -160,7 +182,7 @@ function render(data){
  $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent=state.tf.toUpperCase();
  $('feedState').textContent=data.tick.stale?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  $('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+data.analysis.bars.length+' completed '+state.tf+' candles analysed.';
- drawChart(data.analysis.bars,data.analysis.results);renderXray(data.analysis.bars,data.mtf);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
+ drawChart(data.analysis.bars,data.analysis.results);renderXray(data.analysis.bars,data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
  const bullList=$('bullishList'),bearList=$('bearishList');bullList.innerHTML='';bearList.innerHTML='';
  const bulls=data.analysis.results.filter(r=>r.side==='bullish'),bears=data.analysis.results.filter(r=>r.side==='bearish');
  if(!bulls.length)bullList.innerHTML='<div class="empty">No valid bullish setup detected. Waiting for confirmation.</div>';
