@@ -40,19 +40,17 @@ test('engine source parses as JavaScript', () => {
   assert.doesNotThrow(() => new Function(source));
 });
 
-test('detects a fresh bullish FVG from a completed three-candle sequence', () => {
+test('does not promote a fresh standalone bullish FVG to a setup', () => {
   const bars = baseBars();
   bars[20] = candle(20, { high: 101, low: 99, open: 100, close: 100.5 });
   bars[21] = candle(21, { high: 103.5, low: 102.5, open: 102.7, close: 103.3 });
   bars[22] = candle(22, { high: 104, low: 103, open: 103.2, close: 103.7 });
   bars[23] = candle(23, { high: 104, low: 103.2, open: 103.5, close: 103.4 });
   bars[24] = candle(24, { high: 104, low: 103.1, open: 103.4, close: 103.3 });
-  const found = findBullishFvg(analyze(bars));
-  assert.ok(found);
-  assert.equal(found.lifecycle, 'FRESH');
+  assert.equal(analyze(bars).results.length, 0);
 });
 
-test('marks an FVG partially mitigated when price trades into but not through it', () => {
+test('does not promote a partially mitigated standalone FVG to a setup', () => {
   const bars = baseBars();
   bars[20] = candle(20, { high: 101, low: 99 });
   bars[21] = candle(21, { high: 103.5, low: 102.5, open: 102.7, close: 103.3 });
@@ -60,9 +58,7 @@ test('marks an FVG partially mitigated when price trades into but not through it
   bars[23] = candle(23, { high: 104, low: 102.5, open: 103.5, close: 103.2 });
   bars[24] = candle(24, { high: 104, low: 102.2, open: 103.2, close: 103 });
   bars[24] = candle(24, { high: 103.5, low: 102, open: 103, close: 102.8 });
-  const found = findBullishFvg(analyze(bars));
-  assert.ok(found);
-  assert.equal(found.lifecycle, 'PARTIALLY MITIGATED');
+  assert.equal(analyze(bars).results.length, 0);
 });
 
 test('does not present a fully filled bullish FVG as active', () => {
@@ -76,11 +72,11 @@ test('does not present a fully filled bullish FVG as active', () => {
   assert.equal(findBullishFvg(analyze(bars)), undefined);
 });
 
-test('detects a completed sell-side sweep and reclaim', () => {
+test('keeps a sweep without subsequent MSS and zone confirmation unqualified', () => {
   const bars = baseBars();
   bars[24] = candle(24, { open: 100, high: 101, low: 97.5, close: 100.2 });
   const result = analyze(bars);
-  assert.ok(result.results.some(item => item.type === 'Sell-side liquidity sweep'));
+  assert.equal(result.results.length, 0);
 });
 
 
@@ -130,12 +126,10 @@ test('does not promote an isolated FVG to a trade setup', () => {
 
 test('requires sweep then displacement/MSS then a linked FVG before showing a setup', () => {
   const bars = baseBars();
-  bars[18] = candle(18, { open: 100, high: 101, low: 97.5, close: 100.2 });
-  bars[19] = candle(19, { open: 100, high: 101, low: 99, close: 100.2 });
-  bars[20] = candle(20, { open: 100, high: 101, low: 99, close: 100.3 });
+  bars[20] = candle(20, { open: 100, high: 101, low: 97.5, close: 100.2 });
   bars[21] = candle(21, { open: 100, high: 101, low: 99, close: 100.2 });
   bars[22] = candle(22, { open: 100, high: 101, low: 99, close: 100.2 });
-  bars[23] = candle(23, { open: 100, high: 104, low: 100, close: 103.8 });
+  bars[23] = candle(23, { open: 100, high: 104, low: 102, close: 103.8 });
   bars[24] = candle(24, { open: 103.5, high: 104.5, low: 103.2, close: 104 });
   const result = analyze(bars);
   assert.ok(result.results.some(item => item.side === 'bullish' && item.type.includes('Bullish MSS setup')));
@@ -145,12 +139,10 @@ test('requires sweep then displacement/MSS then a linked FVG before showing a se
 
 test('does not show a linked setup after its sweep extreme is invalidated', () => {
   const bars = baseBars();
-  bars[18] = candle(18, { open: 100, high: 101, low: 97.5, close: 100.2 });
-  bars[19] = candle(19, { open: 100, high: 101, low: 99, close: 100.2 });
-  bars[20] = candle(20, { open: 100, high: 101, low: 99, close: 100.3 });
+  bars[20] = candle(20, { open: 100, high: 101, low: 97.5, close: 100.2 });
   bars[21] = candle(21, { open: 100, high: 101, low: 99, close: 100.2 });
   bars[22] = candle(22, { open: 100, high: 101, low: 99, close: 100.2 });
-  bars[23] = candle(23, { open: 100, high: 104, low: 100, close: 103.8 });
+  bars[23] = candle(23, { open: 100, high: 104, low: 102, close: 103.8 });
   bars[24] = candle(24, { open: 98, high: 99, low: 97, close: 98 });
   assert.equal(analyze(bars).results.length, 0);
 });
