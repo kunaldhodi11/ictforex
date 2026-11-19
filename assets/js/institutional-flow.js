@@ -2,7 +2,7 @@
 'use strict';
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
-const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false};
+const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
@@ -10,7 +10,7 @@ function updateLiveTick(tick){
  const mid=num(tick.mid);if(mid===null)return;
  if(tick.stale===true||(num(tick.quoteAgeSeconds)!==null&&tick.quoteAgeSeconds>120)){$('feedState').textContent='STALE FEED';return}
  $('price').textContent=fmt(mid);
- updateLiveCandle(mid,tick.timestamp);
+ updateLiveCandle(mid,tick.timestamp);updateLiveXray(mid);
  if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
  if(tick.marketState)$('marketStatus').textContent=tick.marketState;
  $('quoteAge').textContent=tick.timestamp?age(tick.timestamp):'Live tick received';
@@ -98,11 +98,40 @@ function getMarketXray(bars){
  const bsl=pool(pivots,'high'),ssl=pool(pivots,'low');
  return {high,low,mid,pos,zone,structure,note,session,time:dt.toISOString(),choch,chochNote,strength,trendPct,bsl,ssl};
 }
+function addXrayEvent(title,detail,kind='info'){
+ const now=Date.now(),item={title,detail,kind,time:new Date(now).toLocaleTimeString()};
+ state.flowEvents.unshift(item);state.flowEvents=state.flowEvents.slice(0,8);
+ const tape=$('xrayEventTape');if(!tape)return;tape.innerHTML='';
+ state.flowEvents.forEach(ev=>{const row=document.createElement('div');row.className='xray-event '+ev.kind;const dot=document.createElement('span');dot.className='event-dot';const body=document.createElement('div'),titleEl=document.createElement('b'),detailEl=document.createElement('small'),time=document.createElement('time');titleEl.textContent=ev.title;detailEl.textContent=ev.detail;time.textContent=ev.time;body.append(titleEl,detailEl);row.append(dot,body,time);tape.appendChild(row)});
+}
+function updateLiveXray(price){
+ const x=state.xray;if(!x||!Number.isFinite(price))return;
+ const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+ set('xrayLivePrice',fmt(price));
+ const prev=state.lastLivePrice,delta=prev===null?0:price-prev;
+ set('xrayLiveMove',prev===null?'Live quote received':(delta>0?'+':delta<0?'−':'')+fmt(Math.abs(delta))+' since last tick');
+ set('xrayLiveMove',prev===null?'Live quote received':(delta>0?'+':delta<0?'−':'')+Math.abs(delta).toFixed(2)+' since last tick');
+ const pct=x.high!==x.low?Math.max(0,Math.min(100,(price-x.low)/(x.high-x.low)*100)):50;
+ set('xrayLivePosition',pct.toFixed(1)+'%');set('xrayLiveZone',pct>55?'Premium side':pct<45?'Discount side':'Equilibrium area');
+ const direction=prev===null?'FLAT':delta>0?'UPTICK':delta<0?'DOWNTICK':'UNCHANGED';set('xrayLiveBias',direction);set('xrayLiveBiasNote','Live tick direction · not a trade signal');
+ const levels=[{name:'Range high',value:x.high},{name:'Equilibrium',value:x.mid},{name:'Range low',value:x.low}].sort((a,b)=>Math.abs(a.value-price)-Math.abs(b.value-price));
+ set('xrayLiveLevel',fmt(levels[0].value));set('xrayLiveLevelNote',levels[0].name+' · '+Math.abs(levels[0].value-price).toFixed(2)+' away');
+ const track=$('rangeMarker');if(track)track.style.left=pct+'%';
+ const now=Date.now();if(prev!==null&&now-state.lastFlowAt>5000&&Math.abs(delta)>0){
+  addXrayEvent('LIVE PRICE '+direction, 'Price '+fmt(price)+' · '+(delta>0?'+':'−')+Math.abs(delta).toFixed(2)+' from previous tick','tick');state.lastFlowAt=now;
+ }
+ if(prev!==null){
+  if((prev<x.mid&&price>=x.mid)||(prev>x.mid&&price<=x.mid))addXrayEvent('EQUILIBRIUM CROSSED','Live price crossed the 30-candle dealing-range midpoint at '+fmt(x.mid),'level');
+  if((prev<x.high&&price>=x.high)||(prev>x.high&&price<=x.high))addXrayEvent('RANGE HIGH TEST','Price reached the current 30-candle range high '+fmt(x.high),'warning');
+  if((prev>x.low&&price<=x.low)||(prev<x.low&&price>=x.low))addXrayEvent('RANGE LOW TEST','Price reached the current 30-candle range low '+fmt(x.low),'warning');
+ }
+ state.lastLivePrice=price;
+}
 function renderXray(bars,mtf){
- const x=getMarketXray(bars);$('xrayTf').textContent=state.tf.toUpperCase();$('xrayStructure').textContent=x.structure;$('xrayStructureNote').textContent=x.note;$('xrayRange').textContent=fmt(x.low)+' – '+fmt(x.high);$('xrayRangeNote').textContent='30 completed candles · EQ '+fmt(x.mid);$('xrayZone').textContent=x.zone;$('xrayZoneNote').textContent='Price position '+x.pos.toFixed(0)+'% of recent range';$('xraySession').textContent=x.session;$('xraySessionNote').textContent='Candle UTC '+x.time.slice(11,16);$('rangeMarker').style.left=x.pos+'%';
+ const x=getMarketXray(bars);state.xray=x;state.lastLivePrice=null;$('xrayTf').textContent=state.tf.toUpperCase();$('xrayStructure').textContent=x.structure;$('xrayStructureNote').textContent=x.note;$('xrayRange').textContent=fmt(x.low)+' – '+fmt(x.high);$('xrayRangeNote').textContent='30 completed candles · EQ '+fmt(x.mid);$('xrayZone').textContent=x.zone;$('xrayZoneNote').textContent='Price position '+x.pos.toFixed(0)+'% of recent range';$('xraySession').textContent=x.session;$('xraySessionNote').textContent='Candle UTC '+x.time.slice(11,16);$('rangeMarker').style.left=x.pos+'%';
  const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};set('xrayChoch',x.choch);set('xrayChochNote',x.chochNote);set('xrayTrend',x.strength+' · '+x.trendPct+'/100');set('xrayTrendNote','20-candle directional efficiency (not win probability)');set('xrayBsl',x.bsl===null?'No clear pool':fmt(x.bsl));set('xrayBslNote',x.bsl===null?'No clustered equal highs detected':'Potential buy-side liquidity · candle-derived');set('xraySsl',x.ssl===null?'No clear pool':fmt(x.ssl));set('xraySslNote',x.ssl===null?'No clustered equal lows detected':'Potential sell-side liquidity · candle-derived');
  const grid=$('xrayMtfGrid');if(grid){grid.innerHTML='';['5m','15m','1h','4h'].forEach(tf=>{const m=mtf&&mtf[tf]?mtf[tf]:null,d=document.createElement('div');d.className='xray-mtf-cell';const label=document.createElement('small');label.textContent=tf.toUpperCase();const value=document.createElement('b');value.textContent=m?m.structure:'Unavailable';const sub=document.createElement('span');sub.textContent=m&&m.bars?m.bars+' candles':'No provider data';d.append(label,value,sub);grid.appendChild(d)})}
- $('xrayFoot').textContent='BOS/CHOCH and equal-high/low liquidity pools are inferred from confirmed OHLC swing points. Trend strength measures directional efficiency, not trade probability. Session labels use approximate UTC windows.';
+ addXrayEvent('CONFIRMED STRUCTURE UPDATE',x.structure+' · '+x.zone+' · '+x.session,'structure');$('xrayFoot').textContent='BOS/CHOCH and equal-high/low liquidity pools are inferred from confirmed OHLC swing points. Trend strength measures directional efficiency, not trade probability. Session labels use approximate UTC windows.';
 }
 function initChart(){
  if(state.chart||!window.LightweightCharts)return;
