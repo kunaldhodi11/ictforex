@@ -143,7 +143,7 @@ async function scan(){
  $('feedState').textContent='SCANNING';$('setupList').innerHTML='<div class="loading">Fetching feed and analysing completed candles…</div>';
  try{const symbol=await resolveSymbol(state.market);state.symbol=symbol;connectLive(symbol).catch(()=>{$('feedState').textContent='REST SNAPSHOT';});
  const intervals=['5m','15m','1h','4h'];
- const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit=100'))]);
+ const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit=100').catch(err=>tf==='4h'?{bars:[]}:Promise.reject(err)))]);
  const tick=responses[0],mtf={};let selectedBars=[];
  intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];if(tf===state.tf)selectedBars=bars;try{const a=analyze(bars);mtf[tf]={bias:a.bias,structure:getMarketXray(a.bars).structure,bars:a.bars.length}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0}}});
  if(!selectedBars.length)throw Error('Selected timeframe candles are unavailable.');
