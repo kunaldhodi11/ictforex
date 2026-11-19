@@ -2,18 +2,46 @@
 'use strict';
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
-const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null};
+const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set()};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
  if(!tick||!tick.symbol||String(tick.symbol).toUpperCase()!==String(state.symbol||'').toUpperCase())return;
  const mid=num(tick.mid);if(mid===null)return;
+ if(tick.stale===true||(num(tick.quoteAgeSeconds)!==null&&tick.quoteAgeSeconds>120)){$('feedState').textContent='STALE FEED';return}
  $('price').textContent=fmt(mid);
+ updateLiveCandle(mid,tick.timestamp);
  if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
  if(tick.marketState)$('marketStatus').textContent=tick.marketState;
  $('quoteAge').textContent=tick.timestamp?age(tick.timestamp):'Live tick received';
  $('feedState').textContent='LIVE STREAM';
  $('updated').textContent='Tick '+new Date().toLocaleTimeString();
+}
+function updateLiveCandle(price,timestamp){
+ if(!state.candleSeries||!state.chart)return;
+ const stamp=Date.parse(timestamp||new Date().toISOString());if(!Number.isFinite(stamp))return;
+ const secs=({'5m':300,'15m':900,'1h':3600})[state.tf]||900;
+ const time=Math.floor(stamp/1000/secs)*secs;
+ if(!state.liveCandle||state.liveCandle.time!==time){
+  state.liveCandle={time,open:price,high:price,low:price,close:price};
+ }else{
+  state.liveCandle.high=Math.max(state.liveCandle.high,price);
+  state.liveCandle.low=Math.min(state.liveCandle.low,price);
+  state.liveCandle.close=price;
+ }
+ try{state.candleSeries.update(state.liveCandle)}catch(e){}
+}
+function setupAlertKey(r){return [state.market,state.tf,r.side,r.type,r.time,Number(r.entry).toFixed(3)].join('|')}
+function notifyNewSetups(results){
+ if(!state.alertsEnabled)return;
+ results.forEach(r=>{
+  const key=setupAlertKey(r);if(state.alerted.has(key))return;state.alerted.add(key);
+  if(state.alerted.size>300)state.alerted=new Set(Array.from(state.alerted).slice(-150));
+  const title=state.market+' '+r.side.toUpperCase()+' ICT setup';
+  const body=r.type+' · Entry '+fmt(r.entry)+' · SL '+fmt(r.stop)+' · TP '+fmt(r.target)+' · '+r.rr+' RR';
+  if('Notification'in window&&Notification.permission==='granted'){try{new Notification(title,{body,tag:key})}catch(e){}}
+  const status=$('alertStatus');if(status)status.textContent='New setup: '+r.type+' · '+new Date().toLocaleTimeString();
+ });
 }
 async function connectLive(symbol){
  if(!window.signalR||!window.signalR.HubConnectionBuilder){$('feedState').textContent='REST SNAPSHOT';return}
@@ -77,7 +105,7 @@ function initChart(){
 function drawChart(bars,results){
  initChart();if(!state.candleSeries)return;
  const data=bars.map(x=>({time:Math.floor(Date.parse(x.openTime)/1000),open:x.open,high:x.high,low:x.low,close:x.close})).filter(x=>Number.isFinite(x.time)).sort((a,b)=>a.time-b.time);
- state.candleSeries.setData(data);state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
+ state.candleSeries.setData(data);state.liveCandle=null;state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
  const best=results[0];const colors={Entry:'#70b9e8',Stop:'#f07878',Target:'#36d39a'};
  if(best){[['Entry',best.entry],['Stop',best.stop],['Target',best.target]].forEach(([title,price])=>state.lines.push(state.candleSeries.createPriceLine({price,title,color:colors[title],lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true})))}
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
@@ -89,7 +117,7 @@ function render(data){
  $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent=state.tf.toUpperCase();
  $('feedState').textContent=data.tick.stale?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  $('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+data.analysis.bars.length+' completed '+state.tf+' candles analysed.';
- drawChart(data.analysis.bars,data.analysis.results);renderXray(data.analysis.bars);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
+ drawChart(data.analysis.bars,data.analysis.results);renderXray(data.analysis.bars);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
  const list=$('setupList');list.innerHTML='';
  if(!data.analysis.results.length){list.innerHTML='<div class="empty">No qualifying setup found in the latest completed candles. The scanner will not invent a trade.</div>'}
  data.analysis.results.forEach((r,i)=>{const div=document.createElement('article');div.className='setup';const dir=document.createElement('div');dir.innerHTML='<div class="direction '+r.side+'">'+r.side.toUpperCase()+'</div><h3>'+r.type+'</h3><div class="muted">Rank #'+(i+1)+' · '+new Date(r.time).toLocaleString()+'</div>';const levels=document.createElement('div');levels.className='levels';[['ENTRY',r.entry],['STOP',r.stop],['TARGET',r.target]].forEach(([k,v])=>{const d=document.createElement('div');d.innerHTML='<small>'+k+'</small><b>'+fmt(v)+'</b>';levels.appendChild(d)});const why=document.createElement('div');why.className='muted';why.textContent=r.reason;const score=document.createElement('div');score.className='score';score.innerHTML='<b>'+r.score+'</b><small>CONFLUENCE / 100</small><small>'+r.rr+' R:R</small>';div.append(dir,levels,why,score);list.appendChild(div)});
@@ -101,5 +129,13 @@ async function scan(){
  catch(e){$('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';$('setupList').innerHTML='';const d=document.createElement('div');d.className='empty';d.textContent=e.message+' No placeholder prices or signals are displayed. Try again later or switch market.';$('setupList').appendChild(d);$('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable'}
 }
 document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;scan()}));
-$('timeframe').addEventListener('change',e=>{state.tf=e.target.value;scan()});$('refresh').addEventListener('click',scan);scan();state.timer=setInterval(scan,60000);
+$('timeframe').addEventListener('change',e=>{state.tf=e.target.value;state.liveCandle=null;scan()});
+$('refresh').addEventListener('click',scan);
+const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
+ if(!('Notification'in window)){$('alertStatus').textContent='Browser notifications are not supported.';return}
+ const permission=Notification.permission==='default'?await Notification.requestPermission():Notification.permission;
+ state.alertsEnabled=permission==='granted';alertBtn.textContent=state.alertsEnabled?'Alerts enabled ✓':'Enable alerts';
+ $('alertStatus').textContent=state.alertsEnabled?'Browser alerts are active while this page is open.':'Notification permission was not granted.';
+});
+scan();state.timer=setInterval(scan,60000);
 })();
