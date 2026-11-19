@@ -10,7 +10,7 @@ function updateLiveTick(tick){
  const mid=num(tick.mid);if(mid===null)return;
  if(tick.stale===true||(num(tick.quoteAgeSeconds)!==null&&tick.quoteAgeSeconds>120)){$('feedState').textContent='STALE FEED';return}
  $('price').textContent=fmt(mid);
- updateLiveCandle(mid,tick.timestamp);updateLiveXray(mid);
+ updateLiveCandle(mid,tick.timestamp);updateLiveXray(mid);updateTickPressurePanels();
  if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
  if(tick.marketState)$('marketStatus').textContent=tick.marketState;
  $('quoteAge').textContent=tick.timestamp?age(tick.timestamp):'Live tick received';
@@ -109,7 +109,6 @@ function updateLiveXray(price){
  const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};
  set('xrayLivePrice',fmt(price));
  const prev=state.lastLivePrice,delta=prev===null?0:price-prev;
- set('xrayLiveMove',prev===null?'Live quote received':(delta>0?'+':delta<0?'−':'')+fmt(Math.abs(delta))+' since last tick');
  set('xrayLiveMove',prev===null?'Live quote received':(delta>0?'+':delta<0?'−':'')+Math.abs(delta).toFixed(2)+' since last tick');
  const pct=x.high!==x.low?Math.max(0,Math.min(100,(price-x.low)/(x.high-x.low)*100)):50;
  set('xrayLivePosition',pct.toFixed(1)+'%');set('xrayLiveZone',pct>55?'Premium side':pct<45?'Discount side':'Equilibrium area');
@@ -126,6 +125,20 @@ function updateLiveXray(price){
   if((prev>x.low&&price<=x.low)||(prev<x.low&&price>=x.low))addXrayEvent('RANGE LOW TEST','Price reached the current 30-candle range low '+fmt(x.low),'warning');
  }
  state.lastLivePrice=price;
+}
+function updateTickPressurePanels(){
+ const direction=state.lastTickDirection||'WAITING';
+ ['xrayBullItems','xrayBearItems'].forEach(id=>{
+  const list=$(id);if(!list)return;
+  const row=Array.from(list.querySelectorAll('.xray-direction-item')).find(el=>{
+   const label=el.querySelector('small');return label&&label.textContent==='Tick pressure';
+  });
+  if(!row)return;
+  const value=row.querySelector('b');
+  const detail=row.querySelector('span');
+  if(value)value.textContent=direction;
+  if(detail)detail.textContent='Latest tick-to-tick movement only; not a confirmed trend or trade signal';
+ });
 }
 function renderXraySides(bars,mtf,results,x){
  const renderSide=(side)=>{
