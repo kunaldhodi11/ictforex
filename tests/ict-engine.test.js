@@ -129,7 +129,7 @@ test('requires sweep then displacement/MSS then a linked FVG before showing a se
   bars[20] = candle(20, { open: 100, high: 101, low: 97.5, close: 100.2 });
   bars[21] = candle(21, { open: 100, high: 101, low: 99, close: 100.2 });
   bars[22] = candle(22, { open: 100, high: 101, low: 99, close: 100.2 });
-  bars[23] = candle(23, { open: 102.5, high: 104, low: 102, close: 103.8 });
+  bars[23] = candle(23, { open: 101.2, high: 104, low: 101.1, close: 103.8 });
   bars[24] = candle(24, { open: 103.5, high: 104.5, low: 103.2, close: 104 });
   const result = analyze(bars);
   assert.ok(result.results.some(item => item.side === 'bullish' && item.type.includes('Bullish MSS setup')));
@@ -142,7 +142,7 @@ test('does not show a linked setup after its sweep extreme is invalidated', () =
   bars[20] = candle(20, { open: 100, high: 101, low: 97.5, close: 100.2 });
   bars[21] = candle(21, { open: 100, high: 101, low: 99, close: 100.2 });
   bars[22] = candle(22, { open: 100, high: 101, low: 99, close: 100.2 });
-  bars[23] = candle(23, { open: 102.5, high: 104, low: 102, close: 103.8 });
+  bars[23] = candle(23, { open: 101.2, high: 104, low: 101.1, close: 103.8 });
   bars[24] = candle(24, { open: 98, high: 99, low: 97, close: 98 });
   assert.equal(analyze(bars).results.length, 0);
 });
