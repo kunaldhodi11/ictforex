@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'scripts/backtest-ict-targets.js'
+      - 'scripts/backtest-ict-mtf.js'
       - 'scripts/test-mtf-gate.js'
       - 'assets/js/institutional-flow.js'
       - '.github/workflows/ict-target-backtest.yml'
@@ -26,6 +27,8 @@ jobs:
         run: node scripts/test-mtf-gate.js
       - name: Run historical target backtest
         run: node scripts/backtest-ict-targets.js
+      - name: Run strict multi-timeframe historical backtest
+        run: node scripts/backtest-ict-mtf.js
       - name: Upload detailed results
         uses: actions/upload-artifact@v4
         with:
