@@ -373,14 +373,29 @@ function drawChart(bars,results){
  state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
  const best=results[0];const colors={Entry:'#70b9e8',Stop:'#f07878',TP1:'#36d39a',TP2:'#8bd8b7',TP3:'#d8b66c'};
  if(best){[['Entry',best.entry],['Stop',best.stop],['TP1',(best.targets||[best.target])[0]],['TP2',(best.targets||[])[1]],['TP3',(best.targets||[])[2]]].filter(x=>Number.isFinite(x[1])).forEach(([title,price])=>state.lines.push(state.candleSeries.createPriceLine({price,title,color:colors[title],lineWidth:title==='TP1'?2:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true})))}
- const lookback=bars.slice(-30,-1);if(lookback.length){const buySide=Math.max(...lookback.map(x=>x.high)),sellSide=Math.min(...lookback.map(x=>x.low));
-  state.lines.push(state.candleSeries.createPriceLine({price:buySide,title:'Buy-side liquidity',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
-  state.lines.push(state.candleSeries.createPriceLine({price:sellSide,title:'Sell-side liquidity',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
+ const closedBars=bars.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(Number.isFinite));
+ const chartXray=closedBars.length>=25?getMarketXray(closedBars):null;
+ if(chartXray){
+  if(chartXray.bsl!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.bsl,title:'BSL · EQH pool',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
+  if(chartXray.ssl!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.ssl,title:'SSL · EQL pool',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
+  if(chartXray.brokenLevel!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.brokenLevel,title:chartXray.breakType,color:chartXray.breakSide==='bullish'?'#36d39a':'#f07878',lineWidth:2,lineStyle:LightweightCharts.LineStyle.Solid,axisLabelVisible:true}));
  }
- if(state.overlay){state.overlay.innerHTML='';results.slice(0,5).forEach((r,i)=>{const top=state.candleSeries.priceToCoordinate(Math.max(...r.zone)),bottom=state.candleSeries.priceToCoordinate(Math.min(...r.zone));if(top===null||bottom===null)return;const band=document.createElement('div');band.className='chart-zone '+r.side;band.style.top=Math.min(top,bottom)+'px';band.style.height=Math.max(3,Math.abs(bottom-top))+'px';band.style.opacity=String(Math.max(.48,.82-i*.08));const label=document.createElement('span');label.textContent=r.type.toUpperCase();band.appendChild(label);state.overlay.appendChild(band)})}
+ if(state.overlay){
+  state.overlay.innerHTML='';
+  const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg'})):[];
+  const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup'}));
+  [...zones,...setupZones].forEach((item,i)=>{
+   const top=state.candleSeries.priceToCoordinate(Math.max(...item.zone)),bottom=state.candleSeries.priceToCoordinate(Math.min(...item.zone));
+   if(top===null||bottom===null)return;
+   const band=document.createElement('div');band.className='chart-zone '+item.side+(item.kind==='fvg'?' chart-fvg-zone':'');
+   band.style.top=Math.min(top,bottom)+'px';band.style.height=Math.max(3,Math.abs(bottom-top))+'px';
+   band.style.opacity=String(item.kind==='fvg'?.32:Math.max(.48,.82-i*.04));
+   const label=document.createElement('span');label.textContent=item.label;band.appendChild(label);state.overlay.appendChild(band);
+  });
+ }
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
- $('chartTitle').textContent=state.market+' · 1M EXECUTION';$('chartStatus').textContent=data.length+' one-minute candles · '+(last.isOpen?'LIVE BAR':'WAITING FOR NEXT BAR');$('chartFoot').textContent=best?'Live 1M ticks update the active OHLC candle; ICT levels are calculated from completed candles.':'Live 1M ticks update the active candle; waiting for confirmed MTF confluence.';
+ $('chartTitle').textContent=state.market+' · 1M EXECUTION';$('chartStatus').textContent=data.length+' one-minute candles · '+(last.isOpen?'LIVE BAR':'WAITING FOR NEXT BAR');$('chartFoot').textContent=best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.';
 }
 function render(data){
  $('price').textContent=fmt(data.tick.mid);$('change').textContent=data.tick.dayDiffPercent==null?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
