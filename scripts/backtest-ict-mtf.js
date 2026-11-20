@@ -137,9 +137,10 @@ function runMarket(symbol, file) {
       const key = candidate.side + '|' + candidate.time + '|' + candidate.type;
       if (seen.has(key)) continue;
       seen.add(key);
-      const gated = applyGate({ results: [{ ...candidate }] }, mtf);
+      const candidateCopy = { ...candidate };
+      const gated = applyGate({ results: [candidateCopy] }, mtf);
       if (!gated.results.length) {
-        const why = candidate.mtfText || '';
+        const why = candidateCopy.mtfText || '';
         if (why.includes('4H') || why.includes('1H')) gateRejects['4H major bias or 1H structure']++;
         else if (why.includes('15M')) gateRejects['15M active FVG POI']++;
         else if (why.includes('5M')) gateRejects['5M confirmed MSS']++;
