@@ -1,0 +1,31 @@
+name: ICT target backtest
+on:
+  push:
+    paths:
+      - 'scripts/backtest-ict-targets.js'
+      - 'assets/js/institutional-flow.js'
+      - '.github/workflows/ict-target-backtest.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  target-backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Download free 1-minute evaluation samples
+        run: |
+          curl -L --fail --retry 3 'https://raw.githubusercontent.com/getdata-finance/xauusd-1m-ohlcv-metals-historical-data/main/XAUUSD_1m.csv' -o /tmp/XAUUSD_1m.csv
+          curl -L --fail --retry 3 'https://raw.githubusercontent.com/getdata-finance/nas100-1m-ohlcv-index-historical-data/main/NAS100_1m.csv' -o /tmp/NAS100_1m.csv
+      - name: Run historical target backtest
+        run: node scripts/backtest-ict-targets.js
+      - name: Upload detailed results
+        uses: actions/upload-artifact@v4
+        with:
+          name: ict-target-backtest-results
+          path: backtest-results/*.json
+          retention-days: 14
