@@ -29,4 +29,5 @@ run('no aligned 15M POI',{'15m':{xray:{activeZones:[{side:'bearish',low:99.5,hig
 run('15M POI not yet confirmed',{'15m':{xray:{activeZones:[{side:'bullish',low:99.5,high:101.5,state:'FRESH',time:new Date(t('10:15')).toISOString()}]}}},false);
 run('no 5M MSS setup',{'5m':{setups:[]}},false);
 run('stale 5M MSS setup',{'5m':{setups:[{side:'bullish',time:new Date(t('10:00')).toISOString(),zone:[99.75,101.25]}]}},false);
-run('5M MSS confirms direction while 1M refines entry',{'5m':{setups:[{side:'bullish',time:new Date(t('10:10')).toISOString(),zone:[103,104],evidence:{sweepIndex:10,mssIndex:12}}]}},true);\nrun('5M setup without sweep/MSS evidence rejected',{'5m':{setups:[{side:'bullish',time:new Date(t('10:10')).toISOString(),zone:[99.75,101.25]}]}},false);
+run('5M MSS confirms direction while 1M refines entry',{'5m':{setups:[{side:'bullish',time:new Date(t('10:10')).toISOString(),zone:[103,104],evidence:{sweepIndex:10,mssIndex:12}}]}},true);
+run('5M setup without sweep/MSS evidence rejected',{'5m':{setups:[{side:'bullish',time:new Date(t('10:10')).toISOString(),zone:[99.75,101.25]}]}},false);
