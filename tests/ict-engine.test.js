@@ -124,6 +124,19 @@ test('does not promote an isolated FVG to a trade setup', () => {
   assert.equal(analyze(bars).results.length, 0);
 });
 
+test('timestamps a setup at its own MSS confirmation, not the latest scan candle', () => {
+  const bars = Array.from({ length: 28 }, (_, i) => candle(i));
+  bars[20] = candle(20, { open: 100, high: 101, low: 97.5, close: 100.2 });
+  bars[21] = candle(21, { open: 100, high: 101, low: 99, close: 100.2 });
+  bars[22] = candle(22, { open: 100, high: 101, low: 99, close: 100.2 });
+  bars[23] = candle(23, { open: 101.2, high: 104, low: 101.1, close: 103.8 });
+  const result = analyze(bars);
+  const setup = result.results.find(item => item.side === 'bullish');
+  assert.ok(setup);
+  assert.equal(setup.time, bars[24].openTime);
+  assert.notEqual(setup.time, bars[bars.length - 1].openTime);
+});
+
 test('requires sweep then displacement/MSS then a linked FVG before showing a setup', () => {
   const bars = baseBars();
   bars[20] = candle(20, { open: 100, high: 101, low: 97.5, close: 100.2 });
