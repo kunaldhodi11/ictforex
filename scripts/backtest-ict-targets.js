@@ -48,14 +48,17 @@ function readCsv(file) {
 
 function simulate(bars, signalIndex, setup, maxForward = 720) {
   const targets = (setup.targets || [setup.target]).filter(Number.isFinite);
+  const entry = setup.entry;
   const outcome = { filled: false, highestTarget: 0, stopped: false, expired: false };
   const bullish = setup.side === 'bullish';
   let fillIndex = -1;
   for (let i = signalIndex; i < Math.min(bars.length, signalIndex + maxForward); i++) {
     const c = bars[i];
-    if (bullish && c.open < setup.zone[0]) continue;
-    if (!bullish && c.open > setup.zone[1]) continue;
-    if (c.low <= setup.zone[1] && c.high >= setup.zone[0]) {
+    // Conservative limit-fill model: require a touch of the exact midpoint entry.
+    // Skip gap-through bars rather than assuming a better-than-planned fill.
+    if (bullish && c.open < entry) continue;
+    if (!bullish && c.open > entry) continue;
+    if (c.low <= entry && c.high >= entry) {
       outcome.filled = true;
       fillIndex = i;
       break;
@@ -101,11 +104,14 @@ function runMarket(symbol, file) {
       if (seen.has(key)) continue;
       seen.add(key);
       const setup = { ...candidate, time: bars[i].openTime };
-      attachTargets({ results: [setup] }, { '1m': window });
-      const outcome = simulate(bars, i, setup);
+      const targetAnalysis = { results: [setup] };
+      attachTargets(targetAnalysis, { '1m': window });
+      if (!targetAnalysis.results.length) continue; // no genuine opposing liquidity: no trade
+      const targetedSetup = targetAnalysis.results[0];
+      const outcome = simulate(bars, i, targetedSetup);
       trades.push({
-        side: setup.side, time: setup.time, entry: setup.entry, stop: setup.stop,
-        targets: setup.targets, targetSource: setup.targetSource, ...outcome
+        side: targetedSetup.side, time: targetedSetup.time, entry: targetedSetup.entry, stop: targetedSetup.stop,
+        targets: targetedSetup.targets, targetSource: targetedSetup.targetSource, ...outcome
       });
     }
   }
@@ -123,8 +129,8 @@ function runMarket(symbol, file) {
     stoppedBeforeTp1, stopBeforeTp1RatePct: filled.length ? +(100 * stoppedBeforeTp1 / filled.length).toFixed(2) : null,
     assumptions: [
       '1-minute candidate engine only; 5M/15M/1H/4H entry gate is not represented by these 1M-only samples.',
-      'Targets are selected from already-confirmed 1M opposing swing liquidity; no higher-timeframe pools are available.',
-      'Limit fill is approximated when a later candle overlaps the entry zone; gap-through entries are skipped.',
+      'Targets are selected only from already-confirmed, not-yet-swept 1M opposing swing liquidity; setups without a valid 2R–15R pool are rejected. No higher-timeframe pools are available.',
+      'Limit fill requires the candle to touch the exact midpoint entry; gap-through bars are skipped.',
       'If stop and target are both inside one OHLC candle, stop is counted first.',
       'Unfilled setups are excluded from hit-rate denominator; trades unresolved after 720 minutes are censored.'
     ],
