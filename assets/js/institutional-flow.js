@@ -124,8 +124,8 @@ function analyze(bars){
   const later=b.slice(confirmed.index+1),zoneInvalid=side==='bullish'?later.some(c=>c.close<confirmed.zone[0]):later.some(c=>c.close>confirmed.zone[1]);
   const sweepInvalid=side==='bullish'?later.some(c=>c.low<sweepExtreme):later.some(c=>c.high>sweepExtreme);
   if(zoneInvalid||sweepInvalid)continue;
-  const touched=later.some(c=>c.low<=confirmed.zone[1]&&c.high>=confirmed.zone[0]);
   const entry=(confirmed.zone[0]+confirmed.zone[1])/2;
+  const touched=later.some(c=>c.low<=entry&&c.high>=entry);
   const buffer=Math.max(atr*0.1,Math.abs(entry)*0.0001);
   const stop=side==='bullish'?sweepExtreme-buffer:sweepExtreme+buffer;
   const risk=Math.abs(entry-stop);if(!Number.isFinite(risk)||risk<=0)continue;
@@ -134,7 +134,7 @@ function analyze(bars){
   const fallback=side==='bullish'?entry+2*risk:entry-2*risk;
   const targetLadder=targets.length?targets.slice(0,3):[fallback];
   const finalTarget=targetLadder[0];
-  const status=touched?'ENTRY ZONE TOUCHED':'WAITING FOR RETRACEMENT';
+  const status=touched?'ENTRY PRICE TOUCHED':'WAITING FOR RETRACEMENT';
   results.push({
    side,type:confirmed.zoneType+' · '+(side==='bullish'?'Bullish':'Bearish')+' MSS setup',
    zone:confirmed.zone,entry,stop,target:finalTarget,targets:targetLadder,
