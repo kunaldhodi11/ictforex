@@ -113,7 +113,8 @@ function runMarket(symbol, file) {
   const gateDiagnostics = {
     candidatesSeen: 0, aligned4h1h: 0, active15mPoiOverlap: 0,
     fiveMSetupsAvailable: 0, fiveMSameDirection: 0, fiveMConfirmedEvidence: 0,
-    fiveMNotFuture: 0, fiveMFreshWithin15m: 0, gatePassed: 0, rejectedNoLiquidityTarget: 0
+    fiveMNotFuture: 0, fiveMFreshWithin15m: 0, gatePassed: 0, rejectedNoLiquidityTarget: 0,
+    fifteenMPoiAgeMinutes: [], fiveMEventAgeMinutes: [], fiveMEventSamples: []
   };
   const direction = m => {
     if (!m) return 'neutral';
@@ -168,18 +169,31 @@ function runMarket(symbol, file) {
           return z.side === candidate.side && z.state !== 'INVALIDATED' && z.state !== 'FULLY FILLED' &&
             Number.isFinite(zoneTime) && zoneTime + 15 * 60000 <= signalTime && overlaps(candidate.zone, z);
         });
-        if (poi) gateDiagnostics.active15mPoiOverlap++;
-        const fiveSetups = mtf['5m']?.setups || [];
-        if (fiveSetups.length) gateDiagnostics.fiveMSetupsAvailable++;
-        for (const z of fiveSetups) {
-          const t = Date.parse(z.time), e = z.evidence || {};
-          if (z.side !== candidate.side) continue;
-          gateDiagnostics.fiveMSameDirection++;
-          if (!(Number.isFinite(e.sweepIndex) && Number.isFinite(e.mssIndex))) continue;
-          gateDiagnostics.fiveMConfirmedEvidence++;
-          if (!Number.isFinite(t) || t > signalTime) continue;
-          gateDiagnostics.fiveMNotFuture++;
-          if (signalTime - t <= 15 * 60000) gateDiagnostics.fiveMFreshWithin15m++;
+        if (poi) {
+          gateDiagnostics.active15mPoiOverlap++;
+          const poiAgeMinutes = (signalTime - Date.parse(poi.time)) / 60000;
+          if (Number.isFinite(poiAgeMinutes)) gateDiagnostics.fifteenMPoiAgeMinutes.push(+poiAgeMinutes.toFixed(2));
+          const fiveSetups = mtf['5m']?.setups || [];
+          if (fiveSetups.length) gateDiagnostics.fiveMSetupsAvailable++;
+          for (const z of fiveSetups) {
+            const t = Date.parse(z.time), e = z.evidence || {};
+            if (z.side !== candidate.side) continue;
+            gateDiagnostics.fiveMSameDirection++;
+            if (!(Number.isFinite(e.sweepIndex) && Number.isFinite(e.mssIndex))) continue;
+            gateDiagnostics.fiveMConfirmedEvidence++;
+            if (!Number.isFinite(t) || t > signalTime) continue;
+            gateDiagnostics.fiveMNotFuture++;
+            const ageMinutes = (signalTime - t) / 60000;
+            gateDiagnostics.fiveMEventAgeMinutes.push(+ageMinutes.toFixed(2));
+            if (gateDiagnostics.fiveMEventSamples.length < 40) {
+              gateDiagnostics.fiveMEventSamples.push({
+                candidateTime: candidate.time, fiveMSetupTime: z.time,
+                ageMinutes: +ageMinutes.toFixed(2), candidateSide: candidate.side,
+                candidateType: candidate.type, fiveMType: z.type
+              });
+            }
+            if (ageMinutes <= 15) gateDiagnostics.fiveMFreshWithin15m++;
+          }
         }
       }
       const gated = applyGate({ results: [candidateCopy] }, mtf);
