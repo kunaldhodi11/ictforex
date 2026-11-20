@@ -167,24 +167,37 @@ function applyMtfEntryGate(analysis,mtf){
  }
  function attachMtfLiquidityTargets(analysis,mtfBars){
   analysis.results.forEach(r=>{
-   const risk=Math.abs(r.entry-r.stop);if(!Number.isFinite(risk)||risk<=0)return;
+   const risk=Math.abs(r.entry-r.stop),signalTime=Date.parse(r.time);
+   if(!Number.isFinite(risk)||risk<=0||!Number.isFinite(signalTime))return;
    const levels=[];
    ['1m','5m','15m','1h','4h'].forEach(tf=>{
-    const raw=mtfBars[tf]||[],b=raw.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
-    for(let i=2;i<b.length-2;i++){
+    const raw=mtfBars[tf]||[],b=raw.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)&&Number.isFinite(Date.parse(x.openTime))).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
+    for(let i=2;i<b.length-3;i++){
+     // A 2-bar-right pivot is usable only after the next candle opens.
+     // This prevents selecting a swing that had not yet been confirmed at signal time.
+     const confirmedAt=Date.parse(b[i+3].openTime);
+     if(!Number.isFinite(confirmedAt)||confirmedAt>signalTime)continue;
      const p=r.side==='bullish'?b[i].high:b[i].low;
      const pivot=r.side==='bullish'?(p>b[i-1].high&&p>b[i-2].high&&p>=b[i+1].high&&p>=b[i+2].high):(p<b[i-1].low&&p<b[i-2].low&&p<=b[i+1].low&&p<=b[i+2].low);
      if(!pivot)continue;
      const ahead=r.side==='bullish'?p>r.entry:p<r.entry,rr=Math.abs(p-r.entry)/risk;
-     if(ahead&&rr>=2&&rr<=15)levels.push({price:p,tf,rr});
+     if(ahead&&rr>=2&&rr<=15)levels.push({price:p,tf,rr,confirmedAt});
     }
    });
-   levels.sort((a,b)=>a.rr-b.rr);
+   levels.sort((a,b)=>a.rr-b.rr||a.confirmedAt-b.confirmedAt);
    const unique=[];levels.forEach(x=>{if(!unique.some(y=>Math.abs(y.price-x.price)<=Math.max(Math.abs(r.entry)*0.00003,0.03)))unique.push(x)});
    const chosen=unique.slice(0,3);
-   if(chosen.length){r.targets=chosen.map(x=>x.price);r.target=r.targets[0];r.targetSource='Nearest opposing liquidity: '+chosen.map(x=>x.tf.toUpperCase()).join(' → ')}
-   else{const fallback=r.side==='bullish'?r.entry+2*risk:r.entry-2*risk;r.targets=[fallback];r.target=fallback;r.targetSource='2R structural fallback · no valid opposing swing pool found within 2R–15R'}
-   r.rr='1:'+ (Math.abs(r.target-r.entry)/risk).toFixed(1);
+   if(chosen.length){
+    r.targets=chosen.map(x=>x.price);r.target=r.targets[0];
+    r.targetSource='Past-confirmed opposing swing liquidity only: '+chosen.map(x=>x.tf.toUpperCase()).join(' → ');
+    r.targetLevels=chosen.map(x=>({price:x.price,timeframe:x.tf,rr:'1:'+x.rr.toFixed(1)}));
+   }else{
+    const fallback=r.side==='bullish'?r.entry+2*risk:r.entry-2*risk;
+    r.targets=[fallback];r.target=fallback;
+    r.targetSource='2R risk-based fallback · no already-confirmed opposing swing pool found in the 2R–15R range';
+    r.targetLevels=[{price:fallback,timeframe:'Risk fallback',rr:'1:2.0'}];
+   }
+   r.rr='1:'+(Math.abs(r.target-r.entry)/risk).toFixed(1);
   });
   return analysis;
  }
