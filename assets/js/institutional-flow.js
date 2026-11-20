@@ -3,6 +3,7 @@
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
 function updateChartClock(){const el=$('chartClock');if(!el)return;el.textContent=new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())+' IST';}
+function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const secs=({'1m':60,'5m':300,'15m':900,'1h':3600})[state.tf]||900;const now=Math.floor(Date.now()/1000);const left=secs-(now%secs);const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');el.textContent=(secs>=3600?String(Math.floor(left/3600)).padStart(2,'0')+':':'')+mm+':'+ss;el.title='Time remaining in current '+state.tf.toUpperCase()+' candle';}
 const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
@@ -21,7 +22,7 @@ function updateLiveTick(tick){
 function updateLiveCandle(price,timestamp){
  if(!state.candleSeries||!state.chart)return;
  const stamp=Date.parse(timestamp||new Date().toISOString());if(!Number.isFinite(stamp))return;
- const secs=({'5m':300,'15m':900,'1h':3600})[state.tf]||900;
+ const secs=({'1m':60,'5m':300,'15m':900,'1h':3600})[state.tf]||900;
  const time=Math.floor(stamp/1000/secs)*secs;
  if(!state.liveCandle||state.liveCandle.time!==time){
   state.liveCandle={time,open:price,high:price,low:price,close:price};
@@ -270,7 +271,7 @@ function renderXray(bars,mtf,results){
 function initChart(){
  if(state.chart||!window.LightweightCharts)return;
  const el=$('marketChart');if(!el)return;
- state.chart=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight,layout:{background:{color:'#0b1420'},textColor:'#91a2b8'},grid:{vertLines:{color:'#172438'},horzLines:{color:'#172438'}},rightPriceScale:{borderColor:'#25364b'},timeScale:{borderColor:'#25364b',timeVisible:true,secondsVisible:false},crosshair:{mode:LightweightCharts.CrosshairMode.Normal}});
+ state.chart=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight,layout:{background:{color:'#0b1420'},textColor:'#91a2b8'},grid:{vertLines:{color:'#172438'},horzLines:{color:'#172438'}},rightPriceScale:{borderColor:'#25364b'},timeScale:{borderColor:'#25364b',timeVisible:true,secondsVisible:state.tf==='1m'},crosshair:{mode:LightweightCharts.CrosshairMode.Normal}});
  state.candleSeries=state.chart.addCandlestickSeries({upColor:'#36d39a',downColor:'#f07878',borderUpColor:'#36d39a',borderDownColor:'#f07878',wickUpColor:'#36d39a',wickDownColor:'#f07878'});state.overlay=document.createElement('div');state.overlay.className='chart-overlay';el.appendChild(state.overlay);
  new ResizeObserver(()=>{if(state.chart)state.chart.applyOptions({width:el.clientWidth,height:el.clientHeight})}).observe(el);
 }
@@ -303,7 +304,7 @@ function render(data){
  const rows=[['Short-term bias',data.analysis.bias],['5m structure',data.mtf&&data.mtf['5m']?data.mtf['5m'].structure:'Unavailable'],['15m structure',data.mtf&&data.mtf['15m']?data.mtf['15m'].structure:'Unavailable'],['1h structure',data.mtf&&data.mtf['1h']?data.mtf['1h'].structure:'Unavailable'],['Recent range high',fmt(data.analysis.hi)],['Recent range low',fmt(data.analysis.lo)],['Completed candles',data.analysis.bars.length],['Detected patterns',data.analysis.results.length]];$('confluence').innerHTML='';rows.forEach(([k,v])=>{const d=document.createElement('div');d.className='con-row';const a=document.createElement('span'),b=document.createElement('span');a.textContent=k;b.textContent=v;d.append(a,b);$('confluence').appendChild(d)});
 }
 async function scanMarket(market){
- const symbol=await resolveSymbol(market),intervals=['5m','15m','1h','4h'];
+ const symbol=await resolveSymbol(market),intervals=['1m','5m','15m','1h','4h'];
  const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit=100').catch(err=>tf==='4h'?{bars:[]}:Promise.reject(err)))]);
  const tick=responses[0],mtf={};let selectedBars=[];
  intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];if(tf===state.tf)selectedBars=bars;try{const a=analyze(bars);mtf[tf]={bias:a.bias,structure:getMarketXray(a.bars).structure,bars:a.bars.length}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0}}});
@@ -344,7 +345,7 @@ async function scan(){
  }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
 document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;scan()}));
-$('timeframe').addEventListener('change',e=>{state.tf=e.target.value;state.liveCandle=null;scan()});
+$('timeframe').addEventListener('change',e=>{state.tf=e.target.value;state.liveCandle=null;if(state.chart)state.chart.applyOptions({timeScale:{timeVisible:true,secondsVisible:state.tf==='1m'}});updateCandleTimer();scan()});
 $('refresh').addEventListener('click',scan);
 const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
  if(!('Notification'in window)){$('alertStatus').textContent='Browser notifications are not supported.';return}
@@ -352,5 +353,5 @@ const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',a
  state.alertsEnabled=permission==='granted';alertBtn.textContent=state.alertsEnabled?'Alerts enabled ✓':'Enable alerts';
  $('alertStatus').textContent=state.alertsEnabled?'Browser alerts are active while this page is open.':'Notification permission was not granted.';
 });
-updateChartClock();setInterval(updateChartClock,1000);scan();state.timer=setInterval(scan,60000);
+updateChartClock();updateCandleTimer();setInterval(updateChartClock,1000);setInterval(updateCandleTimer,1000);scan();state.timer=setInterval(scan,60000);
 })();
