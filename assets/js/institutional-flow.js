@@ -168,7 +168,6 @@ function applyMtfEntryGate(analysis,mtf){
  function attachMtfLiquidityTargets(analysis,mtfBars){
   analysis.results.forEach(r=>{
    const risk=Math.abs(r.entry-r.stop),signalTime=Date.parse(r.time);
-   if(!Number.isFinite(risk)||risk<=0||!Number.isFinite(signalTime))return;
    r.targets=[];r.target=null;r.targetLevels=[];r.noLiquidityTarget=true;
    if(!Number.isFinite(risk)||risk<=0||!Number.isFinite(signalTime))return;
    const levels=[];
