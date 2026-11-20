@@ -253,3 +253,9 @@ footer{border-color:rgba(126,153,181,.13);font-size:9px}
 .chart-clock small{font-size:8px;letter-spacing:.12em;color:var(--muted);font-weight:800}
 .chart-clock b{font-size:12px;color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap}
 @media(max-width:600px){.chart-head-meta{align-items:flex-end;flex-direction:column;gap:6px}.chart-clock{text-align:right}.chart-clock b{font-size:11px}.chart-clock small{font-size:7px}}
+
+/* Candle close countdown */
+.candle-clock{display:grid;gap:2px;text-align:right;min-width:70px}
+.candle-clock small{font-size:8px;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.candle-clock b{font-size:14px;color:var(--green);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:600px){.candle-clock b{font-size:12px}.chart-head-meta{gap:8px}}
