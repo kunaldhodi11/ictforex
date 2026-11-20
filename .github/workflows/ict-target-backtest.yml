@@ -21,6 +21,8 @@ jobs:
         run: |
           curl -L --fail --retry 3 'https://raw.githubusercontent.com/getdata-finance/xauusd-1m-ohlcv-metals-historical-data/main/XAUUSD_1m.csv' -o /tmp/XAUUSD_1m.csv
           curl -L --fail --retry 3 'https://raw.githubusercontent.com/getdata-finance/nas100-1m-ohlcv-index-historical-data/main/NAS100_1m.csv' -o /tmp/NAS100_1m.csv
+      - name: Test strict multi-timeframe entry gate
+        run: node scripts/test-mtf-gate.js
       - name: Run historical target backtest
         run: node scripts/backtest-ict-targets.js
       - name: Upload detailed results
