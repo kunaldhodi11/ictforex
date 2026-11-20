@@ -118,7 +118,7 @@ function analyze(bars){
      if(opposite){zone=[c.low,c.high];zoneType=side==='bullish'?'Bullish order block':'Bearish order block';zoneIndex=k;break}
     }
    }
-   if(zone&&zone[1]>zone[0]){confirmed={index:j,zone,zoneType,zoneIndex,impulse,sweepLevel,sweepExtreme,side};break}
+   if(zone&&zone[1]>zone[0]){const nextBar=b[j+1];const confirmationTime=nextBar&&nextBar.openTime?nextBar.openTime:(impulse.closeTime||impulse.openTime);confirmed={index:j,zone,zoneType,zoneIndex,impulse,sweepLevel,sweepExtreme,side,confirmationTime};break}
   }
   if(!confirmed)continue;
   const later=b.slice(confirmed.index+1),zoneInvalid=side==='bullish'?later.some(c=>c.close<confirmed.zone[0]):later.some(c=>c.close>confirmed.zone[1]);
@@ -143,7 +143,7 @@ function analyze(bars){
    score:Math.min(95,78+(touched?3:0)),status,
    lifecycle:status,reason:'Linked sequence confirmed: '+(side==='bullish'?'sell-side':'buy-side')+' liquidity sweep → displacement with completed MSS close → '+confirmed.zoneType+'. '+(touched?'Price has revisited the zone.':'Awaiting a retracement; no fill is implied.'),
    evidence:{sweepIndex:si,mssIndex:confirmed.index,zoneIndex:confirmed.zoneIndex,sweepLevel,sweepExtreme,displacementBodyRatio:body(confirmed.impulse)/(avg(b.slice(Math.max(0,confirmed.index-20),confirmed.index).map(body))||1)},
-   time:last.openTime
+   time:confirmed.confirmationTime
   });
   si=expiry;
  }
