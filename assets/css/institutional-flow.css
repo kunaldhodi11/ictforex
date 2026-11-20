@@ -259,3 +259,7 @@ footer{border-color:rgba(126,153,181,.13);font-size:9px}
 .candle-clock small{font-size:8px;letter-spacing:.12em;color:var(--muted);font-weight:800}
 .candle-clock b{font-size:14px;color:var(--green);font-variant-numeric:tabular-nums;white-space:nowrap}
 @media(max-width:600px){.candle-clock b{font-size:12px}.chart-head-meta{gap:8px}}
+
+/* Fixed 1M execution and multi-target trade card layout */
+.setup .levels{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:650px){.setup .levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
