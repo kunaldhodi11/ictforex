@@ -347,10 +347,14 @@ function drawChart(bars,results){
    state.liveCandle=x.isOpen?{...bar}:null;
   });
  }
- const last=data[data.length-1];
- if(last.isOpen){
-  if(!state.liveCandle||state.liveCandle.time!==last.time)state.liveCandle={time:last.time,open:last.open,high:last.high,low:last.low,close:last.close};
- }else if(!state.liveCandle||state.liveCandle.time!==last.time){state.liveCandle=null}
+ const last=data[data.length-1],liveTime=state.liveCandle?state.liveCandle.time:0;
+ if(last.time>=liveTime){
+  if(last.isOpen){
+   if(state.liveCandle&&state.liveCandle.time===last.time){
+    state.liveCandle={time:last.time,open:state.liveCandle.open,high:Math.max(last.high,state.liveCandle.high),low:Math.min(last.low,state.liveCandle.low),close:state.liveCandle.close};
+   }else state.liveCandle={time:last.time,open:last.open,high:last.high,low:last.low,close:last.close};
+  }else if(!state.liveCandle||state.liveCandle.time<last.time){state.liveCandle=null}
+ }
  state.chartLastTime=Math.max(state.chartLastTime||0,last.time);
  if(state.lastPriceLine)state.lastPriceLine.applyOptions({price:(state.liveCandle||clean[clean.length-1]).close});
  state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
