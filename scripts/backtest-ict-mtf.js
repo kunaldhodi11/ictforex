@@ -110,6 +110,26 @@ function runMarket(symbol, file) {
   const pointers = { '5m': 0, '15m': 0, '1h': 0, '4h': 0 };
   const mtf = {}, seen = new Set(), trades = [];
   const gateRejects = { '4H major bias or 1H structure': 0, '15M active FVG POI': 0, '5M confirmed MSS': 0, 'other': 0 };
+  const gateDiagnostics = {
+    candidatesSeen: 0, aligned4h1h: 0, active15mPoiOverlap: 0,
+    fiveMSetupsAvailable: 0, fiveMSameDirection: 0, fiveMConfirmedEvidence: 0,
+    fiveMNotFuture: 0, fiveMFreshWithin15m: 0, gatePassed: 0, rejectedNoLiquidityTarget: 0
+  };
+  const direction = m => {
+    if (!m) return 'neutral';
+    const x = m.xray || {}, breakSide = String(x.breakSide || '').toLowerCase();
+    if (breakSide === 'bullish' || breakSide === 'bearish') return breakSide;
+    const trend = String(x.priorTrend || '').toLowerCase();
+    if (trend === 'bullish' || trend === 'bearish') return trend;
+    const structure = String(m.structure || '').toLowerCase();
+    if (structure.startsWith('bullish')) return 'bullish';
+    if (structure.startsWith('bearish')) return 'bearish';
+    const bias = String(m.bias || '').toLowerCase();
+    return bias === 'bullish' || bias === 'bearish' ? bias : 'neutral';
+  };
+  const overlaps = (a, b) => Array.isArray(a) && a.length === 2 && b &&
+    Number.isFinite(b.low) && Number.isFinite(b.high) &&
+    Math.min(a[1], b.high) >= Math.max(a[0], b.low);
   const windowSize = 180;
   for (let i = 30; i < bars.length; i++) {
     const signalTime = Date.parse(bars[i].openTime);
@@ -138,6 +158,30 @@ function runMarket(symbol, file) {
       if (seen.has(key)) continue;
       seen.add(key);
       const candidateCopy = { ...candidate };
+      gateDiagnostics.candidatesSeen++;
+      const h4 = direction(mtf['4h']), h1 = direction(mtf['1h']);
+      if (h4 === candidate.side && h1 === candidate.side) {
+        gateDiagnostics.aligned4h1h++;
+        const activeZones = mtf['15m']?.xray?.activeZones || [];
+        const poi = activeZones.find(z => {
+          const zoneTime = Date.parse(z.time);
+          return z.side === candidate.side && z.state !== 'INVALIDATED' && z.state !== 'FULLY FILLED' &&
+            Number.isFinite(zoneTime) && zoneTime + 15 * 60000 <= signalTime && overlaps(candidate.zone, z);
+        });
+        if (poi) gateDiagnostics.active15mPoiOverlap++;
+        const fiveSetups = mtf['5m']?.setups || [];
+        if (fiveSetups.length) gateDiagnostics.fiveMSetupsAvailable++;
+        for (const z of fiveSetups) {
+          const t = Date.parse(z.time), e = z.evidence || {};
+          if (z.side !== candidate.side) continue;
+          gateDiagnostics.fiveMSameDirection++;
+          if (!(Number.isFinite(e.sweepIndex) && Number.isFinite(e.mssIndex))) continue;
+          gateDiagnostics.fiveMConfirmedEvidence++;
+          if (!Number.isFinite(t) || t > signalTime) continue;
+          gateDiagnostics.fiveMNotFuture++;
+          if (signalTime - t <= 15 * 60000) gateDiagnostics.fiveMFreshWithin15m++;
+        }
+      }
       const gated = applyGate({ results: [candidateCopy] }, mtf);
       if (!gated.results.length) {
         const why = candidateCopy.mtfText || '';
@@ -147,12 +191,16 @@ function runMarket(symbol, file) {
         else gateRejects.other++;
         continue;
       }
+      gateDiagnostics.gatePassed++;
       const setup = gated.results[0];
       const targetBars = { '1m': window };
       for (const tf of ['5m', '15m', '1h', '4h']) targetBars[tf] = higher[tf].slice(Math.max(0, pointers[tf] - 500), pointers[tf]);
       const targetAnalysis = { results: [setup] };
       attachTargets(targetAnalysis, targetBars);
-      if (!targetAnalysis.results.length) continue;
+      if (!targetAnalysis.results.length) {
+        gateDiagnostics.rejectedNoLiquidityTarget++;
+        continue;
+      }
       const targeted = targetAnalysis.results[0], outcome = simulate(bars, i, targeted);
       trades.push({ side: targeted.side, time: targeted.time, entry: targeted.entry, stop: targeted.stop,
         targets: targeted.targets, targetLevels: targeted.targetLevels, mtfConfirmation: targeted.mtfConfirmation, ...outcome });
@@ -166,7 +214,7 @@ function runMarket(symbol, file) {
     symbol, dataRows: bars.length, fromUTC: bars[0].openTime, toUTC: bars[bars.length - 1].openTime,
     resampledBars: Object.fromEntries(Object.entries(higher).map(([tf, rows]) => [tf, rows.length])),
     strictMtfQualifiedSetups: trades.length, filledTrades: filled.length, unfilledSetups: trades.length - filled.length,
-    gateRejects, tp1EligibleTrades: e1, tp2EligibleTrades: e2, tp3EligibleTrades: e3,
+    gateRejects, gateDiagnostics, tp1EligibleTrades: e1, tp2EligibleTrades: e2, tp3EligibleTrades: e3,
     tp1Hits: hits(1), tp2Hits: hits(2), tp3Hits: hits(3),
     tp1HitRatePct: e1 ? +(100 * hits(1) / e1).toFixed(2) : null,
     tp2HitRatePct: e2 ? +(100 * hits(2) / e2).toFixed(2) : null,
