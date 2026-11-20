@@ -3,8 +3,8 @@
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
 function updateChartClock(){const el=$('chartClock');if(!el)return;el.textContent=new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())+' IST';}
-function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const secs=({'1m':60,'5m':300,'15m':900,'1h':3600})[state.tf]||900;const now=Math.floor(Date.now()/1000);const left=secs-(now%secs);const mm=String(Math.floor(left/60)).padStart(2,'0'),ss=String(left%60).padStart(2,'0');el.textContent=(secs>=3600?String(Math.floor(left/3600)).padStart(2,'0')+':':'')+mm+':'+ss;el.title='Time remaining in current '+state.tf.toUpperCase()+' candle';}
-const state={market:'XAUUSD',tf:'15m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
+function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const left=60-(Math.floor(Date.now()/1000)%60);el.textContent='00:'+String(left).padStart(2,'0');el.title='Time remaining in the current 1-minute execution candle';}
+const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
@@ -119,14 +119,15 @@ function analyze(bars){
   const stop=side==='bullish'?sweepExtreme-buffer:sweepExtreme+buffer;
   const risk=Math.abs(entry-stop);if(!Number.isFinite(risk)||risk<=0)continue;
   const opposing=side==='bullish'?'high':'low';
-  const targets=pivots.filter(p=>p.index<si-1&&p.side===opposing&&(side==='bullish'?p.price>entry:p.price<entry)).map(p=>p.price).sort((a,b)=>side==='bullish'?a-b:b-a);
-  const target=targets.find(v=>Math.abs(v-entry)/risk>=1.5);
-  const finalTarget=target===undefined?(side==='bullish'?entry+2*risk:entry-2*risk):target;
+  const targets=pivots.filter(p=>p.index<confirmed.index&&p.side===opposing&&(side==='bullish'?p.price>entry:p.price<entry)).map(p=>p.price).filter(v=>{const rr=Math.abs(v-entry)/risk;return rr>=2&&rr<=15}).sort((a,b)=>side==='bullish'?a-b:b-a);
+  const fallback=side==='bullish'?entry+2*risk:entry-2*risk;
+  const targetLadder=targets.length?targets.slice(0,3):[fallback];
+  const finalTarget=targetLadder[0];
   const status=touched?'ENTRY ZONE TOUCHED':'WAITING FOR RETRACEMENT';
   results.push({
    side,type:confirmed.zoneType+' · '+(side==='bullish'?'Bullish':'Bearish')+' MSS setup',
-   zone:confirmed.zone,entry,stop,target:finalTarget,
-   targetSource:target===undefined?'2R modelled fallback; no qualifying pre-sweep opposing pivot':'Pre-existing confirmed opposing swing liquidity',
+   zone:confirmed.zone,entry,stop,target:finalTarget,targets:targetLadder,
+   targetSource:targets.length?'Dynamic opposing liquidity ladder · nearest valid pool first':'2R fallback because no valid opposing liquidity pool between 2R and 15R',
    rr:'1:'+(Math.abs(finalTarget-entry)/risk).toFixed(1),
    score:Math.min(95,78+(touched?3:0)),status,
    lifecycle:status,reason:'Linked sequence confirmed: '+(side==='bullish'?'sell-side':'buy-side')+' liquidity sweep → displacement with completed MSS close → '+confirmed.zoneType+'. '+(touched?'Price has revisited the zone.':'Awaiting a retracement; no fill is implied.'),
@@ -139,7 +140,21 @@ function analyze(bars){
  const qualified=Object.values(latestBySide);
  return {bars:b,last,results:qualified, bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':last.close<avg(b.slice(-20).map(x=>x.close))?'Bearish':'Neutral',hi,lo};
 }
-function getMarketXray(bars){
+function applyMtfEntryGate(analysis,mtf){
+  const direction=m=>{if(!m)return 'neutral';const s=String(m.structure||'').toLowerCase();if(s.startsWith('bullish'))return 'bullish';if(s.startsWith('bearish'))return 'bearish';const b=String(m.bias||'').toLowerCase();return b==='bullish'||b==='bearish'?b:'neutral'};
+  analysis.results=analysis.results.filter(r=>{
+   const aligned=[],opposed=[];
+   ['5m','15m','1h','4h'].forEach(tf=>{const d=direction(mtf[tf]);if(d===r.side)aligned.push(tf);else if(d!=='neutral')opposed.push(tf)});
+   const higherAligned=aligned.includes('15m')||aligned.includes('1h');
+   const pass=aligned.filter(tf=>tf!=='4h').length>=2&&higherAligned;
+   r.score=Math.max(40,Math.min(98,r.score+aligned.length*4-opposed.length*3));
+   r.mtfText='Aligned: '+(aligned.map(x=>x.toUpperCase()).join(', ')||'none')+' · Opposing: '+(opposed.map(x=>x.toUpperCase()).join(', ')||'none');
+   r.status=r.status||'1M ENTRY SETUP';
+   return pass;
+  });
+  return analysis;
+ }
+ function getMarketXray(bars){
  const last=bars[bars.length-1],recent=bars.slice(-30),high=Math.max(...recent.map(x=>x.high)),low=Math.min(...recent.map(x=>x.low)),mid=(high+low)/2,range=high-low;
  const pivots=[];
  for(let i=2;i<bars.length-2;i++){
@@ -279,8 +294,8 @@ function drawChart(bars,results){
  initChart();if(!state.candleSeries)return;
  const data=bars.map(x=>({time:Math.floor(Date.parse(x.openTime)/1000),open:x.open,high:x.high,low:x.low,close:x.close})).filter(x=>Number.isFinite(x.time)).sort((a,b)=>a.time-b.time);
  state.candleSeries.setData(data);state.chart.timeScale().fitContent();state.liveCandle=null;state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
- const best=results[0];const colors={Entry:'#70b9e8',Stop:'#f07878',Target:'#36d39a'};
- if(best){[['Entry',best.entry],['Stop',best.stop],['Target',best.target]].forEach(([title,price])=>state.lines.push(state.candleSeries.createPriceLine({price,title,color:colors[title],lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true})))}
+ const best=results[0];const colors={Entry:'#70b9e8',Stop:'#f07878',TP1:'#36d39a',TP2:'#8bd8b7',TP3:'#d8b66c'};
+ if(best){[['Entry',best.entry],['Stop',best.stop],['TP1',(best.targets||[best.target])[0]],['TP2',(best.targets||[])[1]],['TP3',(best.targets||[])[2]]].filter(x=>Number.isFinite(x[1])).forEach(([title,price])=>state.lines.push(state.candleSeries.createPriceLine({price,title,color:colors[title],lineWidth:title==='TP1'?2:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true})))}
  const lookback=bars.slice(-30,-1),buySide=Math.max(...lookback.map(x=>x.high)),sellSide=Math.min(...lookback.map(x=>x.low));
  state.lines.push(state.candleSeries.createPriceLine({price:buySide,title:'Buy-side liquidity',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
  state.lines.push(state.candleSeries.createPriceLine({price:sellSide,title:'Sell-side liquidity',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
@@ -288,30 +303,30 @@ function drawChart(bars,results){
 
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
- $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase();$('chartStatus').textContent=data.length+' candles loaded';$('chartFoot').textContent=best?'Top setup levels: Entry, Stop and target. Pattern labels are heuristic candle detections.':'No qualifying ICT setup in this candle window; chart remains available.';
+ $('chartTitle').textContent=state.market+' · 1M EXECUTION';$('chartStatus').textContent=data.length+' one-minute candles loaded';$('chartFoot').textContent=best?'1M entry model · MTF context confirmed · TP levels mapped to opposing liquidity.':'No valid 1M entry with the required MTF confluence; waiting for confirmation.';
 }
 function render(data){
  $('price').textContent=fmt(data.tick.mid);$('change').textContent=data.tick.dayDiffPercent==null?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
  $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent=state.tf.toUpperCase();
  $('feedState').textContent=data.tick.stale?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  $('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+data.analysis.bars.length+' completed '+state.tf+' candles analysed.';
- drawChart(data.analysis.bars,data.analysis.results);renderXray(data.analysis.bars,data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
+ drawChart(data.analysis.bars,data.analysis.results);renderXray((data.mtfBars&&data.mtfBars['15m']&&data.mtfBars['15m'].length?analyze(data.mtfBars['15m']).bars:data.analysis.bars),data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
  const bullList=$('bullishList'),bearList=$('bearishList');bullList.innerHTML='';bearList.innerHTML='';
  const bulls=data.analysis.results.filter(r=>r.side==='bullish'),bears=data.analysis.results.filter(r=>r.side==='bearish');
  if(!bulls.length)bullList.innerHTML='<div class="empty">No valid bullish setup detected. Waiting for confirmation.</div>';
  if(!bears.length)bearList.innerHTML='<div class="empty">No valid bearish setup detected. Waiting for confirmation.</div>';
- data.analysis.results.forEach((r)=>{const sideResults=r.side==='bullish'?bulls:bears;const i=sideResults.indexOf(r);const div=document.createElement('article');div.className='setup '+r.side;const dir=document.createElement('div');dir.innerHTML='<div class="direction '+r.side+'">'+r.side.toUpperCase()+'</div><h3>'+r.type+'</h3><div class="setup-status">'+(r.status||'CONFIRMED SEQUENCE')+'</div><div class="muted">Rank #'+(i+1)+' · '+new Date(r.time).toLocaleString()+'</div>';const levels=document.createElement('div');levels.className='levels';[['ENTRY',r.entry],['STOP',r.stop],['TARGET',r.target]].forEach(([k,v])=>{const d=document.createElement('div');d.innerHTML='<small>'+k+'</small><b>'+fmt(v)+'</b>';levels.appendChild(d)});const why=document.createElement('div');why.className='muted';why.textContent=r.reason+' · '+(r.targetSource||'Target model')+(r.mtfText?' · MTF: '+r.mtfText:'');const score=document.createElement('div');score.className='score';score.innerHTML='<b>'+r.score+'</b><small>CONFLUENCE / 100</small><small>'+r.rr+' R:R</small>';div.append(dir,levels,why,score);(r.side==='bullish'?bullList:bearList).appendChild(div)});
+ data.analysis.results.forEach((r)=>{const sideResults=r.side==='bullish'?bulls:bears;const i=sideResults.indexOf(r);const div=document.createElement('article');div.className='setup '+r.side;const dir=document.createElement('div');dir.innerHTML='<div class="direction '+r.side+'">'+r.side.toUpperCase()+'</div><h3>'+r.type+'</h3><div class="setup-status">'+(r.status||'CONFIRMED SEQUENCE')+'</div><div class="muted">Rank #'+(i+1)+' · '+new Date(r.time).toLocaleString()+'</div>';const levels=document.createElement('div');levels.className='levels';[['ENTRY',r.entry],['STOP',r.stop],['TP1',(r.targets||[r.target])[0]],['TP2',(r.targets||[])[1]],['TP3',(r.targets||[])[2]]].filter(x=>Number.isFinite(x[1])).forEach(([k,v])=>{const d=document.createElement('div');d.innerHTML='<small>'+k+'</small><b>'+fmt(v)+'</b>';levels.appendChild(d)});const why=document.createElement('div');why.className='muted';why.textContent=r.reason+' · '+(r.targetSource||'Target model')+(r.mtfText?' · MTF: '+r.mtfText:'');const score=document.createElement('div');score.className='score';score.innerHTML='<b>'+r.score+'</b><small>CONFLUENCE / 100</small><small>'+r.rr+' R:R</small>';div.append(dir,levels,why,score);(r.side==='bullish'?bullList:bearList).appendChild(div)});
  const rows=[['Short-term bias',data.analysis.bias],['5m structure',data.mtf&&data.mtf['5m']?data.mtf['5m'].structure:'Unavailable'],['15m structure',data.mtf&&data.mtf['15m']?data.mtf['15m'].structure:'Unavailable'],['1h structure',data.mtf&&data.mtf['1h']?data.mtf['1h'].structure:'Unavailable'],['Recent range high',fmt(data.analysis.hi)],['Recent range low',fmt(data.analysis.lo)],['Completed candles',data.analysis.bars.length],['Detected patterns',data.analysis.results.length]];$('confluence').innerHTML='';rows.forEach(([k,v])=>{const d=document.createElement('div');d.className='con-row';const a=document.createElement('span'),b=document.createElement('span');a.textContent=k;b.textContent=v;d.append(a,b);$('confluence').appendChild(d)});
 }
 async function scanMarket(market){
  const symbol=await resolveSymbol(market),intervals=['1m','5m','15m','1h','4h'];
  const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit=100').catch(err=>tf==='4h'?{bars:[]}:Promise.reject(err)))]);
  const tick=responses[0],mtf={};let selectedBars=[];
- intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];if(tf===state.tf)selectedBars=bars;try{const a=analyze(bars);mtf[tf]={bias:a.bias,structure:getMarketXray(a.bars).structure,bars:a.bars.length}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0}}});
+ const mtfBars={};
+ intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];mtfBars[tf]=bars;if(tf==='1m')selectedBars=bars;try{const a=analyze(bars);mtf[tf]={bias:a.bias,structure:getMarketXray(a.bars).structure,bars:a.bars.length}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0}}});
  if(!selectedBars.length)throw Error('Selected timeframe candles are unavailable for '+market+'.');
- const analysis=analyze(selectedBars);
- analysis.results.forEach(r=>{let score=r.score,labels=[];['15m','1h','4h'].forEach(tf=>{const m=mtf[tf];if(!m||m.bias==='Unavailable')return;const same=(r.side==='bullish'&&m.structure.startsWith('Bullish'))||(r.side==='bearish'&&m.structure.startsWith('Bearish'));const opposite=(r.side==='bullish'&&m.structure.startsWith('Bearish'))||(r.side==='bearish'&&m.structure.startsWith('Bullish'));if(same){score+=8;labels.push(tf+' aligned')}else if(opposite){score-=6;labels.push(tf+' opposing')}else labels.push(tf+' neutral')});r.score=Math.max(40,Math.min(95,score));r.mtfText=labels.join(', ')||'no higher-timeframe confirmation'});
- return {market,symbol,tick,analysis,mtf,scannedAt:new Date().toISOString()};
+ const analysis=applyMtfEntryGate(analyze(selectedBars),mtf);
+ return {market,symbol,tick,analysis,mtf,mtfBars,scannedAt:new Date().toISOString()};
 }
 function renderRadar(result){
  const p=result.market==='XAUUSD'?'radarXau':'radarNas',set=(suffix,value)=>{const el=$(p+suffix);if(el)el.textContent=value};
@@ -345,7 +360,7 @@ async function scan(){
  }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
 document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;scan()}));
-$('timeframe').addEventListener('change',e=>{state.tf=e.target.value;state.liveCandle=null;if(state.chart)state.chart.applyOptions({timeScale:{timeVisible:true,secondsVisible:state.tf==='1m'}});updateCandleTimer();scan()});
+$('timeframe').value='1m';$('timeframe').disabled=true;state.tf='1m';
 $('refresh').addEventListener('click',scan);
 const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
  if(!('Notification'in window)){$('alertStatus').textContent='Browser notifications are not supported.';return}
