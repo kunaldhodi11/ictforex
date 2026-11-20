@@ -130,6 +130,10 @@ test('timestamps a setup at its own MSS confirmation, not the latest scan candle
   bars[21] = candle(21, { open: 100, high: 101, low: 99, close: 100.2 });
   bars[22] = candle(22, { open: 100, high: 101, low: 99, close: 100.2 });
   bars[23] = candle(23, { open: 101.2, high: 104, low: 101.1, close: 103.8 });
+  bars[24] = candle(24, { open: 103.5, high: 104.5, low: 103.2, close: 104 });
+  bars[25] = candle(25, { open: 104, high: 104.8, low: 103.6, close: 104.4 });
+  bars[26] = candle(26, { open: 104.4, high: 105, low: 104, close: 104.7 });
+  bars[27] = candle(27, { open: 104.7, high: 105.2, low: 104.3, close: 105 });
   const result = analyze(bars);
   const setup = result.results.find(item => item.side === 'bullish');
   assert.ok(setup);
