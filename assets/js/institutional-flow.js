@@ -4,7 +4,7 @@ const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
 function updateChartClock(){const el=$('chartClock');if(!el)return;el.textContent=new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())+' IST';}
 function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const left=60-(Math.floor(Date.now()/1000)%60);el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Time remaining in the current 1-minute execution candle';}
-const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
+const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,chartHasData:false,pendingLiveCandle:null,liveFrame:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
@@ -12,18 +12,16 @@ function updateLiveTick(tick){
  const mid=num(tick.mid);if(mid===null)return;
  if(tick.stale===true||(num(tick.quoteAgeSeconds)!==null&&tick.quoteAgeSeconds>120)){$('feedState').textContent='STALE FEED';return}
  $('price').textContent=fmt(mid);
- updateLiveCandle(mid,tick.timestamp);updateLiveXray(mid);updateTickPressurePanels();
+ queueLiveCandle(mid,tick.timestamp);updateLiveXray(mid);updateTickPressurePanels();
  if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
  if(tick.marketState)$('marketStatus').textContent=tick.marketState;
  $('quoteAge').textContent=tick.timestamp?age(tick.timestamp):'Live tick received';
  $('feedState').textContent='LIVE STREAM';
  $('updated').textContent='Tick '+new Date().toLocaleTimeString();
 }
-function updateLiveCandle(price,timestamp){
- if(!state.candleSeries||!state.chart)return;
+function queueLiveCandle(price,timestamp){
  const stamp=Date.parse(timestamp||new Date().toISOString());if(!Number.isFinite(stamp))return;
- const secs=({'1m':60,'5m':300,'15m':900,'1h':3600})[state.tf]||900;
- const time=Math.floor(stamp/1000/secs)*secs;
+ const secs=60,time=Math.floor(stamp/1000/secs)*secs;
  if(!state.liveCandle||state.liveCandle.time!==time){
   state.liveCandle={time,open:price,high:price,low:price,close:price};
  }else{
@@ -31,7 +29,14 @@ function updateLiveCandle(price,timestamp){
   state.liveCandle.low=Math.min(state.liveCandle.low,price);
   state.liveCandle.close=price;
  }
- try{state.candleSeries.update(state.liveCandle)}catch(e){}
+ state.pendingLiveCandle={...state.liveCandle};
+ if(state.liveFrame!==null)return;
+ state.liveFrame=requestAnimationFrame(()=>{
+  state.liveFrame=null;
+  if(!state.candleSeries||!state.pendingLiveCandle)return;
+  const candle=state.pendingLiveCandle;state.pendingLiveCandle=null;
+  try{state.candleSeries.update(candle)}catch(e){}
+ });
 }
 function setupAlertKey(r){return [state.market,state.tf,r.side,r.type,r.time,Number(r.entry).toFixed(3)].join('|')}
 function notifyNewSetups(results){
@@ -309,14 +314,19 @@ function renderXray(bars,mtf,results){
 function initChart(){
  if(state.chart||!window.LightweightCharts)return;
  const el=$('marketChart');if(!el)return;
- state.chart=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight,layout:{background:{color:'#0b1420'},textColor:'#91a2b8'},grid:{vertLines:{color:'#172438'},horzLines:{color:'#172438'}},rightPriceScale:{borderColor:'#25364b'},timeScale:{borderColor:'#25364b',timeVisible:true,secondsVisible:state.tf==='1m'},crosshair:{mode:LightweightCharts.CrosshairMode.Normal}});
+ state.chart=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight,layout:{background:{color:'#0b1420'},textColor:'#91a2b8'},grid:{vertLines:{color:'#172438'},horzLines:{color:'#172438'}},rightPriceScale:{borderColor:'#25364b'},timeScale:{borderColor:'#25364b',timeVisible:true,secondsVisible:false,rightOffset:6,barSpacing:8,minBarSpacing:3},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:true},crosshair:{mode:LightweightCharts.CrosshairMode.Normal}});
  state.candleSeries=state.chart.addCandlestickSeries({upColor:'#36d39a',downColor:'#f07878',borderUpColor:'#36d39a',borderDownColor:'#f07878',wickUpColor:'#36d39a',wickDownColor:'#f07878'});state.overlay=document.createElement('div');state.overlay.className='chart-overlay';el.appendChild(state.overlay);
  new ResizeObserver(()=>{if(state.chart)state.chart.applyOptions({width:el.clientWidth,height:el.clientHeight})}).observe(el);
 }
 function drawChart(bars,results){
  initChart();if(!state.candleSeries)return;
  const data=bars.map(x=>({time:Math.floor(Date.parse(x.openTime)/1000),open:x.open,high:x.high,low:x.low,close:x.close})).filter(x=>Number.isFinite(x.time)).sort((a,b)=>a.time-b.time);
- state.candleSeries.setData(data);state.chart.timeScale().fitContent();state.liveCandle=null;state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
+ const scale=state.chart.timeScale(),wasLoaded=state.chartHasData,visibleRange=wasLoaded?scale.getVisibleLogicalRange():null;
+ state.candleSeries.setData(data);
+ if(!wasLoaded){scale.fitContent();state.chartHasData=true;}
+ else if(visibleRange){try{scale.setVisibleLogicalRange(visibleRange)}catch(e){}}
+ const last=data[data.length-1];state.liveCandle=last?{...last}:null;state.pendingLiveCandle=null;
+ state.lines.forEach(line=>{try{state.candleSeries.removePriceLine(line)}catch(e){}});state.lines=[];
  const best=results[0];const colors={Entry:'#70b9e8',Stop:'#f07878',TP1:'#36d39a',TP2:'#8bd8b7',TP3:'#d8b66c'};
  if(best){[['Entry',best.entry],['Stop',best.stop],['TP1',(best.targets||[best.target])[0]],['TP2',(best.targets||[])[1]],['TP3',(best.targets||[])[2]]].filter(x=>Number.isFinite(x[1])).forEach(([title,price])=>state.lines.push(state.candleSeries.createPriceLine({price,title,color:colors[title],lineWidth:title==='TP1'?2:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true})))}
  const lookback=bars.slice(-30,-1),buySide=Math.max(...lookback.map(x=>x.high)),sellSide=Math.min(...lookback.map(x=>x.low));
