@@ -152,16 +152,46 @@ function analyze(bars){
  return {bars:b,last,results:qualified, bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':last.close<avg(b.slice(-20).map(x=>x.close))?'Bearish':'Neutral',hi,lo};
 }
 function applyMtfEntryGate(analysis,mtf){
-  const direction=m=>{if(!m)return 'neutral';const s=String(m.structure||'').toLowerCase();if(s.startsWith('bullish'))return 'bullish';if(s.startsWith('bearish'))return 'bearish';const b=String(m.bias||'').toLowerCase();return b==='bullish'||b==='bearish'?b:'neutral'};
+  const direction=m=>{
+   if(!m)return 'neutral';
+   const x=m.xray||{},breakSide=String(x.breakSide||'').toLowerCase();
+   if(breakSide==='bullish'||breakSide==='bearish')return breakSide;
+   const trend=String(x.priorTrend||'').toLowerCase();
+   if(trend==='bullish'||trend==='bearish')return trend;
+   const structure=String(m.structure||'').toLowerCase();
+   if(structure.startsWith('bullish'))return 'bullish';
+   if(structure.startsWith('bearish'))return 'bearish';
+   const bias=String(m.bias||'').toLowerCase();
+   return bias==='bullish'||bias==='bearish'?bias:'neutral';
+  };
+  const overlaps=(a,b)=>Array.isArray(a)&&a.length===2&&b&&Number.isFinite(b.low)&&Number.isFinite(b.high)&&Math.min(a[1],b.high)>=Math.max(a[0],b.low);
   analysis.results=analysis.results.filter(r=>{
-   const aligned=[],opposed=[];
-   ['5m','15m','1h','4h'].forEach(tf=>{const d=direction(mtf[tf]);if(d===r.side)aligned.push(tf);else if(d!=='neutral')opposed.push(tf)});
-   const higherAligned=aligned.includes('15m')||aligned.includes('1h');
-   const pass=aligned.filter(tf=>tf!=='4h').length>=2&&higherAligned;
-   r.score=Math.max(40,Math.min(98,r.score+aligned.length*4-opposed.length*3));
-   r.mtfText='Aligned: '+(aligned.map(x=>x.toUpperCase()).join(', ')||'none')+' · Opposing: '+(opposed.map(x=>x.toUpperCase()).join(', ')||'none');
+   const signalTime=Date.parse(r.time),h4=direction(mtf['4h']),h1=direction(mtf['1h']);
+   if(!Number.isFinite(signalTime)||h4!==r.side||h1!==r.side){
+    r.mtfText='Rejected: 4H major bias or 1H structure is not aligned';
+    return false;
+   }
+   const poi=(mtf['15m']&&mtf['15m'].xray&&mtf['15m'].xray.activeZones||[]).find(z=>{
+    const zoneTime=Date.parse(z.time);
+    return z.side===r.side&&z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED'&&Number.isFinite(zoneTime)&&zoneTime+15*60000<=signalTime&&overlaps(r.zone,z);
+   });
+   if(!poi){
+    r.mtfText='Rejected: no confirmed, active 15M FVG POI overlaps the 1M entry zone';
+    return false;
+   }
+   const five=(mtf['5m']&&mtf['5m'].setups||[]).find(z=>{
+    const t=Date.parse(z.time);
+    return z.side===r.side&&Number.isFinite(t)&&t<=signalTime&&signalTime-t<=15*60000&&overlaps(r.zone,{low:Math.min(...(z.zone||[])),high:Math.max(...(z.zone||[]))});
+   });
+   if(!five){
+    r.mtfText='Rejected: no recent confirmed 5M sweep + displacement + MSS zone overlaps the 1M entry';
+    return false;
+   }
+   r.score=Math.min(98,r.score+8);
+   r.mtfText='4H '+h4.toUpperCase()+' bias · 1H '+h1.toUpperCase()+' structure · 15M active FVG POI aligned · 5M MSS confirmed';
+   r.mtfConfirmation={fourHour:h4,oneHour:h1,fifteenMinutePoi:poi.time,fiveMinuteMss:five.time};
    r.status=r.status||'1M ENTRY SETUP';
-   return pass;
+   return true;
   });
   return analysis;
  }
@@ -416,7 +446,7 @@ async function scanMarket(market){
  const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit='+(tf==='1m'?300:100)).catch(err=>tf==='4h'?{bars:[]}:Promise.reject(err)))]);
  const tick=responses[0],mtf={};let selectedBars=[];
  const mtfBars={};
- intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];mtfBars[tf]=bars;if(tf==='1m')selectedBars=bars;try{const a=analyze(bars);mtf[tf]={bias:a.bias,structure:getMarketXray(a.bars).structure,bars:a.bars.length}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0}}});
+ intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];mtfBars[tf]=bars;if(tf==='1m')selectedBars=bars;try{const a=analyze(bars),x=getMarketXray(a.bars);mtf[tf]={bias:a.bias,structure:x.structure,bars:a.bars.length,xray:x,setups:a.results}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0,xray:null,setups:[]}}});
  if(!selectedBars.length)throw Error('Selected timeframe candles are unavailable for '+market+'.');
  const analysis=attachMtfLiquidityTargets(applyMtfEntryGate(analyze(selectedBars),mtf),mtfBars);
  return {market,symbol,tick,analysis,mtf,mtfBars,scannedAt:new Date().toISOString()};
