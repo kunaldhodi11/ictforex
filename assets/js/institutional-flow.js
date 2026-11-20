@@ -3,7 +3,7 @@
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
 function updateChartClock(){const el=$('chartClock');if(!el)return;el.textContent=new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())+' IST';}
-function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const left=60-(Math.floor(Date.now()/1000)%60);el.textContent='00:'+String(left).padStart(2,'0');el.title='Time remaining in the current 1-minute execution candle';}
+function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const left=60-(Math.floor(Date.now()/1000)%60);el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Time remaining in the current 1-minute execution candle';}
 const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
