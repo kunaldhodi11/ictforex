@@ -87,6 +87,48 @@ function extractXray(text) {
   assert.notEqual(end, -1, 'Market X-Ray function boundary exists');
   return text.slice(start, end).trim();
 }
+function extractMtfTargets(text) {
+  const start = text.indexOf('function attachMtfLiquidityTargets(analysis,mtfBars){');
+  const end = text.indexOf('\n function getMarketXray', start);
+  assert.notEqual(start, -1, 'MTF target function exists');
+  assert.notEqual(end, -1, 'MTF target function boundary exists');
+  return text.slice(start, end).trim();
+}
+const attachMtfLiquidityTargets = new Function('num', extractMtfTargets(source) + '; return attachMtfLiquidityTargets;')(
+  value => typeof value === 'number' && Number.isFinite(value) ? value : null
+);
+function mtfCandle(i, high, low = 95) {
+  return { openTime: new Date(Date.UTC(2026, 0, 1, 0, i * 5)).toISOString(),
+    open: 100, high, low, close: 100, isOpen: false };
+}
+test('MTF targets include only swing pools confirmed by the setup signal time', () => {
+  const bars = Array.from({ length: 22 }, (_, i) => mtfCandle(i, 101));
+  bars[10] = mtfCandle(10, 115);
+  bars[11] = mtfCandle(11, 110);
+  bars[12] = mtfCandle(12, 109);
+  bars[13] = mtfCandle(13, 108);
+  bars[14] = mtfCandle(14, 107);
+  bars[15] = mtfCandle(15, 108);
+  bars[16] = mtfCandle(16, 120);
+  bars[17] = mtfCandle(17, 118);
+  bars[18] = mtfCandle(18, 117);
+  const setup = { side: 'bullish', entry: 100, stop: 95, time: bars[14].openTime,
+    targets: [110], target: 110, rr: '1:2' };
+  attachMtfLiquidityTargets({ results: [setup] }, { '1m': bars });
+  assert.deepEqual(setup.targets, [115]);
+  assert.equal(setup.targetLevels[0].timeframe, '1M');
+  assert.equal(setup.targetLevels[0].rr, '1:3.0');
+});
+test('MTF target selector uses a 2R fallback when no confirmed opposing pool qualifies', () => {
+  const bars = Array.from({ length: 22 }, (_, i) => mtfCandle(i, 101));
+  const setup = { side: 'bullish', entry: 100, stop: 95, time: bars[14].openTime,
+    targets: [], target: null, rr: '—' };
+  attachMtfLiquidityTargets({ results: [setup] }, { '1m': bars });
+  assert.equal(setup.target, 110);
+  assert.equal(setup.targetLevels[0].timeframe, 'Risk fallback');
+  assert.equal(setup.rr, '1:2.0');
+});
+
 const getMarketXray = new Function('avg', 'fmt', extractXray(source) + '; return getMarketXray;')(
   values => values.reduce((sum, value) => sum + value, 0) / (values.length || 1),
   value => value == null ? '—' : Number(value).toFixed(2)
