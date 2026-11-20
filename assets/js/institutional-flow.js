@@ -179,9 +179,12 @@ function applyMtfEntryGate(analysis,mtf){
     r.mtfText='Rejected: no confirmed, active 15M FVG POI overlaps the 1M entry zone';
     return false;
    }
+   // 5M confirms the directional sweep/displacement/MSS; 1M is the entry refinement.
+   // Requiring the independent 5M MSS zone to overlap the 1M entry zone was over-restrictive.
    const five=(mtf['5m']&&mtf['5m'].setups||[]).find(z=>{
-    const t=Date.parse(z.time);
-    return z.side===r.side&&Number.isFinite(t)&&t<=signalTime&&signalTime-t<=15*60000&&overlaps(r.zone,{low:Math.min(...(z.zone||[])),high:Math.max(...(z.zone||[]))});
+    const t=Date.parse(z.time),e=z.evidence||{};
+    const confirmed=Number.isFinite(e.sweepIndex)&&Number.isFinite(e.mssIndex);
+    return z.side===r.side&&confirmed&&Number.isFinite(t)&&t<=signalTime&&signalTime-t<=15*60000;
    });
    if(!five){
     r.mtfText='Rejected: no recent confirmed 5M sweep + displacement + MSS zone overlaps the 1M entry';
