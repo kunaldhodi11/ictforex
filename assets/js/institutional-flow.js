@@ -154,6 +154,29 @@ function applyMtfEntryGate(analysis,mtf){
   });
   return analysis;
  }
+ function attachMtfLiquidityTargets(analysis,mtfBars){
+  analysis.results.forEach(r=>{
+   const risk=Math.abs(r.entry-r.stop);if(!Number.isFinite(risk)||risk<=0)return;
+   const levels=[];
+   ['1m','5m','15m','1h','4h'].forEach(tf=>{
+    const raw=mtfBars[tf]||[],b=raw.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
+    for(let i=2;i<b.length-2;i++){
+     const p=r.side==='bullish'?b[i].high:b[i].low;
+     const pivot=r.side==='bullish'?(p>b[i-1].high&&p>b[i-2].high&&p>=b[i+1].high&&p>=b[i+2].high):(p<b[i-1].low&&p<b[i-2].low&&p<=b[i+1].low&&p<=b[i+2].low);
+     if(!pivot)continue;
+     const ahead=r.side==='bullish'?p>r.entry:p<r.entry,rr=Math.abs(p-r.entry)/risk;
+     if(ahead&&rr>=2&&rr<=15)levels.push({price:p,tf,rr});
+    }
+   });
+   levels.sort((a,b)=>a.rr-b.rr);
+   const unique=[];levels.forEach(x=>{if(!unique.some(y=>Math.abs(y.price-x.price)<=Math.max(Math.abs(r.entry)*0.00003,0.03)))unique.push(x)});
+   const chosen=unique.slice(0,3);
+   if(chosen.length){r.targets=chosen.map(x=>x.price);r.target=r.targets[0];r.targetSource='Nearest opposing liquidity: '+chosen.map(x=>x.tf.toUpperCase()).join(' → ')}
+   else{const fallback=r.side==='bullish'?r.entry+2*risk:r.entry-2*risk;r.targets=[fallback];r.target=fallback;r.targetSource='2R structural fallback · no valid opposing swing pool found within 2R–15R'}
+   r.rr='1:'+ (Math.abs(r.target-r.entry)/risk).toFixed(1);
+  });
+  return analysis;
+ }
  function getMarketXray(bars){
  const last=bars[bars.length-1],recent=bars.slice(-30),high=Math.max(...recent.map(x=>x.high)),low=Math.min(...recent.map(x=>x.low)),mid=(high+low)/2,range=high-low;
  const pivots=[];
@@ -271,7 +294,7 @@ function renderXraySides(bars,mtf,results,x){
  renderSide('bullish');renderSide('bearish');
 }
 function renderXray(bars,mtf,results){
- const x=getMarketXray(bars);state.xray=x;renderXraySides(bars,mtf,results,x);state.lastLivePrice=null;$('xrayTf').textContent=state.tf.toUpperCase();$('xrayStructure').textContent=x.structure;$('xrayStructureNote').textContent=x.note;$('xrayRange').textContent=x.dealingRange?fmt(x.dealingRange.low)+' – '+fmt(x.dealingRange.high):'Not established';$('xrayRangeNote').textContent=x.dealingRange?'Confirmed swing pair · EQ '+fmt(x.dealingMid):'No valid confirmed swing pair in loaded candles';$('xrayZone').textContent=x.zone;$('xrayZoneNote').textContent=x.pos===null?'Premium / discount unavailable without a dealing range':'Price position '+x.pos.toFixed(0)+'% of confirmed range';$('xraySession').textContent=x.session;$('xraySessionNote').textContent='Candle UTC '+x.time.slice(11,16);$('rangeMarker').style.left=(x.pos===null?50:x.pos)+'%';
+ const x=getMarketXray(bars);state.xray=x;renderXraySides(bars,mtf,results,x);state.lastLivePrice=null;$('xrayTf').textContent='15M CONTEXT';$('xrayStructure').textContent=x.structure;$('xrayStructureNote').textContent=x.note;$('xrayRange').textContent=x.dealingRange?fmt(x.dealingRange.low)+' – '+fmt(x.dealingRange.high):'Not established';$('xrayRangeNote').textContent=x.dealingRange?'Confirmed swing pair · EQ '+fmt(x.dealingMid):'No valid confirmed swing pair in loaded candles';$('xrayZone').textContent=x.zone;$('xrayZoneNote').textContent=x.pos===null?'Premium / discount unavailable without a dealing range':'Price position '+x.pos.toFixed(0)+'% of confirmed range';$('xraySession').textContent=x.session;$('xraySessionNote').textContent='Candle UTC '+x.time.slice(11,16);$('rangeMarker').style.left=(x.pos===null?50:x.pos)+'%';
  const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};set('xrayChoch',x.choch);set('xrayChochNote',x.chochNote);set('xrayTrend',x.strength+' · '+x.trendPct+'/100');set('xrayTrendNote','20-candle directional efficiency (not win probability)');set('xrayBsl',x.bsl===null?'No clear pool':fmt(x.bsl));set('xrayBslNote',x.bsl===null?'No equal-high cluster confirmed':'Potential BSL · '+x.highPoolCount+' confirmed swing highs');set('xraySsl',x.ssl===null?'No clear pool':fmt(x.ssl));set('xraySslNote',x.ssl===null?'No equal-low cluster confirmed':'Potential SSL · '+x.lowPoolCount+' confirmed swing lows');
  set('xrayPdhPdl',x.pdh===null||x.pdl===null?'Unavailable':fmt(x.pdh)+' / '+fmt(x.pdl));set('xrayPdhPdlNote',x.pdh===null?'Prior UTC day not present in loaded candles':'PDH / PDL · previous UTC day');
  set('xrayPwhPwl',x.pwh===null||x.pwl===null?'Unavailable':fmt(x.pwh)+' / '+fmt(x.pwl));set('xrayPwhPwlNote',x.pwh===null?'Prior UTC week not present in loaded candles':'PWH / PWL · previous UTC week');
@@ -307,7 +330,7 @@ function drawChart(bars,results){
 }
 function render(data){
  $('price').textContent=fmt(data.tick.mid);$('change').textContent=data.tick.dayDiffPercent==null?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
- $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent=state.tf.toUpperCase();
+ $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent='MTF';
  $('feedState').textContent=data.tick.stale?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  $('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+data.analysis.bars.length+' completed '+state.tf+' candles analysed.';
  drawChart(data.analysis.bars,data.analysis.results);renderXray((data.mtfBars&&data.mtfBars['15m']&&data.mtfBars['15m'].length?analyze(data.mtfBars['15m']).bars:data.analysis.bars),data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
@@ -325,7 +348,7 @@ async function scanMarket(market){
  const mtfBars={};
  intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];mtfBars[tf]=bars;if(tf==='1m')selectedBars=bars;try{const a=analyze(bars);mtf[tf]={bias:a.bias,structure:getMarketXray(a.bars).structure,bars:a.bars.length}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0}}});
  if(!selectedBars.length)throw Error('Selected timeframe candles are unavailable for '+market+'.');
- const analysis=applyMtfEntryGate(analyze(selectedBars),mtf);
+ const analysis=attachMtfLiquidityTargets(applyMtfEntryGate(analyze(selectedBars),mtf),mtfBars);
  return {market,symbol,tick,analysis,mtf,mtfBars,scannedAt:new Date().toISOString()};
 }
 function renderRadar(result){
