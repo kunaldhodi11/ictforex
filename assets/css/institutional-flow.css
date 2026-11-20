@@ -246,3 +246,10 @@ footer{border-color:rgba(126,153,181,.13);font-size:9px}
 .xray-pool-item span{grid-column:1/-1;color:var(--muted);font-size:9px;line-height:1.45}
 .xray-pool-item .pool-state{text-align:right;color:#a9c1d8}
 @media(max-width:600px){.xray-pool-list{grid-template-columns:1fr}.xray-pool-item{padding:10px}}
+
+/* Live chart clock: India date and seconds, responsive on mobile */
+.chart-head-meta{display:flex;align-items:center;gap:12px;min-width:0}
+.chart-clock{display:grid;gap:2px;text-align:right;min-width:0}
+.chart-clock small{font-size:8px;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.chart-clock b{font-size:12px;color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media(max-width:600px){.chart-head-meta{align-items:flex-end;flex-direction:column;gap:6px}.chart-clock{text-align:right}.chart-clock b{font-size:11px}.chart-clock small{font-size:7px}}
