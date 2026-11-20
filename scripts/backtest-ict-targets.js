@@ -116,21 +116,25 @@ function runMarket(symbol, file) {
     }
   }
   const filled = trades.filter(t => t.filled);
-  const total = n => filled.filter(t => t.highestTarget >= n).length;
+  const eligible = n => filled.filter(t => (t.targets || []).length >= n);
+  const total = n => eligible(n).filter(t => t.highestTarget >= n).length;
+  const eligible1=eligible(1).length,eligible2=eligible(2).length,eligible3=eligible(3).length;
   const stoppedBeforeTp1 = filled.filter(t => t.stopped && t.highestTarget === 0).length;
   const summary = {
     symbol, dataRows: bars.length, fromUTC: bars[0].openTime, toUTC: bars[bars.length - 1].openTime,
     detectedSetups: trades.length, filledTrades: filled.length,
     unfilledSetups: trades.length - filled.length,
+    tp1EligibleTrades: eligible1, tp2EligibleTrades: eligible2, tp3EligibleTrades: eligible3,
     tp1Hits: total(1), tp2Hits: total(2), tp3Hits: total(3),
-    tp1HitRatePct: filled.length ? +(100 * total(1) / filled.length).toFixed(2) : null,
-    tp2HitRatePct: filled.length ? +(100 * total(2) / filled.length).toFixed(2) : null,
-    tp3HitRatePct: filled.length ? +(100 * total(3) / filled.length).toFixed(2) : null,
+    tp1HitRatePct: eligible1 ? +(100 * total(1) / eligible1).toFixed(2) : null,
+    tp2HitRatePct: eligible2 ? +(100 * total(2) / eligible2).toFixed(2) : null,
+    tp3HitRatePct: eligible3 ? +(100 * total(3) / eligible3).toFixed(2) : null,
     stoppedBeforeTp1, stopBeforeTp1RatePct: filled.length ? +(100 * stoppedBeforeTp1 / filled.length).toFixed(2) : null,
     assumptions: [
       '1-minute candidate engine only; 5M/15M/1H/4H entry gate is not represented by these 1M-only samples.',
       'Targets are selected only from already-confirmed, not-yet-swept 1M opposing swing liquidity; setups without a valid 2R–15R pool are rejected. No higher-timeframe pools are available.',
       'Limit fill requires the candle to touch the exact midpoint entry; gap-through bars are skipped.',
+      'TP2/TP3 hit rates use only filled trades that had at least two/three real liquidity targets available.',
       'If stop and target are both inside one OHLC candle, stop is counted first.',
       'Unfilled setups are excluded from hit-rate denominator; trades unresolved after 720 minutes are censored.'
     ],
