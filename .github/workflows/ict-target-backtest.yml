@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'scripts/backtest-ict-targets.js'
+      - 'scripts/test-mtf-gate.js'
       - 'assets/js/institutional-flow.js'
       - '.github/workflows/ict-target-backtest.yml'
   workflow_dispatch:
