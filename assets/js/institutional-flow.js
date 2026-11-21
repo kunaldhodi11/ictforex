@@ -542,7 +542,7 @@ function render(data){
 }
 async function scanMarket(market){
  const symbol=await resolveSymbol(market),intervals=['1m','5m','15m','1h','4h','1d'];
- const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit='+(tf==='1m'?300:100)).catch(err=>(tf==='4h'||tf==='1d')?{bars:[]}:Promise.reject(err)))]);
+ const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit=1000').catch(err=>(tf==='4h'||tf==='1d')?{bars:[]}:Promise.reject(err)))]);
  const tick=responses[0],mtf={};let selectedBars=[];
  const mtfBars={};
  intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];mtfBars[tf]=bars;if(tf==='1m')selectedBars=bars;try{const a=analyze(bars),x=getMarketXray(a.bars);mtf[tf]={bias:a.bias,structure:x.structure,bars:a.bars.length,xray:x,setups:a.results}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0,xray:null,setups:[]}}});
