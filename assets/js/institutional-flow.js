@@ -10,7 +10,7 @@ async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)thr
 function updateLiveTick(tick){
  if(!tick||!tick.symbol||String(tick.symbol).toUpperCase()!==String(state.symbol||'').toUpperCase())return;
  const mid=num(tick.mid);if(mid===null)return;
- if(tick.stale===true||(num(tick.quoteAgeSeconds)!==null&&tick.quoteAgeSeconds>120)){$('feedState').textContent='STALE FEED';return}
+ if(tickIsStale(tick)){$('feedState').textContent='STALE FEED';$('quoteAge').textContent=age(tick.timestamp);return}
  $('price').textContent=fmt(mid);
  queueLiveCandle(mid,tick.timestamp);updateLiveXray(mid);updateTickPressurePanels();
  if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
@@ -82,6 +82,7 @@ function candleEpochSeconds(c){
 function num(v){return typeof v==='number'&&Number.isFinite(v)?v:null}
 function fmt(v){return v==null?'—':v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function age(ts){if(ts===undefined||ts===null||ts==='')return 'Quote timestamp unavailable';const ms=epochMs(ts);if(!Number.isFinite(ms))return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-ms)/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
+function tickIsStale(tick){if(!tick)return true;if(tick.stale===true)return true;const reported=num(tick.quoteAgeSeconds);if(reported!==null)return reported>120;if(tick.timestamp!==undefined&&tick.timestamp!==null){const ms=epochMs(tick.timestamp);return !Number.isFinite(ms)||Date.now()-ms>120000}return true}
 async function resolveSymbol(market){
  try{const data=await get(API+'/active');const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());const found=candidates[market].find(x=>names.includes(x));if(found)return found}catch(e){}
  // Resolve the instrument even when its market is closed. The provider returns
@@ -528,7 +529,7 @@ function render(data){
  state.lastData=data;
  $('price').textContent=fmt(data.tick.mid);$('change').textContent=data.tick.dayDiffPercent==null?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
  $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent='MTF';
- $('feedState').textContent=data.tick.stale?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
+ $('feedState').textContent=tickIsStale(data.tick)?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  const selectedTfBars=data.mtfBars&&data.mtfBars[state.tf];const selectedTfCount=selectedTfBars?selectedTfBars.filter(x=>!x.isOpen).length:data.analysis.bars.length;$('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+selectedTfCount+' completed '+state.tf+' candles displayed; 1M is the execution-signal timeframe.';
  const chartBars=data.mtfBars&&data.mtfBars[state.tf]&&data.mtfBars[state.tf].length?data.mtfBars[state.tf]:data.analysis.bars;drawChart(chartBars,state.tf==='1m'?data.analysis.results:[]);renderXray((data.mtfBars&&data.mtfBars['15m']&&data.mtfBars['15m'].length?analyze(data.mtfBars['15m']).bars:data.analysis.bars),data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
  const bullList=$('bullishList'),bearList=$('bearishList');bullList.innerHTML='';bearList.innerHTML='';
@@ -550,7 +551,7 @@ async function scanMarket(market){
 }
 function renderRadar(result){
  const p=result.market==='XAUUSD'?'radarXau':'radarNas',set=(suffix,value)=>{const el=$(p+suffix);if(el)el.textContent=value};
- set('State',result.tick.stale?'STALE':'SCANNED');set('Price',fmt(result.tick.mid));set('Bias',result.analysis.bias);set('Setups',String(result.analysis.results.length));
+ set('State',tickIsStale(result.tick)?'STALE':'SCANNED');set('Price',fmt(result.tick.mid));set('Bias',result.analysis.bias);set('Setups',String(result.analysis.results.length));
  const best=result.analysis.results[0];set('Best',best?best.side.toUpperCase()+' · '+best.type+' · '+best.rr+' R:R':'No qualifying setup detected');
  set('Time','Updated '+new Date(result.scannedAt).toLocaleTimeString());
  const card=$(p);if(card)card.dataset.market=result.market;
