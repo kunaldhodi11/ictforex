@@ -443,12 +443,23 @@ function ensureChartLibrary(){
  return state.chartLibraryPromise;
 }
 function redrawChartOverlays(){
- if(!state.overlay||!state.candleSeries)return;
+ if(!state.overlay||!state.candleSeries||!state.chart)return;
  state.overlay.replaceChildren();
+ const scale=state.chart.timeScale(),visible=scale.getVisibleRange(),width=state.overlay.clientWidth;
+ const visibleFrom=visible&&typeof visible.from==='number'?visible.from:-Infinity;
+ const visibleTo=visible&&typeof visible.to==='number'?visible.to:Infinity;
  state.chartZones.forEach((item,i)=>{
   const top=state.candleSeries.priceToCoordinate(Math.max(...item.zone)),bottom=state.candleSeries.priceToCoordinate(Math.min(...item.zone));
   if(top===null||bottom===null||!Number.isFinite(top)||!Number.isFinite(bottom))return;
+  const start=Number(item.startTime),end=Number(item.endTime);
+  if(!Number.isFinite(start)||!Number.isFinite(end)||end<visibleFrom||start>visibleTo)return;
+  const rawLeft=scale.timeToCoordinate(start),rawRight=scale.timeToCoordinate(end);
+  const left=rawLeft===null?(start<visibleFrom?0:width):rawLeft;
+  const right=rawRight===null?(end>visibleTo?width:0):rawRight;
+  const x=Math.max(0,Math.min(width,Math.min(left,right))),rightEdge=Math.max(0,Math.min(width,Math.max(left,right)));
+  if(rightEdge<=x)return;
   const band=document.createElement('div');band.className='chart-zone '+item.side+(item.kind==='fvg'?' chart-fvg-zone':'');
+  band.style.left=x+'px';band.style.width=(rightEdge-x)+'px';band.style.right='auto';
   band.style.top=Math.min(top,bottom)+'px';band.style.height=Math.max(3,Math.abs(bottom-top))+'px';
   band.style.opacity=String(item.kind==='fvg'?.32:Math.max(.48,.82-i*.04));
   const label=document.createElement('span');label.textContent=item.label;band.appendChild(label);state.overlay.appendChild(band);
@@ -482,7 +493,10 @@ function drawChart(bars,results){
  if(!data.length)return;
  const clean=data.map(({isOpen,...bar})=>bar),scale=state.chart.timeScale();
  if(!state.chartHasData){
-  state.candleSeries.setData(clean);scale.fitContent();state.chartHasData=true;
+  state.candleSeries.setData(clean);
+  const visibleBars=Math.min(110,clean.length);
+  scale.setVisibleLogicalRange({from:Math.max(0,clean.length-visibleBars),to:clean.length+8});
+  state.chartHasData=true;
  }else{
   const prior=state.chartLastTime;
   const same=data.find(x=>x.time===prior);
@@ -519,8 +533,9 @@ function drawChart(bars,results){
   if(chartXray.ssl!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.ssl,title:'SSL · EQL pool',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
   if(chartXray.brokenLevel!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.brokenLevel,title:chartXray.breakType,color:chartXray.breakSide==='bullish'?'#36d39a':'#f07878',lineWidth:2,lineStyle:LightweightCharts.LineStyle.Solid,axisLabelVisible:true}));
  }
- const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg'})):[];
- const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup'}));
+ const visibleEnd=data[data.length-1].time;
+ const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg',startTime:Math.floor(epochMs(z.time)/1000),endTime:visibleEnd})):[];
+ const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup',startTime:Math.floor(epochMs(r.time)/1000),endTime:visibleEnd}));
  state.chartZones=[...zones,...setupZones];scheduleChartOverlayRedraw();
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(epochMs(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
