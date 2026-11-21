@@ -145,10 +145,7 @@ function runMarket(symbol, file) {
 
 const outDir = path.join(ROOT, 'backtest-results');
 fs.mkdirSync(outDir, { recursive: true });
-const reports = [
-  runMarket('XAUUSD', process.argv[2] || '/tmp/XAUUSD_1m.csv'),
-  runMarket('NAS100', process.argv[3] || '/tmp/NAS100_1m.csv')
-];
+const reports = [runMarket('XAUUSD', process.argv[2] || '/tmp/XAUUSD_1m.csv')];
 for (const report of reports) {
   fs.writeFileSync(path.join(outDir, report.symbol.toLowerCase() + '-target-backtest.json'), JSON.stringify(report, null, 2));
   const { trades, ...summary } = report;
