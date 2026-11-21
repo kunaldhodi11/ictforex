@@ -64,6 +64,7 @@ async function connectLive(symbol){
   state.hub.on('ReceiveTick',payload=>{(Array.isArray(payload)?payload:[payload]).forEach(updateLiveTick)});
   state.hub.onreconnecting(()=>{$('feedState').textContent='STREAM RECONNECTING'});
   state.hub.onreconnected(async()=>{state.subscribedSymbol=null;if(state.symbol)await connectLive(state.symbol)});
+   state.hub.onclose(()=>{$('feedState').textContent='STREAM OFFLINE · WAITING FOR REST RETRY';state.subscribedSymbol=null});
  }
  if(state.subscribedSymbol===symbol&&state.hub.state===signalR.HubConnectionState.Connected)return;
  if(state.hub.state!==signalR.HubConnectionState.Connected)await state.hub.start();
@@ -72,7 +73,7 @@ async function connectLive(symbol){
 }
 function epochMs(value){
  if(typeof value==='number'&&Number.isFinite(value))return value<1e12?value*1000:value;
- if(typeof value==='string'&&/^\\d+(?:\\.\\d+)?$/.test(value.trim())){const n=Number(value);return n<1e12?n*1000:n}
+ if(typeof value==='string'&&/^\d+(?:\.\d+)?$/.test(value.trim())){const n=Number(value);return n<1e12?n*1000:n}
  const parsed=Date.parse(value);return Number.isFinite(parsed)?parsed:NaN;
 }
 function candleEpochSeconds(c){
@@ -523,7 +524,7 @@ function drawChart(bars,results){
  state.chartZones=[...zones,...setupZones];scheduleChartOverlayRedraw();
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
- $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase()+(state.tf==='1m'?' EXECUTION':' CHART');$('chartStatus').textContent=data.length+' '+state.tf.toUpperCase()+' candles · '+(last.isOpen?'CURRENT BAR':'LAST COMPLETED BAR');$('chartFoot').textContent=state.tf==='1m'?(best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.'):'Viewing '+state.tf.toUpperCase()+' candles. Live tick updates are reserved for the 1M execution chart; multi-timeframe ICT confirmation continues in the background.';updateChartAnalysisSummary(best);
+ $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase()+(state.tf==='1m'?' EXECUTION':' CHART');$('chartStatus').textContent=data.length+' '+state.tf.toUpperCase()+' candles · '+(last.isOpen?'CURRENT BAR':'LAST COMPLETED BAR');$('chartFoot').textContent=state.tf==='1m'?(best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.'):'Viewing '+state.tf.toUpperCase()+' candles. Live provider ticks update the active candle for the selected timeframe; the countdown shows its IST close time. ICT confirmation continues across multiple timeframes.';updateChartAnalysisSummary(best);
 }
 function render(data){
  state.lastData=data;
