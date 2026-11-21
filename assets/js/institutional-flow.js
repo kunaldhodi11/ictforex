@@ -341,18 +341,47 @@ function applyMtfEntryGate(analysis,mtf,mtfBars){
  const last=bars[bars.length-1],recent=bars.slice(-30),high=Math.max(...recent.map(x=>x.high)),low=Math.min(...recent.map(x=>x.low)),mid=(high+low)/2,range=high-low;
  const pivots=[];
  for(let i=2;i<bars.length-2;i++){
-  const p=bars[i];
-  if(p.high>bars[i-1].high&&p.high>bars[i-2].high&&p.high>=bars[i+1].high&&p.high>=bars[i+2].high)pivots.push({type:'high',price:p.high,index:i,time:p.openTime});
-  if(p.low<bars[i-1].low&&p.low<bars[i-2].low&&p.low<=bars[i+1].low&&p.low<=bars[i+2].low)pivots.push({type:'low',price:p.low,index:i,time:p.openTime});
+  const p=bars[i],confirmedAt=i+2;
+  if(p.high>bars[i-1].high&&p.high>bars[i-2].high&&p.high>=bars[i+1].high&&p.high>=bars[i+2].high)pivots.push({type:'high',price:p.high,index:i,confirmedAt,time:p.openTime});
+  if(p.low<bars[i-1].low&&p.low<bars[i-2].low&&p.low<=bars[i+1].low&&p.low<=bars[i+2].low)pivots.push({type:'low',price:p.low,index:i,confirmedAt,time:p.openTime});
  }
  const highs=pivots.filter(p=>p.type==='high'),lows=pivots.filter(p=>p.type==='low'),sh=highs[highs.length-1],sl=lows[lows.length-1],ph=highs[highs.length-2],pl=lows[lows.length-2];
  const higherHigh=!!(sh&&ph&&sh.price>ph.price),higherLow=!!(sl&&pl&&sl.price>pl.price),lowerHigh=!!(sh&&ph&&sh.price<ph.price),lowerLow=!!(sl&&pl&&sl.price<pl.price);
  let priorTrend='Range';if(higherHigh&&higherLow)priorTrend='Bullish';else if(lowerHigh&&lowerLow)priorTrend='Bearish';
- const brokeHigh=!!(sh&&last.close>sh.price),brokeLow=!!(sl&&last.close<sl.price);
- let structure='Range / unclear',note='No completed close has broken a confirmed swing',choch='No CHOCH',chochNote='No opposing structure break confirmed',breakType='NONE',brokenLevel=null,breakSide='neutral';
- if(brokeHigh){breakSide='bullish';brokenLevel=sh.price;breakType=priorTrend==='Bearish'?'BULLISH CHOCH':'BULLISH BOS';structure=priorTrend==='Bearish'?'Bullish CHOCH':'Bullish BOS';note='Completed candle closed above confirmed swing high '+fmt(sh.price)+'.';if(priorTrend==='Bearish'){choch='Bullish CHOCH';chochNote='Bearish swing sequence invalidated by a completed close above its latest confirmed swing high.'}}
- else if(brokeLow){breakSide='bearish';brokenLevel=sl.price;breakType=priorTrend==='Bullish'?'BEARISH CHOCH':'BEARISH BOS';structure=priorTrend==='Bullish'?'Bearish CHOCH':'Bearish BOS';note='Completed candle closed below confirmed swing low '+fmt(sl.price)+'.';if(priorTrend==='Bullish'){choch='Bearish CHOCH';chochNote='Bullish swing sequence invalidated by a completed close below its latest confirmed swing low.'}}
- else if(priorTrend!=='Range'){structure=priorTrend+' structure';note=priorTrend+' swing sequence: '+(priorTrend==='Bullish'?'higher highs and higher lows':'lower highs and lower lows')+'. No new break on the latest close.';breakType='STRUCTURE HOLD'}
+ // A swing is protected only after a confirmed close breaks the opposing confirmed swing.
+ // Pivots are unavailable until two right-hand candles have closed; wick-only raids never count as BOS/CHOCH.
+ const brokenHighs=new Set(),brokenLows=new Set();let structureTrend='Range',protectedHigh=null,protectedLow=null,lastBreak=null;
+ for(let i=0;i<bars.length;i++){
+  const eligibleHigh=highs.filter(p=>p.confirmedAt<i&&!brokenHighs.has(p.index)).sort((a,b)=>b.index-a.index)[0];
+  const eligibleLow=lows.filter(p=>p.confirmedAt<i&&!brokenLows.has(p.index)).sort((a,b)=>b.index-a.index)[0];
+  const up=!!(eligibleHigh&&bars[i].close>eligibleHigh.price),down=!!(eligibleLow&&bars[i].close<eligibleLow.price);
+  if(up===down)continue;
+  if(up){
+   brokenHighs.add(eligibleHigh.index);
+   const priorProtected=lows.filter(p=>p.confirmedAt<i&&p.index<eligibleHigh.index).sort((a,b)=>b.index-a.index)[0]||null;
+   const change=structureTrend==='Bearish';
+   if(priorProtected)protectedLow=priorProtected;
+   structureTrend='Bullish';
+   lastBreak={side:'bullish',level:eligibleHigh.price,type:change?'BULLISH CHOCH':'BULLISH BOS',index:i,pivot:eligibleHigh,protected:protectedLow};
+  }else{
+   brokenLows.add(eligibleLow.index);
+   const priorProtected=highs.filter(p=>p.confirmedAt<i&&p.index<eligibleLow.index).sort((a,b)=>b.index-a.index)[0]||null;
+   const change=structureTrend==='Bullish';
+   if(priorProtected)protectedHigh=priorProtected;
+   structureTrend='Bearish';
+   lastBreak={side:'bearish',level:eligibleLow.price,type:change?'BEARISH CHOCH':'BEARISH BOS',index:i,pivot:eligibleLow,protected:protectedHigh};
+  }
+ }
+ let structure='Range / unclear',note='No completed close has broken a confirmed swing',choch='No CHOCH',chochNote='No opposing protected-swing break confirmed',breakType='NONE',brokenLevel=null,breakSide='neutral';
+ if(lastBreak&&lastBreak.index===bars.length-1){
+  breakSide=lastBreak.side;brokenLevel=lastBreak.level;breakType=lastBreak.type;structure=lastBreak.type.replace('BULLISH ','Bullish ').replace('BEARISH ','Bearish ');
+  note='Completed candle closed beyond confirmed '+(breakSide==='bullish'?'swing high ':'swing low ')+fmt(brokenLevel)+'.';
+  if(breakType.includes('CHOCH')){choch=structure;chochNote='The close broke the protected swing against the prior structure direction.'}
+ }else if(structureTrend!=='Range'){
+  structure=structureTrend+' structure';note=structureTrend+' structure remains intact; no new protected-swing break on the latest close.';breakType='STRUCTURE HOLD';
+ }
+ if(structureTrend!=='Range')priorTrend=structureTrend;
+ const confirmedSwingHigh=protectedHigh?protectedHigh.price:(sh?sh.price:null),confirmedSwingLow=protectedLow?protectedLow.price:(sl?sl.price:null);
  const tolerance=Math.max(Math.abs(last.close)*0.00035,range*0.008);
  const makeClusters=(items,side)=>{
   const sorted=items.slice().sort((a,b)=>a.price-b.price),groups=[];
@@ -362,7 +391,7 @@ function applyMtfEntryGate(analysis,mtf,mtfBars){
  const bslPools=makeClusters(highs,'BSL'),sslPools=makeClusters(lows,'SSL');
  const nearest=(arr)=>arr.slice().sort((a,b)=>Math.abs(a.price-last.close)-Math.abs(b.price-last.close))[0]||null;
  const bslPool=nearest(bslPools),sslPool=nearest(sslPools),bsl=bslPool?bslPool.price:null,ssl=sslPool?sslPool.price:null;
- const confirmedRange=sh&&sl?{high:sh.price,low:sl.price,from:sl.index<sh.index?'swing low → swing high':'swing high → swing low'}:null;
+ const rangeHigh=confirmedSwingHigh,rangeLow=confirmedSwingLow;\n const confirmedRange=rangeHigh!==null&&rangeLow!==null&&rangeHigh>rangeLow?{high:rangeHigh,low:rangeLow,from:'protected swing low → protected swing high'}:null;
  const dr=confirmedRange&&confirmedRange.high>confirmedRange.low?confirmedRange:null,drMid=dr?(dr.high+dr.low)/2:null;
  const pos=dr?Math.max(0,Math.min(100,(last.close-dr.low)/(dr.high-dr.low)*100)):null;
  const zone=pos===null?'Range not established':pos>50?'Premium':pos<50?'Discount':'Equilibrium';
@@ -387,7 +416,7 @@ function applyMtfEntryGate(analysis,mtf,mtfBars){
  const windowBars=bars.slice(-21),path=windowBars.slice(1).reduce((sum,x,i)=>sum+Math.abs(x.close-windowBars[i].close),0),eff=path?Math.abs(windowBars[windowBars.length-1].close-windowBars[0].close)/path:0,strength=eff<.2?'Weak':eff<.45?'Moderate':'Strong',trendPct=Math.round(eff*100);
  const prior20=bars.slice(-21,-1),priorHigh=Math.max(...prior20.map(x=>x.high)),priorLow=Math.min(...prior20.map(x=>x.low)),sweptHigh=last.high>priorHigh&&last.close<priorHigh,sweptLow=last.low<priorLow&&last.close>priorLow,acceptedAbove=last.close>priorHigh,acceptedBelow=last.close<priorLow;
  let liquidityEvent='No recent range event';if(sweptHigh)liquidityEvent='Buy-side sweep and reclaim';else if(sweptLow)liquidityEvent='Sell-side sweep and reclaim';else if(acceptedAbove)liquidityEvent='Close accepted above prior range';else if(acceptedBelow)liquidityEvent='Close accepted below prior range';
- return {high,low,mid,pos,zone,structure,note,session,time:dt.toISOString(),choch,chochNote,strength,trendPct,bsl,ssl,bslPools,sslPools,bslPoolCount:bslPool?bslPool.count:0,sslPoolCount:sslPool?sslPool.count:0,pdh:pday?pday.high:null,pdl:pday?pday.low:null,pwh:pweek?pweek.high:null,pwl:pweek?pweek.low:null,dealingRange:dr,dealingMid:drMid,activeZones,liquidityEvent,sweptHigh,sweptLow,acceptedAbove,acceptedBelow,breakType,brokenLevel,breakSide,priorTrend,higherHigh,higherLow,lowerHigh,lowerLow,confirmedSwingHigh:sh?sh.price:null,confirmedSwingLow:sl?sl.price:null};
+ return {high,low,mid,pos,zone,structure,note,session,time:dt.toISOString(),choch,chochNote,strength,trendPct,bsl,ssl,bslPools,sslPools,bslPoolCount:bslPool?bslPool.count:0,sslPoolCount:sslPool?sslPool.count:0,pdh:pday?pday.high:null,pdl:pday?pday.low:null,pwh:pweek?pweek.high:null,pwl:pweek?pweek.low:null,dealingRange:dr,dealingMid:drMid,activeZones,liquidityEvent,sweptHigh,sweptLow,acceptedAbove,acceptedBelow,breakType,brokenLevel,breakSide,priorTrend,higherHigh,higherLow,lowerHigh,lowerLow,confirmedSwingHigh,confirmedSwingLow,protectedSwingHigh:protectedHigh?{price:protectedHigh.price,time:protectedHigh.time,index:protectedHigh.index}:null,protectedSwingLow:protectedLow?{price:protectedLow.price,time:protectedLow.time,index:protectedLow.index}:null,lastStructureBreak:lastBreak?{side:lastBreak.side,type:lastBreak.type,level:lastBreak.level,time:bars[lastBreak.index].openTime}:null};
 }
 function addXrayEvent(title,detail,kind='info'){
  const now=Date.now(),item={title,detail,kind,time:new Date(now).toLocaleTimeString()};
