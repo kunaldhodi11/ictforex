@@ -3,7 +3,9 @@
 const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
 function updateChartClock(){const el=$('chartClock');if(!el)return;el.textContent=new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())+' IST';}
-function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const left=60-(Math.floor(Date.now()/1000)%60);el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Time remaining in the current 1-minute execution candle';}
+function timeframeSeconds(tf){return ({'1m':60,'5m':300,'15m':900,'1h':3600,'4h':14400})[tf]||60}
+function istTime(seconds){return new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date(seconds*1000))}
+function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const now=Math.floor(Date.now()/1000),duration=timeframeSeconds(state.tf),start=Math.floor(now/duration)*duration,end=start+duration,left=end-now;el.textContent=state.tf.toUpperCase()+' · '+istTime(start)+'–'+istTime(end)+' IST · closes in '+String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Current '+state.tf+' candle start and close times in India Standard Time';}
 const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,chartZones:[],overlayFrame:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
@@ -20,12 +22,13 @@ function updateLiveTick(tick){
  $('updated').textContent='Tick '+new Date().toLocaleTimeString();
 }
 function queueLiveCandle(price,timestamp){
- if(state.tf!=='1m')return;
  const stamp=epochMs(timestamp??Date.now());if(!Number.isFinite(stamp))return;
- const time=Math.floor(stamp/60000)*60;
+ const duration=timeframeSeconds(state.tf),time=Math.floor(stamp/1000/duration)*duration;
  if(state.chartLastTime!==null&&time<state.chartLastTime)return;
  if(!state.liveCandle||state.liveCandle.time!==time){
-  state.liveCandle={time,open:price,high:price,low:price,close:price};
+  const bars=state.lastData&&state.lastData.mtfBars&&state.lastData.mtfBars[state.tf]||[];
+  const seed=bars.find(bar=>candleEpochSeconds(bar)===time);
+  state.liveCandle=seed?{time,open:Number(seed.open),high:Math.max(Number(seed.high),price),low:Math.min(Number(seed.low),price),close:price}:{time,open:price,high:price,low:price,close:price};
  }else{
   state.liveCandle.high=Math.max(state.liveCandle.high,price);
   state.liveCandle.low=Math.min(state.liveCandle.low,price);
@@ -39,10 +42,7 @@ function queueLiveCandle(price,timestamp){
   state.liveFrame=null;
   if(!state.candleSeries||!state.pendingLiveCandle)return;
   const candle=state.pendingLiveCandle;state.pendingLiveCandle=null;
-  try{
-   state.candleSeries.update(candle);
-   if(state.lastPriceLine)state.lastPriceLine.applyOptions({price:candle.close});
-  }catch(e){}
+  try{state.candleSeries.update(candle);if(state.lastPriceLine)state.lastPriceLine.applyOptions({price:candle.close})}catch(e){}
  });
 }
 function setupAlertKey(r){return [state.market,state.tf,r.side,r.type,r.time,Number(r.entry).toFixed(3)].join('|')}
@@ -461,7 +461,7 @@ function initChart(){
  if(state.chart||!window.LightweightCharts)return;
  const el=$('marketChart');if(!el)return;
  el.replaceChildren();
- state.chart=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight,layout:{background:{color:'#0b1420'},textColor:'#91a2b8'},grid:{vertLines:{color:'#172438'},horzLines:{color:'#172438'}},rightPriceScale:{borderColor:'#25364b'},timeScale:{borderColor:'#25364b',timeVisible:true,secondsVisible:false,rightOffset:6,barSpacing:8,minBarSpacing:3},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:true},crosshair:{mode:LightweightCharts.CrosshairMode.Normal}});
+ state.chart=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight,layout:{background:{color:'#0b1420'},textColor:'#91a2b8'},grid:{vertLines:{color:'#172438'},horzLines:{color:'#172438'}},rightPriceScale:{borderColor:'#25364b'},timeScale:{borderColor:'#25364b',timeVisible:true,secondsVisible:false,rightOffset:6,barSpacing:8,minBarSpacing:3},localization:{timeFormatter:time=>{const seconds=typeof time==='number'?time:Math.floor(Date.UTC(time.year,time.month-1,time.day)/1000);return istTime(seconds)+' IST'}},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:true},crosshair:{mode:LightweightCharts.CrosshairMode.Normal}});
  state.candleSeries=state.chart.addCandlestickSeries({upColor:'#36d39a',downColor:'#f07878',borderUpColor:'#36d39a',borderDownColor:'#f07878',wickUpColor:'#36d39a',wickDownColor:'#f07878',borderVisible:false});state.lastPriceLine=state.candleSeries.createPriceLine({price:0,title:'LIVE',color:'#d8b66c',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true});state.overlay=document.createElement('div');state.overlay.className='chart-overlay';el.appendChild(state.overlay);
  new ResizeObserver(()=>{if(state.chart)state.chart.applyOptions({width:el.clientWidth,height:el.clientHeight});scheduleChartOverlayRedraw()}).observe(el);state.chart.timeScale().subscribeVisibleLogicalRangeChange(scheduleChartOverlayRedraw);['wheel','pointerup','touchend'].forEach(type=>el.addEventListener(type,scheduleChartOverlayRedraw,{passive:true}));
 }
