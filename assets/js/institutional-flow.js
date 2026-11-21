@@ -412,6 +412,22 @@ function resetChartForMarket(){
  const title=$('chartTitle');if(title)title.textContent=state.market+' · 1M EXECUTION';
  const status=$('chartStatus');if(status)status.textContent='LOADING '+state.market;
 }
+function ensureChartLibrary(){
+ if(window.LightweightCharts)return Promise.resolve(true);
+ if(state.chartLibraryPromise)return state.chartLibraryPromise;
+ state.chartLibraryPromise=new Promise((resolve,reject)=>{
+  const urls=['https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js','https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js'];
+  const load=index=>{
+   if(window.LightweightCharts){resolve(true);return}
+   if(index>=urls.length){reject(Error('Chart library could not be loaded from either CDN.'));return}
+   const script=document.createElement('script');script.src=urls[index];script.async=true;
+   script.onload=()=>window.LightweightCharts?resolve(true):load(index+1);
+   script.onerror=()=>load(index+1);document.head.appendChild(script);
+  };
+  load(0);
+ });
+ return state.chartLibraryPromise;
+}
 function initChart(){
  if(state.chart||!window.LightweightCharts)return;
  const el=$('marketChart');if(!el)return;
@@ -529,6 +545,10 @@ async function scan(){
   render(selected);
  }catch(e){
   $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';
+  const chartStatus=$('chartStatus'),chartFoot=$('chartFoot');
+  if(chartStatus)chartStatus.textContent='DATA UNAVAILABLE';
+  if(chartFoot)chartFoot.textContent='Live candles could not be loaded: '+e.message+' · Use Refresh to retry.';
+  if(!state.chart){const chartEl=$('marketChart');if(chartEl){const note=document.createElement('div');note.className='tv-loading';note.textContent='Market data unavailable — '+e.message;chartEl.replaceChildren(note)}}
   const message=document.createElement('div');message.className='empty';message.textContent=e.message+' No placeholder prices or signals are displayed. Try again later.';
   $('bullishList').replaceChildren(message.cloneNode(true));$('bearishList').replaceChildren(message);
   $('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable';
@@ -543,5 +563,7 @@ const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',a
  state.alertsEnabled=permission==='granted';alertBtn.textContent=state.alertsEnabled?'Alerts enabled ✓':'Enable alerts';
  $('alertStatus').textContent=state.alertsEnabled?'Browser alerts are active while this page is open.':'Notification permission was not granted.';
 });
-updateChartClock();updateCandleTimer();setInterval(updateChartClock,1000);setInterval(updateCandleTimer,1000);scan();state.timer=setInterval(scan,60000);
+updateChartClock();updateCandleTimer();setInterval(updateChartClock,1000);setInterval(updateCandleTimer,1000);
+ensureChartLibrary().then(()=>{const status=$('chartStatus');if(status)status.textContent='CHART READY · WAITING FOR DATA'}).catch(e=>{const status=$('chartStatus'),foot=$('chartFoot');if(status)status.textContent='CHART LIBRARY ERROR';if(foot)foot.textContent=e.message});
+scan();state.timer=setInterval(scan,60000);
 })();
