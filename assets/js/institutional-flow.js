@@ -74,7 +74,9 @@ function fmt(v){return v==null?'—':v.toLocaleString('en-US',{minimumFractionDi
 function age(ts){if(!ts)return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-Date.parse(ts))/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
 async function resolveSymbol(market){
  try{const data=await get(API+'/active');const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());const found=candidates[market].find(x=>names.includes(x));if(found)return found}catch(e){}
- for(const sym of candidates[market]){try{await get(API+'/'+encodeURIComponent(sym)+'?allowStale=false');return sym}catch(e){}}
+ // Resolve the instrument even when its market is closed. The provider returns
+ // the last known quote with marketState="closed" unless strict freshness is requested.
+ for(const sym of candidates[market]){try{await get(API+'/'+encodeURIComponent(sym));return sym}catch(e){}}
  throw Error(market==='NAS100'?'No supported NAS100/US100 symbol was found in the free feed.':'XAUUSD is not currently available in the feed.');
 }
 function avg(a){return a.reduce((s,x)=>s+x,0)/(a.length||1)}
