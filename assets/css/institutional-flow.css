@@ -263,3 +263,11 @@ footer{border-color:rgba(126,153,181,.13);font-size:9px}
 /* Fixed 1M execution and multi-target trade card layout */
 .setup .levels{grid-template-columns:repeat(5,minmax(0,1fr))}
 @media(max-width:650px){.setup .levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* TradingView is the sole primary chart in this terminal */
+.tradingview-main-panel{margin:0 0 14px}
+#tradingViewChart{width:100%;height:560px;min-height:380px;overflow:hidden;border-radius:10px;background:#0b1420}
+#tradingViewChart .tradingview-widget-container,#tradingViewChart .tradingview-widget-container__widget{width:100%;height:100%}
+#tradingViewChart iframe{width:100%!important;height:100%!important;border:0}
+.tv-loading{height:100%;min-height:360px;display:grid;place-items:center;color:var(--muted);font-size:12px}
+@media(max-width:600px){#tradingViewChart{height:470px;min-height:390px}.tradingview-main-panel{padding:12px}}
