@@ -8,7 +8,18 @@ function istTime(seconds){return new Intl.DateTimeFormat('en-IN',{timeZone:'Asia
 function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const now=Math.floor(Date.now()/1000),duration=timeframeSeconds(state.tf),start=Math.floor(now/duration)*duration,end=start+duration,left=end-now;el.textContent=state.tf.toUpperCase()+' · '+istTime(start)+'–'+istTime(end)+' IST · closes in '+String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Current '+state.tf+' candle start and close times in India Standard Time';}
 const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbols:[],marketSymbols:{},liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,chartZones:[],overlayFrame:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
-async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
+async function get(url,options={}){
+ const controller=typeof AbortController!=='undefined'?new AbortController():null;
+ const timeout=controller?setTimeout(()=>controller.abort(),options.timeout||10000):null;
+ try{
+  const response=await fetch(url,{cache:'no-store',signal:controller?controller.signal:undefined});
+  if(!response.ok)throw Error('HTTP '+response.status);
+  return await response.json();
+ }catch(error){
+  if(error&&error.name==='AbortError')throw Error('Market data request timed out');
+  throw error;
+ }finally{if(timeout)clearTimeout(timeout)}
+}
 function updateLiveTick(tick){
  if(!tick||!tick.symbol)return;
  const symbol=String(tick.symbol).toUpperCase();
@@ -99,11 +110,22 @@ function num(v){return typeof v==='number'&&Number.isFinite(v)?v:null}
 function fmt(v){return v==null?'—':v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function age(ts){if(ts===undefined||ts===null||ts==='')return 'Quote timestamp unavailable';const ms=epochMs(ts);if(!Number.isFinite(ms))return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-ms)/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
 function tickIsStale(tick){if(!tick)return true;if(tick.stale===true)return true;const reported=num(tick.quoteAgeSeconds);if(reported!==null)return reported>120;if(tick.timestamp!==undefined&&tick.timestamp!==null){const ms=epochMs(tick.timestamp);return !Number.isFinite(ms)||Date.now()-ms>120000}return true}
+let activeSymbolsPromise=null;
+const resolvedSymbolCache={};
 async function resolveSymbol(market){
- try{const data=await get(API+'/active');const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());const found=candidates[market].find(x=>names.includes(x));if(found)return found}catch(e){}
- // Resolve the instrument even when its market is closed. The provider returns
- // the last known quote with marketState="closed" unless strict freshness is requested.
- for(const sym of candidates[market]){try{await get(API+'/'+encodeURIComponent(sym));return sym}catch(e){}}
+ if(resolvedSymbolCache[market])return resolvedSymbolCache[market];
+ try{
+  if(!activeSymbolsPromise)activeSymbolsPromise=get(API+'/active',{timeout:7000});
+  const data=await activeSymbolsPromise;
+  const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);
+  const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());
+  const found=candidates[market].find(x=>names.includes(x));
+  if(found){resolvedSymbolCache[market]=found;return found}
+ }catch(e){activeSymbolsPromise=null}
+ // Parallel fallback probes avoid serial waits when the active-symbol endpoint is unavailable.
+ const checks=await Promise.allSettled(candidates[market].map(sym=>get(API+'/'+encodeURIComponent(sym),{timeout:6500}).then(()=>sym)));
+ const found=checks.find(x=>x.status==='fulfilled');
+ if(found){resolvedSymbolCache[market]=found.value;return found.value}
  throw Error(market==='NAS100'?'No supported NAS100/US100 symbol was found in the free feed.':'XAUUSD is not currently available in the feed.');
 }
 function avg(a){return a.reduce((s,x)=>s+x,0)/(a.length||1)}
@@ -572,10 +594,15 @@ function render(data){
 }
 async function scanMarket(market){
  const symbol=await resolveSymbol(market),intervals=['1m','5m','15m','1h','4h','1d'];
- const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit=1000').catch(err=>(tf==='4h'||tf==='1d')?{bars:[]}:Promise.reject(err)))]);
- const tick=responses[0],mtf={};let selectedBars=[];
- const mtfBars={};
- intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];mtfBars[tf]=bars;if(tf==='1m')selectedBars=bars;try{const a=analyze(bars),x=getMarketXray(a.bars);mtf[tf]={bias:a.bias,structure:x.structure,bars:a.bars.length,xray:x,setups:a.results}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0,xray:null,setups:[]}}});
+ const limits={'1m':300,'5m':288,'15m':192,'1h':168,'4h':180,'1d':500};
+ const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit='+limits[tf]).catch(err=>(tf==='4h'||tf==='1d')?{bars:[]}:Promise.reject(err)))]);
+ const tick=responses[0],mtf={},mtfBars={};let selectedBars=[];
+ intervals.forEach((tf,i)=>{
+  const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];
+  mtfBars[tf]=bars;if(tf==='1m')selectedBars=bars;
+  try{const a=analyze(bars),x=getMarketXray(a.bars);mtf[tf]={bias:a.bias,structure:x.structure,bars:a.bars.length,xray:x,setups:a.results}}
+  catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0,xray:null,setups:[]}}
+ });
  if(!selectedBars.length)throw Error('Selected timeframe candles are unavailable for '+market+'.');
  const analysis=attachMtfLiquidityTargets(applyMtfEntryGate(analyze(selectedBars),mtf),mtfBars);
  return {market,symbol,tick,analysis,mtf,mtfBars,scannedAt:new Date().toISOString()};
@@ -593,11 +620,12 @@ function renderRadarError(market,error){
 }
 async function scan(){
  if(state.scanning){state.scanRequested=true;return}state.scanning=true;
- await ensureChartLibrary().catch(()=>false);
+ const chartReady=ensureChartLibrary().catch(()=>false);
  $('feedState').textContent='SCANNING BOTH MARKETS';$('radarStatus').textContent='SCANNING';
  $('bullishList').innerHTML='<div class="loading">Scanning bullish setups…</div>';$('bearishList').innerHTML='<div class="loading">Scanning bearish setups…</div>';
  try{
   const results=await Promise.allSettled(['XAUUSD','NAS100'].map(scanMarket));
+  await chartReady;
   let selected=null,success=0;const liveSymbols=[];
   results.forEach((result,i)=>{const market=i===0?'XAUUSD':'NAS100';if(result.status==='fulfilled'){success++;state.marketSymbols[market]=result.value.symbol;liveSymbols.push(result.value.symbol);renderRadar(result.value);if(market===state.market)selected=result.value}else renderRadarError(market,result.reason)});
   $('radarStatus').textContent=success===2?'BOTH MARKETS SCANNED':success===1?'PARTIAL DATA':'DATA UNAVAILABLE';
