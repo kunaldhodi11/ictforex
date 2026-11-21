@@ -6,13 +6,26 @@ function updateChartClock(){const el=$('chartClock');if(!el)return;el.textConten
 function timeframeSeconds(tf){return ({'1m':60,'5m':300,'15m':900,'1h':3600,'4h':14400,'1d':86400})[tf]||60}
 function istTime(seconds){return new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date(seconds*1000))}
 function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const now=Math.floor(Date.now()/1000),duration=timeframeSeconds(state.tf),start=Math.floor(now/duration)*duration,end=start+duration,left=end-now;el.textContent=state.tf.toUpperCase()+' · '+istTime(start)+'–'+istTime(end)+' IST · closes in '+String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Current '+state.tf+' candle start and close times in India Standard Time';}
-const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,chartZones:[],overlayFrame:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
+const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbols:[],marketSymbols:{},liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,chartZones:[],overlayFrame:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
- if(!tick||!tick.symbol||String(tick.symbol).toUpperCase()!==String(state.symbol||'').toUpperCase())return;
+ if(!tick||!tick.symbol)return;
+ const symbol=String(tick.symbol).toUpperCase();
+ const market=Object.keys(state.marketSymbols).find(key=>String(state.marketSymbols[key]||'').toUpperCase()===symbol);
+ if(!market)return;
  const mid=num(tick.mid);if(mid===null)return;
- if(tickIsStale(tick)){$('feedState').textContent='STALE FEED';$('quoteAge').textContent=age(tick.timestamp);return}
+ const prefix=market==='XAUUSD'?'radarXau':'radarNas';
+ if(tickIsStale(tick)){
+  const cardState=$(prefix+'State');if(cardState)cardState.textContent='STALE FEED';
+  if(market===state.market){$('feedState').textContent='STALE FEED';$('quoteAge').textContent=age(tick.timestamp)}
+  return;
+ }
+ const radarPrice=$(prefix+'Price'),radarState=$(prefix+'State'),radarTime=$(prefix+'Time');
+ if(radarPrice)radarPrice.textContent=fmt(mid);
+ if(radarState)radarState.textContent=tick.marketState==='closed'?'MARKET CLOSED':'LIVE TICK';
+ if(radarTime)radarTime.textContent='Tick '+(tick.timestamp?new Date(epochMs(tick.timestamp)).toLocaleTimeString():'received');
+ if(market!==state.market||symbol!==String(state.symbol||'').toUpperCase())return;
  $('price').textContent=fmt(mid);
  queueLiveCandle(mid,tick.timestamp);updateLiveXray(mid);updateTickPressurePanels();
  if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
@@ -57,19 +70,21 @@ function notifyNewSetups(results){
   const status=$('alertStatus');if(status)status.textContent='New setup: '+r.type+' · '+new Date().toLocaleTimeString();
  });
 }
-async function connectLive(symbol){
+async function connectLive(symbols){
  if(!window.signalR||!window.signalR.HubConnectionBuilder){$('feedState').textContent='REST SNAPSHOT';return}
+ const requested=Array.from(new Set((Array.isArray(symbols)?symbols:[symbols]).filter(Boolean).map(x=>String(x).toUpperCase()))).sort();
+ if(!requested.length){$('feedState').textContent='REST SNAPSHOT';return}
  if(!state.hub){
   state.hub=new signalR.HubConnectionBuilder().withUrl('https://biquote.io/hubs/tick').withAutomaticReconnect().build();
   state.hub.on('ReceiveTick',payload=>{(Array.isArray(payload)?payload:[payload]).forEach(updateLiveTick)});
   state.hub.onreconnecting(()=>{$('feedState').textContent='STREAM RECONNECTING'});
-  state.hub.onreconnected(async()=>{state.subscribedSymbol=null;if(state.symbol)await connectLive(state.symbol)});
-   state.hub.onclose(()=>{$('feedState').textContent='STREAM OFFLINE · WAITING FOR REST RETRY';state.subscribedSymbol=null});
+  state.hub.onreconnected(async()=>{state.subscribedSymbols=[];await connectLive(Object.values(state.marketSymbols))});
+  state.hub.onclose(()=>{$('feedState').textContent='STREAM OFFLINE · WAITING FOR REST RETRY';state.subscribedSymbols=[]});
  }
- if(state.subscribedSymbol===symbol&&state.hub.state===signalR.HubConnectionState.Connected)return;
  if(state.hub.state!==signalR.HubConnectionState.Connected)await state.hub.start();
- if(state.subscribedSymbol!==symbol){await state.hub.invoke('Subscribe',[symbol]);state.subscribedSymbol=symbol}
- $('feedState').textContent='LIVE STREAM CONNECTED';
+ const current=state.subscribedSymbols.slice().sort();
+ if(current.join('|')!==requested.join('|')){await state.hub.invoke('Subscribe',requested);state.subscribedSymbols=requested}
+ $('feedState').textContent='LIVE STREAM CONNECTED · XAUUSD + NAS100';
 }
 function epochMs(value){
  if(typeof value==='number'&&Number.isFinite(value))return value<1e12?value*1000:value;
@@ -443,12 +458,23 @@ function ensureChartLibrary(){
  return state.chartLibraryPromise;
 }
 function redrawChartOverlays(){
- if(!state.overlay||!state.candleSeries)return;
+ if(!state.overlay||!state.candleSeries||!state.chart)return;
  state.overlay.replaceChildren();
+ const scale=state.chart.timeScale(),visible=scale.getVisibleRange(),width=typeof scale.width==='function'?Math.min(state.overlay.clientWidth,scale.width()):Math.max(0,state.overlay.clientWidth-56);
+ const visibleFrom=visible&&typeof visible.from==='number'?visible.from:-Infinity;
+ const visibleTo=visible&&typeof visible.to==='number'?visible.to:Infinity;
  state.chartZones.forEach((item,i)=>{
   const top=state.candleSeries.priceToCoordinate(Math.max(...item.zone)),bottom=state.candleSeries.priceToCoordinate(Math.min(...item.zone));
   if(top===null||bottom===null||!Number.isFinite(top)||!Number.isFinite(bottom))return;
+  const start=Number(item.startTime),end=Number(item.endTime);
+  if(!Number.isFinite(start)||!Number.isFinite(end)||end<visibleFrom||start>visibleTo)return;
+  const rawLeft=scale.timeToCoordinate(start),rawRight=scale.timeToCoordinate(end);
+  const left=rawLeft===null?(start<visibleFrom?0:width):rawLeft;
+  const right=rawRight===null?(end>visibleTo?width:0):rawRight;
+  const x=Math.max(0,Math.min(width,Math.min(left,right))),rightEdge=Math.max(0,Math.min(width,Math.max(left,right)));
+  if(rightEdge<=x)return;
   const band=document.createElement('div');band.className='chart-zone '+item.side+(item.kind==='fvg'?' chart-fvg-zone':'');
+  band.style.left=x+'px';band.style.width=(rightEdge-x)+'px';band.style.right='auto';
   band.style.top=Math.min(top,bottom)+'px';band.style.height=Math.max(3,Math.abs(bottom-top))+'px';
   band.style.opacity=String(item.kind==='fvg'?.32:Math.max(.48,.82-i*.04));
   const label=document.createElement('span');label.textContent=item.label;band.appendChild(label);state.overlay.appendChild(band);
@@ -482,7 +508,10 @@ function drawChart(bars,results){
  if(!data.length)return;
  const clean=data.map(({isOpen,...bar})=>bar),scale=state.chart.timeScale();
  if(!state.chartHasData){
-  state.candleSeries.setData(clean);scale.fitContent();state.chartHasData=true;
+  state.candleSeries.setData(clean);
+  const visibleBars=Math.min(110,clean.length);
+  scale.setVisibleLogicalRange({from:Math.max(0,clean.length-visibleBars),to:clean.length+8});
+  state.chartHasData=true;
  }else{
   const prior=state.chartLastTime;
   const same=data.find(x=>x.time===prior);
@@ -519,8 +548,9 @@ function drawChart(bars,results){
   if(chartXray.ssl!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.ssl,title:'SSL · EQL pool',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
   if(chartXray.brokenLevel!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.brokenLevel,title:chartXray.breakType,color:chartXray.breakSide==='bullish'?'#36d39a':'#f07878',lineWidth:2,lineStyle:LightweightCharts.LineStyle.Solid,axisLabelVisible:true}));
  }
- const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg'})):[];
- const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup'}));
+ const visibleEnd=data[data.length-1].time;
+ const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg',startTime:Math.floor(epochMs(z.time)/1000),endTime:visibleEnd})):[];
+ const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup',startTime:Math.floor(epochMs(r.time)/1000),endTime:visibleEnd}));
  state.chartZones=[...zones,...setupZones];scheduleChartOverlayRedraw();
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(epochMs(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
@@ -568,12 +598,12 @@ async function scan(){
  $('bullishList').innerHTML='<div class="loading">Scanning bullish setups…</div>';$('bearishList').innerHTML='<div class="loading">Scanning bearish setups…</div>';
  try{
   const results=await Promise.allSettled(['XAUUSD','NAS100'].map(scanMarket));
-  let selected=null,success=0;
-  results.forEach((result,i)=>{const market=i===0?'XAUUSD':'NAS100';if(result.status==='fulfilled'){success++;renderRadar(result.value);if(market===state.market)selected=result.value}else renderRadarError(market,result.reason)});
+  let selected=null,success=0;const liveSymbols=[];
+  results.forEach((result,i)=>{const market=i===0?'XAUUSD':'NAS100';if(result.status==='fulfilled'){success++;state.marketSymbols[market]=result.value.symbol;liveSymbols.push(result.value.symbol);renderRadar(result.value);if(market===state.market)selected=result.value}else renderRadarError(market,result.reason)});
   $('radarStatus').textContent=success===2?'BOTH MARKETS SCANNED':success===1?'PARTIAL DATA':'DATA UNAVAILABLE';
   if(!selected)throw Error(state.market+' scan unavailable. See Market Radar for each market status.');
   state.symbol=selected.symbol;
-  connectLive(selected.symbol).catch(()=>{$('feedState').textContent='REST SNAPSHOT';});
+  connectLive(liveSymbols).catch(()=>{$('feedState').textContent='REST SNAPSHOT';});
   render(selected);
  }catch(e){
   $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';
