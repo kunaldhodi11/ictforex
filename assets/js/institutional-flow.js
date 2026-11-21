@@ -528,7 +528,7 @@ function drawChart(bars,results){
 }
 function render(data){
  state.lastData=data;
- $('price').textContent=fmt(data.tick.mid);$('change').textContent=data.tick.dayDiffPercent==null?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
+ const quoteStale=tickIsStale(data.tick),marketClosed=data.tick.marketState==='closed';$('price').textContent=fmt(data.tick.mid);$('change').textContent=(quoteStale||marketClosed||data.tick.dayDiffPercent==null)?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
  $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent='MTF';
  $('feedState').textContent=tickIsStale(data.tick)?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  const selectedTfBars=data.mtfBars&&data.mtfBars[state.tf];const selectedTfCount=selectedTfBars?selectedTfBars.filter(x=>!x.isOpen).length:data.analysis.bars.length;$('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+selectedTfCount+' completed '+state.tf+' candles displayed; 1M is the execution-signal timeframe.';
@@ -552,7 +552,7 @@ async function scanMarket(market){
 }
 function renderRadar(result){
  const p=result.market==='XAUUSD'?'radarXau':'radarNas',set=(suffix,value)=>{const el=$(p+suffix);if(el)el.textContent=value};
- set('State',tickIsStale(result.tick)?'STALE':'SCANNED');set('Price',fmt(result.tick.mid));set('Bias',result.analysis.bias);set('Setups',String(result.analysis.results.length));
+ set('State',tickIsStale(result.tick)?'STALE':(result.tick.marketState==='closed'?'MARKET CLOSED':'SCANNED'));set('Price',fmt(result.tick.mid));set('Bias',result.analysis.bias);set('Setups',String(result.analysis.results.length));
  const best=result.analysis.results[0];set('Best',best?best.side.toUpperCase()+' · '+best.type+' · '+best.rr+' R:R':'No qualifying setup detected');
  set('Time','Updated '+new Date(result.scannedAt).toLocaleTimeString());
  const card=$(p);if(card)card.dataset.market=result.market;
@@ -586,7 +586,7 @@ async function scan(){
   $('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable';
  }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
-document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();scan()}));
+document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;state.symbol=null;state.liveCandle=null;state.pendingLiveCandle=null;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();scan()}));
 $('timeframe').value=state.tf;$('timeframe').disabled=false;$('timeframe').addEventListener('change',()=>{state.tf=$('timeframe').value;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();updateCandleTimer();if(state.lastData)render(state.lastData);else scan()});
 $('refresh').addEventListener('click',scan);
 const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
