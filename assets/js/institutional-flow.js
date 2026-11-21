@@ -163,7 +163,9 @@ function analyze(bars){
   const opposing=side==='bullish'?'high':'low';
   const targets=pivots.filter(p=>p.side===opposing&&p.confirmedAt<confirmed.index&&p.index<confirmed.index&&
    (side==='bullish'?p.price>entry:p.price<entry)&&
-   (side==='bullish'?p.price>sweepLevel:p.price<sweepLevel))
+   (side==='bullish'?p.price>sweepLevel:p.price<sweepLevel)&&
+   // A target pool already raided after confirmation is no longer available liquidity.
+   b.slice(p.confirmedAt+1,confirmed.index+1).every(c=>side==='bullish'?c.high<p.price:c.low>p.price))
    .map(p=>p.price).filter(v=>{const rr=Math.abs(v-entry)/risk;return rr>=2&&rr<=15})
    .sort((a,b)=>side==='bullish'?a-b:b-a);
   // No synthetic 2R target: a trade needs a real, opposing liquidity objective.
