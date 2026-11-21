@@ -236,53 +236,65 @@ function analyze(bars){
   });
   si=expiry;
  }
- const latestBySide={};results.sort((a,b)=>b.evidence.mssIndex-a.evidence.mssIndex).forEach(r=>{if(!latestBySide[r.side])latestBySide[r.side]=r});
- const qualified=Object.values(latestBySide);
+ // Keep the full confirmed event sequence. MTF gating must match each 1M event to context available at that event time.
+ results.sort((a,b)=>epochMs(b.time)-epochMs(a.time));
  const prior=b.slice(-21,-1),hi=Math.max(...prior.map(x=>x.high)),lo=Math.min(...prior.map(x=>x.low));
- return {bars:b,last,results:qualified,bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':last.close<avg(b.slice(-20).map(x=>x.close))?'Bearish':'Neutral',hi,lo};
+ return {bars:b,last,results,bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':last.close<avg(b.slice(-20).map(x=>x.close))?'Bearish':'Neutral',hi,lo};
 }
-function applyMtfEntryGate(analysis,mtf){
-  const direction=m=>{
-   if(!m)return 'neutral';
-   const x=m.xray||{},breakSide=String(x.breakSide||'').toLowerCase();
-   if(breakSide==='bullish'||breakSide==='bearish')return breakSide;
+function applyMtfEntryGate(analysis,mtf,mtfBars){
+  const direction=x=>{
+   if(!x)return 'neutral';
+   const side=String(x.breakSide||'').toLowerCase();
+   if(side==='bullish'||side==='bearish')return side;
    const trend=String(x.priorTrend||'').toLowerCase();
-   if(trend==='bullish'||trend==='bearish')return trend;
-   const structure=String(m.structure||'').toLowerCase();
-   if(structure.startsWith('bullish'))return 'bullish';
-   if(structure.startsWith('bearish'))return 'bearish';
-   const bias=String(m.bias||'').toLowerCase();
-   return bias==='bullish'||bias==='bearish'?bias:'neutral';
+   return trend==='bullish'||trend==='bearish'?trend:'neutral';
   };
   const overlaps=(a,b)=>Array.isArray(a)&&a.length===2&&b&&Number.isFinite(b.low)&&Number.isFinite(b.high)&&Math.min(a[1],b.high)>=Math.max(a[0],b.low);
+  const snapshot=(tf,signalTime)=>{
+   const duration=timeframeSeconds(tf)*1000;
+   const bars=(mtfBars&&mtfBars[tf]||[]).filter(c=>{
+    if(c.isOpen)return false;
+    const opened=epochMs(c.openTime??c.time??c.timestamp);
+    return Number.isFinite(opened)&&opened+duration<=signalTime;
+   }).sort((a,b)=>epochMs(a.openTime??a.time??a.timestamp)-epochMs(b.openTime??b.time??b.timestamp));
+   return bars;
+  };
   analysis.results=analysis.results.filter(r=>{
-   const signalTime=epochMs(r.time),h4=direction(mtf['4h']),h1=direction(mtf['1h']);
-   if(!Number.isFinite(signalTime)||h4!==r.side||h1!==r.side){
-    r.mtfText='Rejected: 4H major bias or 1H structure is not aligned';
-    return false;
+   const signalTime=epochMs(r.time);
+   if(!Number.isFinite(signalTime)){r.mtfText='Rejected: signal confirmation timestamp is invalid';return false}
+   let h4,h1,poi,five;
+   if(mtfBars){
+    // Rebuild each higher-timeframe view using only candles that had fully closed by this signal.
+    const fourBars=snapshot('4h',signalTime),oneBars=snapshot('1h',signalTime),fifteenBars=snapshot('15m',signalTime),fiveBars=snapshot('5m',signalTime);
+    const fourX=fourBars.length>=25?getMarketXray(fourBars):null,oneX=oneBars.length>=25?getMarketXray(oneBars):null;
+    h4=direction(fourX);h1=direction(oneX);
+    const fifteenX=fifteenBars.length>=25?getMarketXray(fifteenBars):null;
+    poi=(fifteenX&&fifteenX.activeZones||[]).find(z=>z.side===r.side&&z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED'&&overlaps(r.zone,z));
+    let fiveSetups=[];
+    try{if(fiveBars.length>=25)fiveSetups=analyze(fiveBars).results}catch(e){}
+    five=fiveSetups.find(z=>{
+     const t=epochMs(z.time),e=z.evidence||{};
+     return z.side===r.side&&Number.isFinite(e.sweepIndex)&&Number.isFinite(e.mssIndex)&&Number.isFinite(t)&&t<=signalTime&&signalTime-t<=15*60000;
+    });
+   }else{
+    // Backwards-compatible path for isolated rule tests and older callers.
+    const x4=mtf&&mtf['4h']&&mtf['4h'].xray,x1=mtf&&mtf['1h']&&mtf['1h'].xray;
+    h4=direction(x4);h1=direction(x1);
+    poi=(mtf&&mtf['15m']&&mtf['15m'].xray&&mtf['15m'].xray.activeZones||[]).find(z=>{
+     const zoneTime=epochMs(z.time);
+     return z.side===r.side&&z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED'&&Number.isFinite(zoneTime)&&zoneTime+15*60000<=signalTime&&overlaps(r.zone,z);
+    });
+    five=(mtf&&mtf['5m']&&mtf['5m'].setups||[]).find(z=>{
+     const t=epochMs(z.time),e=z.evidence||{};
+     return z.side===r.side&&Number.isFinite(e.sweepIndex)&&Number.isFinite(e.mssIndex)&&Number.isFinite(t)&&t<=signalTime&&signalTime-t<=15*60000;
+    });
    }
-   const poi=(mtf['15m']&&mtf['15m'].xray&&mtf['15m'].xray.activeZones||[]).find(z=>{
-    const zoneTime=epochMs(z.time);
-    return z.side===r.side&&z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED'&&Number.isFinite(zoneTime)&&zoneTime+15*60000<=signalTime&&overlaps(r.zone,z);
-   });
-   if(!poi){
-    r.mtfText='Rejected: no confirmed, active 15M FVG POI overlaps the 1M entry zone';
-    return false;
-   }
-   // 5M confirms the directional sweep/displacement/MSS; 1M is the entry refinement.
-   // Requiring the independent 5M MSS zone to overlap the 1M entry zone was over-restrictive.
-   const five=(mtf['5m']&&mtf['5m'].setups||[]).find(z=>{
-    const t=epochMs(z.time),e=z.evidence||{};
-    const confirmed=Number.isFinite(e.sweepIndex)&&Number.isFinite(e.mssIndex);
-    return z.side===r.side&&confirmed&&Number.isFinite(t)&&t<=signalTime&&signalTime-t<=15*60000;
-   });
-   if(!five){
-    r.mtfText='Rejected: no recent confirmed 5M sweep + displacement + MSS in the same direction';
-    return false;
-   }
+   if(h4!==r.side||h1!==r.side){r.mtfText='Rejected: 4H/1H bias at signal time is not aligned';return false}
+   if(!poi){r.mtfText='Rejected: no active, confirmed 15M FVG POI at signal time overlaps the 1M entry zone';return false}
+   if(!five){r.mtfText='Rejected: no recent confirmed 5M sweep + displacement + MSS at signal time';return false}
    r.score=Math.min(98,r.score+8);
-   r.mtfText='4H '+h4.toUpperCase()+' bias · 1H '+h1.toUpperCase()+' structure · 15M active FVG POI aligned · 5M MSS confirmed';
-   r.mtfConfirmation={fourHour:h4,oneHour:h1,fifteenMinutePoi:poi.time,fiveMinuteMss:five.time};
+   r.mtfText='At signal time: 4H '+h4.toUpperCase()+' · 1H '+h1.toUpperCase()+' · active 15M FVG POI · recent 5M MSS';
+   r.mtfConfirmation={fourHour:h4,oneHour:h1,fifteenMinutePoi:poi.time,fiveMinuteMss:five.time,asOf:new Date(signalTime).toISOString()};
    r.status=r.status||'1M ENTRY SETUP';
    return true;
   });
@@ -604,7 +616,7 @@ async function scanMarket(market){
   catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0,xray:null,setups:[]}}
  });
  if(!selectedBars.length)throw Error('Selected timeframe candles are unavailable for '+market+'.');
- const analysis=attachMtfLiquidityTargets(applyMtfEntryGate(analyze(selectedBars),mtf),mtfBars);
+ const analysis=attachMtfLiquidityTargets(applyMtfEntryGate(analyze(selectedBars),mtf,mtfBars),mtfBars);
  return {market,symbol,tick,analysis,mtf,mtfBars,scannedAt:new Date().toISOString()};
 }
 function renderRadar(result){
