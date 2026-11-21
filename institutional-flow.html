@@ -8,7 +8,7 @@
 <meta property="og:title" content="ICT Liquidity Board | ICT Forex Academy"><meta property="og:description" content="Candle-based ICT scanner for XAUUSD and NAS100.">
 <meta name="theme-color" content="#080d17"><link rel="preconnect" href="https://unpkg.com"><link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/institutional-flow.css?v=20261121-tradingview-primary2">
+<link rel="stylesheet" href="/assets/css/institutional-flow.css?v=20261121-performance1">
 </head>
 <body>
 <header class="top"><a class="brand" href="/"><span>ICT</span> FOREX <i>/ FLOW TERMINAL</i></a><nav><a href="/market-heatmap.html">Market Heatmap</a><a href="#market-xray">Market X-Ray</a><a href="/">Academy Home</a></nav></header>
@@ -54,11 +54,12 @@
 <section class="disclaimer"><b>Risk notice:</b> Educational analysis only, not financial advice or an automated trading signal. Market data may be delayed, unavailable or broker-specific. Entry, stop and target are illustrative levels derived from candle structure; verify every level on your own broker chart before making a decision.</section>
 </main>
 <footer>ICT Forex Academy © 2026 · Market Intelligence Terminal</footer>
-<script defer src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script><script defer src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script><script src="/assets/js/institutional-flow.js?v=20261121-dual-chart1" defer></script>
+<script defer src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script><script defer src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script><script src="/assets/js/institutional-flow.js?v=20261121-performance1" defer></script>
 <script>
-window.loadOfficialTradingViewChart=function(market){
+let tvSelectedMarket='XAUUSD',tvLoaded=false,tvObserver=null;
+function renderTradingViewChart(){
  const host=document.getElementById('tradingview_chart');if(!host)return;
- const symbol=market==='NAS100'?'CAPITALCOM:US100':'OANDA:XAUUSD';
+ const market=tvSelectedMarket,symbol=market==='NAS100'?'CAPITALCOM:US100':'OANDA:XAUUSD';
  const title=document.getElementById('tvChartTitle');if(title)title.textContent=market+' · TRADINGVIEW';
  host.replaceChildren();
  const box=document.createElement('div');box.className='tradingview-widget-container';box.style.height='100%';box.style.width='100%';
@@ -66,8 +67,16 @@ window.loadOfficialTradingViewChart=function(market){
  const credit=document.createElement('div');credit.className='tradingview-widget-copyright';credit.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span>Track all markets on TradingView</span></a>';box.appendChild(credit);
  const script=document.createElement('script');script.type='text/javascript';script.async=true;script.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
  script.text=JSON.stringify({autosize:true,symbol,interval:'1',timezone:'Asia/Kolkata',theme:'dark',style:'1',locale:'en',allow_symbol_change:true,calendar:false,hide_top_toolbar:false,hide_legend:false,save_image:false,withdateranges:true,details:false,hotlist:false,studies:['Volume@tv-basicstudies'],support_host:'https://www.tradingview.com'});
- box.appendChild(script);host.appendChild(box);
+ box.appendChild(script);host.appendChild(box);tvLoaded=true;
+}
+window.loadOfficialTradingViewChart=function(market){
+ tvSelectedMarket=market||tvSelectedMarket;
+ const panel=document.getElementById('tradingview-panel');if(!panel)return;
+ if(tvLoaded){renderTradingViewChart();return}
+ if('IntersectionObserver'in window){
+  if(!tvObserver){tvObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){tvObserver.disconnect();tvObserver=null;renderTradingViewChart()}},{rootMargin:'240px 0px'});tvObserver.observe(panel)}
+ }else{renderTradingViewChart()}
 };
-window.loadOfficialTradingViewChart('XAUUSD');
+
 </script>
 </body></html>
