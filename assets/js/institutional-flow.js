@@ -206,6 +206,16 @@ function analyze(bars){
   const sweepInvalid=side==='bullish'?later.some(c=>c.low<sweepExtreme):later.some(c=>c.high>sweepExtreme);
   if(zoneInvalid||sweepInvalid)continue;
   const entry=(confirmed.zone[0]+confirmed.zone[1])/2;
+  let zoneFirstTouch=null,zoneCeTime=null,zoneFullFillTime=null,zoneMaxMitigation=0;
+  later.forEach(c=>{
+   const overlaps=c.low<=confirmed.zone[1]&&c.high>=confirmed.zone[0];
+   if(overlaps&&zoneFirstTouch===null)zoneFirstTouch=c.openTime;
+   const depth=side==='bullish'?Math.max(0,Math.min(1,(confirmed.zone[1]-Math.min(confirmed.zone[1],c.low))/(confirmed.zone[1]-confirmed.zone[0]))):Math.max(0,Math.min(1,(Math.max(confirmed.zone[0],c.high)-confirmed.zone[0])/(confirmed.zone[1]-confirmed.zone[0])));
+   zoneMaxMitigation=Math.max(zoneMaxMitigation,depth);
+   if(depth>=0.5&&zoneCeTime===null)zoneCeTime=c.openTime;
+   if(depth>=1&&zoneFullFillTime===null)zoneFullFillTime=c.openTime;
+  });
+  const zoneState=zoneFullFillTime?'FULLY FILLED':zoneCeTime?'CE REACHED':zoneFirstTouch?'TOUCHED':'FRESH';
   const touched=later.some(c=>c.low<=entry&&c.high>=entry);
   const buffer=Math.max(atr*0.1,Math.abs(entry)*0.0001);
   const stop=side==='bullish'?sweepExtreme-buffer:sweepExtreme+buffer;
@@ -229,7 +239,7 @@ function analyze(bars){
    zone:confirmed.zone,entry,stop,target:finalTarget,targets:targetLadder,
    targetSource:'Confirmed opposing swing-liquidity ladder · nearest valid pool first',
    rr:'1:'+(Math.abs(finalTarget-entry)/risk).toFixed(1),
-   score:Math.min(95,78+(touched?3:0)),status,lifecycle:status,
+   score:Math.min(95,78+(touched?3:0)),status,lifecycle:status,zoneState,zoneLifecycle:{kind:confirmed.zoneType.includes('FVG')?'FVG':'ORDER BLOCK',createdAt:confirmed.impulse.openTime,zoneCandleTime:b[confirmed.zoneIndex].openTime,firstTouch:zoneFirstTouch,ceReachedAt:zoneCeTime,fullyFilledAt:zoneFullFillTime,mitigationPercent:Math.round(zoneMaxMitigation*100),state:zoneState},
    reason:'Confirmed sequence: '+pool.kind+' raid/reclaim → displacement (body/range '+(body(confirmed.impulse)/range(confirmed.impulse)).toFixed(2)+') → close through confirmed market structure → '+confirmed.zoneType+'. '+(touched?'Price has revisited the zone.':'Awaiting a retracement; no fill is implied.'),
    evidence:{sweepIndex:si,mssIndex:confirmed.index,zoneIndex:confirmed.zoneIndex,sweepLevel,sweepExtreme,liquidityPoolType:pool.kind,liquidityPoolTouches:pool.count,structureLevel:confirmed.structure.price,structurePivotIndex:confirmed.structure.index,displacementBodyRatio:body(confirmed.impulse)/(avg(b.slice(Math.max(0,confirmed.index-20),confirmed.index).map(body))||1),displacementBodyRangeRatio:body(confirmed.impulse)/range(confirmed.impulse)},
    time:confirmed.confirmationTime
@@ -407,10 +417,20 @@ function applyMtfEntryGate(analysis,mtf,mtfBars){
   const a=bars[i-2],c=bars[i];let side=null,z=null;
   if(c.low>a.high){side='bullish';z=[a.high,c.low]}
   else if(c.high<a.low){side='bearish';z=[c.high,a.low]}
-  if(!z||z[1]<=z[0])continue;
-  const after=bars.slice(i+1),farClose=side==='bullish'?after.some(x=>x.close<z[0]):after.some(x=>x.close>z[1]);
-  const touched=after.some(x=>x.low<=z[1]&&x.high>=z[0]),filled=side==='bullish'?after.some(x=>x.low<=z[0]):after.some(x=>x.high>=z[1]),ce=after.some(x=>side==='bullish'?x.low<=(z[0]+z[1])/2:x.high>=(z[0]+z[1])/2);
-  zones.push({side,low:z[0],high:z[1],mid:(z[0]+z[1])/2,index:i,time:c.openTime,state:farClose?'INVALIDATED':filled?'FULLY FILLED':ce?'CE REACHED':touched?'TOUCHED':'FRESH'});
+  if(!z||z[1]<=z[0]||c.isOpen)continue;
+  const after=bars.slice(i+1),mid=(z[0]+z[1])/2;
+  let firstTouch=null,ceTime=null,fullFillTime=null,invalidationTime=null,maxMitigation=0;
+  after.forEach(x=>{
+   const overlaps=x.low<=z[1]&&x.high>=z[0];
+   if(overlaps&&firstTouch===null)firstTouch=x.openTime;
+   const depth=side==='bullish'?Math.max(0,Math.min(1,(z[1]-Math.min(z[1],x.low))/(z[1]-z[0]))):Math.max(0,Math.min(1,(Math.max(z[0],x.high)-z[0])/(z[1]-z[0])));
+   maxMitigation=Math.max(maxMitigation,depth);
+   if(depth>=0.5&&ceTime===null)ceTime=x.openTime;
+   if(depth>=1&&fullFillTime===null)fullFillTime=x.openTime;
+   if(invalidationTime===null&&(side==='bullish'?x.close<z[0]:x.close>z[1]))invalidationTime=x.openTime;
+  });
+  const stateName=invalidationTime?'INVALIDATED':fullFillTime?'FULLY FILLED':ceTime?'CE REACHED':firstTouch?'TOUCHED':'FRESH';
+  zones.push({side,low:z[0],high:z[1],mid,index:i,time:c.openTime,confirmedAt:c.closeTime||null,firstTouch,ceTime,fullFillTime,invalidationTime,mitigationPercent:Math.round(maxMitigation*100),state:stateName});
  }
  const activeZones=zones.filter(z=>z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED').slice(-8);
  const dt=new Date(epochMs(last.openTime)),hour=dt.getUTCHours();let session='Between sessions';if(hour<7)session='Asia (UTC proxy)';else if(hour<12)session='London (UTC proxy)';else if(hour<16)session='London + New York (UTC proxy)';else if(hour<21)session='New York (UTC proxy)';else session='Late New York (UTC proxy)';
