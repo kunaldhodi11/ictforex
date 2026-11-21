@@ -74,7 +74,10 @@ function fmt(v){return v==null?'—':v.toLocaleString('en-US',{minimumFractionDi
 function age(ts){if(!ts)return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-Date.parse(ts))/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
 async function resolveSymbol(market){
  try{const data=await get(API+'/active');const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());const found=candidates[market].find(x=>names.includes(x));if(found)return found}catch(e){}
- for(const sym of candidates[market]){try{await get(API+'/'+encodeURIComponent(sym)+'?allowStale=false');return sym}catch(e){}}
+ // Resolve the instrument even when its market is closed. The default tick endpoint
+ // returns the last known quote plus marketState/stale metadata; the UI labels it
+ // as a closed/stale quote instead of treating a valid symbol as missing.
+ for(const sym of candidates[market]){try{await get(API+'/'+encodeURIComponent(sym));return sym}catch(e){}}
  throw Error(market==='NAS100'?'No supported NAS100/US100 symbol was found in the free feed.':'XAUUSD is not currently available in the feed.');
 }
 function avg(a){return a.reduce((s,x)=>s+x,0)/(a.length||1)}
@@ -456,7 +459,9 @@ async function scanMarket(market){
 }
 function renderRadar(result){
  const p=result.market==='XAUUSD'?'radarXau':'radarNas',set=(suffix,value)=>{const el=$(p+suffix);if(el)el.textContent=value};
- set('State',result.tick.stale?'STALE':'SCANNED');set('Price',fmt(result.tick.mid));set('Bias',result.analysis.bias);set('Setups',String(result.analysis.results.length));
+ const closed=String(result.tick.marketState||'').toLowerCase()==='closed';
+ const stale=!!result.tick.stale||closed;
+ set('State',closed?'MARKET CLOSED':stale?'STALE QUOTE':'LIVE QUOTE');set('Price',fmt(result.tick.mid));set('Bias',result.analysis.bias);set('Setups',String(result.analysis.results.length));
  const best=result.analysis.results[0];set('Best',best?best.side.toUpperCase()+' · '+best.type+' · '+best.rr+' R:R':'No qualifying setup detected');
  set('Time','Updated '+new Date(result.scannedAt).toLocaleTimeString());
  const card=$(p);if(card)card.dataset.market=result.market;
