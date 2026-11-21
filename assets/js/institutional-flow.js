@@ -460,7 +460,7 @@ function ensureChartLibrary(){
 function redrawChartOverlays(){
  if(!state.overlay||!state.candleSeries||!state.chart)return;
  state.overlay.replaceChildren();
- const scale=state.chart.timeScale(),visible=scale.getVisibleRange(),width=state.overlay.clientWidth;
+ const scale=state.chart.timeScale(),visible=scale.getVisibleRange(),width=typeof scale.width==='function'?Math.min(state.overlay.clientWidth,scale.width()):Math.max(0,state.overlay.clientWidth-56);
  const visibleFrom=visible&&typeof visible.from==='number'?visible.from:-Infinity;
  const visibleTo=visible&&typeof visible.to==='number'?visible.to:Infinity;
  state.chartZones.forEach((item,i)=>{
