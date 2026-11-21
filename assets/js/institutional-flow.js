@@ -21,7 +21,7 @@ function updateLiveTick(tick){
 }
 function queueLiveCandle(price,timestamp){
  if(state.tf!=='1m')return;
- const stamp=Date.parse(timestamp||new Date().toISOString());if(!Number.isFinite(stamp))return;
+ const stamp=epochMs(timestamp??Date.now());if(!Number.isFinite(stamp))return;
  const time=Math.floor(stamp/60000)*60;
  if(state.chartLastTime!==null&&time<state.chartLastTime)return;
  if(!state.liveCandle||state.liveCandle.time!==time){
@@ -70,9 +70,18 @@ async function connectLive(symbol){
  if(state.subscribedSymbol!==symbol){await state.hub.invoke('Subscribe',[symbol]);state.subscribedSymbol=symbol}
  $('feedState').textContent='LIVE STREAM CONNECTED';
 }
+function epochMs(value){
+ if(typeof value==='number'&&Number.isFinite(value))return value<1e12?value*1000:value;
+ if(typeof value==='string'&&/^\\d+(?:\\.\\d+)?$/.test(value.trim())){const n=Number(value);return n<1e12?n*1000:n}
+ const parsed=Date.parse(value);return Number.isFinite(parsed)?parsed:NaN;
+}
+function candleEpochSeconds(c){
+ const value=c&&(c.openTime??c.time??c.timestamp??c.date??c.datetime);
+ const ms=epochMs(value);return Number.isFinite(ms)?Math.floor(ms/1000):NaN;
+}
 function num(v){return typeof v==='number'&&Number.isFinite(v)?v:null}
 function fmt(v){return v==null?'—':v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
-function age(ts){if(!ts)return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-Date.parse(ts))/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
+function age(ts){if(ts===undefined||ts===null||ts==='')return 'Quote timestamp unavailable';const ms=epochMs(ts);if(!Number.isFinite(ms))return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-ms)/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
 async function resolveSymbol(market){
  try{const data=await get(API+'/active');const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());const found=candidates[market].find(x=>names.includes(x));if(found)return found}catch(e){}
  // Resolve the instrument even when its market is closed. The provider returns
@@ -82,7 +91,7 @@ async function resolveSymbol(market){
 }
 function avg(a){return a.reduce((s,x)=>s+x,0)/(a.length||1)}
 function analyze(bars){
- const b=bars.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)&&x.high>=Math.max(x.open,x.close)&&x.low<=Math.min(x.open,x.close)&&x.high>=x.low).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
+ const b=bars.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)&&x.high>=Math.max(x.open,x.close)&&x.low<=Math.min(x.open,x.close)&&x.high>=x.low).sort((a,b)=>candleEpochSeconds(a)-candleEpochSeconds(b));
  if(b.length<25)throw Error('Not enough completed candles for a reliable scan.');
  const last=b[b.length-1],body=c=>Math.abs(c.close-c.open),range=c=>Math.max(c.high-c.low,Number.EPSILON);
  const atrAt=i=>avg(b.slice(Math.max(0,i-14),i).map(range));
@@ -467,7 +476,7 @@ function updateChartAnalysisSummary(best){
 }
 function drawChart(bars,results){
  initChart();if(!state.candleSeries)return;
- const data=bars.map(x=>({time:Math.floor(Date.parse(x.openTime)/1000),open:x.open,high:x.high,low:x.low,close:x.close,isOpen:!!x.isOpen})).filter(x=>Number.isFinite(x.time)&&[x.open,x.high,x.low,x.close].every(Number.isFinite)).sort((a,b)=>a.time-b.time);
+ const data=bars.map(x=>({time:candleEpochSeconds(x),open:x.open,high:x.high,low:x.low,close:x.close,isOpen:!!x.isOpen})).filter(x=>Number.isFinite(x.time)&&[x.open,x.high,x.low,x.close].every(Number.isFinite)).sort((a,b)=>a.time-b.time);
  if(!data.length)return;
  const clean=data.map(({isOpen,...bar})=>bar),scale=state.chart.timeScale();
  if(!state.chartHasData){
