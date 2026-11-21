@@ -6,13 +6,26 @@ function updateChartClock(){const el=$('chartClock');if(!el)return;el.textConten
 function timeframeSeconds(tf){return ({'1m':60,'5m':300,'15m':900,'1h':3600,'4h':14400,'1d':86400})[tf]||60}
 function istTime(seconds){return new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date(seconds*1000))}
 function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const now=Math.floor(Date.now()/1000),duration=timeframeSeconds(state.tf),start=Math.floor(now/duration)*duration,end=start+duration,left=end-now;el.textContent=state.tf.toUpperCase()+' · '+istTime(start)+'–'+istTime(end)+' IST · closes in '+String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Current '+state.tf+' candle start and close times in India Standard Time';}
-const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,chartZones:[],overlayFrame:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
+const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbols:[],marketSymbols:{},liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,chartZones:[],overlayFrame:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
- if(!tick||!tick.symbol||String(tick.symbol).toUpperCase()!==String(state.symbol||'').toUpperCase())return;
+ if(!tick||!tick.symbol)return;
+ const symbol=String(tick.symbol).toUpperCase();
+ const market=Object.keys(state.marketSymbols).find(key=>String(state.marketSymbols[key]||'').toUpperCase()===symbol);
+ if(!market)return;
  const mid=num(tick.mid);if(mid===null)return;
- if(tickIsStale(tick)){$('feedState').textContent='STALE FEED';$('quoteAge').textContent=age(tick.timestamp);return}
+ const prefix=market==='XAUUSD'?'radarXau':'radarNas';
+ if(tickIsStale(tick)){
+  const cardState=$(prefix+'State');if(cardState)cardState.textContent='STALE FEED';
+  if(market===state.market){$('feedState').textContent='STALE FEED';$('quoteAge').textContent=age(tick.timestamp)}
+  return;
+ }
+ const radarPrice=$(prefix+'Price'),radarState=$(prefix+'State'),radarTime=$(prefix+'Time');
+ if(radarPrice)radarPrice.textContent=fmt(mid);
+ if(radarState)radarState.textContent=tick.marketState==='closed'?'MARKET CLOSED':'LIVE TICK';
+ if(radarTime)radarTime.textContent='Tick '+(tick.timestamp?new Date(epochMs(tick.timestamp)).toLocaleTimeString():'received');
+ if(market!==state.market||symbol!==String(state.symbol||'').toUpperCase())return;
  $('price').textContent=fmt(mid);
  queueLiveCandle(mid,tick.timestamp);updateLiveXray(mid);updateTickPressurePanels();
  if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
@@ -57,19 +70,21 @@ function notifyNewSetups(results){
   const status=$('alertStatus');if(status)status.textContent='New setup: '+r.type+' · '+new Date().toLocaleTimeString();
  });
 }
-async function connectLive(symbol){
+async function connectLive(symbols){
  if(!window.signalR||!window.signalR.HubConnectionBuilder){$('feedState').textContent='REST SNAPSHOT';return}
+ const requested=Array.from(new Set((Array.isArray(symbols)?symbols:[symbols]).filter(Boolean).map(x=>String(x).toUpperCase()))).sort();
+ if(!requested.length){$('feedState').textContent='REST SNAPSHOT';return}
  if(!state.hub){
   state.hub=new signalR.HubConnectionBuilder().withUrl('https://biquote.io/hubs/tick').withAutomaticReconnect().build();
   state.hub.on('ReceiveTick',payload=>{(Array.isArray(payload)?payload:[payload]).forEach(updateLiveTick)});
   state.hub.onreconnecting(()=>{$('feedState').textContent='STREAM RECONNECTING'});
-  state.hub.onreconnected(async()=>{state.subscribedSymbol=null;if(state.symbol)await connectLive(state.symbol)});
-   state.hub.onclose(()=>{$('feedState').textContent='STREAM OFFLINE · WAITING FOR REST RETRY';state.subscribedSymbol=null});
+  state.hub.onreconnected(async()=>{state.subscribedSymbols=[];await connectLive(Object.values(state.marketSymbols))});
+  state.hub.onclose(()=>{$('feedState').textContent='STREAM OFFLINE · WAITING FOR REST RETRY';state.subscribedSymbols=[]});
  }
- if(state.subscribedSymbol===symbol&&state.hub.state===signalR.HubConnectionState.Connected)return;
  if(state.hub.state!==signalR.HubConnectionState.Connected)await state.hub.start();
- if(state.subscribedSymbol!==symbol){await state.hub.invoke('Subscribe',[symbol]);state.subscribedSymbol=symbol}
- $('feedState').textContent='LIVE STREAM CONNECTED';
+ const current=state.subscribedSymbols.slice().sort();
+ if(current.join('|')!==requested.join('|')){await state.hub.invoke('Subscribe',requested);state.subscribedSymbols=requested}
+ $('feedState').textContent='LIVE STREAM CONNECTED · XAUUSD + NAS100';
 }
 function epochMs(value){
  if(typeof value==='number'&&Number.isFinite(value))return value<1e12?value*1000:value;
@@ -583,12 +598,12 @@ async function scan(){
  $('bullishList').innerHTML='<div class="loading">Scanning bullish setups…</div>';$('bearishList').innerHTML='<div class="loading">Scanning bearish setups…</div>';
  try{
   const results=await Promise.allSettled(['XAUUSD','NAS100'].map(scanMarket));
-  let selected=null,success=0;
-  results.forEach((result,i)=>{const market=i===0?'XAUUSD':'NAS100';if(result.status==='fulfilled'){success++;renderRadar(result.value);if(market===state.market)selected=result.value}else renderRadarError(market,result.reason)});
+  let selected=null,success=0;const liveSymbols=[];
+  results.forEach((result,i)=>{const market=i===0?'XAUUSD':'NAS100';if(result.status==='fulfilled'){success++;state.marketSymbols[market]=result.value.symbol;liveSymbols.push(result.value.symbol);renderRadar(result.value);if(market===state.market)selected=result.value}else renderRadarError(market,result.reason)});
   $('radarStatus').textContent=success===2?'BOTH MARKETS SCANNED':success===1?'PARTIAL DATA':'DATA UNAVAILABLE';
   if(!selected)throw Error(state.market+' scan unavailable. See Market Radar for each market status.');
   state.symbol=selected.symbol;
-  connectLive(selected.symbol).catch(()=>{$('feedState').textContent='REST SNAPSHOT';});
+  connectLive(liveSymbols).catch(()=>{$('feedState').textContent='REST SNAPSHOT';});
   render(selected);
  }catch(e){
   $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';
