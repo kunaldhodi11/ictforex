@@ -430,7 +430,7 @@ function applyMtfEntryGate(analysis,mtf,mtfBars){
    if(invalidationTime===null&&(side==='bullish'?x.close<z[0]:x.close>z[1]))invalidationTime=x.openTime;
   });
   const stateName=invalidationTime?'INVALIDATED':fullFillTime?'FULLY FILLED':ceTime?'CE REACHED':firstTouch?'TOUCHED':'FRESH';
-  zones.push({side,low:z[0],high:z[1],mid,index:i,time:c.openTime,confirmedAt:c.closeTime||null,firstTouch,ceTime,fullFillTime,invalidationTime,mitigationPercent:Math.round(maxMitigation*100),state:stateName});
+  zones.push({side,low:z[0],high:z[1],mid,index:i,time:c.openTime,confirmedAt:(bars[i+1]&&bars[i+1].openTime)||c.closeTime||null,firstTouch,ceTime,fullFillTime,invalidationTime,mitigationPercent:Math.round(maxMitigation*100),state:stateName});
  }
  const activeZones=zones.filter(z=>z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED').slice(-8);
  const dt=new Date(epochMs(last.openTime)),hour=dt.getUTCHours();let session='Between sessions';if(hour<7)session='Asia (UTC proxy)';else if(hour<12)session='London (UTC proxy)';else if(hour<16)session='London + New York (UTC proxy)';else if(hour<21)session='New York (UTC proxy)';else session='Late New York (UTC proxy)';
