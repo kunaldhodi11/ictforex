@@ -4,7 +4,7 @@ const API='https://biquote.io/api';
 const $=id=>document.getElementById(id);
 function updateChartClock(){const el=$('chartClock');if(!el)return;el.textContent=new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())+' IST';}
 function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const left=60-(Math.floor(Date.now()/1000)%60);el.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Time remaining in the current 1-minute execution candle';}
-const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
+const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,chartZones:[],overlayFrame:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
 async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
 function updateLiveTick(tick){
@@ -431,13 +431,29 @@ function ensureChartLibrary(){
  });
  return state.chartLibraryPromise;
 }
+function redrawChartOverlays(){
+ if(!state.overlay||!state.candleSeries)return;
+ state.overlay.replaceChildren();
+ state.chartZones.forEach((item,i)=>{
+  const top=state.candleSeries.priceToCoordinate(Math.max(...item.zone)),bottom=state.candleSeries.priceToCoordinate(Math.min(...item.zone));
+  if(top===null||bottom===null||!Number.isFinite(top)||!Number.isFinite(bottom))return;
+  const band=document.createElement('div');band.className='chart-zone '+item.side+(item.kind==='fvg'?' chart-fvg-zone':'');
+  band.style.top=Math.min(top,bottom)+'px';band.style.height=Math.max(3,Math.abs(bottom-top))+'px';
+  band.style.opacity=String(item.kind==='fvg'?.32:Math.max(.48,.82-i*.04));
+  const label=document.createElement('span');label.textContent=item.label;band.appendChild(label);state.overlay.appendChild(band);
+ });
+}
+function scheduleChartOverlayRedraw(){
+ if(state.overlayFrame!==null)return;
+ state.overlayFrame=requestAnimationFrame(()=>{state.overlayFrame=null;redrawChartOverlays()});
+}
 function initChart(){
  if(state.chart||!window.LightweightCharts)return;
  const el=$('marketChart');if(!el)return;
  el.replaceChildren();
  state.chart=LightweightCharts.createChart(el,{width:el.clientWidth,height:el.clientHeight,layout:{background:{color:'#0b1420'},textColor:'#91a2b8'},grid:{vertLines:{color:'#172438'},horzLines:{color:'#172438'}},rightPriceScale:{borderColor:'#25364b'},timeScale:{borderColor:'#25364b',timeVisible:true,secondsVisible:false,rightOffset:6,barSpacing:8,minBarSpacing:3},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},handleScale:{mouseWheel:true,pinch:true,axisPressedMouseMove:true},crosshair:{mode:LightweightCharts.CrosshairMode.Normal}});
  state.candleSeries=state.chart.addCandlestickSeries({upColor:'#36d39a',downColor:'#f07878',borderUpColor:'#36d39a',borderDownColor:'#f07878',wickUpColor:'#36d39a',wickDownColor:'#f07878',borderVisible:false});state.lastPriceLine=state.candleSeries.createPriceLine({price:0,title:'LIVE',color:'#d8b66c',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true});state.overlay=document.createElement('div');state.overlay.className='chart-overlay';el.appendChild(state.overlay);
- new ResizeObserver(()=>{if(state.chart)state.chart.applyOptions({width:el.clientWidth,height:el.clientHeight})}).observe(el);
+ new ResizeObserver(()=>{if(state.chart)state.chart.applyOptions({width:el.clientWidth,height:el.clientHeight});scheduleChartOverlayRedraw()}).observe(el);state.chart.timeScale().subscribeVisibleLogicalRangeChange(scheduleChartOverlayRedraw);['wheel','pointerup','touchend'].forEach(type=>el.addEventListener(type,scheduleChartOverlayRedraw,{passive:true}));
 }
 function updateChartAnalysisSummary(best){
  const title=$('chartAnalysisTitle'),stateEl=$('chartAnalysisState'),summary=$('chartAnalysisSummary');
@@ -492,19 +508,9 @@ function drawChart(bars,results){
   if(chartXray.ssl!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.ssl,title:'SSL · EQL pool',color:'#d8a85d',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dotted,axisLabelVisible:true}));
   if(chartXray.brokenLevel!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.brokenLevel,title:chartXray.breakType,color:chartXray.breakSide==='bullish'?'#36d39a':'#f07878',lineWidth:2,lineStyle:LightweightCharts.LineStyle.Solid,axisLabelVisible:true}));
  }
- if(state.overlay){
-  state.overlay.innerHTML='';
-  const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg'})):[];
-  const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup'}));
-  [...zones,...setupZones].forEach((item,i)=>{
-   const top=state.candleSeries.priceToCoordinate(Math.max(...item.zone)),bottom=state.candleSeries.priceToCoordinate(Math.min(...item.zone));
-   if(top===null||bottom===null)return;
-   const band=document.createElement('div');band.className='chart-zone '+item.side+(item.kind==='fvg'?' chart-fvg-zone':'');
-   band.style.top=Math.min(top,bottom)+'px';band.style.height=Math.max(3,Math.abs(bottom-top))+'px';
-   band.style.opacity=String(item.kind==='fvg'?.32:Math.max(.48,.82-i*.04));
-   const label=document.createElement('span');label.textContent=item.label;band.appendChild(label);state.overlay.appendChild(band);
-  });
- }
+ const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg'})):[];
+ const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup'}));
+ state.chartZones=[...zones,...setupZones];scheduleChartOverlayRedraw();
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
  $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase()+(state.tf==='1m'?' EXECUTION':' CHART');$('chartStatus').textContent=data.length+' '+state.tf.toUpperCase()+' candles · '+(last.isOpen?'CURRENT BAR':'LAST COMPLETED BAR');$('chartFoot').textContent=state.tf==='1m'?(best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.'):'Viewing '+state.tf.toUpperCase()+' candles. Live tick updates are reserved for the 1M execution chart; multi-timeframe ICT confirmation continues in the background.';updateChartAnalysisSummary(best);
