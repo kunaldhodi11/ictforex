@@ -292,3 +292,23 @@ footer{border-color:rgba(126,153,181,.13);font-size:9px}
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* Clear, educational ICT chart annotations */
+.ict-analysis-guide{margin-top:12px;padding:14px;border:1px solid rgba(106,137,166,.2);border-radius:10px;background:rgba(6,14,23,.72)}
+.ict-analysis-summary{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ict-analysis-summary small{display:block;color:#c7aa6b;font-size:8px;letter-spacing:.14em}
+.ict-analysis-summary b{display:block;margin-top:5px;font-size:12px;color:#eaf1f8}
+.ict-analysis-summary>span{flex:none;padding:5px 8px;border:1px solid rgba(216,182,108,.28);border-radius:20px;color:#e0c47f;font-size:8px;letter-spacing:.1em}
+#chartAnalysisSummary{margin:10px 0 12px;color:#a8b8c9;font-size:10px;line-height:1.65}
+.ict-guide-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ict-guide-grid article{padding:10px;border:1px solid rgba(106,137,166,.16);border-radius:8px;background:#0b1723;min-width:0}
+.ict-guide-grid b{display:block;margin-bottom:5px;font-size:9px;letter-spacing:.1em;color:#e3c47c}
+.ict-guide-grid span{display:block;font-size:9px;line-height:1.55;color:#91a5ba}
+.ict-guide-legend{display:flex;flex-wrap:wrap;gap:9px 14px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(126,153,181,.14)}
+.ict-guide-legend span{display:flex;align-items:center;gap:6px;font-size:8px;color:#9aadc0}
+.ict-guide-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;background:#78bce8}
+.ict-guide-legend i.ob{background:#a68bdb}.ict-guide-legend i.entry{background:#70b9e8}.ict-guide-legend i.sl{background:#f07878}.ict-guide-legend i.tp{background:#36d39a}.ict-guide-legend i.liq{background:#d8a85d}.ict-guide-legend i.fvg{background:#6d9fce}
+#tradingview_chart{min-height:390px}
+#tradingview_chart .tradingview-widget-container__widget{min-height:350px}
+@media(max-width:900px){.ict-guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.ict-analysis-guide{padding:10px}.ict-guide-grid{grid-template-columns:1fr 1fr;gap:6px}.ict-guide-grid article{padding:8px}.ict-guide-grid span{font-size:8px}.ict-analysis-summary b{font-size:10px}#tradingview_chart{min-height:360px}}
