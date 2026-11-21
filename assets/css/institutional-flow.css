@@ -321,3 +321,32 @@ footer{border-color:rgba(126,153,181,.13);font-size:9px}
 #tradingview_chart iframe{width:100%!important;height:100%!important;border:0}
 @media(max-width:900px){#tradingview_chart.tradingview-chart-host{height:620px;min-height:560px}}
 @media(max-width:600px){#tradingview_chart.tradingview-chart-host{height:600px;min-height:540px}#tradingview_chart .tradingview-widget-container__widget{min-height:508px}}
+
+
+/* Premium terminal chart workspace: one source of truth for candles and ICT overlays */
+.premium-chart-layout{display:block;width:100%;margin:18px 0 16px}
+.premium-main-chart{position:relative;overflow:hidden;padding:20px;border:1px solid rgba(112,151,184,.28);border-radius:18px;background:radial-gradient(ellipse at 78% 0%,rgba(34,83,106,.16),transparent 42%),linear-gradient(145deg,#0d1928 0%,#08111d 72%);box-shadow:0 20px 60px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.035)}
+.premium-main-chart:before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(220,190,122,.6),rgba(112,185,232,.28),transparent);pointer-events:none}
+.premium-main-chart .panel-head{min-height:48px}
+.premium-main-chart .panel-head h3{font-size:20px;letter-spacing:-.035em}
+.premium-main-chart .panel-head .tag{border-color:rgba(49,214,160,.3);color:#72e0ba;background:rgba(49,214,160,.055)}
+.premium-main-chart .chart-legend{align-items:center;margin:13px 0 8px}
+.premium-main-chart #marketChart{height:590px;min-height:420px;border:1px solid rgba(108,137,166,.17);border-radius:12px;overflow:hidden;background:#080f19}
+.premium-main-chart .chart-foot{margin-top:11px;line-height:1.65}
+.premium-main-chart .ict-analysis-guide{background:linear-gradient(110deg,rgba(11,24,38,.94),rgba(8,17,28,.92));border-color:rgba(121,158,188,.2)}
+#marketChart .chart-overlay{inset:0;overflow:hidden}
+#marketChart .chart-zone{left:0;right:auto;min-width:1px;border-radius:2px}
+#marketChart .chart-zone span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;backdrop-filter:blur(8px)}
+#marketChart .chart-zone.chart-fvg-zone{border-style:dashed}
+.livebox .dot{box-shadow:0 0 0 4px rgba(49,214,160,.09),0 0 15px rgba(49,214,160,.5);background:var(--green);animation:terminalPulse 2.2s ease-in-out infinite}
+@keyframes terminalPulse{0%,100%{box-shadow:0 0 0 3px rgba(49,214,160,.08),0 0 10px rgba(49,214,160,.3)}50%{box-shadow:0 0 0 6px rgba(49,214,160,.025),0 0 18px rgba(49,214,160,.55)}}
+@media(max-width:900px){.premium-main-chart{padding:15px}.premium-main-chart #marketChart{height:520px}}
+@media(max-width:600px){
+ .premium-chart-layout{margin:12px 0}
+ .premium-main-chart{padding:11px;border-radius:13px}
+ .premium-main-chart .panel-head{align-items:flex-start}
+ .premium-main-chart .panel-head h3{font-size:16px}
+ .premium-main-chart #marketChart{height:460px;min-height:420px}
+ .premium-main-chart .chart-legend{gap:7px;font-size:8px}
+ .premium-main-chart .ict-analysis-guide{margin-top:9px}
+}
