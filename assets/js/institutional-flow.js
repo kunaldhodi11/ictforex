@@ -633,7 +633,7 @@ function drawChart(bars,results){
   if(chartXray.brokenLevel!==null)state.lines.push(state.candleSeries.createPriceLine({price:chartXray.brokenLevel,title:chartXray.breakType,color:chartXray.breakSide==='bullish'?'#36d39a':'#f07878',lineWidth:2,lineStyle:LightweightCharts.LineStyle.Solid,axisLabelVisible:true}));
  }
  const visibleEnd=data[data.length-1].time;
- const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg',startTime:Math.floor(epochMs(z.time)/1000),endTime:visibleEnd})):[];
+ const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg',startTime:Math.floor(epochMs(z.confirmedAt||z.time)/1000),endTime:visibleEnd})):[];
  const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup',startTime:Math.floor(epochMs(r.time)/1000),endTime:visibleEnd}));
  state.chartZones=[...zones,...setupZones];scheduleChartOverlayRedraw();
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(epochMs(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
