@@ -83,7 +83,7 @@ function analyze(bars){
  if(b.length<25)throw Error('Not enough completed candles for a reliable scan.');
  const last=b[b.length-1],prior=b.slice(-21,-1),hi=Math.max(...prior.map(x=>x.high)),lo=Math.min(...prior.map(x=>x.low));
  const body=c=>Math.abs(c.close-c.open),range=c=>Math.max(c.high-c.low,Math.abs(c.high-c.close),Math.abs(c.low-c.close));
- const bodyAvg=avg(b.slice(-21,-1).map(body)),atr=avg(b.slice(-15).map(range));
+ const bodyAvg=avg(b.slice(-21,-1).map(body));
  const pivots=[];
  for(let i=2;i<b.length-2;i++){
   if(b[i].high>b[i-1].high&&b[i].high>b[i-2].high&&b[i].high>=b[i+1].high&&b[i].high>=b[i+2].high)pivots.push({side:'high',price:b[i].high,index:i});
@@ -126,11 +126,12 @@ function analyze(bars){
   if(zoneInvalid||sweepInvalid)continue;
   const entry=(confirmed.zone[0]+confirmed.zone[1])/2;
   const touched=later.some(c=>c.low<=entry&&c.high>=entry);
-  const buffer=Math.max(atr*0.1,Math.abs(entry)*0.0001);
+  const sweepAtr=avg(b.slice(Math.max(0,si-14),si).map(range));
+  const buffer=Math.max(sweepAtr*0.1,Math.abs(entry)*0.0001);
   const stop=side==='bullish'?sweepExtreme-buffer:sweepExtreme+buffer;
   const risk=Math.abs(entry-stop);if(!Number.isFinite(risk)||risk<=0)continue;
   const opposing=side==='bullish'?'high':'low';
-  const targets=pivots.filter(p=>p.index<confirmed.index&&p.side===opposing&&(side==='bullish'?p.price>entry:p.price<entry)).map(p=>p.price).filter(v=>{const rr=Math.abs(v-entry)/risk;return rr>=2&&rr<=15}).sort((a,b)=>side==='bullish'?a-b:b-a);
+  const targets=pivots.filter(p=>p.index+2<=confirmed.index&&p.side===opposing&&(side==='bullish'?p.price>entry:p.price<entry)).map(p=>p.price).filter(v=>{const rr=Math.abs(v-entry)/risk;return rr>=2&&rr<=15}).sort((a,b)=>side==='bullish'?a-b:b-a);
   const fallback=side==='bullish'?entry+2*risk:entry-2*risk;
   const targetLadder=targets.length?targets.slice(0,3):[fallback];
   const finalTarget=targetLadder[0];
