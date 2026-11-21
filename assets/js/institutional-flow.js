@@ -439,6 +439,16 @@ function initChart(){
  state.candleSeries=state.chart.addCandlestickSeries({upColor:'#36d39a',downColor:'#f07878',borderUpColor:'#36d39a',borderDownColor:'#f07878',wickUpColor:'#36d39a',wickDownColor:'#f07878',borderVisible:false});state.lastPriceLine=state.candleSeries.createPriceLine({price:0,title:'LIVE',color:'#d8b66c',lineWidth:1,lineStyle:LightweightCharts.LineStyle.Dashed,axisLabelVisible:true});state.overlay=document.createElement('div');state.overlay.className='chart-overlay';el.appendChild(state.overlay);
  new ResizeObserver(()=>{if(state.chart)state.chart.applyOptions({width:el.clientWidth,height:el.clientHeight})}).observe(el);
 }
+function updateChartAnalysisSummary(best){
+ const title=$('chartAnalysisTitle'),stateEl=$('chartAnalysisState'),summary=$('chartAnalysisSummary');
+ if(!title||!stateEl||!summary)return;
+ if(!best){title.textContent='No qualifying ICT setup right now';stateEl.textContent='WAITING';summary.textContent='No trade plan is displayed because the full confirmation sequence is not present. The chart can still show confirmed FVGs, liquidity pools and structure levels. Wait for a liquidity raid → displacement → MSS/BOS → valid order-block retracement with multi-timeframe alignment.';return;}
+ title.textContent=(best.side==='bullish'?'BULLISH':'BEARISH')+' · '+best.type;
+ stateEl.textContent=best.status||'CONFIRMED';
+ const zone=Array.isArray(best.zone)?'OB zone '+fmt(best.zone[0])+' – '+fmt(best.zone[1])+' · ':'';
+ const targets=(best.targets||[best.target]).filter(Number.isFinite).map((v,i)=>'TP'+(i+1)+' '+fmt(v)).join(' · ');
+ summary.textContent=zone+'Entry '+fmt(best.entry)+' · Stop Loss '+fmt(best.stop)+' · '+targets+' · Risk/Reward '+best.rr+'. '+best.reason+' Target basis: '+(best.targetSource||'confirmed opposing liquidity')+'. '+(best.mtfText?'MTF confirmation: '+best.mtfText+'.':'');
+}
 function drawChart(bars,results){
  initChart();if(!state.candleSeries)return;
  const data=bars.map(x=>({time:Math.floor(Date.parse(x.openTime)/1000),open:x.open,high:x.high,low:x.low,close:x.close,isOpen:!!x.isOpen})).filter(x=>Number.isFinite(x.time)&&[x.open,x.high,x.low,x.close].every(Number.isFinite)).sort((a,b)=>a.time-b.time);
@@ -497,7 +507,7 @@ function drawChart(bars,results){
  }
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
- $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase()+(state.tf==='1m'?' EXECUTION':' CHART');$('chartStatus').textContent=data.length+' '+state.tf.toUpperCase()+' candles · '+(last.isOpen?'CURRENT BAR':'LAST COMPLETED BAR');$('chartFoot').textContent=state.tf==='1m'?(best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.'):'Viewing '+state.tf.toUpperCase()+' candles. Live tick updates are reserved for the 1M execution chart; multi-timeframe ICT confirmation continues in the background.';
+ $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase()+(state.tf==='1m'?' EXECUTION':' CHART');$('chartStatus').textContent=data.length+' '+state.tf.toUpperCase()+' candles · '+(last.isOpen?'CURRENT BAR':'LAST COMPLETED BAR');$('chartFoot').textContent=state.tf==='1m'?(best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.'):'Viewing '+state.tf.toUpperCase()+' candles. Live tick updates are reserved for the 1M execution chart; multi-timeframe ICT confirmation continues in the background.';updateChartAnalysisSummary(best);
 }
 function render(data){
  state.lastData=data;
@@ -559,8 +569,8 @@ async function scan(){
   $('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable';
  }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
-document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market);resetChartForMarket();scan()}));
-$('timeframe').value=state.tf;$('timeframe').disabled=false;$('timeframe').addEventListener('change',()=>{state.tf=$('timeframe').value;if(state.lastData)render(state.lastData);else scan()});
+document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();scan()}));
+$('timeframe').value=state.tf;$('timeframe').disabled=false;$('timeframe').addEventListener('change',()=>{state.tf=$('timeframe').value;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);if(state.lastData)render(state.lastData);else scan()});
 $('refresh').addEventListener('click',scan);
 const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
  if(!('Notification'in window)){$('alertStatus').textContent='Browser notifications are not supported.';return}
