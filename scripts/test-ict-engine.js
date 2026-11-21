@@ -34,3 +34,21 @@ const equal=analyze(fixture({equalLows:true})).results[0];
 assert(equal&&equal.evidence.liquidityPoolType==='EQL'&&equal.evidence.liquidityPoolTouches===2,'equal lows are clustered into an EQL pool');
 assert(analyze(fixture({pool:false})).results.length===0,'rolling-range wick without a confirmed liquidity pool is rejected');
 assert(analyze(fixture({target:false})).results.length===0,'setup without a real 2R-to-15R opposing liquidity target is rejected');
+
+function bearishFixture(){
+ const bars=Array.from({length:70},(_,i)=>({
+  openTime:new Date(Date.UTC(2026,0,1,0,i)).toISOString(),
+  open:101.5,close:101.4,high:101.7,low:101.2,isOpen:false
+ }));
+ bars[20]={...bars[20],low:95};
+ bars[25]={...bars[25],high:102};
+ bars[43]={...bars[43],low:100.8};
+ bars[45]={...bars[45],open:101.5,close:101.5,high:102.5,low:101.2};
+ bars[48]={...bars[48],open:101.1,close:96.3,high:101.1,low:96.2};
+ for(let i=49;i<bars.length;i++)bars[i]={...bars[i],open:96.8,close:96.7,high:97,low:96.5};
+ return bars;
+}
+const bearish=analyze(bearishFixture()).results[0];
+assert(!!bearish&&bearish.side==='bearish','bearish buy-side sweep and downside MSS produce a qualified setup');
+assert(bearish.evidence.structurePivotIndex===43&&bearish.targets.length>0,'bearish setup uses confirmed structure and real opposing liquidity');
+
