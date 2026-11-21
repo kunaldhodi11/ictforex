@@ -28,3 +28,19 @@ const full=getMarketXray(bars([{low:99.9,high:103,open:102.5,close:100.5}])).act
 check(!full,'fully filled FVG is removed from active zones');
 const invalid=getMarketXray(bars([{low:99.9,high:103,open:100.5,close:99.5}]));
 check(!invalid.activeZones.some(x=>x.low===100&&x.high===102),'close beyond far boundary invalidates FVG even if wick also filled it');
+
+function bearishBars(after=[]){
+ const b=Array.from({length:32+after.length},(_,i)=>({openTime:new Date(Date.UTC(2026,10,20,1,i)).toISOString(),open:100,high:101,low:99,close:100}));
+ b[29].low=102;
+ b[31]={...b[31],open:99,high:100,low:98,close:99};
+ after.forEach((patch,i)=>Object.assign(b[32+i],patch));
+ return b;
+}
+const bearFresh=getMarketXray(bearishBars([{low:97,high:99.8,open:98.5,close:98.6}])).activeZones.find(x=>x.side==='bearish'&&x.low===100&&x.high===102);
+check(!!bearFresh&&bearFresh.state==='FRESH','fresh bearish FVG is active before retracement');
+const bearCe=getMarketXray(bearishBars([{low:97,high:101,open:98.5,close:100.5}])).activeZones.find(x=>x.side==='bearish'&&x.low===100&&x.high===102);
+check(!!bearCe&&bearCe.state==='CE REACHED'&&bearCe.mitigationPercent===50,'bearish FVG CE is measured symmetrically');
+const bearFull=getMarketXray(bearishBars([{low:97,high:102.1,open:101,close:101.5}])).activeZones.find(x=>x.side==='bearish'&&x.low===100&&x.high===102);
+check(!bearFull,'fully mitigated bearish FVG is removed from active zones');
+const bearInvalid=getMarketXray(bearishBars([{low:97,high:102.5,open:101,close:102.5}]));
+check(!bearInvalid.activeZones.some(x=>x.side==='bearish'&&x.low===100&&x.high===102),'close above bearish FVG far boundary invalidates it');
