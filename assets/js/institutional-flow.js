@@ -74,7 +74,10 @@ function fmt(v){return v==null?'—':v.toLocaleString('en-US',{minimumFractionDi
 function age(ts){if(!ts)return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-Date.parse(ts))/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
 async function resolveSymbol(market){
  try{const data=await get(API+'/active');const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());const found=candidates[market].find(x=>names.includes(x));if(found)return found}catch(e){}
- for(const sym of candidates[market]){try{await get(API+'/'+encodeURIComponent(sym)+'?allowStale=false');return sym}catch(e){}}
+ // Resolve the instrument even when its market is closed. The default tick endpoint
+ // returns the last known quote plus marketState/stale metadata; the UI labels it
+ // as a closed/stale quote instead of treating a valid symbol as missing.
+ for(const sym of candidates[market]){try{await get(API+'/'+encodeURIComponent(sym));return sym}catch(e){}}
  throw Error(market==='NAS100'?'No supported NAS100/US100 symbol was found in the free feed.':'XAUUSD is not currently available in the feed.');
 }
 function avg(a){return a.reduce((s,x)=>s+x,0)/(a.length||1)}
@@ -204,7 +207,7 @@ function applyMtfEntryGate(analysis,mtf){
    r.targets=[];r.target=null;r.targetLevels=[];r.noLiquidityTarget=true;
    if(!Number.isFinite(risk)||risk<=0||!Number.isFinite(signalTime))return;
    const levels=[];
-   ['1m','5m','15m','1h','4h'].forEach(tf=>{
+   ['1m','5m','15m','1h','4h','1d'].forEach(tf=>{
     const raw=mtfBars[tf]||[],b=raw.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)&&Number.isFinite(Date.parse(x.openTime))).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
     for(let i=2;i<b.length-3;i++){
      // A 2-bar-right pivot is usable only after its two right candles have closed.
@@ -361,7 +364,7 @@ function renderXray(bars,mtf,results){
  const poolList=$('xrayPoolList');if(poolList){poolList.innerHTML='';const pools=[...x.bslPools,...x.sslPools].sort((a,b)=>Math.abs(a.price-bars[bars.length-1].close)-Math.abs(b.price-bars[bars.length-1].close)).slice(0,8);if(!pools.length)poolList.innerHTML='<div class="xray-direction-empty">No EQH / EQL cluster with at least two confirmed pivots.</div>';pools.forEach(p=>{const el=document.createElement('div');el.className='xray-pool-item';const label=document.createElement('small'),price=document.createElement('b'),stateEl=document.createElement('small'),detail=document.createElement('span');label.textContent=p.side+' · '+p.count+' PIVOTS';price.textContent=fmt(p.price);stateEl.className='pool-state';stateEl.textContent=p.swept?'RAIDED / RECLAIM CHECK':'POTENTIAL POOL';detail.textContent='Band '+fmt(p.low)+' – '+fmt(p.high)+' · candle-derived; not order-book data';el.append(label,price,stateEl,detail);poolList.appendChild(el)})}
  const fvgList=$('xrayFvgList');if(fvgList){fvgList.innerHTML='';if(!x.activeZones.length)fvgList.innerHTML='<div class="xray-direction-empty">No active FVG arrays in the loaded candle window.</div>';x.activeZones.slice().reverse().forEach(z=>{const el=document.createElement('div');el.className='xray-pool-item';const label=document.createElement('small'),price=document.createElement('b'),stateEl=document.createElement('small'),detail=document.createElement('span');label.textContent=z.side.toUpperCase()+' FVG';price.textContent=fmt(z.low)+' – '+fmt(z.high);stateEl.className='pool-state';stateEl.textContent=z.state;detail.textContent='CE '+fmt(z.mid)+' · created '+new Date(z.time).toLocaleString();el.append(label,price,stateEl,detail);fvgList.appendChild(el)})}
 
- const grid=$('xrayMtfGrid');if(grid){grid.innerHTML='';['5m','15m','1h','4h'].forEach(tf=>{const m=mtf&&mtf[tf]?mtf[tf]:null,d=document.createElement('div');d.className='xray-mtf-cell';const label=document.createElement('small');label.textContent=tf.toUpperCase();const value=document.createElement('b');value.textContent=m?m.structure:'Unavailable';const sub=document.createElement('span');sub.textContent=m&&m.bars?m.bars+' candles':'No provider data';d.append(label,value,sub);grid.appendChild(d)})}
+ const grid=$('xrayMtfGrid');if(grid){grid.innerHTML='';['5m','15m','1h','4h','1d'].forEach(tf=>{const m=mtf&&mtf[tf]?mtf[tf]:null,d=document.createElement('div');d.className='xray-mtf-cell';const label=document.createElement('small');label.textContent=tf.toUpperCase();const value=document.createElement('b');value.textContent=m?m.structure:'Unavailable';const sub=document.createElement('span');sub.textContent=m&&m.bars?m.bars+' candles':'No provider data';d.append(label,value,sub);grid.appendChild(d)})}
  const structureKey=[state.market,state.tf,x.structure,x.brokenLevel].join('|');if(state.lastStructureKey!==structureKey){addXrayEvent(x.breakType==='NONE'?'STRUCTURE CONTEXT':x.breakType,x.note+' · '+x.zone+' · '+x.session,x.breakType.includes('CHOCH')?'warning':'structure');state.lastStructureKey=structureKey;}set('xrayBreakType',x.breakType);set('xrayBreakLevel',x.brokenLevel===null?'—':fmt(x.brokenLevel));set('xrayBreakNote',x.priorTrend+' prior swing sequence · close-confirmed only');$('xrayFoot').textContent='Liquidity event: '+x.liquidityEvent+'. Sweep requires a wick beyond the prior 20-candle range and a completed close back inside; a close beyond the range is labelled acceptance, not a sweep. Pools and structure are candle-derived estimates, not broker order-book data. Sessions use approximate UTC windows.';
 }
 function initChart(){
@@ -442,11 +445,11 @@ function render(data){
  if(!bulls.length)bullList.innerHTML='<div class="empty">No valid bullish setup detected. Waiting for confirmation.</div>';
  if(!bears.length)bearList.innerHTML='<div class="empty">No valid bearish setup detected. Waiting for confirmation.</div>';
  data.analysis.results.forEach((r)=>{const sideResults=r.side==='bullish'?bulls:bears;const i=sideResults.indexOf(r);const div=document.createElement('article');div.className='setup '+r.side;const dir=document.createElement('div');dir.innerHTML='<div class="direction '+r.side+'">'+r.side.toUpperCase()+'</div><h3>'+r.type+'</h3><div class="setup-status">'+(r.status||'CONFIRMED SEQUENCE')+'</div><div class="muted">Rank #'+(i+1)+' · '+new Date(r.time).toLocaleString()+'</div>';const levels=document.createElement('div');levels.className='levels';[['ENTRY',r.entry],['STOP',r.stop],['TP1',(r.targets||[r.target])[0]],['TP2',(r.targets||[])[1]],['TP3',(r.targets||[])[2]]].filter(x=>Number.isFinite(x[1])).forEach(([k,v])=>{const d=document.createElement('div');d.innerHTML='<small>'+k+'</small><b>'+fmt(v)+'</b>';levels.appendChild(d)});const why=document.createElement('div');why.className='muted';why.textContent=r.reason+' · '+(r.targetSource||'Target model')+(r.mtfText?' · MTF: '+r.mtfText:'');const score=document.createElement('div');score.className='score';score.innerHTML='<b>'+r.score+'</b><small>CONFLUENCE / 100</small><small>'+r.rr+' R:R</small>';div.append(dir,levels,why,score);(r.side==='bullish'?bullList:bearList).appendChild(div)});
- const rows=[['Short-term bias',data.analysis.bias],['5m structure',data.mtf&&data.mtf['5m']?data.mtf['5m'].structure:'Unavailable'],['15m structure',data.mtf&&data.mtf['15m']?data.mtf['15m'].structure:'Unavailable'],['1h structure',data.mtf&&data.mtf['1h']?data.mtf['1h'].structure:'Unavailable'],['Recent range high',fmt(data.analysis.hi)],['Recent range low',fmt(data.analysis.lo)],['Completed candles',data.analysis.bars.length],['Detected patterns',data.analysis.results.length]];$('confluence').innerHTML='';rows.forEach(([k,v])=>{const d=document.createElement('div');d.className='con-row';const a=document.createElement('span'),b=document.createElement('span');a.textContent=k;b.textContent=v;d.append(a,b);$('confluence').appendChild(d)});
+ const rows=[['Daily structure',data.mtf&&data.mtf['1d']?data.mtf['1d'].structure:'Unavailable'],['Short-term bias',data.analysis.bias],['5m structure',data.mtf&&data.mtf['5m']?data.mtf['5m'].structure:'Unavailable'],['15m structure',data.mtf&&data.mtf['15m']?data.mtf['15m'].structure:'Unavailable'],['1h structure',data.mtf&&data.mtf['1h']?data.mtf['1h'].structure:'Unavailable'],['Recent range high',fmt(data.analysis.hi)],['Recent range low',fmt(data.analysis.lo)],['Completed candles',data.analysis.bars.length],['Detected patterns',data.analysis.results.length]];$('confluence').innerHTML='';rows.forEach(([k,v])=>{const d=document.createElement('div');d.className='con-row';const a=document.createElement('span'),b=document.createElement('span');a.textContent=k;b.textContent=v;d.append(a,b);$('confluence').appendChild(d)});
 }
 async function scanMarket(market){
- const symbol=await resolveSymbol(market),intervals=['1m','5m','15m','1h','4h'];
- const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit='+(tf==='1m'?300:100)).catch(err=>tf==='4h'?{bars:[]}:Promise.reject(err)))]);
+ const symbol=await resolveSymbol(market),intervals=['1m','5m','15m','1h','4h','1d'];
+ const responses=await Promise.all([get(API+'/'+encodeURIComponent(symbol)),...intervals.map(tf=>get(API+'/'+encodeURIComponent(symbol)+'/ohlc?interval='+tf+'&limit='+(tf==='1m'?300:100)).catch(err=>(tf==='4h'||tf==='1d')?{bars:[]}:Promise.reject(err)))]);
  const tick=responses[0],mtf={};let selectedBars=[];
  const mtfBars={};
  intervals.forEach((tf,i)=>{const bars=responses[i+1].bars||responses[i+1].data||responses[i+1].candles||[];mtfBars[tf]=bars;if(tf==='1m')selectedBars=bars;try{const a=analyze(bars),x=getMarketXray(a.bars);mtf[tf]={bias:a.bias,structure:x.structure,bars:a.bars.length,xray:x,setups:a.results}}catch(e){mtf[tf]={bias:'Unavailable',structure:'Unavailable',bars:0,xray:null,setups:[]}}});
@@ -456,7 +459,9 @@ async function scanMarket(market){
 }
 function renderRadar(result){
  const p=result.market==='XAUUSD'?'radarXau':'radarNas',set=(suffix,value)=>{const el=$(p+suffix);if(el)el.textContent=value};
- set('State',result.tick.stale?'STALE':'SCANNED');set('Price',fmt(result.tick.mid));set('Bias',result.analysis.bias);set('Setups',String(result.analysis.results.length));
+ const closed=String(result.tick.marketState||'').toLowerCase()==='closed';
+ const stale=!!result.tick.stale||closed;
+ set('State',closed?'MARKET CLOSED':stale?'STALE QUOTE':'LIVE QUOTE');set('Price',fmt(result.tick.mid));set('Bias',result.analysis.bias);set('Setups',String(result.analysis.results.length));
  const best=result.analysis.results[0];set('Best',best?best.side.toUpperCase()+' · '+best.type+' · '+best.rr+' R:R':'No qualifying setup detected');
  set('Time','Updated '+new Date(result.scannedAt).toLocaleTimeString());
  const card=$(p);if(card)card.dataset.market=result.market;

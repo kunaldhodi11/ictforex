@@ -60,7 +60,7 @@ body{background:radial-gradient(1000px 520px at 50% -18%,#20384a55,transparent 7
 .xray-mtf{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
 .xray-subhead{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}
 .xray-subhead b{font-size:10px;letter-spacing:.12em}.xray-subhead small{color:var(--muted);font-size:9px}
-.xray-mtf-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.xray-mtf-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
 .xray-mtf-cell{display:grid;gap:5px;padding:12px;background:#0a131f;border:1px solid var(--line);border-radius:10px;min-width:0}
 .xray-mtf-cell small{font-size:9px;color:var(--gold);letter-spacing:.12em;font-weight:800}
 .xray-mtf-cell b{font-size:12px;overflow-wrap:anywhere}
