@@ -532,6 +532,7 @@ function renderRadarError(market,error){
 }
 async function scan(){
  if(state.scanning){state.scanRequested=true;return}state.scanning=true;
+ await ensureChartLibrary().catch(()=>false);
  $('feedState').textContent='SCANNING BOTH MARKETS';$('radarStatus').textContent='SCANNING';
  $('bullishList').innerHTML='<div class="loading">Scanning bullish setups…</div>';$('bearishList').innerHTML='<div class="loading">Scanning bearish setups…</div>';
  try{
