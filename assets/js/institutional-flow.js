@@ -403,6 +403,18 @@ function renderXray(bars,mtf,results){
  const grid=$('xrayMtfGrid');if(grid){grid.innerHTML='';['5m','15m','1h','4h'].forEach(tf=>{const m=mtf&&mtf[tf]?mtf[tf]:null,d=document.createElement('div');d.className='xray-mtf-cell';const label=document.createElement('small');label.textContent=tf.toUpperCase();const value=document.createElement('b');value.textContent=m?m.structure:'Unavailable';const sub=document.createElement('span');sub.textContent=m&&m.bars?m.bars+' candles':'No provider data';d.append(label,value,sub);grid.appendChild(d)})}
  const structureKey=[state.market,state.tf,x.structure,x.brokenLevel].join('|');if(state.lastStructureKey!==structureKey){addXrayEvent(x.breakType==='NONE'?'STRUCTURE CONTEXT':x.breakType,x.note+' · '+x.zone+' · '+x.session,x.breakType.includes('CHOCH')?'warning':'structure');state.lastStructureKey=structureKey;}set('xrayBreakType',x.breakType);set('xrayBreakLevel',x.brokenLevel===null?'—':fmt(x.brokenLevel));set('xrayBreakNote',x.priorTrend+' prior swing sequence · close-confirmed only');$('xrayFoot').textContent='Liquidity event: '+x.liquidityEvent+'. Sweep requires a wick beyond the prior 20-candle range and a completed close back inside; a close beyond the range is labelled acceptance, not a sweep. Pools and structure are candle-derived estimates, not broker order-book data. Sessions use approximate UTC windows.';
 }
+function renderTradingViewChart(){
+ const host=$('tradingViewChart');if(!host)return;
+ const symbol=state.market==='NAS100'?'CAPITALCOM:US100':'OANDA:XAUUSD';
+ const title=$('tvChartTitle');if(title)title.textContent=(state.market==='NAS100'?'NAS100 · CAPITAL.COM':'XAUUSD · OANDA')+' · 1M';
+ host.replaceChildren();
+ const wrap=document.createElement('div');wrap.className='tradingview-widget-container';wrap.style.width='100%';wrap.style.height='100%';
+ const widget=document.createElement('div');widget.className='tradingview-widget-container__widget';widget.style.width='100%';widget.style.height='100%';wrap.appendChild(widget);
+ const script=document.createElement('script');script.type='text/javascript';script.async=true;
+ script.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+ script.text=JSON.stringify({autosize:true,symbol,interval:'1',timezone:'Asia/Kolkata',theme:'dark',style:'1',locale:'en',allow_symbol_change:true,calendar:false,hide_side_toolbar:false,withdateranges:true,details:false,hotlist:false,save_image:false,support_host:'https://www.tradingview.com'});
+ wrap.appendChild(script);host.appendChild(wrap);
+}
 function initChart(){
  if(state.chart||!window.LightweightCharts)return;
  const el=$('marketChart');if(!el)return;
@@ -524,8 +536,8 @@ async function scan(){
   $('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable';
  }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
-document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;scan()}));
-$('timeframe').value='1m';$('timeframe').disabled=true;state.tf='1m';
+document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;renderTradingViewChart();scan()}));
+$('timeframe').value='1m';$('timeframe').disabled=true;state.tf='1m';renderTradingViewChart();
 $('refresh').addEventListener('click',scan);
 const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
  if(!('Notification'in window)){$('alertStatus').textContent='Browser notifications are not supported.';return}
