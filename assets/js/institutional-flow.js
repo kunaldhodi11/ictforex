@@ -20,6 +20,7 @@ function updateLiveTick(tick){
  $('updated').textContent='Tick '+new Date().toLocaleTimeString();
 }
 function queueLiveCandle(price,timestamp){
+ if(state.tf!=='1m')return;
  const stamp=Date.parse(timestamp||new Date().toISOString());if(!Number.isFinite(stamp))return;
  const time=Math.floor(stamp/60000)*60;
  if(state.chartLastTime!==null&&time<state.chartLastTime)return;
@@ -496,14 +497,15 @@ function drawChart(bars,results){
  }
  const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
- $('chartTitle').textContent=state.market+' · 1M EXECUTION';$('chartStatus').textContent=data.length+' one-minute candles · '+(last.isOpen?'LIVE BAR':'WAITING FOR NEXT BAR');$('chartFoot').textContent=best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.';
+ $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase()+(state.tf==='1m'?' EXECUTION':' CHART');$('chartStatus').textContent=data.length+' '+state.tf.toUpperCase()+' candles · '+(last.isOpen?'CURRENT BAR':'LAST COMPLETED BAR');$('chartFoot').textContent=state.tf==='1m'?(best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.'):'Viewing '+state.tf.toUpperCase()+' candles. Live tick updates are reserved for the 1M execution chart; multi-timeframe ICT confirmation continues in the background.';
 }
 function render(data){
+ state.lastData=data;
  $('price').textContent=fmt(data.tick.mid);$('change').textContent=data.tick.dayDiffPercent==null?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
  $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent='MTF';
  $('feedState').textContent=data.tick.stale?'STALE QUOTE':(data.tick.marketState==='open'?'FEED CONNECTED':'LAST QUOTE');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  $('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+data.analysis.bars.length+' completed '+state.tf+' candles analysed.';
- drawChart(data.mtfBars&&data.mtfBars['1m']&&data.mtfBars['1m'].length?data.mtfBars['1m']:data.analysis.bars,data.analysis.results);renderXray((data.mtfBars&&data.mtfBars['15m']&&data.mtfBars['15m'].length?analyze(data.mtfBars['15m']).bars:data.analysis.bars),data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
+ const chartBars=data.mtfBars&&data.mtfBars[state.tf]&&data.mtfBars[state.tf].length?data.mtfBars[state.tf]:data.analysis.bars;drawChart(chartBars,state.tf==='1m'?data.analysis.results:[]);renderXray((data.mtfBars&&data.mtfBars['15m']&&data.mtfBars['15m'].length?analyze(data.mtfBars['15m']).bars:data.analysis.bars),data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
  const bullList=$('bullishList'),bearList=$('bearishList');bullList.innerHTML='';bearList.innerHTML='';
  const bulls=data.analysis.results.filter(r=>r.side==='bullish'),bears=data.analysis.results.filter(r=>r.side==='bearish');
  if(!bulls.length)bullList.innerHTML='<div class="empty">No valid bullish setup detected. Waiting for confirmation.</div>';
@@ -558,7 +560,7 @@ async function scan(){
  }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
 document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;resetChartForMarket();scan()}));
-$('timeframe').value='1m';$('timeframe').disabled=true;state.tf='1m';
+$('timeframe').value=state.tf;$('timeframe').disabled=false;$('timeframe').addEventListener('change',()=>{state.tf=$('timeframe').value;if(state.lastData)render(state.lastData);else scan()});
 $('refresh').addEventListener('click',scan);
 const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
  if(!('Notification'in window)){$('alertStatus').textContent='Browser notifications are not supported.';return}
