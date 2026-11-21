@@ -1,10 +1,12 @@
 'use strict';
 const fs=require('node:fs');
 const source=fs.readFileSync('assets/js/institutional-flow.js','utf8');
+const helpersStart=source.indexOf('function epochMs(value){');
+const helpersEnd=source.indexOf('\nfunction num(',helpersStart);
 const start=source.indexOf('function applyMtfEntryGate(analysis,mtf){');
 const end=source.indexOf('\n function attachMtfLiquidityTargets',start);
-if(start<0||end<0)throw new Error('MTF gate extraction failed');
-const gate=new Function(source.slice(start,end)+'; return applyMtfEntryGate;')();
+if(helpersStart<0||helpersEnd<0||start<0||end<0)throw new Error('MTF gate extraction failed');
+const gate=new Function(source.slice(helpersStart,helpersEnd)+'\n'+source.slice(start,end)+'; return applyMtfEntryGate;')();
 const t=s=>Date.parse('2026-11-20T'+s+':00Z');
 function fixture(overrides={}){
  const candidate={side:'bullish',time:new Date(t('10:20')).toISOString(),zone:[100,101],score:80};
