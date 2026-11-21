@@ -271,3 +271,24 @@ footer{border-color:rgba(126,153,181,.13);font-size:9px}
 #tradingViewChart iframe{width:100%!important;height:100%!important;border:0}
 .tv-loading{height:100%;min-height:360px;display:grid;place-items:center;color:var(--muted);font-size:12px}
 @media(max-width:600px){#tradingViewChart{height:470px;min-height:390px}.tradingview-main-panel{padding:12px}}
+
+/* Performance pass: defer expensive below-fold rendering and reduce mobile paint cost */
+.dual-chart-layout{content-visibility:auto;contain-intrinsic-size:auto 560px}
+#tradingview_chart{min-height:340px}
+#marketChart{contain:layout paint;min-height:280px}
+.xray,.board,.lower,.disclaimer{content-visibility:auto;contain-intrinsic-size:auto 620px}
+.xray-event-tape{overscroll-behavior:contain}
+@media(max-width:900px){
+ .dual-chart-layout{grid-template-columns:1fr!important}
+ #tradingview_chart{min-height:360px}
+}
+@media(max-width:600px){
+ .top{backdrop-filter:none;-webkit-backdrop-filter:none}
+ .hero,.panel,.chart-panel,.market-radar{box-shadow:none}
+ #marketChart{height:280px}
+ #tradingview_chart{min-height:320px}
+ .xray-flow-track span{animation:none}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
