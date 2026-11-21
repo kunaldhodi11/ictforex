@@ -219,13 +219,13 @@ function applyMtfEntryGate(analysis,mtf){
   };
   const overlaps=(a,b)=>Array.isArray(a)&&a.length===2&&b&&Number.isFinite(b.low)&&Number.isFinite(b.high)&&Math.min(a[1],b.high)>=Math.max(a[0],b.low);
   analysis.results=analysis.results.filter(r=>{
-   const signalTime=Date.parse(r.time),h4=direction(mtf['4h']),h1=direction(mtf['1h']);
+   const signalTime=epochMs(r.time),h4=direction(mtf['4h']),h1=direction(mtf['1h']);
    if(!Number.isFinite(signalTime)||h4!==r.side||h1!==r.side){
     r.mtfText='Rejected: 4H major bias or 1H structure is not aligned';
     return false;
    }
    const poi=(mtf['15m']&&mtf['15m'].xray&&mtf['15m'].xray.activeZones||[]).find(z=>{
-    const zoneTime=Date.parse(z.time);
+    const zoneTime=epochMs(z.time);
     return z.side===r.side&&z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED'&&Number.isFinite(zoneTime)&&zoneTime+15*60000<=signalTime&&overlaps(r.zone,z);
    });
    if(!poi){
@@ -235,7 +235,7 @@ function applyMtfEntryGate(analysis,mtf){
    // 5M confirms the directional sweep/displacement/MSS; 1M is the entry refinement.
    // Requiring the independent 5M MSS zone to overlap the 1M entry zone was over-restrictive.
    const five=(mtf['5m']&&mtf['5m'].setups||[]).find(z=>{
-    const t=Date.parse(z.time),e=z.evidence||{};
+    const t=epochMs(z.time),e=z.evidence||{};
     const confirmed=Number.isFinite(e.sweepIndex)&&Number.isFinite(e.mssIndex);
     return z.side===r.side&&confirmed&&Number.isFinite(t)&&t<=signalTime&&signalTime-t<=15*60000;
    });
@@ -253,21 +253,21 @@ function applyMtfEntryGate(analysis,mtf){
  }
  function attachMtfLiquidityTargets(analysis,mtfBars){
   analysis.results.forEach(r=>{
-   const risk=Math.abs(r.entry-r.stop),signalTime=Date.parse(r.time);
+   const risk=Math.abs(r.entry-r.stop),signalTime=epochMs(r.time);
    r.targets=[];r.target=null;r.targetLevels=[];r.noLiquidityTarget=true;
    if(!Number.isFinite(risk)||risk<=0||!Number.isFinite(signalTime))return;
    const levels=[];
    ['1m','5m','15m','1h','4h','1d'].forEach(tf=>{
-    const raw=mtfBars[tf]||[],b=raw.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)&&Number.isFinite(Date.parse(x.openTime))).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
+    const raw=mtfBars[tf]||[],b=raw.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)&&Number.isFinite(epochMs(x.openTime))).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
     for(let i=2;i<b.length-3;i++){
      // A 2-bar-right pivot is usable only after its two right candles have closed.
-     const confirmedAt=Date.parse(b[i+3].openTime);
+     const confirmedAt=epochMs(b[i+3].openTime);
      if(!Number.isFinite(confirmedAt)||confirmedAt>signalTime)continue;
      const p=r.side==='bullish'?b[i].high:b[i].low;
      const pivot=r.side==='bullish'?(p>b[i-1].high&&p>b[i-2].high&&p>=b[i+1].high&&p>=b[i+2].high):(p<b[i-1].low&&p<b[i-2].low&&p<=b[i+1].low&&p<=b[i+2].low);
      if(!pivot)continue;
      // Reject a pool already raided after the swing was formed and before the signal.
-     const sweptAfterConfirmation=b.slice(i+3).some(c=>Date.parse(c.openTime)<signalTime&&(r.side==='bullish'?c.high>=p:c.low<=p));
+     const sweptAfterConfirmation=b.slice(i+3).some(c=>epochMs(c.openTime)<signalTime&&(r.side==='bullish'?c.high>=p:c.low<=p));
      if(sweptAfterConfirmation)continue;
      const ahead=r.side==='bullish'?p>r.entry:p<r.entry,rr=Math.abs(p-r.entry)/risk;
      if(ahead&&rr>=2&&rr<=15)levels.push({price:p,tf,rr,confirmedAt});
@@ -317,9 +317,9 @@ function applyMtfEntryGate(analysis,mtf){
  const dr=confirmedRange&&confirmedRange.high>confirmedRange.low?confirmedRange:null,drMid=dr?(dr.high+dr.low)/2:null;
  const pos=dr?Math.max(0,Math.min(100,(last.close-dr.low)/(dr.high-dr.low)*100)):null;
  const zone=pos===null?'Range not established':pos>50?'Premium':pos<50?'Discount':'Equilibrium';
- const dateKey=d=>d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0'),lastDate=new Date(last.openTime),todayKey=dateKey(lastDate);
+ const dateKey=d=>d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0'),lastDate=new Date(epochMs(last.openTime)),todayKey=dateKey(lastDate);
  const dayGroups=new Map(),weekGroups=new Map();
- bars.forEach(c=>{const d=new Date(c.openTime);if(!Number.isFinite(d.getTime()))return;const dk=dateKey(d),weekStart=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-((d.getUTCDay()+6)%7))),wk=weekStart.toISOString().slice(0,10);if(!dayGroups.has(dk))dayGroups.set(dk,{date:dk,high:-Infinity,low:Infinity});let dg=dayGroups.get(dk);dg.high=Math.max(dg.high,c.high);dg.low=Math.min(dg.low,c.low);if(!weekGroups.has(wk))weekGroups.set(wk,{date:wk,high:-Infinity,low:Infinity});let wg=weekGroups.get(wk);wg.high=Math.max(wg.high,c.high);wg.low=Math.min(wg.low,c.low)});
+ bars.forEach(c=>{const d=new Date(epochMs(c.openTime));if(!Number.isFinite(d.getTime()))return;const dk=dateKey(d),weekStart=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-((d.getUTCDay()+6)%7))),wk=weekStart.toISOString().slice(0,10);if(!dayGroups.has(dk))dayGroups.set(dk,{date:dk,high:-Infinity,low:Infinity});let dg=dayGroups.get(dk);dg.high=Math.max(dg.high,c.high);dg.low=Math.min(dg.low,c.low);if(!weekGroups.has(wk))weekGroups.set(wk,{date:wk,high:-Infinity,low:Infinity});let wg=weekGroups.get(wk);wg.high=Math.max(wg.high,c.high);wg.low=Math.min(wg.low,c.low)});
  const priorDays=Array.from(dayGroups.values()).filter(x=>x.date!==todayKey).sort((a,b)=>a.date.localeCompare(b.date)),pday=priorDays[priorDays.length-1]||null;
  const currentWeekStart=new Date(Date.UTC(lastDate.getUTCFullYear(),lastDate.getUTCMonth(),lastDate.getUTCDate()-((lastDate.getUTCDay()+6)%7))).toISOString().slice(0,10);
  const priorWeeks=Array.from(weekGroups.values()).filter(x=>x.date<currentWeekStart).sort((a,b)=>a.date.localeCompare(b.date)),pweek=priorWeeks[priorWeeks.length-1]||null;
@@ -334,7 +334,7 @@ function applyMtfEntryGate(analysis,mtf){
   zones.push({side,low:z[0],high:z[1],mid:(z[0]+z[1])/2,index:i,time:c.openTime,state:farClose?'INVALIDATED':filled?'FULLY FILLED':ce?'CE REACHED':touched?'TOUCHED':'FRESH'});
  }
  const activeZones=zones.filter(z=>z.state!=='INVALIDATED'&&z.state!=='FULLY FILLED').slice(-8);
- const dt=new Date(last.openTime),hour=dt.getUTCHours();let session='Between sessions';if(hour<7)session='Asia (UTC proxy)';else if(hour<12)session='London (UTC proxy)';else if(hour<16)session='London + New York (UTC proxy)';else if(hour<21)session='New York (UTC proxy)';else session='Late New York (UTC proxy)';
+ const dt=new Date(epochMs(last.openTime)),hour=dt.getUTCHours();let session='Between sessions';if(hour<7)session='Asia (UTC proxy)';else if(hour<12)session='London (UTC proxy)';else if(hour<16)session='London + New York (UTC proxy)';else if(hour<21)session='New York (UTC proxy)';else session='Late New York (UTC proxy)';
  const windowBars=bars.slice(-21),path=windowBars.slice(1).reduce((sum,x,i)=>sum+Math.abs(x.close-windowBars[i].close),0),eff=path?Math.abs(windowBars[windowBars.length-1].close-windowBars[0].close)/path:0,strength=eff<.2?'Weak':eff<.45?'Moderate':'Strong',trendPct=Math.round(eff*100);
  const prior20=bars.slice(-21,-1),priorHigh=Math.max(...prior20.map(x=>x.high)),priorLow=Math.min(...prior20.map(x=>x.low)),sweptHigh=last.high>priorHigh&&last.close<priorHigh,sweptLow=last.low<priorLow&&last.close>priorLow,acceptedAbove=last.close>priorHigh,acceptedBelow=last.close<priorLow;
  let liquidityEvent='No recent range event';if(sweptHigh)liquidityEvent='Buy-side sweep and reclaim';else if(sweptLow)liquidityEvent='Sell-side sweep and reclaim';else if(acceptedAbove)liquidityEvent='Close accepted above prior range';else if(acceptedBelow)liquidityEvent='Close accepted below prior range';
@@ -522,7 +522,7 @@ function drawChart(bars,results){
  const zones=chartXray?chartXray.activeZones.slice(-6).map(z=>({zone:[z.low,z.high],side:z.side,label:z.side.toUpperCase()+' FVG · '+z.state,kind:'fvg'})):[];
  const setupZones=results.slice(0,5).map(r=>({zone:r.zone,side:r.side,label:r.type.toUpperCase(),kind:'setup'}));
  state.chartZones=[...zones,...setupZones];scheduleChartOverlayRedraw();
- const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(Date.parse(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
+ const markers=[];results.slice(0,8).forEach(r=>markers.push({time:Math.floor(epochMs(r.time)/1000),position:r.side==='bullish'?'belowBar':'aboveBar',color:r.side==='bullish'?'#36d39a':'#f07878',shape:r.side==='bullish'?'arrowUp':'arrowDown',text:r.type.replace(' candidate','').replace('fair value gap','FVG').replace('liquidity sweep','Sweep').replace('order block','OB')}));
  if(state.candleSeries.setMarkers)state.candleSeries.setMarkers(markers.sort((a,b)=>a.time-b.time));
  $('chartTitle').textContent=state.market+' · '+state.tf.toUpperCase()+(state.tf==='1m'?' EXECUTION':' CHART');$('chartStatus').textContent=data.length+' '+state.tf.toUpperCase()+' candles · '+(last.isOpen?'CURRENT BAR':'LAST COMPLETED BAR');$('chartFoot').textContent=state.tf==='1m'?(best?'Live 1M ticks update the active OHLC candle. Chart overlays show completed-candle FVGs, confirmed liquidity pools and any closed-candle BOS/CHOCH; trade levels appear only after full setup confirmation.':'Live 1M ticks update the active candle. Structural FVG/liquidity overlays remain visible; no entry signal is shown until sweep, displacement, MSS and MTF confirmation align.'):'Viewing '+state.tf.toUpperCase()+' candles. Live provider ticks update the active candle for the selected timeframe; the countdown shows its IST close time. ICT confirmation continues across multiple timeframes.';updateChartAnalysisSummary(best);
 }
