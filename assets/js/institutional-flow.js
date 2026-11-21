@@ -81,44 +81,74 @@ function avg(a){return a.reduce((s,x)=>s+x,0)/(a.length||1)}
 function analyze(bars){
  const b=bars.filter(x=>!x.isOpen&&[x.open,x.high,x.low,x.close].every(v=>num(v)!==null)&&x.high>=Math.max(x.open,x.close)&&x.low<=Math.min(x.open,x.close)&&x.high>=x.low).sort((a,b)=>Date.parse(a.openTime)-Date.parse(b.openTime));
  if(b.length<25)throw Error('Not enough completed candles for a reliable scan.');
- const last=b[b.length-1],prior=b.slice(-21,-1),hi=Math.max(...prior.map(x=>x.high)),lo=Math.min(...prior.map(x=>x.low));
- const body=c=>Math.abs(c.close-c.open),range=c=>Math.max(c.high-c.low,Math.abs(c.high-c.close),Math.abs(c.low-c.close));
- const bodyAvg=avg(b.slice(-21,-1).map(body)),atr=avg(b.slice(-15).map(range));
+ const last=b[b.length-1],body=c=>Math.abs(c.close-c.open),range=c=>Math.max(c.high-c.low,Number.EPSILON);
+ const atrAt=i=>avg(b.slice(Math.max(0,i-14),i).map(range));
+ // A pivot becomes usable only after its two right-hand candles have closed.
  const pivots=[];
  for(let i=2;i<b.length-2;i++){
-  if(b[i].high>b[i-1].high&&b[i].high>b[i-2].high&&b[i].high>=b[i+1].high&&b[i].high>=b[i+2].high)pivots.push({side:'high',price:b[i].high,index:i});
-  if(b[i].low<b[i-1].low&&b[i].low<b[i-2].low&&b[i].low<=b[i+1].low&&b[i].low<=b[i+2].low)pivots.push({side:'low',price:b[i].low,index:i});
+  if(b[i].high>b[i-1].high&&b[i].high>b[i-2].high&&b[i].high>=b[i+1].high&&b[i].high>=b[i+2].high)pivots.push({side:'high',price:b[i].high,index:i,confirmedAt:i+2});
+  if(b[i].low<b[i-1].low&&b[i].low<b[i-2].low&&b[i].low<=b[i+1].low&&b[i].low<=b[i+2].low)pivots.push({side:'low',price:b[i].low,index:i,confirmedAt:i+2});
  }
  const results=[],lookbackStart=Math.max(20,b.length-30);
- // A setup must link a prior liquidity raid to a later displacement/MSS and a zone created by that same impulse.
  for(let si=lookbackStart;si<b.length-2;si++){
-  const sweep=b[si],poolBars=b.slice(Math.max(0,si-20),si),poolHigh=Math.max(...poolBars.map(c=>c.high)),poolLow=Math.min(...poolBars.map(c=>c.low));
-  let side=null,sweepLevel=null,sweepExtreme=null;
-  if(sweep.low<poolLow&&sweep.close>poolLow){side='bullish';sweepLevel=poolLow;sweepExtreme=sweep.low}
-  else if(sweep.high>poolHigh&&sweep.close<poolHigh){side='bearish';sweepLevel=poolHigh;sweepExtreme=sweep.high}
-  if(!side)continue;
+  const sweep=b[si],atr=atrAt(si),tolerance=Math.max(0.01,atr*0.10),penetration=Math.max(0.01,atr*0.02);
+  const pools=[];
+  for(const side of ['high','low']){
+   const eligible=pivots.filter(p=>p.side===side&&p.confirmedAt<si&&p.index>=Math.max(0,si-40));
+   const used=new Set();
+   for(const p of eligible){
+    if(used.has(p.index))continue;
+    const cluster=eligible.filter(q=>Math.abs(q.price-p.price)<=tolerance);
+    cluster.forEach(q=>used.add(q.index));
+    const level=avg(cluster.map(q=>q.price));
+    pools.push({side,level,count:cluster.length,kind:cluster.length>1?(side==='high'?'EQH':'EQL'):(side==='high'?'Swing High':'Swing Low'),members:cluster});
+   }
+  }
+  // Raid must pierce a previously confirmed swing/EQH/EQL and reclaim its level on close.
+  const candidates=[];
+  for(const p of pools){
+   if(p.side==='low'&&sweep.low<p.level-penetration&&sweep.close>p.level)candidates.push({...p,raidSide:'bullish',extreme:sweep.low});
+   if(p.side==='high'&&sweep.high>p.level+penetration&&sweep.close<p.level)candidates.push({...p,raidSide:'bearish',extreme:sweep.high});
+  }
+  if(!candidates.length)continue;
+  candidates.sort((a,b)=>Math.abs(sweep.close-a.level)-Math.abs(sweep.close-b.level));
+  const pool=candidates[0],side=pool.raidSide,sweepLevel=pool.level,sweepExtreme=pool.extreme;
   const expiry=Math.min(b.length-1,si+6);
   let confirmed=null;
   for(let j=si+1;j<=expiry;j++){
-   const impulse=b[j],before=b.slice(Math.max(0,j-20),j),recent=b.slice(Math.max(0,j-8),j);
-   if(before.length<8||recent.length<3)continue;
+   const impulse=b[j],before=b.slice(Math.max(0,j-20),j);
+   if(before.length<8)continue;
    const avgBody=avg(before.map(body)),atrNow=avg(before.slice(-14).map(range));
-   const candleRange=Math.max(impulse.high-impulse.low,Number.EPSILON),closeLocation=(impulse.close-impulse.low)/candleRange;
-   const displacement=body(impulse)>=Math.max(avgBody*1.5,atrNow*0.65);
-   const mss=side==='bullish'
-    ? displacement&&impulse.close>impulse.open&&closeLocation>=0.75&&impulse.close>Math.max(...recent.map(c=>c.high))
-    : displacement&&impulse.close<impulse.open&&closeLocation<=0.25&&impulse.close<Math.min(...recent.map(c=>c.low));
+   const candleRange=range(impulse),bodyRatio=body(impulse)/candleRange;
+   const closeLocation=(impulse.close-impulse.low)/candleRange;
+   const displacement=bodyRatio>=0.65&&body(impulse)>=Math.max(avgBody*1.5,atrNow*0.65);
+   // MSS must close through the latest relevant, already-confirmed opposing swing.
+   const structuralSide=side==='bullish'?'high':'low';
+   const structures=pivots.filter(p=>p.side===structuralSide&&p.confirmedAt<j&&p.index<j&&p.index>=Math.max(0,si-20)).sort((a,b)=>b.index-a.index);
+   const structure=structures[0];
+   if(!structure)continue;
+   const closesBeforeBreak=b.slice(structure.confirmedAt+1,j);
+   const notAlreadyBroken=side==='bullish'?closesBeforeBreak.every(c=>c.close<=structure.price):closesBeforeBreak.every(c=>c.close>=structure.price);
+   const mss=notAlreadyBroken&&(side==='bullish'
+    ?displacement&&impulse.close>impulse.open&&closeLocation>=0.75&&impulse.close>structure.price
+    :displacement&&impulse.close<impulse.open&&closeLocation<=0.25&&impulse.close<structure.price);
    if(!mss)continue;
    let zone=null,zoneType=null,zoneIndex=j;
+   // Three-candle FVG is valid only after the displacement candle has closed.
    if(j>=2&&side==='bullish'&&impulse.low>b[j-2].high){zone=[b[j-2].high,impulse.low];zoneType='Bullish FVG'}
    if(j>=2&&side==='bearish'&&impulse.high<b[j-2].low){zone=[impulse.high,b[j-2].low];zoneType='Bearish FVG'}
    if(!zone){
-    for(let k=j-1;k>=Math.max(si+1,j-3);k--){
+    // OB is the last opposing candle before the displacement, not an arbitrary nearby candle.
+    for(let k=j-1;k>si;k--){
      const c=b[k],opposite=side==='bullish'?c.close<c.open:c.close>c.open;
      if(opposite){zone=[c.low,c.high];zoneType=side==='bullish'?'Bullish order block':'Bearish order block';zoneIndex=k;break}
     }
    }
-   if(zone&&zone[1]>zone[0]){const nextBar=b[j+1];const confirmationTime=nextBar&&nextBar.openTime?nextBar.openTime:(impulse.closeTime||impulse.openTime);confirmed={index:j,zone,zoneType,zoneIndex,impulse,sweepLevel,sweepExtreme,side,confirmationTime};break}
+   if(zone&&zone[1]>zone[0]){
+    const nextBar=b[j+1],confirmationTime=nextBar&&nextBar.openTime?nextBar.openTime:(impulse.closeTime||impulse.openTime);
+    confirmed={index:j,zone,zoneType,zoneIndex,impulse,sweepLevel,sweepExtreme,side,confirmationTime,structure};
+    break;
+   }
   }
   if(!confirmed)continue;
   const later=b.slice(confirmed.index+1),zoneInvalid=side==='bullish'?later.some(c=>c.close<confirmed.zone[0]):later.some(c=>c.close>confirmed.zone[1]);
@@ -129,27 +159,34 @@ function analyze(bars){
   const buffer=Math.max(atr*0.1,Math.abs(entry)*0.0001);
   const stop=side==='bullish'?sweepExtreme-buffer:sweepExtreme+buffer;
   const risk=Math.abs(entry-stop);if(!Number.isFinite(risk)||risk<=0)continue;
+  // Target pivots must already have been confirmed before the MSS candle: no future-pivot lookahead.
   const opposing=side==='bullish'?'high':'low';
-  const targets=pivots.filter(p=>p.index<confirmed.index&&p.side===opposing&&(side==='bullish'?p.price>entry:p.price<entry)).map(p=>p.price).filter(v=>{const rr=Math.abs(v-entry)/risk;return rr>=2&&rr<=15}).sort((a,b)=>side==='bullish'?a-b:b-a);
-  const fallback=side==='bullish'?entry+2*risk:entry-2*risk;
-  const targetLadder=targets.length?targets.slice(0,3):[fallback];
-  const finalTarget=targetLadder[0];
+  const targets=pivots.filter(p=>p.side===opposing&&p.confirmedAt<confirmed.index&&p.index<confirmed.index&&
+   (side==='bullish'?p.price>entry:p.price<entry)&&
+   (side==='bullish'?p.price>sweepLevel:p.price<sweepLevel))
+   .map(p=>p.price).filter(v=>{const rr=Math.abs(v-entry)/risk;return rr>=2&&rr<=15})
+   .sort((a,b)=>side==='bullish'?a-b:b-a);
+  // No synthetic 2R target: a trade needs a real, opposing liquidity objective.
+  const uniqueTargets=targets.filter((v,i,a)=>a.findIndex(x=>Math.abs(x-v)<=Math.max(0.01,atr*0.05))===i);
+  if(!uniqueTargets.length)continue;
+  const targetLadder=uniqueTargets.slice(0,3),finalTarget=targetLadder[0];
   const status=touched?'ENTRY PRICE TOUCHED':'WAITING FOR RETRACEMENT';
   results.push({
    side,type:confirmed.zoneType+' · '+(side==='bullish'?'Bullish':'Bearish')+' MSS setup',
    zone:confirmed.zone,entry,stop,target:finalTarget,targets:targetLadder,
-   targetSource:targets.length?'Dynamic opposing liquidity ladder · nearest valid pool first':'2R fallback because no valid opposing liquidity pool between 2R and 15R',
+   targetSource:'Confirmed opposing swing-liquidity ladder · nearest valid pool first',
    rr:'1:'+(Math.abs(finalTarget-entry)/risk).toFixed(1),
-   score:Math.min(95,78+(touched?3:0)),status,
-   lifecycle:status,reason:'Linked sequence confirmed: '+(side==='bullish'?'sell-side':'buy-side')+' liquidity sweep → displacement with completed MSS close → '+confirmed.zoneType+'. '+(touched?'Price has revisited the zone.':'Awaiting a retracement; no fill is implied.'),
-   evidence:{sweepIndex:si,mssIndex:confirmed.index,zoneIndex:confirmed.zoneIndex,sweepLevel,sweepExtreme,displacementBodyRatio:body(confirmed.impulse)/(avg(b.slice(Math.max(0,confirmed.index-20),confirmed.index).map(body))||1)},
+   score:Math.min(95,78+(touched?3:0)),status,lifecycle:status,
+   reason:'Confirmed sequence: '+pool.kind+' raid/reclaim → displacement (body/range '+(body(confirmed.impulse)/range(confirmed.impulse)).toFixed(2)+') → close through confirmed market structure → '+confirmed.zoneType+'. '+(touched?'Price has revisited the zone.':'Awaiting a retracement; no fill is implied.'),
+   evidence:{sweepIndex:si,mssIndex:confirmed.index,zoneIndex:confirmed.zoneIndex,sweepLevel,sweepExtreme,liquidityPoolType:pool.kind,liquidityPoolTouches:pool.count,structureLevel:confirmed.structure.price,structurePivotIndex:confirmed.structure.index,displacementBodyRatio:body(confirmed.impulse)/(avg(b.slice(Math.max(0,confirmed.index-20),confirmed.index).map(body))||1),displacementBodyRangeRatio:body(confirmed.impulse)/range(confirmed.impulse)},
    time:confirmed.confirmationTime
   });
   si=expiry;
  }
  const latestBySide={};results.sort((a,b)=>b.evidence.mssIndex-a.evidence.mssIndex).forEach(r=>{if(!latestBySide[r.side])latestBySide[r.side]=r});
  const qualified=Object.values(latestBySide);
- return {bars:b,last,results:qualified, bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':last.close<avg(b.slice(-20).map(x=>x.close))?'Bearish':'Neutral',hi,lo};
+ const prior=b.slice(-21,-1),hi=Math.max(...prior.map(x=>x.high)),lo=Math.min(...prior.map(x=>x.low));
+ return {bars:b,last,results:qualified,bias:last.close>avg(b.slice(-20).map(x=>x.close))?'Bullish':last.close<avg(b.slice(-20).map(x=>x.close))?'Bearish':'Neutral',hi,lo};
 }
 function applyMtfEntryGate(analysis,mtf){
   const direction=m=>{
