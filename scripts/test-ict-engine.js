@@ -1,10 +1,12 @@
 'use strict';
 const fs=require('node:fs');
 const source=fs.readFileSync('assets/js/institutional-flow.js','utf8');
+const helpersStart=source.indexOf('function epochMs(value){');
+const helpersEnd=source.indexOf('\nfunction num(',helpersStart);
 const start=source.indexOf('function analyze(bars){');
 const end=source.indexOf('\nfunction applyMtfEntryGate',start);
-if(start<0||end<0)throw new Error('ICT analyze extraction failed');
-const analyze=new Function('num','avg',source.slice(start,end)+'; return analyze;')(
+if(helpersStart<0||helpersEnd<0||start<0||end<0)throw new Error('ICT analyze extraction failed');
+const analyze=new Function('num','avg',source.slice(helpersStart,helpersEnd)+'\n'+source.slice(start,end)+'; return analyze;')(
  v=>typeof v==='number'&&Number.isFinite(v)?v:null,
  xs=>xs.reduce((a,b)=>a+b,0)/(xs.length||1)
 );
