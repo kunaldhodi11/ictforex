@@ -2,24 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ICT Liquidity Board | XAUUSD & NAS100 | ICT Forex Academy</title>
-<meta name="description" content="Free ICT market scanner for Gold XAUUSD and NAS100. Explore candle-based liquidity sweeps, order blocks, fair value gaps and ranked educational trade setups.">
+<title>ICT Institutional Flow Terminal | Live XAUUSD & NAS100 Analysis | ICT Forex Academy</title>
+<meta name="description" content="Explore a live ICT trading terminal for XAUUSD and NAS100 with streaming prices, interactive candlestick charts, multi-timeframe market structure, liquidity, fair value gaps and educational trade analysis.">
 <meta name="robots" content="index,follow"><link rel="canonical" href="https://ictforex.in/institutional-flow.html">
-<meta property="og:title" content="ICT Liquidity Board | ICT Forex Academy"><meta property="og:description" content="Candle-based ICT scanner for XAUUSD and NAS100.">
-<meta name="theme-color" content="#080d17"><link rel="preconnect" href="https://unpkg.com"><link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<meta property="og:title" content="ICT Institutional Flow Terminal | ICT Forex Academy"><meta property="og:description" content="Live XAUUSD and NAS100 charts with candle-based ICT market structure and liquidity analysis.">
+<meta name="theme-color" content="#080d17"><link rel="preconnect" href="https://unpkg.com"><link rel="preconnect" href="https://cdnjs.cloudflare.com"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/institutional-flow.css?v=20261121-ictguide2">
+<link rel="stylesheet" href="/assets/css/institutional-flow.css?v=20261121-premium-terminal1">
 </head>
 <body>
 <header class="top"><a class="brand" href="/"><span>ICT</span> FOREX <i>/ FLOW TERMINAL</i></a><nav><a href="/market-heatmap.html">Market Heatmap</a><a href="#market-xray">Market X-Ray</a><a href="/">Academy Home</a></nav></header>
 <main class="wrap">
 <section class="hero"><div><div class="eyebrow">LIVE MARKET INTELLIGENCE · ICT ANALYTICS</div><h1>Market <em>Intelligence</em></h1><p>A live analytical workspace for XAUUSD and NAS100. Track market bias, liquidity events, order-block candidates and dynamic trade plans in one place.</p></div><div class="livebox"><span class="dot"></span><b id="feedState">CONNECTING DATA</b><small id="updated">Checking provider…</small></div></section>
 <section class="market-radar"><div class="radar-heading"><div><div class="eyebrow">LIVE CROSS-MARKET SCAN</div><h2>Market Radar</h2><p>Both markets are scanned in the background every 60 seconds.</p></div><span class="tag" id="radarStatus">INITIALIZING</span></div><div class="radar-grid"><article class="radar-card" id="radarXau"><div class="radar-card-top"><b>XAUUSD · GOLD</b><span class="radar-state" id="radarXauState">WAITING</span></div><strong id="radarXauPrice">—</strong><div class="radar-meta"><span>BIAS</span><b id="radarXauBias">—</b></div><div class="radar-meta"><span>SETUPS</span><b id="radarXauSetups">—</b></div><div class="radar-best" id="radarXauBest">Waiting for scan…</div><small id="radarXauTime">Not scanned yet</small></article><article class="radar-card" id="radarNas"><div class="radar-card-top"><b>NAS100 · NASDAQ</b><span class="radar-state" id="radarNasState">WAITING</span></div><strong id="radarNasPrice">—</strong><div class="radar-meta"><span>BIAS</span><b id="radarNasBias">—</b></div><div class="radar-meta"><span>SETUPS</span><b id="radarNasSetups">—</b></div><div class="radar-best" id="radarNasBest">Waiting for scan…</div><small id="radarNasTime">Not scanned yet</small></article></div></section>
-<section class="toolbar"><div class="market-tabs"><button class="market active" data-market="XAUUSD">XAUUSD <small>GOLD</small></button><button class="market" data-market="NAS100">NAS100 <small>NASDAQ</small></button></div><div class="controls"><label>CHART TIMEFRAME<select id="timeframe"><option value="1m" selected>1 Minute · Execution</option><option value="5m">5 Minutes</option><option value="15m">15 Minutes</option><option value="1h">1 Hour</option><option value="4h">4 Hours</option></select></label><button id="enableAlerts" class="refresh">Enable alerts</button><button id="refresh" class="refresh">↻ Refresh scan</button></div></section>
+<section class="toolbar"><div class="market-tabs"><button class="market active" data-market="XAUUSD">XAUUSD <small>GOLD</small></button><button class="market" data-market="NAS100">NAS100 <small>NASDAQ</small></button></div><div class="controls"><label>CHART TIMEFRAME<select id="timeframe"><option value="1m" selected>1 Minute · Execution</option><option value="5m">5 Minutes</option><option value="15m">15 Minutes</option><option value="1h">1 Hour</option><option value="4h">4 Hours</option><option value="1d">1 Day · Higher-timeframe context</option></select></label><button id="enableAlerts" class="refresh">Enable alerts</button><button id="refresh" class="refresh">↻ Refresh scan</button></div></section>
 <section class="stats"><article><small>MARKET</small><b id="price">—</b><span id="symbolLabel">XAUUSD</span></article><article><small>SESSION CHANGE</small><b id="change">—</b><span>Provider-reported</span></article><article><small>MARKET STATUS</small><b id="marketStatus">—</b><span id="quoteAge">Quote age —</span></article><article><small>SETUPS FOUND</small><b id="setupCount">0</b><span>From closed candles</span></article></section>
-<div class="dual-chart-layout" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch"><style>@media(max-width:900px){.dual-chart-layout{grid-template-columns:1fr!important}}</style>
-<section class="chart-panel panel" id="tradingview-panel"><div class="panel-head"><div><div class="eyebrow">OFFICIAL TRADINGVIEW · LIVE MARKET CHART</div><h3 id="tvChartTitle">XAUUSD · TRADINGVIEW</h3></div><span class="tag">TRADINGVIEW WIDGET</span></div><div id="tradingview_chart" class="tradingview-chart-host"></div><p class="chart-foot">Official TradingView hosted chart. Its market data provider and session may differ from the BiQuote feed used by our ICT engine.</p></section>
-<section class="chart-panel panel" id="ict-chart-panel"><div class="panel-head"><div><div class="eyebrow">LIVE MARKET CHART · ICT ENGINE OVERLAYS</div><h3 id="chartTitle">XAUUSD · 1M EXECUTION</h3></div><span class="tag" id="chartStatus">WAITING FOR LIVE DATA</span></div><div class="chart-legend"><span>🟢 Bullish</span><span>🔴 Bearish</span><span>🟡 Liquidity</span><span>🔵 Entry</span></div><div class="chart-legend"><span id="candleTimer" class="tag">LIVE CANDLE TIME · WAITING</span></div><div id="marketChart" role="region" aria-label="Interactive live candlestick chart with ICT analysis overlays"><div class="tv-loading">Loading custom ICT chart…</div></div><p class="chart-foot" id="chartFoot">The existing ICT Engine will draw confirmed market structure, liquidity pools, FVG zones and qualified trade levels here.</p>
+<div class="premium-chart-layout">
+<section class="chart-panel panel premium-main-chart" id="ict-chart-panel"><div class="panel-head"><div><div class="eyebrow">LIVE MARKET CHART · ICT ENGINE OVERLAYS</div><h3 id="chartTitle">XAUUSD · 1M EXECUTION</h3></div><span class="tag" id="chartStatus">WAITING FOR LIVE DATA</span></div><div class="chart-legend"><span>🟢 Bullish</span><span>🔴 Bearish</span><span>🟡 Liquidity</span><span>🔵 Entry</span></div><div class="chart-legend"><span id="candleTimer" class="tag">LIVE CANDLE TIME · WAITING</span></div><div id="marketChart" role="region" aria-label="Interactive live candlestick chart with ICT analysis overlays"><div class="tv-loading">Loading custom ICT chart…</div></div><p class="chart-foot" id="chartFoot">The existing ICT Engine will draw confirmed market structure, liquidity pools, FVG zones and qualified trade levels here.</p>
 <div class="ict-analysis-guide" aria-live="polite">
  <div class="ict-analysis-summary"><div><small>LIVE ICT SETUP EXPLANATION</small><b id="chartAnalysisTitle">Waiting for confirmed setup</b></div><span id="chartAnalysisState">SCANNING</span></div>
  <p id="chartAnalysisSummary">The engine waits for a liquidity raid, displacement, market-structure shift and multi-timeframe confirmation. No entry is assumed before the full sequence is confirmed.</p>
@@ -65,29 +64,6 @@
 <section class="disclaimer"><b>Risk notice:</b> Educational analysis only, not financial advice or an automated trading signal. Market data may be delayed, unavailable or broker-specific. Entry, stop and target are illustrative levels derived from candle structure; verify every level on your own broker chart before making a decision.</section>
 </main>
 <footer>ICT Forex Academy © 2026 · Market Intelligence Terminal</footer>
-<script defer src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script><script defer src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script><script src="/assets/js/institutional-flow.js?v=20261121-livecandles4" defer></script>
-<script>
-let tvSelectedMarket='XAUUSD',tvSelectedTimeframe='1m',tvLoaded=false,tvObserver=null;
-function renderTradingViewChart(){
- const host=document.getElementById('tradingview_chart');if(!host)return;
- const market=tvSelectedMarket,symbol=market==='NAS100'?'CAPITALCOM:US100':'OANDA:XAUUSD',interval=({'1m':'1','5m':'5','15m':'15','1h':'60','4h':'240'})[tvSelectedTimeframe]||'1';
- const title=document.getElementById('tvChartTitle');if(title)title.textContent=market+' · TRADINGVIEW';
- host.replaceChildren();
- const box=document.createElement('div');box.className='tradingview-widget-container';box.style.height='100%';box.style.width='100%';
- const inner=document.createElement('div');inner.className='tradingview-widget-container__widget';inner.style.height='calc(100% - 32px)';inner.style.width='100%';box.appendChild(inner);
- const credit=document.createElement('div');credit.className='tradingview-widget-copyright';credit.innerHTML='<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span>Track all markets on TradingView</span></a>';box.appendChild(credit);
- const script=document.createElement('script');script.type='text/javascript';script.async=true;script.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
- script.text=JSON.stringify({autosize:true,symbol,interval,timezone:'Asia/Kolkata',theme:'dark',style:'1',locale:'en',allow_symbol_change:false,calendar:false,hide_top_toolbar:false,hide_legend:false,hide_side_toolbar:true,save_image:false,withdateranges:true,details:false,hotlist:false,studies:[],support_host:'https://www.tradingview.com'});
- box.appendChild(script);host.appendChild(box);tvLoaded=true;
-}
-window.loadOfficialTradingViewChart=function(market,timeframe){
- tvSelectedMarket=market||tvSelectedMarket;tvSelectedTimeframe=timeframe||tvSelectedTimeframe;
- const panel=document.getElementById('tradingview-panel');if(!panel)return;
- if(tvLoaded){renderTradingViewChart();return}
- if('IntersectionObserver'in window){
-  if(!tvObserver){tvObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){tvObserver.disconnect();tvObserver=null;renderTradingViewChart()}},{rootMargin:'240px 0px'});tvObserver.observe(panel)}
- }else{renderTradingViewChart()}
-};
-window.loadOfficialTradingViewChart('XAUUSD');
-</script>
+<script defer src="https://unpkg.com/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script><script defer src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script><script src="/assets/js/institutional-flow.js?v=20261121-fastload1" defer></script>
+
 </body></html>
