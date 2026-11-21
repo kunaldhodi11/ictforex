@@ -77,6 +77,6 @@ window.loadOfficialTradingViewChart=function(market){
   if(!tvObserver){tvObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){tvObserver.disconnect();tvObserver=null;renderTradingViewChart()}},{rootMargin:'240px 0px'});tvObserver.observe(panel)}
  }else{renderTradingViewChart()}
 };
-
+window.loadOfficialTradingViewChart('XAUUSD');
 </script>
 </body></html>
