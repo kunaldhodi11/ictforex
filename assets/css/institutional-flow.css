@@ -312,3 +312,12 @@ footer{border-color:rgba(126,153,181,.13);font-size:9px}
 #tradingview_chart .tradingview-widget-container__widget{min-height:350px}
 @media(max-width:900px){.ict-guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.ict-analysis-guide{padding:10px}.ict-guide-grid{grid-template-columns:1fr 1fr;gap:6px}.ict-guide-grid article{padding:8px}.ict-guide-grid span{font-size:8px}.ict-analysis-summary b{font-size:10px}#tradingview_chart{min-height:360px}}
+
+
+/* Mobile-first TradingView candle visibility: reserve the full widget height for price candles. */
+#tradingview_chart.tradingview-chart-host{width:100%;height:640px;min-height:560px;overflow:hidden;border-radius:10px;background:#05080d;position:relative}
+#tradingview_chart .tradingview-widget-container{width:100%!important;height:100%!important}
+#tradingview_chart .tradingview-widget-container__widget{width:100%!important;height:calc(100% - 32px)!important;min-height:520px}
+#tradingview_chart iframe{width:100%!important;height:100%!important;border:0}
+@media(max-width:900px){#tradingview_chart.tradingview-chart-host{height:620px;min-height:560px}}
+@media(max-width:600px){#tradingview_chart.tradingview-chart-host{height:600px;min-height:540px}#tradingview_chart .tradingview-widget-container__widget{min-height:508px}}
