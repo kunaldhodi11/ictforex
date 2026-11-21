@@ -391,7 +391,8 @@ function applyMtfEntryGate(analysis,mtf,mtfBars){
  const bslPools=makeClusters(highs,'BSL'),sslPools=makeClusters(lows,'SSL');
  const nearest=(arr)=>arr.slice().sort((a,b)=>Math.abs(a.price-last.close)-Math.abs(b.price-last.close))[0]||null;
  const bslPool=nearest(bslPools),sslPool=nearest(sslPools),bsl=bslPool?bslPool.price:null,ssl=sslPool?sslPool.price:null;
- const rangeHigh=confirmedSwingHigh,rangeLow=confirmedSwingLow;\n const confirmedRange=rangeHigh!==null&&rangeLow!==null&&rangeHigh>rangeLow?{high:rangeHigh,low:rangeLow,from:'protected swing low → protected swing high'}:null;
+ const rangeHigh=confirmedSwingHigh,rangeLow=confirmedSwingLow;
+ const confirmedRange=rangeHigh!==null&&rangeLow!==null&&rangeHigh>rangeLow?{high:rangeHigh,low:rangeLow,from:'protected swing low → protected swing high'}:null;
  const dr=confirmedRange&&confirmedRange.high>confirmedRange.low?confirmedRange:null,drMid=dr?(dr.high+dr.low)/2:null;
  const pos=dr?Math.max(0,Math.min(100,(last.close-dr.low)/(dr.high-dr.low)*100)):null;
  const zone=pos===null?'Range not established':pos>50?'Premium':pos<50?'Discount':'Equilibrium';
