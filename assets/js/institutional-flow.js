@@ -375,7 +375,7 @@ function applyMtfEntryGate(analysis,mtf,mtfBars){
  let structure='Range / unclear',note='No completed close has broken a confirmed swing',choch='No CHOCH',chochNote='No opposing protected-swing break confirmed',breakType='NONE',brokenLevel=null,breakSide='neutral';
  if(lastBreak&&lastBreak.index===bars.length-1){
   breakSide=lastBreak.side;brokenLevel=lastBreak.level;breakType=lastBreak.type;structure=lastBreak.type.replace('BULLISH ','Bullish ').replace('BEARISH ','Bearish ');
-  note='Completed candle closed beyond confirmed '+(breakSide==='bullish'?'swing high ':'swing low ')+fmt(brokenLevel)+'.';
+  note='Completed candle closed beyond confirmed '+(breakSide==='bullish'?'swing high ':'swing low ')+fmt(brokenLevel)+'. '+(breakSide==='bullish'&&protectedLow?'Protected swing low: '+fmt(protectedLow.price)+'.':breakSide==='bearish'&&protectedHigh?'Protected swing high: '+fmt(protectedHigh.price)+'.':'');
   if(breakType.includes('CHOCH')){choch=structure;chochNote='The close broke the protected swing against the prior structure direction.'}
  }else if(structureTrend!=='Range'){
   structure=structureTrend+' structure';note=structureTrend+' structure remains intact; no new protected-swing break on the latest close.';breakType='STRUCTURE HOLD';
