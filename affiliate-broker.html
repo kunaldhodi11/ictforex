@@ -47,4 +47,20 @@
 <section class="panel risk"><h3><i class="fa-solid fa-triangle-exclamation"></i> Trading risk disclosure</h3><p>Forex and CFD trading involve substantial risk and may not be suitable for all investors. You can lose your invested capital. This website provides education, not financial advice, investment recommendations or guaranteed results. Never trade with money you cannot afford to lose.</p></section>
 </main>
 <footer class="footer"><div class="wrap">ICT Forex Academy © 2026 · <a href="privacy-policy.html">Privacy Policy & Terms</a></div></footer>
+
+<script>
+(() => {
+  const country = document.getElementById('visitor-country');
+  const indiaNotice = document.getElementById('india-regulatory-notice');
+
+  if (!country || !indiaNotice) return;
+
+  const updateNotice = () => {
+    indiaNotice.hidden = country.value !== 'IN';
+  };
+
+  country.addEventListener('change', updateNotice);
+  updateNotice();
+})();
+</script>
 </body></html>
