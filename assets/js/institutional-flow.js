@@ -32,7 +32,7 @@ function updateLiveTick(tick){
  const mid=num(tick.mid);if(mid===null)return;
  if(tickIsStale(tick)){$('feedState').textContent='STALE FEED';$('quoteAge').textContent=age(tick.timestamp);return}
  $('price').textContent=fmt(mid);
- queueLiveCandle(mid,tick.timestamp);updateLiveXray(mid);updateTickPressurePanels();
+ state.lastTickAt=Date.now();queueLiveCandle(mid,tick.timestamp);updateLiveXray(mid);updateTickPressurePanels();
  if(tick.dayDiffPercent!==undefined&&tick.dayDiffPercent!==null){$('change').textContent=(tick.dayDiffPercent>0?'+':'')+Number(tick.dayDiffPercent).toFixed(2)+'%';$('change').style.color=Number(tick.dayDiffPercent)>=0?'var(--green)':'var(--red)'}
  if(tick.marketState)$('marketStatus').textContent=tick.marketState;
  $('quoteAge').textContent=tick.timestamp?age(tick.timestamp):'Live tick received';
@@ -53,7 +53,7 @@ function queueLiveCandle(price,timestamp){
   state.liveCandle.close=price;
  }
  state.chartLastTime=Math.max(state.chartLastTime||time,time);
- state.lastTickAt=stamp;
+ /* freshness is measured from receipt time in updateLiveTick */
  state.pendingLiveCandle={...state.liveCandle};
  if(state.liveFrame!==null)return;
  state.liveFrame=requestAnimationFrame(()=>{
@@ -103,10 +103,21 @@ function fmt(v){return v==null?'—':v.toLocaleString('en-US',{minimumFractionDi
 function age(ts){if(ts===undefined||ts===null||ts==='')return 'Quote timestamp unavailable';const ms=epochMs(ts);if(!Number.isFinite(ms))return 'Quote timestamp unavailable';let s=Math.max(0,Math.floor((Date.now()-ms)/1000));return s<60?'Quote '+s+'s ago':'Quote '+Math.floor(s/60)+'m ago'}
 function tickIsStale(tick){if(!tick)return true;if(tick.stale===true)return true;const reported=num(tick.quoteAgeSeconds);if(reported!==null)return reported>120;if(tick.timestamp!==undefined&&tick.timestamp!==null){const ms=epochMs(tick.timestamp);return !Number.isFinite(ms)||Date.now()-ms>120000}return true}
 async function resolveSymbol(market){
- try{const data=await get(API+'/active');const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());const found=candidates[market].find(x=>names.includes(x));if(found)return found}catch(e){}
- // Resolve the instrument even when its market is closed. The provider returns
- // the last known quote with marketState="closed" unless strict freshness is requested.
- for(const sym of candidates[market]){try{await get(API+'/'+encodeURIComponent(sym));return sym}catch(e){}}
+ try{
+  const data=await get(API+'/active');
+  const rows=Array.isArray(data)?data:(data.items||data.symbols||[]);
+  const names=rows.map(x=>String(x.name||x.symbol||'').toUpperCase());
+  const found=candidates[market].find(x=>names.includes(x));
+  if(found)return found;
+ }catch(e){}
+ // Probe fallback symbols concurrently so one unavailable alias cannot add
+ // another 10-second wait to the connection sequence.
+ const probes=await Promise.allSettled(candidates[market].map(async sym=>{
+  await get(API+'/'+encodeURIComponent(sym),7000);
+  return sym;
+ }));
+ const match=probes.find(result=>result.status==='fulfilled');
+ if(match)return match.value;
  throw Error(market==='NAS100'?'No supported NAS100/US100 symbol was found in the free feed.':'XAUUSD is not currently available in the feed.');
 }
 function avg(a){return a.reduce((s,x)=>s+x,0)/(a.length||1)}
@@ -581,7 +592,7 @@ function renderRadarError(market,error){
 }
 async function scan(){
  if(state.scanning){state.scanRequested=true;return}state.scanning=true;
- await ensureChartLibrary().catch(()=>false);
+ // Chart rendering loads independently; provider scans must not wait for a CDN.
  $('feedState').textContent='SCANNING BOTH MARKETS';$('radarStatus').textContent='SCANNING';const retryButton=$('refresh');if(retryButton)retryButton.textContent='Scanning…';
  $('bullishList').innerHTML='<div class="loading">Scanning bullish setups…</div>';$('bearishList').innerHTML='<div class="loading">Scanning bearish setups…</div>';
  try{
@@ -596,7 +607,8 @@ async function scan(){
   render(selected);
  }catch(e){
   const retryButton=$('refresh');if(retryButton)retryButton.textContent='↻ Retry';
-  $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';
+  state.lastData=null;state.lastTickAt=0;state.symbol=null;resetChartForMarket();
+ $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';
   const chartStatus=$('chartStatus'),chartFoot=$('chartFoot');
   if(chartStatus)chartStatus.textContent='DATA UNAVAILABLE';
   if(chartFoot)chartFoot.textContent='Live candles could not be loaded: '+e.message+' · Use Refresh to retry.';
@@ -606,7 +618,7 @@ async function scan(){
   $('feedNote').textContent='Provider response: '+e.message;$('setupCount').textContent='0';$('price').textContent='—';$('change').textContent='—';$('marketStatus').textContent='Unavailable';
  }finally{state.scanning=false;if(state.scanRequested){state.scanRequested=false;scan()}}
 }
-document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;state.symbol=null;state.lastTickAt=0;state.liveCandle=null;state.pendingLiveCandle=null;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();scan()}));
+document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;state.symbol=null;state.lastData=null;state.lastTickAt=0;state.liveCandle=null;state.pendingLiveCandle=null;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();scan()}));
 $('timeframe').value=state.tf;$('timeframe').disabled=false;$('timeframe').addEventListener('change',()=>{state.tf=$('timeframe').value;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();updateCandleTimer();if(state.lastData)render(state.lastData);else scan()});
 $('refresh').addEventListener('click',scan);
 const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
@@ -627,6 +639,6 @@ function refreshFeedFreshness(){
  if(tick){$('feedState').textContent=tickIsStale(tick)?'STALE':'REST SNAPSHOT';}
 }
 updateChartClock();updateCandleTimer();setInterval(updateChartClock,1000);setInterval(updateCandleTimer,1000);setInterval(refreshFeedFreshness,5000);
-ensureChartLibrary().then(()=>{const status=$('chartStatus');if(status)status.textContent='CHART READY · WAITING FOR DATA'}).catch(e=>{const status=$('chartStatus'),foot=$('chartFoot');if(status)status.textContent='CHART LIBRARY ERROR';if(foot)foot.textContent=e.message});
+ensureChartLibrary().then(()=>{const status=$('chartStatus');if(status)status.textContent=state.lastData?'CHART READY · DATA LOADED':'CHART READY · WAITING FOR DATA';if(state.lastData){const bars=state.lastData.mtfBars&&state.lastData.mtfBars[state.tf]&&state.lastData.mtfBars[state.tf].length?state.lastData.mtfBars[state.tf]:state.lastData.analysis.bars;drawChart(bars,state.tf==='1m'?state.lastData.analysis.results:[])}}).catch(e=>{const status=$('chartStatus'),foot=$('chartFoot');if(status)status.textContent='CHART LIBRARY ERROR';if(foot)foot.textContent=e.message});
 scan();state.timer=setInterval(scan,60000);
 })();
