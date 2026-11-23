@@ -8,7 +8,25 @@ function istTime(seconds){return new Intl.DateTimeFormat('en-IN',{timeZone:'Asia
 function updateCandleTimer(){const el=$('candleTimer');if(!el)return;const now=Math.floor(Date.now()/1000),duration=timeframeSeconds(state.tf),start=Math.floor(now/duration)*duration,end=start+duration,left=end-now;el.textContent=state.tf.toUpperCase()+' · '+istTime(start)+'–'+istTime(end)+' IST · closes in '+String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');el.title='Current '+state.tf+' candle start and close times in India Standard Time';}
 const state={market:'XAUUSD',tf:'1m',symbol:null,scan:[],timer:null,chart:null,candleSeries:null,lines:[],hub:null,subscribedSymbol:null,liveCandle:null,chartHasData:false,chartLastTime:null,pendingLiveCandle:null,liveFrame:null,lastPriceLine:null,lastTickAt:0,alertsEnabled:false,alerted:new Set(),overlay:null,chartZones:[],overlayFrame:null,scanning:false,scanRequested:false,xray:null,lastLivePrice:null,lastTickDirection:'WAITING',lastFlowAt:0,flowEvents:[]};
 const candidates={XAUUSD:['XAUUSD','GOLD'],NAS100:['NAS100','US100','USTEC','NASDAQ100','NDX100','NQ100','NAS100.cash']};
-async function get(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);return r.json()}
+async function get(url, timeoutMs = 10000) {
+ const controller = new AbortController();
+ const timer = setTimeout(() => controller.abort(), timeoutMs);
+ try {
+  const response = await fetch(url, {
+   cache: 'no-store',
+   signal: controller.signal
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return await response.json();
+ } catch (error) {
+  if (error.name === 'AbortError') {
+   throw new Error('Market-data provider timed out after 10 seconds.');
+  }
+  throw error;
+ } finally {
+  clearTimeout(timer);
+ }
+}
 function updateLiveTick(tick){
  if(!tick||!tick.symbol||String(tick.symbol).toUpperCase()!==String(state.symbol||'').toUpperCase())return;
  const mid=num(tick.mid);if(mid===null)return;
@@ -69,7 +87,7 @@ async function connectLive(symbol){
  if(state.subscribedSymbol===symbol&&state.hub.state===signalR.HubConnectionState.Connected)return;
  if(state.hub.state!==signalR.HubConnectionState.Connected)await state.hub.start();
  if(state.subscribedSymbol!==symbol){await state.hub.invoke('Subscribe',[symbol]);state.subscribedSymbol=symbol}
- $('feedState').textContent='LIVE STREAM CONNECTED';
+ $('feedState').textContent='REST SNAPSHOT';
 }
 function epochMs(value){
  if(typeof value==='number'&&Number.isFinite(value))return value<1e12?value*1000:value;
@@ -530,9 +548,9 @@ function render(data){
  state.lastData=data;
  const quoteStale=tickIsStale(data.tick),marketClosed=data.tick.marketState==='closed';$('price').textContent=fmt(data.tick.mid);$('change').textContent=(quoteStale||marketClosed||data.tick.dayDiffPercent==null)?'—':(data.tick.dayDiffPercent>0?'+':'')+data.tick.dayDiffPercent.toFixed(2)+'%';$('change').style.color=(data.tick.dayDiffPercent||0)>=0?'var(--green)':'var(--red)';
  $('marketStatus').textContent=data.tick.marketState||'Unknown';$('quoteAge').textContent=age(data.tick.timestamp);$('symbolLabel').textContent=data.symbol;$('setupCount').textContent=data.analysis.results.length;$('structureTf').textContent='MTF';
- $('feedState').textContent=data.tick.marketState==='closed'?'MARKET CLOSED · LAST QUOTE':(tickIsStale(data.tick)?'STALE QUOTE':'FEED CONNECTED');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
+ $('feedState').textContent=data.tick.marketState==='closed'?'MARKET CLOSED · LAST QUOTE':(tickIsStale(data.tick)?'STALE':'REST SNAPSHOT');$('updated').textContent='Updated '+new Date().toLocaleTimeString();
  const selectedTfBars=data.mtfBars&&data.mtfBars[state.tf];const selectedTfCount=selectedTfBars?selectedTfBars.filter(x=>!x.isOpen).length:data.analysis.bars.length;$('feedNote').textContent='Resolved provider symbol: '+data.symbol+'. '+selectedTfCount+' completed '+state.tf+' candles displayed; 1M is the execution-signal timeframe.';
- const chartBars=data.mtfBars&&data.mtfBars[state.tf]&&data.mtfBars[state.tf].length?data.mtfBars[state.tf]:data.analysis.bars;drawChart(chartBars,state.tf==='1m'?data.analysis.results:[]);renderXray((data.mtfBars&&data.mtfBars['15m']&&data.mtfBars['15m'].length?analyze(data.mtfBars['15m']).bars:data.analysis.bars),data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);if(state.hub&&state.hub.state===signalR.HubConnectionState.Connected)$('feedState').textContent='LIVE STREAM CONNECTED';
+ const chartBars=data.mtfBars&&data.mtfBars[state.tf]&&data.mtfBars[state.tf].length?data.mtfBars[state.tf]:data.analysis.bars;drawChart(chartBars,state.tf==='1m'?data.analysis.results:[]);renderXray((data.mtfBars&&data.mtfBars['15m']&&data.mtfBars['15m'].length?analyze(data.mtfBars['15m']).bars:data.analysis.bars),data.mtf,data.analysis.results);notifyNewSetups(data.analysis.results);
  const bullList=$('bullishList'),bearList=$('bearishList');bullList.innerHTML='';bearList.innerHTML='';
  const bulls=data.analysis.results.filter(r=>r.side==='bullish'),bears=data.analysis.results.filter(r=>r.side==='bearish');
  if(!bulls.length)bullList.innerHTML='<div class="empty">No valid bullish setup detected. Waiting for confirmation.</div>';
@@ -564,7 +582,7 @@ function renderRadarError(market,error){
 async function scan(){
  if(state.scanning){state.scanRequested=true;return}state.scanning=true;
  await ensureChartLibrary().catch(()=>false);
- $('feedState').textContent='SCANNING BOTH MARKETS';$('radarStatus').textContent='SCANNING';
+ $('feedState').textContent='SCANNING BOTH MARKETS';$('radarStatus').textContent='SCANNING';const retryButton=$('refresh');if(retryButton)retryButton.textContent='Scanning…';
  $('bullishList').innerHTML='<div class="loading">Scanning bullish setups…</div>';$('bearishList').innerHTML='<div class="loading">Scanning bearish setups…</div>';
  try{
   const results=await Promise.allSettled(['XAUUSD','NAS100'].map(scanMarket));
@@ -573,9 +591,11 @@ async function scan(){
   $('radarStatus').textContent=success===2?'BOTH MARKETS SCANNED':success===1?'PARTIAL DATA':'DATA UNAVAILABLE';
   if(!selected)throw Error(state.market+' scan unavailable. See Market Radar for each market status.');
   state.symbol=selected.symbol;
+  const retryButton=$('refresh');if(retryButton)retryButton.textContent='↻ Refresh scan';
   connectLive(selected.symbol).catch(()=>{$('feedState').textContent='REST SNAPSHOT';});
   render(selected);
  }catch(e){
+  const retryButton=$('refresh');if(retryButton)retryButton.textContent='↻ Retry';
   $('feedState').textContent='DATA UNAVAILABLE';$('updated').textContent='Scan could not complete';
   const chartStatus=$('chartStatus'),chartFoot=$('chartFoot');
   if(chartStatus)chartStatus.textContent='DATA UNAVAILABLE';
@@ -595,7 +615,18 @@ const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',a
  state.alertsEnabled=permission==='granted';alertBtn.textContent=state.alertsEnabled?'Alerts enabled ✓':'Enable alerts';
  $('alertStatus').textContent=state.alertsEnabled?'Browser alerts are active while this page is open.':'Notification permission was not granted.';
 });
-updateChartClock();updateCandleTimer();setInterval(updateChartClock,1000);setInterval(updateCandleTimer,1000);
+function refreshFeedFreshness(){
+ const tick=state.lastData&&state.lastData.tick;
+ if(tick&&tick.marketState==='closed'){$('feedState').textContent='MARKET CLOSED · LAST QUOTE';return}
+ if(state.lastTickAt){
+  const ageMs=Date.now()-state.lastTickAt;
+  if(ageMs<=120000){$('feedState').textContent='LIVE STREAM';return}
+  $('feedState').textContent='STALE';
+  return;
+ }
+ if(tick){$('feedState').textContent=tickIsStale(tick)?'STALE':'REST SNAPSHOT';}
+}
+updateChartClock();updateCandleTimer();setInterval(updateChartClock,1000);setInterval(updateCandleTimer,1000);setInterval(refreshFeedFreshness,5000);
 ensureChartLibrary().then(()=>{const status=$('chartStatus');if(status)status.textContent='CHART READY · WAITING FOR DATA'}).catch(e=>{const status=$('chartStatus'),foot=$('chartFoot');if(status)status.textContent='CHART LIBRARY ERROR';if(foot)foot.textContent=e.message});
 scan();state.timer=setInterval(scan,60000);
 })();
