@@ -9,6 +9,7 @@
 <link rel="alternate" hreflang="es" href="https://ictforex.in/es/affiliate-broker.html">
 <link rel="alternate" hreflang="ar" href="https://ictforex.in/ar/affiliate-broker.html">
 <link rel="alternate" hreflang="fr" href="https://ictforex.in/fr/affiliate-broker.html">
+<link rel="alternate" hreflang="hi" href="https://ictforex.in/hi/affiliate-broker.html">
 <link rel="alternate" hreflang="x-default" href="https://ictforex.in/affiliate-broker.html">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -37,4 +38,18 @@
 <section class="panel risk"><h3><i class="fa-solid fa-triangle-exclamation"></i> Divulgación de riesgos del trading</h3><p>El trading de Forex y CFDs implica riesgos importantes y puede no ser adecuado para todos los inversores. Puedes perder el capital invertido. Este sitio web ofrece educación, no asesoramiento financiero, recomendaciones de inversión ni resultados garantizados. Nunca operes con dinero que no puedas permitirte perder.</p></section>
 </main>
 <footer class="footer"><div class="wrap">ICT Forex Academy © 2026 · <a href="privacy-policy.html">Política de privacidad y términos</a></div></footer>
+
+<script>
+(() => {
+  const country = document.getElementById('visitor-country');
+  const indiaNotice = document.getElementById('india-regulatory-notice');
+  if (!country || !indiaNotice) return;
+  const updateNotice = () => {
+    indiaNotice.hidden = country.value !== 'IN';
+  };
+  country.addEventListener('change', updateNotice);
+  updateNotice();
+})();
+</script>
+
 </body></html>
