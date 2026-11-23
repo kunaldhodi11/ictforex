@@ -464,11 +464,21 @@ function ensureChartLibrary(){
    if(window.LightweightCharts){resolve(true);return}
    if(index>=urls.length){reject(Error('Chart library could not be loaded from either CDN.'));return}
    const script=document.createElement('script');script.src=urls[index];script.async=true;
-   script.onload=()=>window.LightweightCharts?resolve(true):load(index+1);
-   script.onerror=()=>load(index+1);document.head.appendChild(script);
+   let settled=false;
+   const fallback=()=>{
+    if(settled)return;settled=true;clearTimeout(timeout);
+    script.onload=null;script.onerror=null;script.remove();load(index+1);
+   };
+   const timeout=setTimeout(fallback,8000);
+   script.onload=()=>{
+    if(settled)return;settled=true;clearTimeout(timeout);
+    if(window.LightweightCharts)resolve(true);else{script.remove();load(index+1)}
+   };
+   script.onerror=fallback;
+   document.head.appendChild(script);
   };
   load(0);
- });
+ }).catch(error=>{state.chartLibraryPromise=null;throw error});
  return state.chartLibraryPromise;
 }
 function redrawChartOverlays(){
@@ -620,7 +630,15 @@ async function scan(){
 }
 document.querySelectorAll('.market').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.market').forEach(x=>x.classList.remove('active'));btn.classList.add('active');state.market=btn.dataset.market;state.symbol=null;state.lastData=null;state.lastTickAt=0;state.liveCandle=null;state.pendingLiveCandle=null;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();scan()}));
 $('timeframe').value=state.tf;$('timeframe').disabled=false;$('timeframe').addEventListener('change',()=>{state.tf=$('timeframe').value;if(window.loadOfficialTradingViewChart)window.loadOfficialTradingViewChart(state.market,state.tf);resetChartForMarket();updateCandleTimer();if(state.lastData)render(state.lastData);else scan()});
-$('refresh').addEventListener('click',scan);
+$('refresh').addEventListener('click',()=>{
+ scan();
+ if(!window.LightweightCharts){
+  ensureChartLibrary().then(()=>{
+   const status=$('chartStatus');if(status)status.textContent=state.lastData?'CHART READY · DATA LOADED':'CHART READY · WAITING FOR DATA';
+   if(state.lastData){const bars=state.lastData.mtfBars&&state.lastData.mtfBars[state.tf]&&state.lastData.mtfBars[state.tf].length?state.lastData.mtfBars[state.tf]:state.lastData.analysis.bars;drawChart(bars,state.tf==='1m'?state.lastData.analysis.results:[])}
+  }).catch(error=>{const status=$('chartStatus');if(status)status.textContent='CHART LIBRARY ERROR · '+error.message});
+ }
+});
 const alertBtn=$('enableAlerts');if(alertBtn)alertBtn.addEventListener('click',async()=>{
  if(!('Notification'in window)){$('alertStatus').textContent='Browser notifications are not supported.';return}
  const permission=Notification.permission==='default'?await Notification.requestPermission():Notification.permission;
