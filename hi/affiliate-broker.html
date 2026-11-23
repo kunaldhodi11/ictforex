@@ -1,49 +1,51 @@
-onAuthStateChanged(auth, async (user) => {
-            const authLink = document.getElementById('auth-nav-link');
-            if (!user) {
-                window.location.href = "login.html";
-            } else {
-                currentUser = user;
-                const userName = user.displayName || "User";
-                
-                if (authLink) {
-                    authLink.innerHTML = `<i class="fa-solid fa-user-check text-green-400"></i> ${userName} <span class="text-gray-500">|</span> <i class="fa-solid fa-right-from-bracket"></i> Logout`;
-                    authLink.href = "#";
-                    authLink.onclick = async (e) => {
-                        e.preventDefault();
-                        await signOut(auth);
-                        window.location.href = "login.html";
-                    };
-                }
-
-                // By default sab kuch locked rakhein ge jab tak database me approved na ho
-                document.getElementById('unlocked-view').classList.add('hidden');
-                document.getElementById('vip-content-section').classList.add('opacity-50', 'pointer-events-none');
-
-                // Strict Firestore Check
-                try {
-                    const userRef = doc(db, "vipRequests", user.uid);
-                    const userSnap = await getDoc(userRef);
-                    
-                    if (userSnap.exists()) {
-                        const data = userSnap.data();
-                        if (data.status === 'approved') {
-                            // Sirf aur sirf tabhi khulega jab status 'approved' hoga
-                            document.getElementById('locked-view').classList.add('hidden');
-                            document.getElementById('unlocked-view').classList.remove('hidden');
-                            document.getElementById('vip-content-section').classList.remove('opacity-50', 'pointer-events-none');
-                        } else if (data.status === 'pending') {
-                            // Agar pending hai toh form ki jagah pending message dikhayega
-                            document.getElementById('locked-view').innerHTML = `
-                                <div class="text-center space-y-3 py-4">
-                                    <div class="text-yellow-400 font-black text-sm"><i class="fa-solid fa-clock-rotate-left"></i> Verification Pending</div>
-                                    <p class="text-xs text-gray-300">Aapki Trading ID (<span class="text-green-400 font-bold">${data.tradingId}</span>) admin review me hai. Approve hote hi access mil jayega.</p>
-                                </div>
-                            `;
-                        }
-                    }
-                } catch (err) {
-                    console.error("Error fetching status:", err);
-                }
-            }
-        });
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07111f">
+<title>पार्टनर ब्रोकर | ICT Forex Academy</title>
+<meta name="description" content="ICT Forex Academy के पार्टनर ब्रोकर, एफिलिएट जानकारी और ट्रेडिंग जोखिमों को समझें।">
+<link rel="canonical" href="https://ictforex.in/hi/affiliate-broker.html">
+<link rel="alternate" hreflang="en" href="https://ictforex.in/affiliate-broker.html">
+<link rel="alternate" hreflang="hi" href="https://ictforex.in/hi/affiliate-broker.html">
+<link rel="alternate" hreflang="ar" href="https://ictforex.in/ar/affiliate-broker.html">
+<link rel="alternate" hreflang="es" href="https://ictforex.in/es/affiliate-broker.html">
+<link rel="alternate" hreflang="fr" href="https://ictforex.in/fr/affiliate-broker.html">
+<link rel="alternate" hreflang="x-default" href="https://ictforex.in/affiliate-broker.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="/assets/css/site-polish.css">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website"><meta property="og:url" content="https://ictforex.in/hi/affiliate-broker.html">
+<meta property="og:title" content="पार्टनर ब्रोकर और एफिलिएट जानकारी | ICT Forex Academy">
+<meta property="og:description" content="पार्टनर ब्रोकर और ट्रेडिंग जोखिमों की जानकारी।">
+<style>
+:root{color-scheme:dark;--bg:#07111f;--line:#26394d;--muted:#a6b6c8;--gold:#f6b94b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#173752,transparent 35%),var(--bg);color:#f5f8fc;font-family:'DM Sans',sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1060px,calc(100% - 32px));margin:auto}header{height:70px;border-bottom:1px solid var(--line);background:#07111fee;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}.nav{height:100%;display:flex;align-items:center;justify-content:space-between}.brand{font:700 16px 'Space Grotesk';letter-spacing:.04em}.brand i{color:var(--gold);margin-right:9px}.links{display:flex;gap:18px;font-size:12px;font-weight:700;color:#c5d1df}.links a:hover{color:var(--gold)}main{padding:52px 0 70px}.hero{text-align:center;max-width:780px;margin:0 auto 40px}.tag{display:inline-block;color:var(--gold);border:1px solid #f6b94b55;background:#f6b94b12;padding:7px 13px;border-radius:99px;font-size:10px;font-weight:800;letter-spacing:.12em}.hero h1{font:700 clamp(34px,6vw,56px)/1.08 'Space Grotesk';margin:20px 0 14px;letter-spacing:-.04em}.hero h1 span{color:var(--gold)}.hero p{font-size:14px;line-height:1.8;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.card{padding:25px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#122940,#0b1929);box-shadow:0 18px 45px #0003;transition:.25s}.card:hover{transform:translateY(-4px);border-color:#f6b94b88}.logo{width:50px;height:50px;display:grid;place-items:center;border-radius:14px;background:#f6b94b18;color:var(--gold);font:700 15px 'Space Grotesk'}.card h2{font:700 24px 'Space Grotesk';margin:17px 0 7px}.card p{font-size:12px;line-height:1.8;color:var(--muted)}.btn{display:inline-flex;gap:8px;align-items:center;padding:11px 15px;border-radius:10px;background:linear-gradient(100deg,#ffda8a,#f0ad36);color:#101a27;font-size:11px;font-weight:800;margin:12px 8px 0 0}.btn.alt{background:#ffffff08;color:#dce8f5;border:1px solid var(--line)}.notice,.panel{border:1px solid var(--line);background:#102238;border-radius:18px;padding:20px;margin-top:20px}.notice{border-color:#42b8ff44;background:#42b8ff0c}.notice p,.panel p{font-size:12px;line-height:1.9;color:#b8c7d7;margin:5px 0}.notice strong{color:#eaf4ff}.panel{margin-top:34px;padding:26px}.panel h2{font:700 22px 'Space Grotesk';margin:0 0 8px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.step{padding:16px;border:1px solid var(--line);border-radius:13px;background:#071522;font-size:12px;line-height:1.8;color:#c5d1df}.step b{display:block;color:var(--gold);font:700 19px 'Space Grotesk';margin-bottom:7px}.risk{border-color:#f6b94b55}.risk h3{font-size:13px;color:var(--gold);margin:0}.footer{border-top:1px solid var(--line);padding:23px 0;text-align:center;color:#91a3b9;font-size:10px}.footer a{color:var(--gold)}@media(max-width:680px){.grid,.steps{grid-template-columns:1fr}.links{gap:10px}.links a:nth-child(2),.links a:nth-child(3){display:none}main{padding-top:36px}.card{padding:21px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="brand" href="/hi/index.html"><i class="fa-solid fa-chart-line"></i> ICT FOREX ACADEMY</a><nav class="links"><a href="/hi/index.html">होम</a><a href="/hi/vip-course.html">VIP कोर्स</a><a href="/hi/free-learning.html">लर्निंग</a><a href="/hi/login.html">लॉगिन</a></nav></div></header>
+<main class="wrap">
+<section class="hero"><span class="tag"><i class="fa-solid fa-handshake"></i> पार्टनर ब्रोकर जानकारी</span><h1>सोच-समझकर ट्रेड करें।<br><span>सीखने को प्राथमिकता दें।</span></h1><p>ICT Forex Academy पर सूचीबद्ध पार्टनर ब्रोकर की जानकारी देखें। कोई निर्णय लेने से पहले हर प्रदाता की शर्तें, नियामकीय जानकारी, शुल्क और आपके देश में उपलब्धता खुद जाँचें।</p></section>
+<section class="notice" aria-label="नियामकीय जानकारी"><h3><i class="fa-solid fa-globe"></i> नियामकीय और स्थानीय नियमों की जानकारी</h3><p>ब्रोकर की उपलब्धता, वित्तीय उत्पादों के नियम और नियामकीय सुरक्षा देश के अनुसार अलग-अलग हो सकती है। रजिस्टर करने, पैसे जमा करने या ट्रेड करने से पहले खुद पुष्टि करें कि संबंधित प्रदाता, उसकी कानूनी इकाई और उत्पाद आपके निवास स्थान पर अधिकृत और अनुमत हैं। यह वेबसाइट केवल शिक्षा के लिए है; यह कानूनी या वित्तीय सलाह नहीं देती।</p><label for="visitor-country" style="display:block;margin-top:12px;font-size:12px;font-weight:700;color:#eaf4ff">संबंधित जानकारी देखने के लिए अपना देश चुनें</label><select id="visitor-country" style="margin-top:8px;padding:10px 12px;border-radius:9px;background:#071522;color:#fff;border:1px solid #52657a;max-width:100%"><option value="other" selected>भारत के बाहर / अन्य देश</option><option value="IN">भारत</option></select></section>
+<section class="notice risk" id="india-regulatory-notice" aria-labelledby="india-forex-warning" hidden><h3 id="india-forex-warning"><i class="fa-solid fa-triangle-exclamation"></i> भारत में रहने वाले लोगों के लिए महत्वपूर्ण सूचना</h3><p>RBI की Alert List, जो 19 November 2025 को अपडेट हुई थी, उसमें OctaFX और XM के नाम शामिल हैं। RBI बताता है कि यह सूची पूरी नहीं है और किसी इकाई का नाम सूची में न होना RBI की अनुमति का प्रमाण नहीं है। यह तारीख वाला संदर्भ है, वर्तमान नियामकीय स्थिति की लाइव जाँच नहीं।</p><p><strong>आधिकारिक स्रोत:</strong> <a href="https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=4235" target="_blank" rel="noopener noreferrer">RBI Alert List — 19 November 2025</a></p></section>
+<section class="grid">
+<article class="card"><div class="logo">OCTA</div><h2>Octa</h2><p>OctaFX का नाम RBI की 19 November 2025 की Alert List में दर्ज है। आगे बढ़ने से पहले संबंधित कानूनी इकाई और अपने देश में लागू नियमों की स्वतंत्र रूप से जाँच करें।</p><a class="btn" href="https://octasl.click/iM6jXCv0KXv" target="_blank" rel="noopener noreferrer">Octa वेबसाइट देखें <i class="fa-solid fa-arrow-up-right-from-square"></i></a><a class="btn alt" href="/hi/vip-course.html">VIP जानकारी</a></article>
+<article class="card"><div class="logo">XM</div><h2>XM</h2><p>XM का नाम RBI की 19 November 2025 की Alert List में दर्ज है। आगे बढ़ने से पहले संबंधित कानूनी इकाई और अपने देश में लागू नियमों की स्वतंत्र रूप से जाँच करें।</p><a class="btn" href="https://affs.click/m2rkP" target="_blank" rel="noopener noreferrer">XM वेबसाइट देखें <i class="fa-solid fa-arrow-up-right-from-square"></i></a><a class="btn alt" href="/hi/vip-course.html">VIP जानकारी</a></article>
+</section>
+<section class="notice"><p><strong>एफिलिएट जानकारी:</strong> यदि आप इन पार्टनर लिंक के माध्यम से रजिस्टर करते हैं, तो ICT Forex Academy को कमीशन मिल सकता है। यह व्यावसायिक संबंध किसी ब्रोकर की सिफारिश, सुरक्षा की गारंटी या नियामकीय अनुमति की पुष्टि नहीं है। प्रदाता की मौजूदा कानूनी इकाई, नियामकीय स्थिति, उत्पाद की शर्तें और स्थानीय उपलब्धता खुद जाँचें। लीवरेज के साथ Forex और CFD ट्रेडिंग में नुकसान का उच्च जोखिम होता है।</p></section>
+<section class="panel"><span class="tag">प्राइवेट लर्निंग एक्सेस</span><h2 style="margin-top:15px">VIP कोर्स एक्सेस कैसे माँगें</h2><p>सूचीबद्ध ब्रोकर के साथ खाता खोलने के बाद लॉगिन करें और VIP Course पेज पर अपना Trading ID जमा करें। हर अनुरोध की एडमिन द्वारा मैन्युअल जाँच होती है। अनुरोध भेजने से तुरंत lessons unlock नहीं होते।</p><div class="steps"><div class="step"><b>01</b>ब्रोकर की शर्तें पढ़ें और खाता खोलने का निर्णय स्वतंत्र रूप से लें।</div><div class="step"><b>02</b>लॉगिन करके VIP Course पेज पर ब्रोकर का नाम और Trading ID जमा करें।</div><div class="step"><b>03</b>मैन्युअल समीक्षा का इंतज़ार करें। मंज़ूरी के बाद ही VIP lessons खुलेंगे।</div></div><a class="btn" href="/hi/vip-course.html">VIP कोर्स पर जाएँ <i class="fa-solid fa-arrow-right"></i></a></section>
+<section class="panel risk"><h3><i class="fa-solid fa-triangle-exclamation"></i> ट्रेडिंग जोखिम सूचना</h3><p>Forex और CFD ट्रेडिंग में पर्याप्त जोखिम होता है और यह हर निवेशक के लिए उपयुक्त नहीं हो सकती। आप अपनी लगाई हुई पूँजी खो सकते हैं। यह वेबसाइट शिक्षा देती है, वित्तीय सलाह, निवेश की सिफारिश या निश्चित परिणाम नहीं। ऐसे पैसे से ट्रेड न करें जिन्हें खोने की क्षमता आपके पास नहीं है।</p></section>
+</main>
+<footer class="footer"><div class="wrap">ICT Forex Academy © 2026 · <a href="/hi/privacy-policy.html">गोपनीयता नीति और शर्तें</a></div></footer>
+<script>
+(() => {
+ const country = document.getElementById('visitor-country');
+ const indiaNotice = document.getElementById('india-regulatory-notice');
+ if (!country || !indiaNotice) return;
+ const updateNotice = () => { indiaNotice.hidden = country.value !== 'IN'; };
+ country.addEventListener('change', updateNotice);
+ updateNotice();
+})();
+</script>
+</body></html>
